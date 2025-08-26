@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting
+name: Deploy to Firebase Hosting and Cloud Run
 
 on:
   push:
@@ -46,3 +46,35 @@ jobs:
           channelId: live
           projectId: gta-budget-painting
           entryPoint: ./
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GTA_BUDGET_PAINTING }}
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Google Cloud
+        run: gcloud auth configure-docker
+
+      - name: Build Docker image
+        run: |
+          docker build --platform=linux/amd64 -t gcr.io/gta-budget-painting/gta-budget-painting:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push gcr.io/gta-budget-painting/gta-budget-painting:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy gta-budget-painting \
+            --image gcr.io/gta-budget-painting/gta-budget-painting:latest \
+            --platform managed \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 1Gi \
+            --cpu 1 \
+            --timeout 300 \
+            --set-env-vars="NODE_ENV=production"
