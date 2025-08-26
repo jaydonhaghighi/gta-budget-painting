@@ -45,5 +45,4 @@ jobs:
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_GTA_BUDGET_PAINTING }}
           channelId: live
           projectId: gta-budget-painting
-        env:
-          FIREBASE_CLI_EXPERIMENTS: webframeworks
+          entryPoint: ./
