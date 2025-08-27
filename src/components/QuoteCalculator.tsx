@@ -27,6 +27,8 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     address: ''
   })
   const [lastAddedRoomId, setLastAddedRoomId] = useState<string | null>(null)
+
+  const [preferredDate, setPreferredDate] = useState('')
   const roomRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
   // Pricing constants (per square foot and per item)
@@ -47,6 +49,11 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
   }
 
   const addRoom = () => {
+    // Always add room directly - no calendar popup
+    addRoomDirectly()
+  }
+
+  const addRoomDirectly = () => {
     const newRoomId = Date.now().toString()
     const newRoom: Room = {
       id: newRoomId,
@@ -65,6 +72,8 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     setRooms([...rooms, newRoom])
     setLastAddedRoomId(newRoomId)
   }
+
+
 
   // Scroll to newly added room
   useEffect(() => {
@@ -336,12 +345,40 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
           ))}
         </section>
 
+        {/* Date Selection */}
+        {rooms.length > 0 && (
+                  <section className="date-selection-section">
+                    <div className="date-selection-card">
+                                             <h3>Select Your Preferred Date</h3>
+                       <p>When would you like your painting project to begin? This field is required.</p>
+                      
+                      <div className="calendar-input">
+                        <label htmlFor="preferred-date">Choose Date: *</label>
+                        <input
+                          id="preferred-date"
+                          type="date"
+                          value={preferredDate}
+                          onChange={(e) => setPreferredDate(e.target.value)}
+                          min={new Date().toISOString().split('T')[0]} // Today or later
+                          required
+                        />
+                      </div>
+                    </div>
+                  </section>
+                )}
+
         {/* Quote Summary */}
         {rooms.length > 0 && (
           <section className="quote-summary">
             <div className="summary-card">
               <h2>Quote Summary</h2>
               <div className="summary-details">
+                {preferredDate && (
+                  <div className="summary-line">
+                    <span>Preferred Start Date:</span>
+                    <span>{new Date(preferredDate).toLocaleDateString()}</span>
+                  </div>
+                )}
                 <div className="summary-line">
                   <span>Total Rooms:</span>
                   <span>{rooms.length}</span>
@@ -368,13 +405,15 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
 
         {/* Submit Button */}
         <div className="quote-submit">
-          <button type="submit" className="btn-submit-quote" disabled={rooms.length === 0}>
+          <button type="submit" className="btn-submit-quote" disabled={rooms.length === 0 || !preferredDate}>
             Get Official Quote
           </button>
           <p>We'll review your request and contact you within 24 hours with a detailed quote.</p>
         </div>
       </form>
       </div>
+
+
     </div>
   )
 }

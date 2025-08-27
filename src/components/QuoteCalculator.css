@@ -178,7 +178,6 @@
   border-radius: 16px;
   padding: 3rem;
   margin-bottom: 3rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
 }
 
@@ -353,17 +352,17 @@
 
 /* Quote Summary */
 .quote-summary {
-  background: var(--color-grey-900);
   border-radius: 16px;
   padding: 3rem;
   margin-top: 2rem;
+  border: 1px solid var(--color-grey-200);
 }
 
 .summary-card {
   background: var(--color-white);
   border-radius: 12px;
   padding: 3rem;
-  border: 1px solid var(--color-grey-200);
+  
 }
 
 .summary-card h2 {
@@ -552,5 +551,84 @@
   .btn-submit-quote {
     padding: 0.75rem 2rem;
     font-size: 1rem;
+  }
+}
+
+/* Date Selection Section */
+.date-selection-section {
+  margin-bottom: 3rem;
+}
+
+.date-selection-card {
+  background: var(--color-grey-50);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 16px;
+  padding: 3rem;
+  text-align: center;
+}
+
+.date-selection-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--color-black);
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+
+.date-selection-card h3::after {
+  content: " *";
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.date-selection-card p {
+  font-family: var(--font-body);
+  color: var(--color-grey-600);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.calendar-input {
+  margin-bottom: 2.5rem;
+}
+
+.calendar-input label {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--color-black);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.calendar-input label::after {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.calendar-input input[type="date"] {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  border: 2px solid var(--color-grey-300);
+  border-radius: 8px;
+  background: var(--color-white);
+  color: var(--color-black);
+  transition: border-color 0.3s ease;
+}
+
+.calendar-input input[type="date"]:focus {
+  outline: none;
+  border-color: var(--color-black);
+}
+
+
+
+@media (max-width: 768px) {
+  .date-selection-card {
+    padding: 2rem;
+    margin: 0 1rem;
   }
 }
