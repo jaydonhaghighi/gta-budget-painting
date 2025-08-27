@@ -1,0 +1,401 @@
+.quote-calculator {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.quote-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.quote-header h1 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.quote-header p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+}
+
+.quote-form {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* Customer Information */
+.customer-info h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.form-grid input {
+  padding: 0.75rem;
+  border: 2px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-grid input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Rooms Section */
+.rooms-section h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.rooms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.btn-add-room {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add-room:hover {
+  background: #229954;
+}
+
+.no-rooms {
+  text-align: center;
+  padding: 3rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+}
+
+/* Room Cards */
+.room-card {
+  background: #ffffff;
+  border: 1px solid #e0e6ed;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.room-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.room-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.room-name-input {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  padding: 0.5rem 0;
+  transition: border-color 0.3s ease;
+}
+
+.room-name-input:focus {
+  outline: none;
+  border-bottom-color: #3498db;
+}
+
+.btn-remove-room {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-remove-room:hover {
+  background: #c0392b;
+}
+
+/* Room Dimensions */
+.room-dimensions h3 {
+  color: #34495e;
+  margin-bottom: 1rem;
+}
+
+.dimensions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.dimension-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.dimension-input label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.dimension-input input {
+  padding: 0.75rem;
+  border: 2px solid #bdc3c7;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.dimension-input input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+/* Room Addons */
+.room-addons h3 {
+  color: #34495e;
+  margin-bottom: 1rem;
+}
+
+.addons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.addon-checkbox {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addon-checkbox:hover {
+  background: #e9ecef;
+}
+
+.addon-checkbox input[type="checkbox"] {
+  margin-right: 0.75rem;
+  transform: scale(1.2);
+}
+
+.addon-number {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.addon-number label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.addon-number input {
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  margin-bottom: 0.25rem;
+}
+
+.addon-price {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.room-cost {
+  text-align: right;
+  font-size: 1.2rem;
+  color: #27ae60;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e6ed;
+}
+
+/* Quote Summary */
+.quote-summary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.95);
+  margin: 2px;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.summary-card h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+.summary-line.total {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #27ae60;
+  border-bottom: none;
+  border-top: 2px solid #27ae60;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.summary-note {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #fef9e7;
+  border-radius: 8px;
+  border-left: 4px solid #f39c12;
+}
+
+.summary-note p {
+  margin: 0;
+  color: #8b4513;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Submit Section */
+.quote-submit {
+  text-align: center;
+  padding: 2rem;
+}
+
+.btn-submit-quote {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-submit-quote:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.btn-submit-quote:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.quote-submit p {
+  margin-top: 1rem;
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .quote-calculator {
+    padding: 1rem;
+  }
+  
+  .quote-header h1 {
+    font-size: 2rem;
+  }
+  
+  .rooms-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .dimensions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .addons-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .room-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .room-name-input {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .quote-calculator {
+    padding: 0.5rem;
+  }
+  
+  .room-card {
+    padding: 1rem;
+  }
+  
+  .quote-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .btn-submit-quote {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+}

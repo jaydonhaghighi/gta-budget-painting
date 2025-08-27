@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import './App.css'
+import QuoteCalculator from './components/QuoteCalculator'
 
 function App() {
+  const [currentPage, setCurrentPage] = useState('home')
   return (
     <div className="App">
       {/* Header */}
@@ -10,21 +13,62 @@ function App() {
             <h2>GTA Budget Painting</h2>
           </div>
           <nav className="nav">
-            <a href="#home">Home</a>
-            <a href="#services">Services</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
+            <a 
+              href="#home" 
+              className={currentPage === 'home' ? 'active' : ''} 
+              onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}
+            >
+              Home
+            </a>
+            <a 
+              href="#services" 
+              className={currentPage === 'services' ? 'active' : ''} 
+              onClick={(e) => { e.preventDefault(); setCurrentPage('services'); }}
+            >
+              Services
+            </a>
+            <a 
+              href="#quote" 
+              className={currentPage === 'quote' ? 'active' : ''} 
+              onClick={(e) => { e.preventDefault(); setCurrentPage('quote'); }}
+            >
+              Get Quote
+            </a>
+            <a 
+              href="#about" 
+              className={currentPage === 'about' ? 'active' : ''} 
+              onClick={(e) => { e.preventDefault(); setCurrentPage('about'); }}
+            >
+              About
+            </a>
+            <a 
+              href="#contact" 
+              className={currentPage === 'contact' ? 'active' : ''} 
+              onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }}
+            >
+              Contact
+            </a>
           </nav>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section id="home" className="hero">
+      {/* Main Content */}
+      {currentPage === 'quote' ? (
+        <QuoteCalculator />
+      ) : (
+        <>
+          {/* Hero Section */}
+          <section id="home" className="hero" style={{ display: currentPage === 'home' ? 'block' : 'none' }}>
         <div className="hero-content">
           <h1>Professional Painting Services in GTA</h1>
           <p>Transform your space with our affordable, high-quality painting services. Residential and commercial projects welcome.</p>
           <div className="hero-buttons">
-            <button className="btn-primary">Get Free Quote</button>
+            <button 
+              className="btn-primary" 
+              onClick={() => setCurrentPage('quote')}
+            >
+              Get Free Quote
+            </button>
             <button className="btn-secondary">View Our Work</button>
           </div>
         </div>
@@ -47,8 +91,8 @@ function App() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="services">
+          {/* Services Section */}
+          <section id="services" className="services" style={{ display: currentPage === 'services' ? 'block' : 'none' }}>
         <div className="container">
           <h2>Our Services</h2>
           <div className="services-grid">
@@ -86,8 +130,8 @@ function App() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="about">
+          {/* About Section */}
+          <section id="about" className="about" style={{ display: currentPage === 'about' ? 'block' : 'none' }}>
         <div className="container">
           <div className="about-content">
             <div className="about-text">
@@ -135,8 +179,8 @@ function App() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="contact">
+          {/* Contact Section */}
+          <section id="contact" className="contact" style={{ display: currentPage === 'contact' ? 'block' : 'none' }}>
         <div className="container">
           <h2>Get Your Free Quote Today</h2>
           <p>Ready to transform your space? Contact us for a free, no-obligation quote.</p>
@@ -175,7 +219,9 @@ function App() {
             </div>
           </div>
         </div>
-      </section>
+          </section>
+        </>
+      )}
 
       {/* Footer */}
       <footer className="footer">

@@ -47,6 +47,12 @@
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s;
+  cursor: pointer;
+}
+
+.nav a.active {
+  color: #2c5aa0;
+  border-bottom: 2px solid #2c5aa0;
 }
 
 .nav a:hover {

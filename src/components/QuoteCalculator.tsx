@@ -1,0 +1,348 @@
+import React, { useState } from 'react'
+import './QuoteCalculator.css'
+
+interface Room {
+  id: string
+  name: string
+  length: number
+  width: number
+  height: number
+  addons: {
+    ceilings: boolean
+    doors: number
+    windows: number
+    trims: boolean
+    baseboards: boolean
+    closets: number
+  }
+}
+
+interface QuoteCalculatorProps {}
+
+const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
+  const [rooms, setRooms] = useState<Room[]>([])
+  const [customerInfo, setCustomerInfo] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: ''
+  })
+
+  // Pricing constants (per square foot and per item)
+  const PRICING = {
+    wallPainting: 3.50, // per sq ft
+    ceilingPainting: 2.50, // per sq ft
+    doorPainting: 75, // per door
+    windowTrim: 25, // per window
+    trimPainting: 4, // per linear foot
+    baseboardPainting: 3, // per linear foot
+    closetPainting: 150 // per closet
+  }
+
+  const addRoom = () => {
+    const newRoom: Room = {
+      id: Date.now().toString(),
+      name: `Room ${rooms.length + 1}`,
+      length: 12,
+      width: 10,
+      height: 9,
+      addons: {
+        ceilings: false,
+        doors: 1,
+        windows: 2,
+        trims: false,
+        baseboards: false,
+        closets: 0
+      }
+    }
+    setRooms([...rooms, newRoom])
+  }
+
+  const removeRoom = (roomId: string) => {
+    setRooms(rooms.filter(room => room.id !== roomId))
+  }
+
+  const updateRoom = (roomId: string, updates: Partial<Room>) => {
+    setRooms(rooms.map(room => 
+      room.id === roomId ? { ...room, ...updates } : room
+    ))
+  }
+
+  const updateRoomAddon = (roomId: string, addon: keyof Room['addons'], value: boolean | number) => {
+    setRooms(rooms.map(room => 
+      room.id === roomId 
+        ? { ...room, addons: { ...room.addons, [addon]: value } }
+        : room
+    ))
+  }
+
+  const calculateRoomCost = (room: Room) => {
+    const wallArea = 2 * (room.length * room.height + room.width * room.height)
+    const ceilingArea = room.length * room.width
+    const perimeter = 2 * (room.length + room.width)
+    
+    let cost = wallArea * PRICING.wallPainting
+    
+    if (room.addons.ceilings) {
+      cost += ceilingArea * PRICING.ceilingPainting
+    }
+    
+    cost += room.addons.doors * PRICING.doorPainting
+    cost += room.addons.windows * PRICING.windowTrim
+    cost += room.addons.closets * PRICING.closetPainting
+    
+    if (room.addons.trims) {
+      cost += perimeter * PRICING.trimPainting
+    }
+    
+    if (room.addons.baseboards) {
+      cost += perimeter * PRICING.baseboardPainting
+    }
+    
+    return cost
+  }
+
+  const getTotalCost = () => {
+    return rooms.reduce((total, room) => total + calculateRoomCost(room), 0)
+  }
+
+  const handleSubmitQuote = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Here you would typically send the quote to your backend
+    const quoteData = {
+      customer: customerInfo,
+      rooms: rooms,
+      totalCost: getTotalCost(),
+      date: new Date().toISOString()
+    }
+    console.log('Quote submitted:', quoteData)
+    alert(`Quote calculated! Total: $${getTotalCost().toFixed(2)}\nWe'll contact you within 24 hours.`)
+  }
+
+  return (
+    <div className="quote-calculator">
+      <div className="quote-header">
+        <h1>Get Your Free Quote</h1>
+        <p>Add your rooms and select painting options to get an instant estimate</p>
+      </div>
+
+      <form onSubmit={handleSubmitQuote} className="quote-form">
+        {/* Customer Information */}
+        <section className="customer-info">
+          <h2>Contact Information</h2>
+          <div className="form-grid">
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={customerInfo.name}
+              onChange={(e) => setCustomerInfo({...customerInfo, name: e.target.value})}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={customerInfo.email}
+              onChange={(e) => setCustomerInfo({...customerInfo, email: e.target.value})}
+              required
+            />
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              value={customerInfo.phone}
+              onChange={(e) => setCustomerInfo({...customerInfo, phone: e.target.value})}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Property Address"
+              value={customerInfo.address}
+              onChange={(e) => setCustomerInfo({...customerInfo, address: e.target.value})}
+              required
+            />
+          </div>
+        </section>
+
+        {/* Rooms Section */}
+        <section className="rooms-section">
+          <div className="rooms-header">
+            <h2>Rooms to Paint</h2>
+            <button type="button" onClick={addRoom} className="btn-add-room">
+              + Add Room
+            </button>
+          </div>
+
+          {rooms.length === 0 && (
+            <div className="no-rooms">
+              <p>No rooms added yet. Click "Add Room" to get started!</p>
+            </div>
+          )}
+
+          {rooms.map((room) => (
+            <div key={room.id} className="room-card">
+              <div className="room-header">
+                <input
+                  type="text"
+                  value={room.name}
+                  onChange={(e) => updateRoom(room.id, { name: e.target.value })}
+                  className="room-name-input"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeRoom(room.id)}
+                  className="btn-remove-room"
+                >
+                  Remove
+                </button>
+              </div>
+
+              <div className="room-dimensions">
+                <h3>Room Dimensions (feet)</h3>
+                <div className="dimensions-grid">
+                  <div className="dimension-input">
+                    <label>Length</label>
+                    <input
+                      type="number"
+                      value={room.length}
+                      onChange={(e) => updateRoom(room.id, { length: parseFloat(e.target.value) || 0 })}
+                      min="1"
+                      step="0.5"
+                    />
+                  </div>
+                  <div className="dimension-input">
+                    <label>Width</label>
+                    <input
+                      type="number"
+                      value={room.width}
+                      onChange={(e) => updateRoom(room.id, { width: parseFloat(e.target.value) || 0 })}
+                      min="1"
+                      step="0.5"
+                    />
+                  </div>
+                  <div className="dimension-input">
+                    <label>Height</label>
+                    <input
+                      type="number"
+                      value={room.height}
+                      onChange={(e) => updateRoom(room.id, { height: parseFloat(e.target.value) || 0 })}
+                      min="7"
+                      step="0.5"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="room-addons">
+                <h3>Additional Services</h3>
+                <div className="addons-grid">
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.ceilings}
+                      onChange={(e) => updateRoomAddon(room.id, 'ceilings', e.target.checked)}
+                    />
+                    <span>Paint Ceilings (+$2.50/sq ft)</span>
+                  </label>
+
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.trims}
+                      onChange={(e) => updateRoomAddon(room.id, 'trims', e.target.checked)}
+                    />
+                    <span>Paint Trims & Moldings (+$4/linear ft)</span>
+                  </label>
+
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.baseboards}
+                      onChange={(e) => updateRoomAddon(room.id, 'baseboards', e.target.checked)}
+                    />
+                    <span>Paint Baseboards (+$3/linear ft)</span>
+                  </label>
+
+                  <div className="addon-number">
+                    <label>Doors to Paint</label>
+                    <input
+                      type="number"
+                      value={room.addons.doors}
+                      onChange={(e) => updateRoomAddon(room.id, 'doors', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                    <span className="addon-price">$75 each</span>
+                  </div>
+
+                  <div className="addon-number">
+                    <label>Windows (trim only)</label>
+                    <input
+                      type="number"
+                      value={room.addons.windows}
+                      onChange={(e) => updateRoomAddon(room.id, 'windows', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                    <span className="addon-price">$25 each</span>
+                  </div>
+
+                  <div className="addon-number">
+                    <label>Closets (interior)</label>
+                    <input
+                      type="number"
+                      value={room.addons.closets}
+                      onChange={(e) => updateRoomAddon(room.id, 'closets', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                    <span className="addon-price">$150 each</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="room-cost">
+                <strong>Room Total: ${calculateRoomCost(room).toFixed(2)}</strong>
+              </div>
+            </div>
+          ))}
+        </section>
+
+        {/* Quote Summary */}
+        {rooms.length > 0 && (
+          <section className="quote-summary">
+            <div className="summary-card">
+              <h2>Quote Summary</h2>
+              <div className="summary-details">
+                <div className="summary-line">
+                  <span>Total Rooms:</span>
+                  <span>{rooms.length}</span>
+                </div>
+                <div className="summary-line">
+                  <span>Total Square Footage (walls):</span>
+                  <span>
+                    {rooms.reduce((total, room) => 
+                      total + (2 * (room.length * room.height + room.width * room.height)), 0
+                    ).toFixed(0)} sq ft
+                  </span>
+                </div>
+                <div className="summary-line total">
+                  <span>Estimated Total:</span>
+                  <span>${getTotalCost().toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="summary-note">
+                <p><strong>Note:</strong> This is an estimate based on standard conditions. Final pricing may vary based on surface preparation needs, paint quality selection, and site conditions.</p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Submit Button */}
+        <div className="quote-submit">
+          <button type="submit" className="btn-submit-quote" disabled={rooms.length === 0}>
+            Get Official Quote
+          </button>
+          <p>We'll review your request and contact you within 24 hours with a detailed quote.</p>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+export default QuoteCalculator
