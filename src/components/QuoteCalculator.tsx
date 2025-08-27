@@ -244,7 +244,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
                     <label>Length</label>
                     <input
                       type="number"
-                      value={room.length}
+                      value={room.length || ''}
                       onChange={(e) => updateRoom(room.id, { length: parseFloat(e.target.value) || 0 })}
                       min="1"
                       step="0.5"
@@ -254,7 +254,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
                     <label>Width</label>
                     <input
                       type="number"
-                      value={room.width}
+                      value={room.width || ''}
                       onChange={(e) => updateRoom(room.id, { width: parseFloat(e.target.value) || 0 })}
                       min="1"
                       step="0.5"
@@ -264,7 +264,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
                     <label>Height</label>
                     <input
                       type="number"
-                      value={room.height}
+                      value={room.height || ''}
                       onChange={(e) => updateRoom(room.id, { height: parseFloat(e.target.value) || 0 })}
                       min="7"
                       step="0.5"
@@ -307,7 +307,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
                     <label>Doors to Paint</label>
                     <input
                       type="number"
-                      value={room.addons.doors}
+                      value={room.addons.doors || ''}
                       onChange={(e) => updateRoomAddon(room.id, 'doors', parseInt(e.target.value) || 0)}
                       min="0"
                     />
@@ -318,7 +318,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
                     <label>Windows (trim only)</label>
                     <input
                       type="number"
-                      value={room.addons.windows}
+                      value={room.addons.windows || ''}
                       onChange={(e) => updateRoomAddon(room.id, 'windows', parseInt(e.target.value) || 0)}
                       min="0"
                     />
@@ -329,7 +329,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
                     <label>Closets (interior)</label>
                     <input
                       type="number"
-                      value={room.addons.closets}
+                      value={room.addons.closets || ''}
                       onChange={(e) => updateRoomAddon(room.id, 'closets', parseInt(e.target.value) || 0)}
                       min="0"
                     />
@@ -370,7 +370,6 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
         {/* Quote Summary */}
         {rooms.length > 0 && (
           <section className="quote-summary">
-            <div className="summary-card">
               <h2>Quote Summary</h2>
               <div className="summary-details">
                 {preferredDate && (
@@ -399,7 +398,6 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
               <div className="summary-note">
                 <p><strong>Note:</strong> This is an estimate based on standard conditions. Final pricing may vary based on surface preparation needs, paint quality selection, and site conditions.</p>
               </div>
-            </div>
           </section>
         )}
 
