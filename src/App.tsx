@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import QuoteCalculator from './components/QuoteCalculator'
+import ServicesPage from './components/ServicesPage'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
@@ -9,8 +10,8 @@ function App() {
       {/* Header */}
       <header className="header">
         <div className="container">
-          <div className="logo">
-            <h2>GTA Budget Painting</h2>
+          <div className="logo" onClick={() => setCurrentPage('home')}>
+            <img src="/logo.png" alt="GTA Budget Painting Logo" className="logo-image" />
           </div>
           <nav className="nav">
             <a 
@@ -55,6 +56,8 @@ function App() {
       {/* Main Content */}
       {currentPage === 'quote' ? (
         <QuoteCalculator />
+      ) : currentPage === 'services' ? (
+        <ServicesPage />
       ) : (
         <>
           {/* Hero Section */}
@@ -69,7 +72,12 @@ function App() {
             >
               Get Free Quote
             </button>
-            <button className="btn-secondary">View Our Work</button>
+            <button 
+              className="btn-secondary"
+              onClick={() => setCurrentPage('services')}
+            >
+              View Our Services
+            </button>
           </div>
         </div>
         <div className="hero-features">
@@ -132,52 +140,76 @@ function App() {
 
           {/* About Section */}
           <section id="about" className="about" style={{ display: currentPage === 'about' ? 'block' : 'none' }}>
-        <div className="container">
-          <div className="about-content">
-            <div className="about-text">
-              <h2>Why Choose GTA Budget Painting?</h2>
-              <p>With over 10 years of experience serving the Greater Toronto Area, we've built our reputation on delivering exceptional painting services at affordable prices.</p>
-              <div className="about-stats">
-                <div className="stat">
-                  <h3>500+</h3>
-                  <p>Projects Completed</p>
+            <div className="container">
+              <div className="about-hero">
+                <h2>Why GTA Budget Painting?</h2>
+                <p>We understand that not every paint job is a full-scale renovation. Sometimes you just need a quick refresh before moving out of a rental, touching up a few rooms, or fixing scuffs and wear-and-tear. That's where we come in.</p>
+              </div>
+
+              <div className="pricing-highlight">
+                <div className="pricing-card">
+                  <h3>Flat Rate: $850/day</h3>
+                  <p>Perfect for one-day jobs and small projects around the house. No surprises — just simple pricing.</p>
                 </div>
-                <div className="stat">
-                  <h3>10+</h3>
-                  <p>Years Experience</p>
+              </div>
+
+              <div className="about-features-grid">
+                <div className="about-feature-card">
+                  <div className="feature-header">
+                    <span className="feature-icon">⚡</span>
+                    <h4>No-Fuss Service</h4>
+                  </div>
+                  <p>Quick, clean, and professional. We show up on time, do the work right, and leave your space looking great.</p>
                 </div>
-                <div className="stat">
-                  <h3>100%</h3>
-                  <p>Satisfaction Rate</p>
+
+                <div className="about-feature-card">
+                  <div className="feature-header">
+                    <span className="feature-icon">👥</span>
+                    <h4>Trusted Team</h4>
+                  </div>
+                  <p>The same experienced painters from GTA Home Painting, now offering a budget-friendly solution.</p>
                 </div>
+              </div>
+
+              <div className="perfect-for-section">
+                <h3>Perfect for:</h3>
+                <div className="perfect-for-grid">
+                  <div className="perfect-for-item">
+                    <span className="item-icon">🏠</span>
+                    <p>Tenants moving out and needing a touch-up</p>
+                  </div>
+                  <div className="perfect-for-item">
+                    <span className="item-icon">🎨</span>
+                    <p>Homeowners wanting to freshen up a room or two</p>
+                  </div>
+                  <div className="perfect-for-item">
+                    <span className="item-icon">🔧</span>
+                    <p>Small repair jobs (walls, trim, baseboards)</p>
+                  </div>
+                  <div className="perfect-for-item">
+                    <span className="item-icon">🏢</span>
+                    <p>Real estate agents needing quick paint work before a showing</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="value-proposition">
+                <h3>Same Quality. Simpler Approach. Lower Cost.</h3>
+                <p>At GTA Budget Painting, we believe that everyone deserves a home that looks and feels good — without breaking the bank. And with the backing of GTA Home Painting's trusted reputation (just check our Google Reviews), you know you're in good hands.</p>
+              </div>
+
+              <div className="ready-to-book">
+                <h3>Ready to Book?</h3>
+                <p>Book your painter online! Just pick the service you are looking for – let us know the day, and we will be there to do the job.</p>
+                <button 
+                  className="btn-book-now"
+                  onClick={() => setCurrentPage('quote')}
+                >
+                  Book Your Painter Now
+                </button>
               </div>
             </div>
-            <div className="about-features">
-              <div className="about-feature">
-                <span className="feature-icon">✓</span>
-                <div>
-                  <h4>Licensed & Insured</h4>
-                  <p>Fully licensed and insured for your peace of mind</p>
-                </div>
-              </div>
-              <div className="about-feature">
-                <span className="feature-icon">✓</span>
-                <div>
-                  <h4>Quality Materials</h4>
-                  <p>We use only premium paints and materials</p>
-                </div>
-              </div>
-              <div className="about-feature">
-                <span className="feature-icon">✓</span>
-                <div>
-                  <h4>Clean Work</h4>
-                  <p>Meticulous cleanup after every project</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
           {/* Contact Section */}
           <section id="contact" className="contact" style={{ display: currentPage === 'contact' ? 'block' : 'none' }}>
@@ -245,9 +277,32 @@ function App() {
               <p>Phone: (416) 555-PAINT</p>
               <p>Email: info@gtabudgetpainting.com</p>
             </div>
+            <div className="footer-section">
+              <h4>Follow Us</h4>
+              <div className="social-links">
+                <a 
+                  href="https://www.facebook.com/profile.php?id=61578315664485" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-link facebook"
+                  aria-label="Follow us on Facebook"
+                >
+                  <img src="/facebook.png" alt="Facebook" className="social-icon-img" />
+                </a>
+                <a 
+                  href="https://www.instagram.com/gta_budget_painting/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-link instagram"
+                  aria-label="Follow us on Instagram"
+                >
+                  <img src="/instagram.png" alt="Instagram" className="social-icon-img" />
+                </a>
+              </div>
+            </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 GTA Budget Painting. All rights reserved.</p>
+            <p>&copy; 2025 GTA Budget Painting. All rights reserved.</p>
           </div>
         </div>
       </footer>

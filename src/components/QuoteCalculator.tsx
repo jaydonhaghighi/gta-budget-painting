@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './QuoteCalculator.css'
 
 interface Room {
   id: string
-  name: string
   length: number
   width: number
   height: number
@@ -27,6 +26,8 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     phone: '',
     address: ''
   })
+  const [lastAddedRoomId, setLastAddedRoomId] = useState<string | null>(null)
+  const roomRefs = useRef<{ [key: string]: HTMLDivElement | null }>({})
 
   // Pricing constants (per square foot and per item)
   const PRICING = {
@@ -39,24 +40,50 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     closetPainting: 150 // per closet
   }
 
+  // Generate dynamic room name based on position
+  const getRoomName = (roomId: string) => {
+    const roomIndex = rooms.findIndex(room => room.id === roomId)
+    return roomIndex >= 0 ? `Room ${roomIndex + 1}` : 'Room'
+  }
+
   const addRoom = () => {
+    const newRoomId = Date.now().toString()
     const newRoom: Room = {
-      id: Date.now().toString(),
-      name: `Room ${rooms.length + 1}`,
-      length: 12,
-      width: 10,
-      height: 9,
+      id: newRoomId,
+      length: 0,
+      width: 0,
+      height: 0,
       addons: {
         ceilings: false,
-        doors: 1,
-        windows: 2,
+        doors: 0,
+        windows: 0,
         trims: false,
         baseboards: false,
         closets: 0
       }
     }
     setRooms([...rooms, newRoom])
+    setLastAddedRoomId(newRoomId)
   }
+
+  // Scroll to newly added room
+  useEffect(() => {
+    if (lastAddedRoomId && roomRefs.current[lastAddedRoomId]) {
+      const element = roomRefs.current[lastAddedRoomId]
+      if (element) {
+        setTimeout(() => {
+          const elementTop = element.getBoundingClientRect().top + window.pageYOffset
+          const offsetPosition = elementTop - 160 // 100px padding from top
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }, 100) // Small delay to ensure DOM is updated
+      }
+      setLastAddedRoomId(null) // Reset after scrolling
+    }
+  }, [lastAddedRoomId, rooms])
 
   const removeRoom = (roomId: string) => {
     setRooms(rooms.filter(room => room.id !== roomId))
@@ -121,12 +148,17 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
 
   return (
     <div className="quote-calculator">
-      <div className="quote-header">
-        <h1>Get Your Free Quote</h1>
-        <p>Add your rooms and select painting options to get an instant estimate</p>
+      <div className="quote-hero">
+        <div className="container">
+          <div className="quote-header">
+            <h1>Get Your Free Quote</h1>
+            <p>Add your rooms and select painting options to get an instant estimate</p>
+          </div>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmitQuote} className="quote-form">
+      <div className="quote-content">
+        <form onSubmit={handleSubmitQuote} className="quote-form">
         {/* Customer Information */}
         <section className="customer-info">
           <h2>Contact Information</h2>
@@ -178,14 +210,15 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
           )}
 
           {rooms.map((room) => (
-            <div key={room.id} className="room-card">
+            <div 
+              key={room.id} 
+              className="room-card"
+              ref={(el) => { roomRefs.current[room.id] = el }}
+            >
               <div className="room-header">
-                <input
-                  type="text"
-                  value={room.name}
-                  onChange={(e) => updateRoom(room.id, { name: e.target.value })}
-                  className="room-name-input"
-                />
+                <span className="room-name-display">
+                  {getRoomName(room.id)}
+                </span>
                 <button
                   type="button"
                   onClick={() => removeRoom(room.id)}
@@ -341,6 +374,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
           <p>We'll review your request and contact you within 24 hours with a detailed quote.</p>
         </div>
       </form>
+      </div>
     </div>
   )
 }
