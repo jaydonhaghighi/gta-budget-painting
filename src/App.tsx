@@ -2,48 +2,35 @@ import './App.css'
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       {/* Header */}
       <header className="header">
-        <div className="container">
-          <div className="logo">
+        <nav className="nav">
+          <div className="nav-brand">
             <h2>GTA Budget Painting</h2>
           </div>
-          <nav className="nav">
-            <a href="#home">Home</a>
-            <a href="#services">Services</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-          </nav>
-        </div>
+          <ul className="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
       </header>
 
       {/* Hero Section */}
       <section id="home" className="hero">
         <div className="hero-content">
           <h1>Professional Painting Services in GTA</h1>
-          <p>Transform your space with our affordable, high-quality painting services. Residential and commercial projects welcome.</p>
+          <p>Transform your space with our expert painting services. Quality work, affordable prices, and exceptional customer service.</p>
           <div className="hero-buttons">
             <button className="btn-primary">Get Free Quote</button>
             <button className="btn-secondary">View Our Work</button>
           </div>
         </div>
-        <div className="hero-features">
-          <div className="feature">
-            <span className="feature-icon">🎨</span>
-            <h3>Expert Painters</h3>
-            <p>Professional team with years of experience</p>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">💰</span>
-            <h3>Budget Friendly</h3>
-            <p>Competitive prices without compromising quality</p>
-          </div>
-          <div className="feature">
-            <span className="feature-icon">⚡</span>
-            <h3>Fast Service</h3>
-            <p>Quick turnaround times to meet your schedule</p>
-          </div>
+        <div className="hero-image">
+          <div className="placeholder-image">🎨</div>
         </div>
       </section>
 
@@ -53,34 +40,24 @@ function App() {
           <h2>Our Services</h2>
           <div className="services-grid">
             <div className="service-card">
-              <h3>Interior Painting</h3>
-              <p>Transform your indoor spaces with professional interior painting services. We handle everything from prep work to final touches.</p>
-              <ul>
-                <li>Wall painting</li>
-                <li>Ceiling painting</li>
-                <li>Trim & molding</li>
-                <li>Color consultation</li>
-              </ul>
+              <div className="service-icon">🏠</div>
+              <h3>Residential Painting</h3>
+              <p>Interior and exterior painting for homes, condos, and apartments.</p>
             </div>
             <div className="service-card">
-              <h3>Exterior Painting</h3>
-              <p>Protect and beautify your property's exterior with weather-resistant paints and expert application techniques.</p>
-              <ul>
-                <li>House painting</li>
-                <li>Deck & fence staining</li>
-                <li>Pressure washing</li>
-                <li>Surface preparation</li>
-              </ul>
-            </div>
-            <div className="service-card">
+              <div className="service-icon">🏢</div>
               <h3>Commercial Painting</h3>
-              <p>Professional painting services for offices, retail spaces, and commercial buildings with minimal disruption to your business.</p>
-              <ul>
-                <li>Office painting</li>
-                <li>Retail spaces</li>
-                <li>Warehouses</li>
-                <li>Scheduled maintenance</li>
-              </ul>
+              <p>Professional painting services for offices, retail spaces, and buildings.</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">🔧</div>
+              <h3>Repairs & Prep</h3>
+              <p>Drywall repair, surface preparation, and finishing work.</p>
+            </div>
+            <div className="service-card">
+              <div className="service-icon">✨</div>
+              <h3>Specialty Finishes</h3>
+              <p>Texture painting, decorative finishes, and custom color matching.</p>
             </div>
           </div>
         </div>
@@ -92,44 +69,64 @@ function App() {
           <div className="about-content">
             <div className="about-text">
               <h2>Why Choose GTA Budget Painting?</h2>
-              <p>With over 10 years of experience serving the Greater Toronto Area, we've built our reputation on delivering exceptional painting services at affordable prices.</p>
-              <div className="about-stats">
-                <div className="stat">
-                  <h3>500+</h3>
-                  <p>Projects Completed</p>
+              <div className="features">
+                <div className="feature">
+                  <span className="feature-icon">✓</span>
+                  <div>
+                    <h4>Licensed & Insured</h4>
+                    <p>Fully licensed and insured for your peace of mind.</p>
+                  </div>
                 </div>
-                <div className="stat">
-                  <h3>10+</h3>
-                  <p>Years Experience</p>
+                <div className="feature">
+                  <span className="feature-icon">✓</span>
+                  <div>
+                    <h4>Quality Materials</h4>
+                    <p>We use only premium paints and materials for lasting results.</p>
+                  </div>
                 </div>
-                <div className="stat">
-                  <h3>100%</h3>
-                  <p>Satisfaction Rate</p>
+                <div className="feature">
+                  <span className="feature-icon">✓</span>
+                  <div>
+                    <h4>Affordable Pricing</h4>
+                    <p>Competitive rates without compromising on quality.</p>
+                  </div>
+                </div>
+                <div className="feature">
+                  <span className="feature-icon">✓</span>
+                  <div>
+                    <h4>Free Estimates</h4>
+                    <p>Get a detailed quote at no cost or obligation.</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="about-features">
-              <div className="about-feature">
-                <span className="feature-icon">✓</span>
-                <div>
-                  <h4>Licensed & Insured</h4>
-                  <p>Fully licensed and insured for your peace of mind</p>
-                </div>
-              </div>
-              <div className="about-feature">
-                <span className="feature-icon">✓</span>
-                <div>
-                  <h4>Quality Materials</h4>
-                  <p>We use only premium paints and materials</p>
-                </div>
-              </div>
-              <div className="about-feature">
-                <span className="feature-icon">✓</span>
-                <div>
-                  <h4>Clean Work</h4>
-                  <p>Meticulous cleanup after every project</p>
-                </div>
-              </div>
+            <div className="about-image">
+              <div className="placeholder-image">👷‍♂️</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Section */}
+      <section id="gallery" className="gallery">
+        <div className="container">
+          <h2>Our Recent Work</h2>
+          <div className="gallery-grid">
+            <div className="gallery-item">
+              <div className="placeholder-image">🏠</div>
+              <p>Residential Interior</p>
+            </div>
+            <div className="gallery-item">
+              <div className="placeholder-image">🏢</div>
+              <p>Commercial Exterior</p>
+            </div>
+            <div className="gallery-item">
+              <div className="placeholder-image">🎨</div>
+              <p>Decorative Finish</p>
+            </div>
+            <div className="gallery-item">
+              <div className="placeholder-image">🚪</div>
+              <p>Cabinet Refinishing</p>
             </div>
           </div>
         </div>
@@ -139,14 +136,13 @@ function App() {
       <section id="contact" className="contact">
         <div className="container">
           <h2>Get Your Free Quote Today</h2>
-          <p>Ready to transform your space? Contact us for a free, no-obligation quote.</p>
           <div className="contact-content">
             <div className="contact-info">
               <div className="contact-item">
                 <span className="contact-icon">📞</span>
                 <div>
                   <h4>Phone</h4>
-                  <p>(416) 555-PAINT</p>
+                  <p>(416) 123-4567</p>
                 </div>
               </div>
               <div className="contact-item">
@@ -164,15 +160,30 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="contact-form">
-              <form>
+            <form className="contact-form">
+              <div className="form-group">
                 <input type="text" placeholder="Your Name" required />
+              </div>
+              <div className="form-group">
                 <input type="email" placeholder="Your Email" required />
-                <input type="tel" placeholder="Your Phone" />
-                <textarea placeholder="Tell us about your project..." rows={4} required></textarea>
-                <button type="submit" className="btn-primary">Send Message</button>
-              </form>
-            </div>
+              </div>
+              <div className="form-group">
+                <input type="tel" placeholder="Phone Number" />
+              </div>
+              <div className="form-group">
+                <select required>
+                  <option value="">Select Service</option>
+                  <option value="residential">Residential Painting</option>
+                  <option value="commercial">Commercial Painting</option>
+                  <option value="repairs">Repairs & Prep</option>
+                  <option value="specialty">Specialty Finishes</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <textarea placeholder="Project Details" rows={4}></textarea>
+              </div>
+              <button type="submit" className="btn-primary">Send Message</button>
+            </form>
           </div>
         </div>
       </section>
@@ -183,20 +194,20 @@ function App() {
           <div className="footer-content">
             <div className="footer-section">
               <h3>GTA Budget Painting</h3>
-              <p>Your trusted painting professionals in the Greater Toronto Area.</p>
+              <p>Professional painting services across the Greater Toronto Area.</p>
             </div>
             <div className="footer-section">
               <h4>Services</h4>
               <ul>
-                <li>Interior Painting</li>
-                <li>Exterior Painting</li>
+                <li>Residential Painting</li>
                 <li>Commercial Painting</li>
-                <li>Color Consultation</li>
+                <li>Repairs & Prep</li>
+                <li>Specialty Finishes</li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>Contact</h4>
-              <p>Phone: (416) 555-PAINT</p>
+              <p>Phone: (416) 123-4567</p>
               <p>Email: info@gtabudgetpainting.com</p>
             </div>
           </div>
