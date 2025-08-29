@@ -218,8 +218,39 @@
   transform: translateY(-1px);
 }
 
+/* Room Type Selection */
+.room-type-selection {
+  margin-bottom: 2.5rem;
+}
+
+.room-type-selection h4 {
+  font-family: var(--font-heading);
+  color: var(--color-black);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.room-type-select {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--color-grey-300);
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--color-white);
+  color: var(--color-black);
+  transition: all 0.3s ease;
+}
+
+.room-type-select:focus {
+  outline: none;
+  border-color: var(--color-black);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
 /* Room Dimensions */
-.room-dimensions h3 {
+.room-dimensions h4 {
   font-family: var(--font-heading);
   color: var(--color-black);
   margin-bottom: 1.5rem;
@@ -264,12 +295,26 @@
 }
 
 /* Room Addons */
-.room-addons h3 {
+.room-addons h4 {
+  font-family: var(--font-heading);
+  color: var(--color-black);
+  margin-bottom: 2rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.addon-section {
+  margin-bottom: 2.5rem;
+}
+
+.addon-section h5 {
   font-family: var(--font-heading);
   color: var(--color-black);
   margin-bottom: 1.5rem;
-  font-size: 1.3rem;
-  font-weight: 400;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border-bottom: 1px solid var(--color-grey-200);
+  padding-bottom: 0.5rem;
 }
 
 .addons-grid {
@@ -580,11 +625,7 @@
   font-weight: 400;
 }
 
-.date-selection-card h3::after {
-  content: " *";
-  color: #dc2626;
-  font-weight: bold;
-}
+
 
 .date-selection-card p {
   font-family: var(--font-body);

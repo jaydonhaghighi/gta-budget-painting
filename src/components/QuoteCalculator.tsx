@@ -8,6 +8,7 @@ type ServiceType = string
 // Legacy Room interface for interior services
 interface Room {
   id: string
+  type: string
   length: number
   width: number
   height: number
@@ -18,6 +19,10 @@ interface Room {
     trims: boolean
     baseboards: boolean
     closets: number
+    accentWalls: boolean
+    crownMolding: boolean
+    stuccoCeiling: boolean
+    ensuiteBathroom: boolean
   }
 }
 
@@ -35,7 +40,10 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     name: '',
     email: '',
     phone: '',
-    address: ''
+    address: '',
+    city: '',
+    province: '',
+    country: ''
   })
   const [lastAddedRoomId, setLastAddedRoomId] = useState<string | null>(null)
   const [preferredDate, setPreferredDate] = useState('')
@@ -85,7 +93,11 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     windowTrim: 25, // per window
     trimPainting: 4, // per linear foot
     baseboardPainting: 3, // per linear foot
-    closetPainting: 150 // per closet
+    closetPainting: 150, // per closet
+    accentWalls: 1.50, // additional per sq ft
+    crownMolding: 6, // per linear foot
+    stuccoCeiling: 4.50, // per sq ft
+    ensuiteBathroom: 200 // flat fee for ensuite bathroom features
   }
 
   // Generate dynamic room name based on position
@@ -103,6 +115,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     const newRoomId = Date.now().toString()
     const newRoom: Room = {
       id: newRoomId,
+      type: 'room',
       length: 0,
       width: 0,
       height: 0,
@@ -112,7 +125,11 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
         windows: 0,
         trims: false,
         baseboards: false,
-        closets: 0
+        closets: 0,
+        accentWalls: false,
+        crownMolding: false,
+        stuccoCeiling: false,
+        ensuiteBathroom: false
       }
     }
     setRooms([...rooms, newRoom])
@@ -165,8 +182,18 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     
     let cost = wallArea * PRICING.wallPainting
     
+    // Additional cost for accent walls
+    if (room.addons.accentWalls) {
+      cost += wallArea * PRICING.accentWalls
+    }
+    
     if (room.addons.ceilings) {
       cost += ceilingArea * PRICING.ceilingPainting
+    }
+    
+    // Stucco ceiling additional cost
+    if (room.addons.stuccoCeiling) {
+      cost += ceilingArea * PRICING.stuccoCeiling
     }
     
     cost += room.addons.doors * PRICING.doorPainting
@@ -179,6 +206,15 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     
     if (room.addons.baseboards) {
       cost += perimeter * PRICING.baseboardPainting
+    }
+    
+    if (room.addons.crownMolding) {
+      cost += perimeter * PRICING.crownMolding
+    }
+    
+    // Ensuite bathroom flat fee
+    if (room.addons.ensuiteBathroom) {
+      cost += PRICING.ensuiteBathroom
     }
     
     return cost
@@ -215,7 +251,12 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
   // Reset flow when changing categories
   const handleCategorySelect = (category: ServiceCategory) => {
     setSelectedCategory(category)
-    setSelectedService('')
+    if (category === 'interior') {
+      // For interior painting, go directly to small room makeover
+      setSelectedService('small-room')
+    } else {
+      setSelectedService('')
+    }
     setRooms([])
   }
 
@@ -295,11 +336,21 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
           <div className="form-header-top">
             <button 
               className="btn-back"
-              onClick={() => setSelectedService('')}
+              onClick={() => {
+                if (selectedCategory === 'interior') {
+                  // Interior goes directly back to categories since it skips service selection
+                  setSelectedCategory(null)
+                  setSelectedService('')
+                  setRooms([])
+                } else {
+                  // Exterior and Specialty go back to service selection
+                  setSelectedService('')
+                }
+              }}
             >
               <img src="/back-btn.png" alt="Back" />
             </button>
-            <h2>{service.name}</h2>
+            <h2>{selectedCategory === 'interior' ? 'Interior Painting' : service.name}</h2>
           </div>
         </div>
 
@@ -350,6 +401,19 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
             </button>
           </div>
 
+          <div className="room-type-selection">
+            <h4>Room Type</h4>
+            <select
+              value={room.type}
+              onChange={(e) => updateRoom(room.id, { type: e.target.value })}
+              className="room-type-select"
+            >
+              <option value="room">General Room</option>
+              <option value="bathroom">Bathroom</option>
+              <option value="kitchen">Kitchen</option>
+            </select>
+          </div>
+
           <div className="room-dimensions">
             <h4>Room Dimensions (feet)</h4>
             <div className="dimensions-grid">
@@ -386,70 +450,138 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
             </div>
           </div>
 
-          <div className="room-addons">
-            <h4>Additional Services</h4>
-            <div className="addons-grid">
-              <label className="addon-checkbox">
-                <input
-                  type="checkbox"
-                  checked={room.addons.ceilings}
-                  onChange={(e) => updateRoomAddon(room.id, 'ceilings', e.target.checked)}
-                />
-                <span>Paint Ceilings (+$2.50/sq ft)</span>
-              </label>
+                      <div className="room-addons">
+              <h4>Additional Services</h4>
+              
+              {/* Basic Services - Available for all room types */}
+              <div className="addon-section">
+                <h5>Basic Services</h5>
+                <div className="addons-grid">
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.ceilings}
+                      onChange={(e) => updateRoomAddon(room.id, 'ceilings', e.target.checked)}
+                    />
+                    <span>Paint Ceilings (+$2.50/sq ft)</span>
+                  </label>
 
-              <label className="addon-checkbox">
-                <input
-                  type="checkbox"
-                  checked={room.addons.trims}
-                  onChange={(e) => updateRoomAddon(room.id, 'trims', e.target.checked)}
-                />
-                <span>Paint Trims & Moldings (+$4/linear ft)</span>
-              </label>
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.trims}
+                      onChange={(e) => updateRoomAddon(room.id, 'trims', e.target.checked)}
+                    />
+                    <span>Paint Trims & Moldings (+$4/linear ft)</span>
+                  </label>
 
-              <label className="addon-checkbox">
-                <input
-                  type="checkbox"
-                  checked={room.addons.baseboards}
-                  onChange={(e) => updateRoomAddon(room.id, 'baseboards', e.target.checked)}
-                />
-                <span>Paint Baseboards (+$3/linear ft)</span>
-              </label>
-
-              <div className="addon-number">
-                <label>Doors to Paint</label>
-                <input
-                  type="number"
-                  value={room.addons.doors || ''}
-                  onChange={(e) => updateRoomAddon(room.id, 'doors', parseInt(e.target.value) || 0)}
-                  min="0"
-                />
-                <span className="addon-price">$75 each</span>
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.baseboards}
+                      onChange={(e) => updateRoomAddon(room.id, 'baseboards', e.target.checked)}
+                    />
+                    <span>Paint Baseboards (+$3/linear ft)</span>
+                  </label>
+                </div>
               </div>
 
-              <div className="addon-number">
-                <label>Windows (trim only)</label>
-                <input
-                  type="number"
-                  value={room.addons.windows || ''}
-                  onChange={(e) => updateRoomAddon(room.id, 'windows', parseInt(e.target.value) || 0)}
-                  min="0"
-                />
-                <span className="addon-price">$25 each</span>
+              {/* Special Features - Conditional based on room type */}
+              <div className="addon-section">
+                <h5>Special Features</h5>
+                <div className="addons-grid">
+                  {/* Accent Walls - Available for all room types */}
+                  <label className="addon-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={room.addons.accentWalls}
+                      onChange={(e) => updateRoomAddon(room.id, 'accentWalls', e.target.checked)}
+                    />
+                    <span>Accent Walls (+$1.50/sq ft)</span>
+                  </label>
+
+                  {/* Crown Molding - Only for General Room and Kitchen */}
+                  {(room.type === 'room' || room.type === 'kitchen') && (
+                    <label className="addon-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={room.addons.crownMolding}
+                        onChange={(e) => updateRoomAddon(room.id, 'crownMolding', e.target.checked)}
+                      />
+                      <span>Crown Molding (+$6/linear ft)</span>
+                    </label>
+                  )}
+
+                  {/* Stucco Ceiling - Only for General Room */}
+                  {room.type === 'room' && (
+                    <label className="addon-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={room.addons.stuccoCeiling}
+                        onChange={(e) => updateRoomAddon(room.id, 'stuccoCeiling', e.target.checked)}
+                      />
+                      <span>Stucco Ceiling (+$4.50/sq ft)</span>
+                    </label>
+                  )}
+
+                  {/* Ensuite Bathroom - Only for General Room */}
+                  {room.type === 'room' && (
+                    <label className="addon-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={room.addons.ensuiteBathroom}
+                        onChange={(e) => updateRoomAddon(room.id, 'ensuiteBathroom', e.target.checked)}
+                      />
+                      <span>Ensuite Bathroom (+$200)</span>
+                    </label>
+                  )}
+                </div>
               </div>
 
-              <div className="addon-number">
-                <label>Closets (interior)</label>
-                <input
-                  type="number"
-                  value={room.addons.closets || ''}
-                  onChange={(e) => updateRoomAddon(room.id, 'closets', parseInt(e.target.value) || 0)}
-                  min="0"
-                />
-                <span className="addon-price">$150 each</span>
+              {/* Elements & Features - Conditional based on room type */}
+              <div className="addon-section">
+                <h5>Elements & Features</h5>
+                <div className="addons-grid">
+                  {/* Doors - Available for all room types */}
+                  <div className="addon-number">
+                    <label>Doors to Paint</label>
+                    <input
+                      type="number"
+                      value={room.addons.doors || ''}
+                      onChange={(e) => updateRoomAddon(room.id, 'doors', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                    <span className="addon-price">$75 each</span>
+                  </div>
+
+                  {/* Windows - Available for all room types */}
+                  <div className="addon-number">
+                    <label>Windows (trim only)</label>
+                    <input
+                      type="number"
+                      value={room.addons.windows || ''}
+                      onChange={(e) => updateRoomAddon(room.id, 'windows', parseInt(e.target.value) || 0)}
+                      min="0"
+                    />
+                    <span className="addon-price">$25 each</span>
+                  </div>
+
+                  {/* Closets - Only for General Room and Bathroom */}
+                  {(room.type === 'room' || room.type === 'bathroom') && (
+                    <div className="addon-number">
+                      <label>Closets (interior)</label>
+                      <input
+                        type="number"
+                        value={room.addons.closets || ''}
+                        onChange={(e) => updateRoomAddon(room.id, 'closets', parseInt(e.target.value) || 0)}
+                        min="0"
+                      />
+                      <span className="addon-price">$150 each</span>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
 
           <div className="room-cost">
             <strong>Room Total: ${calculateRoomCost(room).toFixed(2)}</strong>
@@ -608,9 +740,30 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
             />
             <input
               type="text"
-              placeholder="Property Address"
+              placeholder="Street Address"
               value={customerInfo.address}
               onChange={(e) => setCustomerInfo({...customerInfo, address: e.target.value})}
+              required
+            />
+            <input
+              type="text"
+              placeholder="City"
+              value={customerInfo.city}
+              onChange={(e) => setCustomerInfo({...customerInfo, city: e.target.value})}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Province/State"
+              value={customerInfo.province}
+              onChange={(e) => setCustomerInfo({...customerInfo, province: e.target.value})}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Country"
+              value={customerInfo.country}
+              onChange={(e) => setCustomerInfo({...customerInfo, country: e.target.value})}
               required
             />
           </div>
@@ -656,7 +809,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
               )}
               <div className="summary-line">
                 <span>Service:</span>
-                <span>{serviceCategories[selectedCategory!]?.services.find(s => s.id === selectedService)?.name}</span>
+                <span>{selectedCategory === 'interior' ? 'Interior Painting' : serviceCategories[selectedCategory!]?.services.find(s => s.id === selectedService)?.name}</span>
               </div>
               {rooms.length > 0 && (
                 <>
