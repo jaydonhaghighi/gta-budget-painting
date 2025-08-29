@@ -550,6 +550,13 @@
     padding: 0.75rem 2rem;
     font-size: 1rem;
   }
+
+  .service-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    text-align: left;
+  }
 }
 
 /* Date Selection Section */
@@ -713,13 +720,22 @@
   background: var(--color-grey-100);
   border: 1px solid var(--color-grey-300);
   border-radius: 8px;
-  padding: 0.8rem 1.5rem;
+  padding: 0.7rem;
   font-family: var(--font-body);
   font-size: 0.95rem;
   color: var(--color-grey-700);
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-back img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
 }
 
 .btn-back:hover {
@@ -730,7 +746,7 @@
 
 .service-header h2 {
   font-family: var(--font-heading);
-  font-size: 2.2rem;
+  font-size: 32px;
   color: var(--color-black);
   margin: 0;
   font-weight: 400;
@@ -805,23 +821,19 @@
   margin-bottom: 3rem;
 }
 
-.form-header {
-  margin-bottom: 3rem;
+.form-header-top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .form-header h2 {
   font-family: var(--font-heading);
   font-size: 2rem;
   color: var(--color-black);
-  margin: 1rem 0 0.5rem 0;
+  margin: 0.5rem 0 0.5rem 0;
   font-weight: 400;
-}
-
-.form-header p {
-  font-family: var(--font-body);
-  font-size: 1.1rem;
-  color: var(--color-grey-600);
-  margin: 0;
 }
 
 /* Simple Form Styles */
@@ -927,13 +939,14 @@
   }
 
   .service-header {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
     gap: 1rem;
+    text-align: left;
   }
 
   .service-header h2 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .services-grid {
@@ -943,8 +956,20 @@
 
   .service-card {
     padding: 1.5rem;
-    width: 288px;
+    width: 100%;
     margin: 0 auto;
+  }
+
+  .form-header {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .price-range {
+    align-items: flex-start;
+    text-align: left;
   }
 
   .simple-form,

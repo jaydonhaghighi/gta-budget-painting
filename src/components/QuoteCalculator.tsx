@@ -256,7 +256,7 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
             className="btn-back"
             onClick={() => setSelectedCategory(null)}
           >
-            ← Back to Categories
+            <img src="/back-btn.png" alt="Back" />
           </button>
           <h2>{category.title}</h2>
         </div>
@@ -292,14 +292,15 @@ const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
     return (
       <section className="service-form">
         <div className="form-header">
-          <button 
-            className="btn-back"
-            onClick={() => setSelectedService('')}
-          >
-            ← Back to Services
-          </button>
-          <h2>{service.name}</h2>
-          <p>Please provide details for your {service.name.toLowerCase()} project</p>
+          <div className="form-header-top">
+            <button 
+              className="btn-back"
+              onClick={() => setSelectedService('')}
+            >
+              <img src="/back-btn.png" alt="Back" />
+            </button>
+            <h2>{service.name}</h2>
+          </div>
         </div>
 
         {selectedCategory === 'interior' && (selectedService === 'small-room' || selectedService === 'other-interior') && renderRoomBasedForm()}
