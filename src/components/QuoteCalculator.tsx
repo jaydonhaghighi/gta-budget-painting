@@ -26,12 +26,17 @@ interface Room {
   }
 }
 
-interface QuoteCalculatorProps {}
+interface QuoteCalculatorProps {
+  preSelectedCategory?: string
+  preSelectedService?: string
+}
 
-const QuoteCalculator: React.FC<QuoteCalculatorProps> = () => {
+const QuoteCalculator: React.FC<QuoteCalculatorProps> = ({ preSelectedCategory, preSelectedService }) => {
   // Main quote flow state
-  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory>(null)
-  const [selectedService, setSelectedService] = useState<ServiceType>('')
+  const [selectedCategory, setSelectedCategory] = useState<ServiceCategory>(
+    (preSelectedCategory as ServiceCategory) || null
+  )
+  const [selectedService, setSelectedService] = useState<ServiceType>(preSelectedService || '')
   
   // Legacy room state for interior painting
   const [rooms, setRooms] = useState<Room[]>([])

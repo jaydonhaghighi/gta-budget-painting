@@ -16,7 +16,11 @@ interface ServiceCategory {
   categoryIcon: string
 }
 
-const ServicesPage: React.FC = () => {
+interface ServicesPageProps {
+  onNavigateToQuote?: (serviceCategory: string, serviceId: string) => void
+}
+
+const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigateToQuote }) => {
   const serviceCategories: ServiceCategory[] = [
     {
       title: "Interior Painting",
@@ -210,9 +214,42 @@ const ServicesPage: React.FC = () => {
   ]
 
   const handleGetQuote = (serviceName: string) => {
-    // This would typically navigate to the quote page with the service pre-selected
-    console.log(`Get quote for: ${serviceName}`)
-    // You could add logic here to pass the service to the quote calculator
+    // Find which category and service this belongs to
+    let categoryKey = ''
+    let serviceId = ''
+    
+    serviceCategories.forEach((category) => {
+      const service = category.services.find(s => s.name === serviceName)
+      if (service) {
+        // Map category titles to the keys used in QuoteCalculator
+        if (category.title === 'Interior Painting') categoryKey = 'interior'
+        else if (category.title === 'Exterior Painting') categoryKey = 'exterior'
+        else if (category.title === 'Specialty & Cleaning Services') categoryKey = 'specialty'
+        
+        // For interior services, all go to the same room calculator
+        if (categoryKey === 'interior') {
+          serviceId = 'small-room' // All interior services use the room calculator
+        } else {
+          // Map service names to IDs for non-interior services
+          const serviceNameToId: { [key: string]: string } = {
+            'Deck Staining/Painting': 'deck-staining',
+            'Exterior Touch-ups': 'exterior-touch-ups',
+            'Garage & Front Door Painting': 'garage-door',
+            'Porch or Stair Rail Painting': 'porch-rail',
+            'Shed or Small Outbuilding Painting': 'shed',
+            'Other Exterior Services': 'other-exterior',
+            'Pressure Washing': 'pressure-washing',
+            'Other Specialty Services': 'other-specialty'
+          }
+          
+          serviceId = serviceNameToId[serviceName] || ''
+        }
+      }
+    })
+    
+    if (onNavigateToQuote && categoryKey && serviceId) {
+      onNavigateToQuote(categoryKey, serviceId)
+    }
   }
 
   return (
