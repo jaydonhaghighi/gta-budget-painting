@@ -5,6 +5,7 @@ import ServicesPage from './components/ServicesPage'
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   return (
     <div className="App">
       {/* Header */}
@@ -13,7 +14,20 @@ function App() {
           <div className="logo" onClick={() => setCurrentPage('home')}>
             <img src="/logo.png" alt="GTA Budget Painting Logo" className="logo-image" />
           </div>
-          <nav className="nav">
+          
+          {/* Hamburger Menu Button */}
+          <button 
+            className={`hamburger-btn ${isMobileMenuOpen ? 'open' : ''}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line"></span>
+          </button>
+
+          {/* Desktop Navigation */}
+          <nav className="nav desktop-nav">
             <a 
               href="#home" 
               className={currentPage === 'home' ? 'active' : ''} 
@@ -52,6 +66,77 @@ function App() {
           </nav>
         </div>
       </header>
+
+      {/* Mobile Navigation Panel */}
+      <div className={`mobile-nav-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="mobile-nav-header">
+          <h3 className="mobile-nav-title">GTA Budget Painting</h3>
+          <button 
+            className="mobile-nav-close"
+            onClick={() => setIsMobileMenuOpen(false)}
+            aria-label="Close mobile menu"
+          >
+            <span className="close-icon">×</span>
+          </button>
+        </div>
+        <nav className="mobile-nav">
+          <a 
+            href="#home" 
+            className={currentPage === 'home' ? 'active' : ''} 
+            onClick={(e) => { 
+              e.preventDefault(); 
+              setCurrentPage('home'); 
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Home
+          </a>
+          <a 
+            href="#services" 
+            className={currentPage === 'services' ? 'active' : ''} 
+            onClick={(e) => { 
+              e.preventDefault(); 
+              setCurrentPage('services'); 
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Services
+          </a>
+          <a 
+            href="#quote" 
+            className={currentPage === 'quote' ? 'active' : ''} 
+            onClick={(e) => { 
+              e.preventDefault(); 
+              setCurrentPage('quote'); 
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Get Quote
+          </a>
+          <a 
+            href="#about" 
+            className={currentPage === 'about' ? 'active' : ''} 
+            onClick={(e) => { 
+              e.preventDefault(); 
+              setCurrentPage('about'); 
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            About
+          </a>
+          <a 
+            href="#contact" 
+            className={currentPage === 'contact' ? 'active' : ''} 
+            onClick={(e) => { 
+              e.preventDefault(); 
+              setCurrentPage('contact'); 
+              setIsMobileMenuOpen(false);
+            }}
+          >
+            Contact
+          </a>
+        </nav>
+      </div>
 
       {/* Main Content */}
       {currentPage === 'quote' ? (
