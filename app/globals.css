@@ -1,0 +1,32 @@
+/* Import the existing styles in correct order */
+@import '../src/App.css';
+@import '../src/components/QuoteCalculator.css';
+@import '../src/components/ServicesPage.css';
+
+/* Override any conflicting styles to match original design */
+body {
+  font-family: 'Fira Sans', sans-serif !important;
+  font-weight: 400 !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Gloock', serif !important;
+  font-weight: 400 !important;
+}
+
+/* Ensure navigation font weights match original */
+.nav a {
+  font-weight: 500 !important;
+}
+
+.nav a.active {
+  font-weight: 600 !important;
+}
+
+.mobile-nav a {
+  font-weight: 500 !important;
+}
+
+.mobile-nav a.active {
+  font-weight: 600 !important;
+}

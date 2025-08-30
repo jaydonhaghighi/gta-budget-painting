@@ -302,7 +302,7 @@ p {
 
 .hero-content {
   max-width: 900px;
-  margin: 0 auto 6rem;
+  margin: 0 auto 48px;
   text-align: center;
   padding: 0 2rem;
 }
@@ -378,8 +378,8 @@ p {
 
 .hero-features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
   max-width: 1000px;
   margin: 0 auto;
   padding: 0 2rem;
@@ -387,7 +387,7 @@ p {
 
 .feature {
   text-align: center;
-  padding: 3rem 2rem;
+  padding: 2rem 1.5rem;
   background: var(--color-white);
   border-radius: 16px;
   border: 1px solid var(--color-grey-200);
@@ -401,25 +401,25 @@ p {
 }
 
 .feature-icon {
-  font-size: 3.5rem;
+  font-size: 2.5rem;
   display: block;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   opacity: 0.8;
 }
 
 .feature h3 {
   font-family: var(--font-heading);
   color: var(--color-black);
-  font-size: 1.4rem;
-  margin-bottom: 0.75rem;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
   font-weight: 400;
 }
 
 .feature p {
   font-family: var(--font-body);
   color: var(--color-grey-600);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
 /* Services Section */

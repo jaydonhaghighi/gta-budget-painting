@@ -6,6 +6,16 @@ import ServicesPage from './components/ServicesPage'
 function App() {
   const [currentPage, setCurrentPage] = useState('home')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [selectedQuoteService, setSelectedQuoteService] = useState<{
+    category: string
+    serviceId: string
+  } | null>(null)
+
+  const handleNavigateToQuote = (category: string, serviceId: string) => {
+    setSelectedQuoteService({ category, serviceId })
+    setCurrentPage('quote')
+  }
+
   return (
     <div className="App">
       {/* Header */}
@@ -140,9 +150,12 @@ function App() {
 
       {/* Main Content */}
       {currentPage === 'quote' ? (
-        <QuoteCalculator />
+        <QuoteCalculator 
+          preSelectedCategory={selectedQuoteService?.category}
+          preSelectedService={selectedQuoteService?.serviceId}
+        />
       ) : currentPage === 'services' ? (
-        <ServicesPage />
+        <ServicesPage onNavigateToQuote={handleNavigateToQuote} />
       ) : (
         <>
           {/* Hero Section */}

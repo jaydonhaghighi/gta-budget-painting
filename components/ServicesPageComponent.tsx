@@ -1,5 +1,4 @@
 import React from 'react'
-import './ServicesPage.css'
 
 interface Service {
   name: string
@@ -20,7 +19,7 @@ interface ServicesPageProps {
   onNavigateToQuote?: (serviceCategory: string, serviceId: string) => void
 }
 
-const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigateToQuote }) => {
+const ServicesPageComponent: React.FC<ServicesPageProps> = ({ onNavigateToQuote }) => {
   const serviceCategories: ServiceCategory[] = [
     {
       title: "Interior Painting",
@@ -366,4 +365,4 @@ const ServicesPage: React.FC<ServicesPageProps> = ({ onNavigateToQuote }) => {
   )
 }
 
-export default ServicesPage
+export default ServicesPageComponent
