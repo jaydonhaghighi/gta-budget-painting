@@ -49,6 +49,7 @@ export default function AboutPage() {
               <span className="item-icon">🔧</span>
               <p>Small repair jobs (walls, trim, baseboards)</p>
             </div>
+          </div>
         </div>
 
         <div className="value-proposition">

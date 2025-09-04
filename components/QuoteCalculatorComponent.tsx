@@ -646,37 +646,175 @@ const QuoteCalculatorComponent: React.FC<QuoteCalculatorProps> = ({ preSelectedC
     return rooms.reduce((total, room) => total + calculateRoomCost(room), 0)
   }
 
-  const handleSubmitQuote = () => {
-    // Here you would typically send the quote to your backend
-    const quoteData = {
-      customer: customerInfo,
-      service: {
-        category: selectedCategory,
-        type: selectedService,
-        details: rooms.length > 0 ? { rooms } : { description: projectDetails.description }
-      },
-      totalCost: rooms.length > 0 ? estimatedPrice : 0,
-      projectDetails,
-      preferredDate,
-      date: new Date().toISOString()
+  const handleSubmitQuote = async () => {
+    try {
+      // Prepare quote data
+      const quoteData = {
+        customer: customerInfo,
+        service: {
+          category: selectedCategory,
+          type: selectedService,
+          details: rooms.length > 0 ? { rooms } : { description: projectDetails.description }
+        },
+        totalCost: rooms.length > 0 ? estimatedPrice : 0,
+        projectDetails,
+        preferredDate,
+        date: new Date().toISOString(),
+        quoteId: `GTA-${Date.now()}`
+      }
+      
+      console.log('Quote submitted:', quoteData)
+      
+      const serviceName = selectedCategory === 'interior' 
+        ? 'Interior Painting' 
+        : serviceCategories[selectedCategory!]?.services.find(s => s.id === selectedService)?.name
+
+      // Send email receipt
+      await sendEmailReceipt(quoteData, serviceName!)
+      
+      const message = rooms.length > 0 
+        ? `Quote request submitted for ${serviceName}! Estimated total: $${estimatedPrice.toFixed(2)}\n\nA receipt has been sent to ${customerInfo.email}. We'll contact you within 24 hours with a detailed quote.`
+        : `Quote request for ${serviceName} submitted!\n\nA receipt has been sent to ${customerInfo.email}. We'll contact you within 24 hours with pricing details.`
+      
+      // Clear saved progress after successful submission
+      clearProgress()
+      
+      alert(message)
+      
+      // Optionally redirect to a thank you page
+      // window.location.href = '/thank-you'
+      
+    } catch (error) {
+      console.error('Error submitting quote:', error)
+      alert('There was an error submitting your quote. Please try again or contact us directly.')
     }
-    console.log('Quote submitted:', quoteData)
+  }
+
+  // Email receipt function
+  const sendEmailReceipt = async (quoteData: any, serviceName: string) => {
+    const emailContent = generateEmailContent(quoteData, serviceName)
     
-    const serviceName = selectedCategory === 'interior' 
-      ? 'Interior Painting' 
-      : serviceCategories[selectedCategory!]?.services.find(s => s.id === selectedService)?.name
+    // Option 1: Using EmailJS (requires EmailJS setup)
+    // You'll need to install emailjs: npm install @emailjs/browser
+    // and configure your EmailJS account
     
-    const message = rooms.length > 0 
-      ? `Quote request submitted for ${serviceName}! Estimated total: $${estimatedPrice.toFixed(2)}\n\nWe'll contact you within 24 hours with a detailed quote.`
-      : `Quote request for ${serviceName} submitted!\n\nWe'll contact you within 24 hours with pricing details.`
-    
-    // Clear saved progress after successful submission
-    clearProgress()
-    
-    alert(message)
-    
-    // Optionally redirect to a thank you page or reset the form
-    // window.location.href = '/thank-you'
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: quoteData.customer.email,
+          subject: `Quote Request Receipt - ${serviceName} (${quoteData.quoteId})`,
+          html: emailContent,
+          customerName: quoteData.customer.name
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send email')
+      }
+      
+      return await response.json()
+    } catch (error) {
+      console.error('Email sending failed:', error)
+      // Don't throw error to prevent quote submission failure
+      // Just log it and continue
+    }
+  }
+
+  // Generate HTML email content
+  const generateEmailContent = (quoteData: any, serviceName: string) => {
+    const roomsHtml = quoteData.service.details.rooms ? 
+      quoteData.service.details.rooms.map((room: Room) => `
+        <tr>
+          <td style="padding: 8px; border-bottom: 1px solid #eee;">
+            <strong>${room.name}</strong><br>
+            ${room.length}' × ${room.width}' × ${room.height}'
+          </td>
+          <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">
+            $${calculateRoomCost(room).toFixed(2)}
+          </td>
+        </tr>
+      `).join('') : ''
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Quote Request Receipt</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #f8f9fa; padding: 30px; border-radius: 10px; margin-bottom: 30px;">
+          <h1 style="color: #000; margin: 0 0 10px 0;">GTA Budget Painting</h1>
+          <h2 style="color: #666; margin: 0; font-weight: normal;">Quote Request Receipt</h2>
+        </div>
+
+        <div style="background: white; padding: 30px; border-radius: 10px; border: 1px solid #ddd;">
+          <p>Dear ${quoteData.customer.name},</p>
+          
+          <p>Thank you for your quote request! We've received your information and will contact you within 24 hours with a detailed quote.</p>
+          
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin: 0 0 15px 0; color: #000;">Quote Details</h3>
+            <p><strong>Quote ID:</strong> ${quoteData.quoteId}</p>
+            <p><strong>Service:</strong> ${serviceName}</p>
+            <p><strong>Date Requested:</strong> ${new Date(quoteData.date).toLocaleDateString()}</p>
+            ${quoteData.preferredDate ? `<p><strong>Preferred Start Date:</strong> ${new Date(quoteData.preferredDate).toLocaleDateString()}</p>` : ''}
+            ${quoteData.totalCost > 0 ? `<p><strong>Estimated Total:</strong> $${quoteData.totalCost.toFixed(2)}</p>` : ''}
+          </div>
+
+          ${roomsHtml ? `
+          <div style="margin: 20px 0;">
+            <h3 style="margin: 0 0 15px 0; color: #000;">Room Details</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+              <thead>
+                <tr style="background: #f8f9fa;">
+                  <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Room</th>
+                  <th style="padding: 10px; text-align: right; border-bottom: 2px solid #ddd;">Estimated Cost</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${roomsHtml}
+              </tbody>
+            </table>
+          </div>
+          ` : ''}
+
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+            <h3 style="margin: 0 0 15px 0; color: #000;">Contact Information</h3>
+            <p><strong>Name:</strong> ${quoteData.customer.name}</p>
+            <p><strong>Email:</strong> ${quoteData.customer.email}</p>
+            <p><strong>Phone:</strong> ${quoteData.customer.phone}</p>
+            ${quoteData.customer.address ? `<p><strong>Project Address:</strong> ${quoteData.customer.address}, ${quoteData.customer.city}</p>` : ''}
+          </div>
+
+          <div style="border-top: 2px solid #000; padding-top: 20px; margin-top: 30px;">
+            <p><strong>Next Steps:</strong></p>
+            <ul>
+              <li>We'll review your request and contact you within 24 hours</li>
+              <li>Our team will discuss any questions and finalize the quote</li>
+              <li>We'll schedule a convenient time for the work if you proceed</li>
+            </ul>
+          </div>
+
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: center;">
+            <p style="margin: 0;"><strong>Questions? Contact us:</strong></p>
+            <p style="margin: 5px 0;">Email: info@gtabudgetpainting.com</p>
+            <p style="margin: 5px 0;">Phone: (416) XXX-XXXX</p>
+          </div>
+
+          <p>Thank you for choosing GTA Budget Painting!</p>
+          
+          <p style="color: #666; font-size: 0.9em; margin-top: 30px;">
+            <em>This is an automated receipt. Please keep this email for your records.</em>
+          </p>
+        </div>
+      </body>
+      </html>
+    `
   }
 
   // Wizard navigation functions
