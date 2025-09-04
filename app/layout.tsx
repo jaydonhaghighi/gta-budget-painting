@@ -1,8 +1,10 @@
+/* eslint-disable react-refresh/only-export-components */
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import type { Metadata } from 'next'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'GTA Budget Painting - Professional Painting Services',
   description: 'Professional painting services in the Greater Toronto Area. Interior, exterior, and specialty painting at budget-friendly prices.',
 }

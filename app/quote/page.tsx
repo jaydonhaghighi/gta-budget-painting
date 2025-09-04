@@ -1,9 +1,10 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import QuoteCalculatorComponent from '@/components/QuoteCalculatorComponent'
 
-export default function QuotePage() {
+function QuotePageContent() {
   const searchParams = useSearchParams()
   const preSelectedCategory = searchParams.get('category')
   const preSelectedService = searchParams.get('service')
@@ -13,5 +14,13 @@ export default function QuotePage() {
       preSelectedCategory={preSelectedCategory}
       preSelectedService={preSelectedService}
     />
+  )
+}
+
+export default function QuotePage() {
+  return (
+    <Suspense fallback={<div>Loading quote calculator...</div>}>
+      <QuotePageContent />
+    </Suspense>
   )
 }
