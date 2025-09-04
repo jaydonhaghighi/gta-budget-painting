@@ -49,11 +49,6 @@ export default function AboutPage() {
               <span className="item-icon">🔧</span>
               <p>Small repair jobs (walls, trim, baseboards)</p>
             </div>
-            <div className="perfect-for-item">
-              <span className="item-icon">🏢</span>
-              <p>Real estate agents needing quick paint work before a showing</p>
-            </div>
-          </div>
         </div>
 
         <div className="value-proposition">
