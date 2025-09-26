@@ -382,34 +382,34 @@ const QuoteCalculatorComponent: React.FC<QuoteCalculatorProps> = ({ preSelectedC
   const serviceCategories = {
     interior: {
       title: "Interior Painting",
-      icon: "🏠",
+      icon: "Interior",
       services: [
-        { id: 'accent-wall', name: 'Accent Wall Painting', icon: '🎨', priceRange: '$150 - $400' },
-        { id: 'touch-ups', name: 'Interior Touch-ups', icon: '🖌️', priceRange: '$75 - $200' },
-        { id: 'cabinets', name: 'Kitchen or Bathroom Cabinet Painting', icon: '🏺', priceRange: '$800 - $2,500' },
-        { id: 'small-room', name: 'Small Room Makeover', icon: '🛏️', priceRange: '$400 - $1,200' },
-        { id: 'window-trim', name: 'Window & Trim Repainting', icon: '🪟', priceRange: '$200 - $600' },
-        { id: 'other-interior', name: 'Other Interior Services', icon: '✨', priceRange: 'Quote on request' }
+        { id: 'accent-wall', name: 'Accent Wall Painting', icon: 'Paint', priceRange: '$150 - $400' },
+        { id: 'touch-ups', name: 'Interior Touch-ups', icon: 'Brush', priceRange: '$75 - $200' },
+        { id: 'cabinets', name: 'Kitchen or Bathroom Cabinet Painting', icon: 'Cabinet', priceRange: '$800 - $2,500' },
+        { id: 'small-room', name: 'Small Room Makeover', icon: 'Room', priceRange: '$400 - $1,200' },
+        { id: 'window-trim', name: 'Window & Trim Repainting', icon: 'Window', priceRange: '$200 - $600' },
+        { id: 'other-interior', name: 'Other Interior Services', icon: 'Other', priceRange: 'Quote on request' }
       ]
     },
     exterior: {
       title: "Exterior Painting",
-      icon: "🏡",
+      icon: "Exterior",
       services: [
-        { id: 'deck-staining', name: 'Deck Staining/Painting', icon: '🏗️', priceRange: '$300 - $1,500' },
-        { id: 'exterior-touch-ups', name: 'Exterior Touch-ups', icon: '🔧', priceRange: '$150 - $500' },
-        { id: 'garage-door', name: 'Garage & Front Door Painting', icon: '🚪', priceRange: '$200 - $800' },
-        { id: 'porch-rail', name: 'Porch or Stair Rail Painting', icon: '🏛️', priceRange: '$150 - $600' },
-        { id: 'shed', name: 'Shed or Small Outbuilding Painting', icon: '🏚️', priceRange: '$300 - $1,000' },
-        { id: 'other-exterior', name: 'Other Exterior Services', icon: '🎯', priceRange: 'Quote on request' }
+        { id: 'deck-staining', name: 'Deck Staining/Painting', icon: 'Deck', priceRange: '$300 - $1,500' },
+        { id: 'exterior-touch-ups', name: 'Exterior Touch-ups', icon: 'Touch-up', priceRange: '$150 - $500' },
+        { id: 'garage-door', name: 'Garage & Front Door Painting', icon: 'Door', priceRange: '$200 - $800' },
+        { id: 'porch-rail', name: 'Porch or Stair Rail Painting', icon: 'Rail', priceRange: '$150 - $600' },
+        { id: 'shed', name: 'Shed or Small Outbuilding Painting', icon: 'Building', priceRange: '$300 - $1,000' },
+        { id: 'other-exterior', name: 'Other Exterior Services', icon: 'Other', priceRange: 'Quote on request' }
       ]
     },
     specialty: {
       title: "Specialty & Cleaning Services",
-      icon: "🧽",
+      icon: "Specialty",
       services: [
-        { id: 'pressure-washing', name: 'Pressure Washing', icon: '💨', priceRange: '$150 - $500' },
-        { id: 'other-specialty', name: 'Other Specialty Services', icon: '🛠️', priceRange: 'Quote on request' }
+        { id: 'pressure-washing', name: 'Pressure Washing', icon: 'Wash', priceRange: '$150 - $500' },
+        { id: 'other-specialty', name: 'Other Specialty Services', icon: 'Tools', priceRange: 'Quote on request' }
       ]
     }
   }
@@ -1008,7 +1008,7 @@ const QuoteCalculatorComponent: React.FC<QuoteCalculatorProps> = ({ preSelectedC
                   className="preset-card"
                   onClick={() => addRoomFromPreset(preset)}
                 >
-                  <div className="preset-icon">🏠</div>
+                  <div className="preset-icon">Room</div>
                   <div className="preset-name">{preset.displayName}</div>
                   <div className="preset-dimensions">
                     {preset.dimensions.length}' × {preset.dimensions.width}' × {preset.dimensions.height}'
