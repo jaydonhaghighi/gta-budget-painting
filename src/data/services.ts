@@ -8,60 +8,11 @@ export interface Service {
   type: ServiceType;
   icon: string;
   flatRate?: number; // For flat-rate services
-  category: 'emergency' | 'interior' | 'exterior' | 'specialty';
+  category: 'interior' | 'exterior' | 'specialty';
 }
-
-export interface EmergencySubService {
-  id: string;
-  name: string;
-  description: string;
-}
-
-// Emergency 24/7 Sub-Services
-export const emergencyServices: EmergencySubService[] = [
-  { id: 'water-damage', name: 'Water-damage stain blocking', description: 'On ceilings/walls after leak' },
-  { id: 'graffiti-removal', name: 'Graffiti removal & repainting', description: 'Storefronts/homes' },
-  { id: 'stairwell-emergency', name: 'Emergency stairwell painting', description: 'Safety inspection compliance' },
-  { id: 'handrails-safety', name: 'Repainting handrails', description: 'Safety inspections' },
-  { id: 'restaurant-washroom', name: 'Restaurant washroom repaint', description: 'Before health inspection' },
-  { id: 'hotel-touchups', name: 'Hotel room touch-ups', description: 'Guest check-in today/tomorrow' },
-  { id: 'boardroom-repaint', name: 'Boardroom repaint', description: 'CEO/client meeting within 24 hrs' },
-  { id: 'fire-exits', name: 'Fire exits/doors repaint', description: 'Compliance before inspection' },
-  { id: 'storefront-trim', name: 'Retail storefront trim repaint', description: 'Before store opens' },
-  { id: 'office-overnight', name: 'Small office repaint overnight', description: 'Before staff return' },
-  { id: 'lobby-patch', name: 'Lobby patch & repaint', description: 'Visible damage repair' },
-  { id: 'hallway-rental', name: 'Hallway repaint in rental unit', description: 'Tenant moving in same day' },
-  { id: 'door-frame', name: 'Door frame repaint after damage', description: 'Quick repair' },
-  { id: 'baseboard-traffic', name: 'Baseboard repainting', description: 'High-traffic areas' },
-  { id: 'drywall-patch', name: 'Quick drywall patch & repaint', description: 'Urgent move-in' },
-  { id: 'warehouse-lines', name: 'Warehouse safety lines repaint', description: 'Emergency compliance' },
-  { id: 'accent-staging', name: 'Accent wall repaint', description: 'Before real estate staging' },
-  { id: 'cabinet-touchup', name: 'Kitchen cabinet touch-ups', description: 'Sale prep' },
-  { id: 'exterior-trim-listing', name: 'Exterior trim repaint', description: 'Before property listing photos' },
-  { id: 'front-door-curb', name: 'Front door repaint', description: 'Curb appeal' },
-  { id: 'banister-openhouse', name: 'Banister repaint', description: 'Before open house' },
-  { id: 'kids-room', name: 'Kids\' room repaint', description: 'Family moving in next day' },
-  { id: 'window-frame-rain', name: 'Window frame repainting', description: 'Before rain' },
-  { id: 'patio-railing', name: 'Patio railing repaint', description: 'Before outdoor event' },
-  { id: 'garage-floor', name: 'Garage floor repaint', description: 'Spot repair/repaint' },
-  { id: 'parking-lines', name: 'Parking lot line repainting', description: 'Before morning traffic' },
-  { id: 'office-trim-corners', name: 'Office trim or corners repaint', description: 'Quick fix' },
-  { id: 'stair-markings', name: 'Stair markings repaint', description: 'Visibility issue' },
-  { id: 'ceiling-smoke', name: 'Small ceiling repaint', description: 'After minor smoke damage' }
-];
 
 // All Services
 export const allServices: Service[] = [
-  // Emergency Services
-  {
-    id: 'emergency-247',
-    name: '24/7 Emergency',
-    description: 'Same-day patches, compliance repaints, and urgent touch-ups for inspections and move-ins.',
-    type: 'custom-quote',
-    icon: '🚨',
-    category: 'emergency'
-  },
-  
   // Calculated Services (Interior)
   {
     id: 'accent-wall',

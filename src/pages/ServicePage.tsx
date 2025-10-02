@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getServiceById, emergencyServices, type EmergencySubService } from '../data/services';
+import { getServiceById } from '../data/services';
 import { type EstimateBreakdown } from '../utils/estimationCalculator';
 import CalculatedServiceForm from '../components/forms/CalculatedServiceForm';
 import FlatRateServiceForm from '../components/forms/FlatRateServiceForm';
 import CustomQuoteServiceForm from '../components/forms/CustomQuoteServiceForm';
 import './ServicePage.css';
 
-type ServiceStep = 'service-form' | 'emergency-selection' | 'customer-info' | 'confirmation';
+type ServiceStep = 'service-form' | 'customer-info' | 'confirmation';
 
 interface SavedBookingState {
   step: ServiceStep;
-  selectedEmergencyService: EmergencySubService | null;
   estimate: EstimateBreakdown | null;
   formData: any;
   customerInfo: {
@@ -31,7 +30,6 @@ const ServicePage = () => {
   const service = serviceId ? getServiceById(serviceId) : null;
   
   const [step, setStep] = useState<ServiceStep>('service-form');
-  const [selectedEmergencyService, setSelectedEmergencyService] = useState<EmergencySubService | null>(null);
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(null);
   const [formData, setFormData] = useState<any>({}); // Store form field values
   const [customerInfo, setCustomerInfo] = useState({
@@ -42,7 +40,6 @@ const ServicePage = () => {
   });
   const [preferredDate, setPreferredDate] = useState('');
   const [isRestoringState, setIsRestoringState] = useState(true);
-  const [showRestoredMessage, setShowRestoredMessage] = useState(false);
 
   // Redirect if service not found
   useEffect(() => {
@@ -65,15 +62,10 @@ const ServicePage = () => {
           if (age < twentyFourHours) {
             // Restore state
             setStep(parsed.step);
-            setSelectedEmergencyService(parsed.selectedEmergencyService);
             setEstimate(parsed.estimate);
             setFormData(parsed.formData || {});
             setCustomerInfo(parsed.customerInfo);
             setPreferredDate(parsed.preferredDate);
-            setShowRestoredMessage(true);
-            
-            // Hide message after 4 seconds
-            setTimeout(() => setShowRestoredMessage(false), 4000);
           } else {
             // Data too old, remove it
             localStorage.removeItem(`booking-${serviceId}`);
@@ -93,7 +85,6 @@ const ServicePage = () => {
       try {
         const dataToSave: SavedBookingState = {
           step,
-          selectedEmergencyService,
           estimate,
           formData,
           customerInfo,
@@ -105,14 +96,8 @@ const ServicePage = () => {
         console.error('Error saving booking state:', error);
       }
     }
-  }, [serviceId, step, selectedEmergencyService, estimate, formData, customerInfo, preferredDate, isRestoringState]);
+  }, [serviceId, step, estimate, formData, customerInfo, preferredDate, isRestoringState]);
 
-  // Show emergency selection for 24/7 emergency service (only if not restoring state)
-  useEffect(() => {
-    if (!isRestoringState && service?.id === 'emergency-247' && step === 'service-form') {
-      setStep('emergency-selection');
-    }
-  }, [service, step, isRestoringState]);
 
   if (!service) {
     return null;
@@ -178,7 +163,6 @@ const ServicePage = () => {
   // Determine current step number for progress indicator
   const getStepNumber = () => {
     switch (step) {
-      case 'emergency-selection':
       case 'service-form':
         return 1;
       case 'customer-info':
@@ -194,22 +178,11 @@ const ServicePage = () => {
 
   return (
     <div className="service-page">
-      {/* Restored Progress Notification */}
-      {showRestoredMessage && (
-        <div className="restored-notification">
-          <div className="container">
-            <div className="restored-message">
-              ✓ Your progress has been restored. Continue where you left off!
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Back Button */}
       <div className="service-page-header">
         <div className="container">
           <button className="btn-back" onClick={handleBack}>
-            ← {step === 'service-form' || step === 'emergency-selection' ? 'Back to Services' : 'Back'}
+            ← {step === 'service-form' ? 'Back to Services' : 'Back'}
           </button>
         </div>
       </div>
@@ -222,7 +195,7 @@ const ServicePage = () => {
               <div className={`progress-step ${currentStepNumber >= 1 ? 'active' : ''} ${currentStepNumber > 1 ? 'completed' : ''}`}>
                 <div className="step-number">1</div>
                 <div className="step-label">
-                  {service?.id === 'emergency-247' ? 'Select Emergency' : 'Service Details'}
+                  Service Details
                 </div>
               </div>
               
@@ -240,45 +213,14 @@ const ServicePage = () => {
         </div>
       )}
 
-      {/* Emergency Service Selection */}
-      {step === 'emergency-selection' && (
-        <section className="emergency-selection-section">
-          <div className="container">
-            <div className="emergency-selection-card">
-              <h2>Select Emergency Service</h2>
-              <p>Choose the specific emergency service you need:</p>
-              
-              <div className="emergency-services-grid">
-                {emergencyServices.map((emergencyService) => (
-                  <div
-                    key={emergencyService.id}
-                    className="emergency-service-card"
-                    onClick={() => {
-                      setSelectedEmergencyService(emergencyService);
-                      setStep('service-form');
-                    }}
-                  >
-                    <h4>{emergencyService.name}</h4>
-                    <p>{emergencyService.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Service Form */}
-      {step === 'service-form' && service.id !== 'emergency-247' && (
+      {step === 'service-form' && (
         <section className="service-form-section">
           <div className="container">
             <div className="service-form-header">
               <span className="service-icon-large">{service.icon}</span>
               <div>
                 <h1>{service.name}</h1>
-                {selectedEmergencyService && (
-                  <p className="emergency-subservice">{selectedEmergencyService.name}</p>
-                )}
                 <p className="service-description">{service.description}</p>
               </div>
             </div>
