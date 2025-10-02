@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { type Service } from '../../data/services';
 import {
   calculateAccentWall,
@@ -12,17 +12,47 @@ import './ServiceForms.css';
 
 interface CalculatedServiceFormProps {
   service: Service;
+  initialFormData?: any;
+  initialEstimate?: EstimateBreakdown | null;
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
+  onFormDataChange?: (formData: any) => void; // NEW: Callback for every form change
 }
 
-const CalculatedServiceForm = ({ service, onEstimateCalculated }: CalculatedServiceFormProps) => {
-  const [formData, setFormData] = useState<any>({});
-  const [estimate, setEstimate] = useState<EstimateBreakdown | null>(null);
+const CalculatedServiceForm = ({ 
+  service, 
+  initialFormData = {}, 
+  initialEstimate = null,
+  onEstimateCalculated,
+  onFormDataChange 
+}: CalculatedServiceFormProps) => {
+  const [formData, setFormData] = useState<any>(initialFormData);
+  const [estimate, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
+
+  // Update form data when initial props change (e.g., when navigating back or restored from localStorage)
+  useEffect(() => {
+    if (initialFormData && Object.keys(initialFormData).length > 0) {
+      setFormData(initialFormData);
+      // Recalculate estimate with restored data
+      calculateEstimate(initialFormData);
+    }
+  }, [JSON.stringify(initialFormData)]); // Use JSON.stringify to detect object changes
+
+  // Update estimate when initial estimate changes
+  useEffect(() => {
+    if (initialEstimate) {
+      setEstimate(initialEstimate);
+    }
+  }, [initialEstimate]);
 
   const updateFormData = (field: string, value: any) => {
     const newData = { ...formData, [field]: value };
     setFormData(newData);
     calculateEstimate(newData);
+    
+    // Notify parent component of the change
+    if (onFormDataChange) {
+      onFormDataChange(newData);
+    }
   };
 
   const calculateEstimate = (data: any) => {

@@ -14,7 +14,7 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
-          <h1>Book Your Painting Service</h1>
+          <h1 style={{color: 'white'}}>Book Your Painting Service</h1>
           <p className="hero-subtitle">Professional painting services in the GTA • 24/7 Emergency Available</p>
           <div className="hero-features">
             <div className="hero-feature">

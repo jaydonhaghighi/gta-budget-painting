@@ -13,10 +13,74 @@
   padding: 0 1rem;
 }
 
+/* Restored Progress Notification */
+.restored-notification {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #10b981;
+  z-index: 9999;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.restored-message {
+  padding: 1rem;
+  text-align: center;
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 .service-page-header {
   padding: 1rem 0 0.5rem;
   background: white;
   border-bottom: 1px solid #e2e8f0;
+}
+
+/* Animations */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 /* Progress Indicator */
@@ -25,6 +89,7 @@
   padding: 0.75rem 0;
   border-bottom: 1px solid #eee;
   margin-bottom: 1rem;
+  animation: fadeSlideUp 0.4s ease-out;
 }
 
 .progress-indicator {
@@ -43,6 +108,20 @@
   position: relative;
   z-index: 1;
   flex: 0 0 auto;
+  opacity: 0;
+  animation: fadeSlideUp 0.4s ease-out forwards;
+}
+
+.progress-step:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.progress-step:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.progress-step:nth-child(3) {
+  animation-delay: 0.3s;
 }
 
 .step-number {
@@ -57,13 +136,14 @@
   font-weight: 600;
   font-size: 1rem;
   color: #999;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .progress-step.active .step-number {
   border-color: #1a1a1a;
   background: #1a1a1a;
   color: white;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .progress-step.completed .step-number {
@@ -78,12 +158,13 @@
   font-weight: 500;
   text-align: center;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .progress-step.active .step-label {
   color: #1a1a1a;
   font-weight: 600;
+  transform: scale(1.05);
 }
 
 .progress-step.completed .step-label {
@@ -100,6 +181,7 @@
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  animation: scaleIn 0.4s ease-out;
 }
 
 .emergency-selection-card h2 {
@@ -126,14 +208,23 @@
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  animation: fadeSlideUp 0.4s ease-out forwards;
 }
+
+.emergency-service-card:nth-child(1) { animation-delay: 0.05s; }
+.emergency-service-card:nth-child(2) { animation-delay: 0.1s; }
+.emergency-service-card:nth-child(3) { animation-delay: 0.15s; }
+.emergency-service-card:nth-child(4) { animation-delay: 0.2s; }
+.emergency-service-card:nth-child(5) { animation-delay: 0.25s; }
+.emergency-service-card:nth-child(6) { animation-delay: 0.3s; }
 
 .emergency-service-card:hover {
   border-color: #1a1a1a;
   background: #f7fafc;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .emergency-service-card h4 {
@@ -163,6 +254,7 @@
   gap: 1rem;
   align-items: flex-start;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  animation: fadeSlideUp 0.4s ease-out;
 }
 
 .service-icon-large {
@@ -193,6 +285,18 @@
   border-radius: 8px;
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  animation: fadeSlideUp 0.5s ease-out 0.1s backwards;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media (max-width: 768px) {
@@ -219,8 +323,21 @@
     font-size: 1rem;
   }
 
-  .progress-step::after {
-    top: 17.5px;
+  /* Faster animations on mobile */
+  .progress-step,
+  .emergency-service-card,
+  .service-form-header,
+  .service-form-content {
+    animation-duration: 0.3s;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.03);
+    }
   }
 }
 
