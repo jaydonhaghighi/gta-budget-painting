@@ -73,9 +73,9 @@ p {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1rem;
 }
 
 /* Header */
@@ -93,7 +93,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 20px;
+  padding: 0.75rem 1rem;
 }
 
 .logo {
@@ -108,14 +108,14 @@ p {
 }
 
 .logo-image {
-  height: 100px;
+  height: 60px;
   width: auto;
   object-fit: contain;
 }
 
 .nav {
   display: flex;
-  gap: 3rem;
+  gap: 1.5rem;
   align-items: center;
 }
 

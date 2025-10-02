@@ -1,0 +1,226 @@
+/* Import shared styles */
+@import './BookingPage.css';
+
+.service-page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  padding-bottom: 2rem;
+}
+
+.service-page .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.service-page-header {
+  padding: 1rem 0 0.5rem;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+/* Progress Indicator */
+.progress-container {
+  background: white;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.progress-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+}
+
+.step-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #999;
+  transition: all 0.2s ease;
+}
+
+.progress-step.active .step-number {
+  border-color: #1a1a1a;
+  background: #1a1a1a;
+  color: white;
+}
+
+.progress-step.completed .step-number {
+  border-color: #1a1a1a;
+  background: #1a1a1a;
+  color: white;
+}
+
+.step-label {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.progress-step.active .step-label {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.progress-step.completed .step-label {
+  color: #666;
+}
+
+/* Emergency Selection Section */
+.emergency-selection-section {
+  padding: 1.5rem 0;
+}
+
+.emergency-selection-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.emergency-selection-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.emergency-selection-card > p {
+  text-align: center;
+  color: #718096;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.emergency-services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.emergency-service-card {
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.emergency-service-card:hover {
+  border-color: #1a1a1a;
+  background: #f7fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.emergency-service-card h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  color: #1a202c;
+}
+
+.emergency-service-card p {
+  font-size: 0.8rem;
+  color: #718096;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* Service Form Section */
+.service-form-section {
+  padding: 1rem 0;
+}
+
+.service-form-header {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.service-icon-large {
+  font-size: 2.5rem;
+}
+
+.service-form-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  color: #1a202c;
+}
+
+.emergency-subservice {
+  color: #1a1a1a;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.service-description {
+  color: #718096;
+  margin: 0;
+  line-height: 1.4;
+  font-size: 0.875rem;
+}
+
+.service-form-content {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+@media (max-width: 768px) {
+  .service-form-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .emergency-services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .progress-indicator {
+    gap: 0.5rem;
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+  }
+
+  .step-number {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .progress-step::after {
+    top: 17.5px;
+  }
+}
+

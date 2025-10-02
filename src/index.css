@@ -1,29 +1,27 @@
 :root {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.6;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
   font-weight: 400;
-  color: #333;
-  background-color: #ffffff;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  color: #1a1a1a;
+  background-color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   min-width: 320px;
   min-height: 100vh;
-  font-family: inherit;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
-}
-
-* {
-  box-sizing: border-box;
 }
 
 a {
@@ -34,25 +32,14 @@ a {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.2;
+  color: #1a1a1a;
 }
 
 button {
   font-family: inherit;
   cursor: pointer;
-  border: none;
-  outline: none;
 }
 
-input, textarea {
+input, textarea, select {
   font-family: inherit;
-  outline: none;
-}
-
-ul, ol {
-  margin: 0;
-  padding: 0;
-}
-
-p {
-  margin: 0 0 1rem 0;
 }
