@@ -7,6 +7,7 @@ import {
   calculateRoom,
   calculateStaircase,
   calculateFence,
+  calculateMultipleBedrooms,
   formatCurrency,
   RATES,
   PRODUCTION_RATES,
@@ -122,17 +123,24 @@ const CalculatedServiceForm = ({
 
 
         case 'bedroom-painting':
-          if (data.length && data.width && data.height) {
-            newEstimate = calculateRoom({
-              length: parseFloat(data.length),
-              width: parseFloat(data.width),
-              height: parseFloat(data.height),
-              includeCeiling: data.includeCeiling !== false, // Default to true
-              includeBaseboards: data.includeBaseboards !== false, // Default to true
-              baseboardProfile: data.baseboardProfile || 'low',
-              doors: parseInt(data.doors) || 1, // Default to 1 door
-              windows: parseInt(data.windows) || 1 // Default to 1 window
-            });
+          if (data.bedrooms && data.bedrooms.length > 0) {
+            // Multiple bedrooms
+            const validBedrooms = data.bedrooms.filter((bedroom: any) =>
+              bedroom.length && bedroom.width && bedroom.height
+            );
+            if (validBedrooms.length > 0) {
+              newEstimate = calculateMultipleBedrooms(validBedrooms.map((bedroom: any) => ({
+                name: bedroom.name || undefined,
+                length: parseFloat(bedroom.length),
+                width: parseFloat(bedroom.width),
+                height: parseFloat(bedroom.height),
+                includeCeiling: bedroom.includeCeiling !== false,
+                includeBaseboards: bedroom.includeBaseboards !== false,
+                baseboardProfile: bedroom.baseboardProfile || 'low',
+                doors: parseInt(bedroom.doors) || 1,
+                windows: parseInt(bedroom.windows) || 1
+              })));
+            }
           }
           break;
 
@@ -572,104 +580,202 @@ const CalculatedServiceForm = ({
     </div>
   );
 
-  const renderBedroomForm = () => (
-    <div className="form-group-container">
-      <h3>Bedroom Measurements</h3>
-      <p className="form-help">Provide the dimensions of your bedroom(s)</p>
-      
-      <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="length">Room Length (feet) *</label>
-          <input
-            type="number"
-            id="length"
-            min="1"
-            step="0.5"
-            placeholder="e.g. 12"
-            value={formData.length || ''}
-            onChange={(e) => updateFormData('length', e.target.value)}
-            required
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="width">Room Width (feet) *</label>
-          <input
-            type="number"
-            id="width"
-            min="1"
-            step="0.5"
-            placeholder="e.g. 10"
-            value={formData.width || ''}
-            onChange={(e) => updateFormData('width', e.target.value)}
-            required
-          />
-        </div>
-      </div>
-      
-      <div className="form-group">
-        <label htmlFor="height">Ceiling Height (feet) *</label>
-        <input
-          type="number"
-          id="height"
-          min="1"
-          step="0.5"
-          placeholder="e.g. 8"
-          value={formData.height || ''}
-          onChange={(e) => updateFormData('height', e.target.value)}
-          required
-        />
-        <small>Typically 8 feet for standard rooms</small>
-      </div>
+  const renderBedroomForm = () => {
+    const bedrooms = formData.bedrooms || [
+      { id: 1, name: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
+    ];
 
-      <h4>What's Included?</h4>
-      <div className="checkbox-group">
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            checked={formData.includeCeiling !== false}
-            onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
-          />
-          <span>Paint Ceiling</span>
-        </label>
-        
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            checked={formData.includeBaseboards !== false}
-            onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
-          />
-          <span>Paint Baseboards</span>
-        </label>
-      </div>
+    const addBedroom = () => {
+      const newId = Math.max(...bedrooms.map((b: any) => b.id), 0) + 1;
+      updateFormData('bedrooms', [
+        ...bedrooms,
+        { id: newId, name: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
+      ]);
+    };
 
-      <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="doors">Number of Doors</label>
-          <input
-            type="number"
-            id="doors"
-            min="0"
-            placeholder="e.g. 1"
-            value={formData.doors || '1'}
-            onChange={(e) => updateFormData('doors', e.target.value)}
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="windows">Number of Windows</label>
-          <input
-            type="number"
-            id="windows"
-            min="0"
-            placeholder="e.g. 1"
-            value={formData.windows || '1'}
-            onChange={(e) => updateFormData('windows', e.target.value)}
-          />
-        </div>
+    const removeBedroom = (id: number) => {
+      if (bedrooms.length > 1) {
+        updateFormData('bedrooms', bedrooms.filter((bedroom: any) => bedroom.id !== id));
+      }
+    };
+
+    const updateBedroom = (id: number, field: string, value: any) => {
+      const updatedBedrooms = bedrooms.map((bedroom: any) =>
+        bedroom.id === id ? { ...bedroom, [field]: value } : bedroom
+      );
+      updateFormData('bedrooms', updatedBedrooms);
+    };
+
+    return (
+      <div className="form-group-container">
+        <h3>Bedroom(s) Measurements</h3>
+        <p className="form-help">Add one or more bedrooms to calculate your total estimate</p>
+
+        {bedrooms.length > 1 && (
+          <div className="info-box" style={{
+            background: '#e8f5e9',
+            padding: '1rem',
+            borderRadius: '6px',
+            marginBottom: '1.5rem',
+            fontSize: '0.9rem',
+            color: '#2e7d32'
+          }}>
+            <strong>✓ Multi-Bedroom Discount:</strong> Single setup/cleanup fee for all bedrooms - more efficient pricing!
+          </div>
+        )}
+
+        {bedrooms.map((bedroom: any, index: number) => (
+          <div key={bedroom.id} className="multi-room-item" style={{
+            border: '2px solid #e2e8f0',
+            borderRadius: '8px',
+            padding: '1rem',
+            marginBottom: '1rem',
+            background: '#fafafa'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h4 style={{ margin: 0, color: '#1a1a1a' }}>Bedroom {index + 1}</h4>
+              {bedrooms.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeBedroom(bedroom.id)}
+                  className="btn-remove-room"
+                  style={{
+                    background: '#ff4444',
+                    color: 'white',
+                    border: 'none',
+                    padding: '0.4rem 0.8rem',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    fontSize: '0.85rem',
+                    fontWeight: '600'
+                  }}
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor={`bedroom-${bedroom.id}-name`}>Bedroom Name (optional)</label>
+              <input
+                type="text"
+                id={`bedroom-${bedroom.id}-name`}
+                placeholder="e.g. Master Bedroom, Guest Room"
+                value={bedroom.name}
+                onChange={(e) => updateBedroom(bedroom.id, 'name', e.target.value)}
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor={`bedroom-${bedroom.id}-length`}>Length (feet) *</label>
+                <input
+                  type="number"
+                  id={`bedroom-${bedroom.id}-length`}
+                  min="1"
+                  step="0.5"
+                  placeholder="12"
+                  value={bedroom.length}
+                  onChange={(e) => updateBedroom(bedroom.id, 'length', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`bedroom-${bedroom.id}-width`}>Width (feet) *</label>
+                <input
+                  type="number"
+                  id={`bedroom-${bedroom.id}-width`}
+                  min="1"
+                  step="0.5"
+                  placeholder="10"
+                  value={bedroom.width}
+                  onChange={(e) => updateBedroom(bedroom.id, 'width', e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`bedroom-${bedroom.id}-height`}>Height (feet) *</label>
+                <input
+                  type="number"
+                  id={`bedroom-${bedroom.id}-height`}
+                  min="1"
+                  step="0.5"
+                  placeholder="8"
+                  value={bedroom.height}
+                  onChange={(e) => updateBedroom(bedroom.id, 'height', e.target.value)}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="checkbox-group" style={{ marginTop: '0.75rem' }}>
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={bedroom.includeCeiling !== false}
+                  onChange={(e) => updateBedroom(bedroom.id, 'includeCeiling', e.target.checked)}
+                />
+                <span>Include Ceiling</span>
+              </label>
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={bedroom.includeBaseboards !== false}
+                  onChange={(e) => updateBedroom(bedroom.id, 'includeBaseboards', e.target.checked)}
+                />
+                <span>Include Baseboards</span>
+              </label>
+            </div>
+
+            <div className="form-row" style={{ marginTop: '0.75rem' }}>
+              <div className="form-group">
+                <label htmlFor={`bedroom-${bedroom.id}-doors`}>Doors</label>
+                <input
+                  type="number"
+                  id={`bedroom-${bedroom.id}-doors`}
+                  min="0"
+                  placeholder="1"
+                  value={bedroom.doors}
+                  onChange={(e) => updateBedroom(bedroom.id, 'doors', e.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor={`bedroom-${bedroom.id}-windows`}>Windows</label>
+                <input
+                  type="number"
+                  id={`bedroom-${bedroom.id}-windows`}
+                  min="0"
+                  placeholder="1"
+                  value={bedroom.windows}
+                  onChange={(e) => updateBedroom(bedroom.id, 'windows', e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={addBedroom}
+          className="btn-add-room"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+            color: 'white',
+            border: 'none',
+            padding: '0.75rem 1.5rem',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '0.95rem',
+            fontWeight: '600',
+            width: '100%',
+            marginTop: '0.5rem'
+          }}
+        >
+          + Add Another Bedroom
+        </button>
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderKitchenWallsForm = () => (
     <div className="form-group-container">
