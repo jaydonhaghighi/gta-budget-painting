@@ -30,11 +30,6 @@ const LandingPage = () => {
       className={`service-card ${isFeatured ? 'featured-card' : ''}`}
       onClick={() => handleServiceClick(service.id)}
     >
-      {service.badge && (
-        <div className={`featured-badge ${service.badge}`}>
-          {getBadgeLabel(service.badge)}
-        </div>
-      )}
       <span className="service-icon">{service.icon}</span>
       <h3>{service.name}</h3>
       <p>{service.description}</p>
