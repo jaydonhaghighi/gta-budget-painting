@@ -20,7 +20,7 @@ const Footer = () => {
           </div>
           <div className="footer-section">
             <h4>Contact</h4>
-            <p>Phone: (416) 555-PAINT</p>
+            <p>Phone: (647) 390-7181</p>
             <p>Email: info@gtabudgetpainting.com</p>
           </div>
           <div className="footer-section">

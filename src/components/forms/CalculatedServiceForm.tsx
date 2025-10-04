@@ -611,19 +611,6 @@ const CalculatedServiceForm = ({
         <h3>Bedroom(s) Measurements</h3>
         <p className="form-help">Add one or more bedrooms to calculate your total estimate</p>
 
-        {bedrooms.length > 1 && (
-          <div className="info-box" style={{
-            background: '#e8f5e9',
-            padding: '1rem',
-            borderRadius: '6px',
-            marginBottom: '1.5rem',
-            fontSize: '0.9rem',
-            color: '#2e7d32'
-          }}>
-            <strong>✓ Multi-Bedroom Discount:</strong> Single setup/cleanup fee for all bedrooms - more efficient pricing!
-          </div>
-        )}
-
         {bedrooms.map((bedroom: any, index: number) => (
           <div key={bedroom.id} className="multi-room-item" style={{
             border: '2px solid #e2e8f0',

@@ -80,13 +80,11 @@ p {
 
 /* Header */
 .header {
-  background: var(--color-white);
-  border-bottom: 1px solid var(--color-grey-200);
+  background: #a6b2b5;
+  border-bottom: .5px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
   z-index: 1000;
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .header .container {
@@ -108,7 +106,7 @@ p {
 }
 
 .logo-image {
-  height: 60px;
+  height: 100px;
   width: auto;
   object-fit: contain;
 }
@@ -121,7 +119,7 @@ p {
 
 .nav a {
   font-family: var(--font-body);
-  color: var(--color-grey-700);
+  color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
@@ -133,7 +131,7 @@ p {
 }
 
 .nav a.active {
-  color: var(--color-black);
+  color: white;
 }
 
 .nav a.active::after {
@@ -143,12 +141,12 @@ p {
   left: 0;
   width: 100%;
   height: 2px;
-  background: var(--color-black);
+  background: var(--color-accent);
   border-radius: 1px;
 }
 
 .nav a:hover {
-  color: var(--color-black);
+  color: white;
 }
 
 /* Hamburger Menu */
@@ -168,7 +166,7 @@ p {
 .hamburger-line {
   width: 100%;
   height: 3px;
-  background: var(--color-black);
+  background: white;
   border-radius: 2px;
   transition: all 0.3s ease;
 }
@@ -986,7 +984,7 @@ p {
   }
   
   .logo-image {
-    height: 80px;
+    height: 120px;
   }
   
   .desktop-nav {

@@ -14,16 +14,6 @@ const LandingPage = () => {
   const customProject = allServices.find(s => s.id === 'custom-project');
   const otherServices = allServices.filter(s => !s.featured && s.id !== 'custom-project');
 
-  const getBadgeLabel = (badge?: string) => {
-    switch (badge) {
-      case 'most-popular': return '⭐ Most Popular';
-      case 'trending': return '🔥 Trending';
-      case 'quick-refresh': return '⚡ Quick Refresh';
-      case 'high-value': return '💎 Best Value';
-      default: return null;
-    }
-  };
-
   const renderServiceCard = (service: typeof allServices[0], isFeatured: boolean = false) => (
     <div
       key={service.id}
@@ -52,19 +42,25 @@ const LandingPage = () => {
         <div className="container">
           <h1 style={{color: 'white'}}>Budget Painting Services in the GTA</h1>
           <p className="hero-subtitle">Fast, Affordable, Professional • Quick Jobs & Budget-Friendly Prices</p>
-          <div className="hero-features">
-            <div className="hero-feature">
-              <span className="hero-icon">⚡</span>
-              <span>Fast Response</span>
+          
+          <div className="hero-contact">
+            <div className="hero-contact-info">
+              <a href="tel:6473907181" className="hero-phone">
+                📞 Call (647) 390-7181
+              </a>
+              <span className="hero-divider">|</span>
+              <a href="mailto:info@gtabudgetpainting.com" className="hero-email">
+                ✉️ info@gtabudgetpainting.com
+              </a>
             </div>
-            <div className="hero-feature">
-              <span className="hero-icon">💰</span>
-              <span>Budget-Friendly</span>
-            </div>
-            <div className="hero-feature">
-              <span className="hero-icon">✅</span>
-              <span>Quality Work</span>
-            </div>
+            <a 
+              href="https://gtahomepainting.ca" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="hero-cta-button"
+            >
+              For Larger Jobs: Visit GTA Home Painting
+            </a>
           </div>
         </div>
       </section>
