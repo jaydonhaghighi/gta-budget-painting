@@ -5,7 +5,11 @@ import {
   calculateCeiling,
   calculateBaseboards,
   calculateRoom,
+  calculateStaircase,
+  calculateFence,
   formatCurrency,
+  RATES,
+  PRODUCTION_RATES,
   type EstimateBreakdown
 } from '../../utils/estimationCalculator';
 import './ServiceForms.css';
@@ -77,7 +81,6 @@ const CalculatedServiceForm = ({
           break;
 
         case 'small-bathroom':
-        case 'foyer-entryway':
           if (data.length && data.width && data.height) {
             newEstimate = calculateRoom({
               length: parseFloat(data.length),
@@ -92,6 +95,21 @@ const CalculatedServiceForm = ({
           }
           break;
 
+        case 'basement-painting':
+          if (data.length && data.width && data.height) {
+            newEstimate = calculateRoom({
+              length: parseFloat(data.length),
+              width: parseFloat(data.width),
+              height: parseFloat(data.height),
+              includeCeiling: data.includeCeiling !== false, // Default to true for basement
+              includeBaseboards: data.includeBaseboards !== false, // Default to true
+              baseboardProfile: data.baseboardProfile || 'low',
+              doors: parseInt(data.doors) || 0,
+              windows: parseInt(data.windows) || 0 // Basements often have few/no windows
+            });
+          }
+          break;
+
         case 'trimming-baseboards':
           if (data.linearFeet && data.profile) {
             newEstimate = calculateBaseboards(
@@ -102,16 +120,93 @@ const CalculatedServiceForm = ({
           }
           break;
 
-        case 'staircase-railings':
-        case 'deck-railings':
-        case 'small-porch':
-          if (data.linearFeet) {
-            // Use baseboard calculation as approximation for railings
-            newEstimate = calculateBaseboards(
-              parseFloat(data.linearFeet),
+
+        case 'bedroom-painting':
+          if (data.length && data.width && data.height) {
+            newEstimate = calculateRoom({
+              length: parseFloat(data.length),
+              width: parseFloat(data.width),
+              height: parseFloat(data.height),
+              includeCeiling: data.includeCeiling !== false, // Default to true
+              includeBaseboards: data.includeBaseboards !== false, // Default to true
+              baseboardProfile: data.baseboardProfile || 'low',
+              doors: parseInt(data.doors) || 1, // Default to 1 door
+              windows: parseInt(data.windows) || 1 // Default to 1 window
+            });
+          }
+          break;
+
+        case 'staircase-painting':
+          if (data.wallArea || data.ceilingArea) {
+            newEstimate = calculateStaircase({
+              wallArea: parseFloat(data.wallArea) || 0,
+              ceilingArea: parseFloat(data.ceilingArea) || 0,
+              includeRailings: data.includeRailings || false,
+              linearFeetRailings: data.includeRailings ? parseFloat(data.railingsLength) || 0 : 0
+            });
+          }
+          break;
+
+        case 'kitchen-walls':
+          if (data.length && data.width && data.height) {
+            newEstimate = calculateRoom({
+              length: parseFloat(data.length),
+              width: parseFloat(data.width),
+              height: parseFloat(data.height),
+              includeCeiling: false, // Kitchen walls typically don't include ceiling
+              includeBaseboards: data.includeBaseboards || false,
+              baseboardProfile: data.baseboardProfile || 'low',
+              doors: parseInt(data.doors) || 0,
+              windows: parseInt(data.windows) || 0
+            });
+          }
+          break;
+
+        case 'fence-painting':
+          if (data.linearFeet && data.height) {
+            const sides = parseInt(data.sides) || 1;
+            newEstimate = calculateFence({
+              linearFeet: parseFloat(data.linearFeet),
+              height: parseFloat(data.height),
+              sides: (sides === 2 ? 2 : 1) as 1 | 2,
+              includeStaining: data.includeStaining || false
+            });
+          }
+          break;
+
+        case 'exterior-railings':
+          // Exterior railings with optional additional areas
+          if (data.railingsLength) {
+            let baseEstimate = calculateBaseboards(
+              parseFloat(data.railingsLength),
               'high',
               2
             );
+            
+            // If includes porch/deck areas, add them
+            if (data.includePorchAreas && data.porchArea) {
+              const porchArea = parseFloat(data.porchArea);
+              const additionalHours = Math.ceil(porchArea / PRODUCTION_RATES.CEILING);
+              const additionalPaint = Math.ceil(porchArea / RATES.PAINT_COVERAGE);
+              
+              baseEstimate = {
+                ...baseEstimate,
+                laborHours: baseEstimate.laborHours + additionalHours,
+                totalHours: baseEstimate.totalHours + additionalHours,
+                paintGallons: baseEstimate.paintGallons + additionalPaint,
+                laborCost: (baseEstimate.totalHours + additionalHours) * RATES.LABOR_RATE,
+                paintCost: (baseEstimate.paintGallons + additionalPaint) * RATES.PAINT_RATE,
+                suppliesCost: (baseEstimate.totalHours + additionalHours) * RATES.SUPPLIES_RATE,
+                subtotal: baseEstimate.laborCost + baseEstimate.paintCost + baseEstimate.suppliesCost,
+                totalCost: baseEstimate.laborCost + baseEstimate.paintCost + baseEstimate.suppliesCost + baseEstimate.prepFee + baseEstimate.travelFee,
+                breakdown: [
+                  ...baseEstimate.breakdown,
+                  `Porch/deck areas: ${porchArea} sq ft`
+                ]
+              };
+            }
+            
+            newEstimate = baseEstimate;
           }
           break;
 
@@ -204,10 +299,10 @@ const CalculatedServiceForm = ({
     </div>
   );
 
-  const renderRoomForm = () => (
+  const renderBathroomForm = () => (
     <div className="form-group-container">
-      <h3>Room Measurements</h3>
-      <p className="form-help">Provide the room dimensions for accurate estimate</p>
+      <h3>Bathroom Measurements</h3>
+      <p className="form-help">Provide your bathroom dimensions for accurate estimate</p>
       
       <div className="form-row">
         <div className="form-group">
@@ -348,27 +443,556 @@ const CalculatedServiceForm = ({
           </select>
         </div>
       </div>
+      <div className="info-box" style={{
+        background: '#e3f2fd',
+        padding: '1rem',
+        borderRadius: '6px',
+        marginTop: '1rem',
+        fontSize: '0.9rem',
+        color: '#1565c0'
+      }}>
+        <strong>💡 Note:</strong> Small bathrooms use moisture-resistant paint and require careful cutting around fixtures.
+      </div>
     </div>
   );
 
-  const renderRailingForm = () => (
+  const renderBasementForm = () => (
     <div className="form-group-container">
-      <h3>Railing Measurements</h3>
-      <p className="form-help">Measure the total length of railings to be painted</p>
+      <h3>Basement Measurements</h3>
+      <p className="form-help">Transform your basement into livable space with fresh paint</p>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="length">Basement Length (feet) *</label>
+          <input
+            type="number"
+            id="length"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 25"
+            value={formData.length || ''}
+            onChange={(e) => updateFormData('length', e.target.value)}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="width">Basement Width (feet) *</label>
+          <input
+            type="number"
+            id="width"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 20"
+            value={formData.width || ''}
+            onChange={(e) => updateFormData('width', e.target.value)}
+            required
+          />
+        </div>
+      </div>
       
       <div className="form-group">
-        <label htmlFor="linearFeet">Total Linear Feet *</label>
+        <label htmlFor="height">Ceiling Height (feet) *</label>
         <input
           type="number"
-          id="linearFeet"
+          id="height"
           min="1"
           step="0.5"
-          placeholder="e.g. 25"
-          value={formData.linearFeet || ''}
-          onChange={(e) => updateFormData('linearFeet', e.target.value)}
+          placeholder="e.g. 7.5"
+          value={formData.height || ''}
+          onChange={(e) => updateFormData('height', e.target.value)}
           required
         />
-        <small>Include all sections of railing</small>
+        <small>Basement ceilings typically 7-8 feet</small>
+      </div>
+
+      <h4>What's Included?</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeCeiling !== false}
+            onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
+          />
+          <span>Paint Ceiling</span>
+        </label>
+        
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeBaseboards !== false}
+            onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+          />
+          <span>Paint Baseboards</span>
+        </label>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="doors">Number of Doors</label>
+          <input
+            type="number"
+            id="doors"
+            min="0"
+            placeholder="0"
+            value={formData.doors || ''}
+            onChange={(e) => updateFormData('doors', e.target.value)}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="windows">Number of Windows</label>
+          <input
+            type="number"
+            id="windows"
+            min="0"
+            placeholder="0"
+            value={formData.windows || ''}
+            onChange={(e) => updateFormData('windows', e.target.value)}
+          />
+          <small>Basement windows are often small or none</small>
+        </div>
+      </div>
+
+      <div className="info-box" style={{
+        background: '#fff9e6',
+        padding: '1rem',
+        borderRadius: '6px',
+        marginTop: '1rem',
+        fontSize: '0.9rem',
+        color: '#856404'
+      }}>
+        <strong>💡 Basement Tips:</strong>
+        <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem', marginBottom: 0 }}>
+          <li>We use mold/moisture-resistant paint for basement environments</li>
+          <li>Unfinished basements may require primer for concrete walls</li>
+          <li>Large open basements are perfect for budget transformation</li>
+        </ul>
+      </div>
+    </div>
+  );
+
+  const renderBedroomForm = () => (
+    <div className="form-group-container">
+      <h3>Bedroom Measurements</h3>
+      <p className="form-help">Provide the dimensions of your bedroom(s)</p>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="length">Room Length (feet) *</label>
+          <input
+            type="number"
+            id="length"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 12"
+            value={formData.length || ''}
+            onChange={(e) => updateFormData('length', e.target.value)}
+            required
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="width">Room Width (feet) *</label>
+          <input
+            type="number"
+            id="width"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 10"
+            value={formData.width || ''}
+            onChange={(e) => updateFormData('width', e.target.value)}
+            required
+          />
+        </div>
+      </div>
+      
+      <div className="form-group">
+        <label htmlFor="height">Ceiling Height (feet) *</label>
+        <input
+          type="number"
+          id="height"
+          min="1"
+          step="0.5"
+          placeholder="e.g. 8"
+          value={formData.height || ''}
+          onChange={(e) => updateFormData('height', e.target.value)}
+          required
+        />
+        <small>Typically 8 feet for standard rooms</small>
+      </div>
+
+      <h4>What's Included?</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeCeiling !== false}
+            onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
+          />
+          <span>Paint Ceiling</span>
+        </label>
+        
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeBaseboards !== false}
+            onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+          />
+          <span>Paint Baseboards</span>
+        </label>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="doors">Number of Doors</label>
+          <input
+            type="number"
+            id="doors"
+            min="0"
+            placeholder="e.g. 1"
+            value={formData.doors || '1'}
+            onChange={(e) => updateFormData('doors', e.target.value)}
+          />
+        </div>
+        
+        <div className="form-group">
+          <label htmlFor="windows">Number of Windows</label>
+          <input
+            type="number"
+            id="windows"
+            min="0"
+            placeholder="e.g. 1"
+            value={formData.windows || '1'}
+            onChange={(e) => updateFormData('windows', e.target.value)}
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderKitchenWallsForm = () => (
+    <div className="form-group-container">
+      <h3>Kitchen Measurements</h3>
+      <p className="form-help">Measure your kitchen walls for high-traffic, scrubbable paint</p>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="length">Kitchen Length (feet) *</label>
+          <input
+            type="number"
+            id="length"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 12"
+            value={formData.length || ''}
+            onChange={(e) => updateFormData('length', e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="width">Kitchen Width (feet) *</label>
+          <input
+            type="number"
+            id="width"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 10"
+            value={formData.width || ''}
+            onChange={(e) => updateFormData('width', e.target.value)}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="height">Wall Height (feet) *</label>
+        <input
+          type="number"
+          id="height"
+          min="1"
+          step="0.5"
+          placeholder="e.g. 8"
+          value={formData.height || ''}
+          onChange={(e) => updateFormData('height', e.target.value)}
+          required
+        />
+        <small>Typically 8 feet for standard kitchens</small>
+      </div>
+
+      <h4>What's Included?</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeBaseboards || false}
+            onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+          />
+          <span>Paint Baseboards</span>
+        </label>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="doors">Number of Doors</label>
+          <input
+            type="number"
+            id="doors"
+            min="0"
+            placeholder="0"
+            value={formData.doors || ''}
+            onChange={(e) => updateFormData('doors', e.target.value)}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="windows">Number of Windows</label>
+          <input
+            type="number"
+            id="windows"
+            min="0"
+            placeholder="0"
+            value={formData.windows || ''}
+            onChange={(e) => updateFormData('windows', e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="info-box" style={{
+        background: '#e3f2fd',
+        padding: '1rem',
+        borderRadius: '6px',
+        marginTop: '1rem',
+        fontSize: '0.9rem',
+        color: '#1565c0'
+      }}>
+        <strong>💡 Note:</strong> Kitchen walls use durable, scrubbable paint perfect for high-traffic cooking areas. Ceiling not typically included.
+      </div>
+    </div>
+  );
+
+  const renderFenceForm = () => (
+    <div className="form-group-container">
+      <h3>Fence Measurements</h3>
+      <p className="form-help">Tell us about your fence so we can provide an accurate estimate</p>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="linearFeet">Fence Length (linear feet) *</label>
+          <input
+            type="number"
+            id="linearFeet"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 50"
+            value={formData.linearFeet || ''}
+            onChange={(e) => updateFormData('linearFeet', e.target.value)}
+            required
+          />
+          <small>Total length of fence to be painted/stained</small>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="height">Fence Height (feet) *</label>
+          <input
+            type="number"
+            id="height"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 6"
+            value={formData.height || ''}
+            onChange={(e) => updateFormData('height', e.target.value)}
+            required
+          />
+          <small>Typical residential fence: 4-6 feet</small>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="sides">Paint/Stain Sides *</label>
+        <select
+          id="sides"
+          value={formData.sides || '1'}
+          onChange={(e) => updateFormData('sides', e.target.value)}
+          required
+        >
+          <option value="1">One Side Only</option>
+          <option value="2">Both Sides</option>
+        </select>
+      </div>
+
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeStaining || false}
+            onChange={(e) => updateFormData('includeStaining', e.target.checked)}
+          />
+          <span>Staining (instead of painting)</span>
+        </label>
+      </div>
+
+      <div className="info-box" style={{
+        background: '#fff9e6',
+        padding: '1rem',
+        borderRadius: '6px',
+        marginTop: '1rem',
+        fontSize: '0.9rem',
+        color: '#856404'
+      }}>
+        <strong>Painting vs Staining:</strong>
+        <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem', marginBottom: 0 }}>
+          <li><strong>Paint:</strong> Solid color, more durable, hides imperfections (2 coats)</li>
+          <li><strong>Stain:</strong> Shows wood grain, natural look, faster application (1 coat)</li>
+        </ul>
+      </div>
+    </div>
+  );
+
+  const renderExteriorRailingsForm = () => (
+    <div className="form-group-container">
+      <h3>Exterior Railings & Porch</h3>
+      <p className="form-help">Measure deck railings, porch railings, and any additional areas</p>
+
+      <div className="form-group">
+        <label htmlFor="railingsLength">Railing Length (linear feet) *</label>
+        <input
+          type="number"
+          id="railingsLength"
+          min="1"
+          step="0.5"
+          placeholder="e.g. 30"
+          value={formData.railingsLength || ''}
+          onChange={(e) => updateFormData('railingsLength', e.target.value)}
+          required
+        />
+        <small>Total length of all exterior railings (deck, porch, patio)</small>
+      </div>
+
+      <h4 style={{ marginTop: '1.5rem' }}>Optional Add-Ons</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includePorchAreas || false}
+            onChange={(e) => updateFormData('includePorchAreas', e.target.checked)}
+          />
+          <span>Include Porch/Deck Posts, Ceiling, or Floor</span>
+        </label>
+      </div>
+
+      {formData.includePorchAreas && (
+        <div className="form-group" style={{ marginTop: '1rem', paddingLeft: '1.5rem', borderLeft: '3px solid #1a1a1a' }}>
+          <label htmlFor="porchArea">Additional Porch/Deck Area (square feet) *</label>
+          <input
+            type="number"
+            id="porchArea"
+            min="0"
+            step="1"
+            placeholder="e.g. 100"
+            value={formData.porchArea || ''}
+            onChange={(e) => updateFormData('porchArea', e.target.value)}
+            required
+          />
+          <small>Include posts, ceiling, or floor area you want painted</small>
+        </div>
+      )}
+
+      <div className="info-box" style={{
+        background: '#e8f5e9',
+        padding: '1rem',
+        borderRadius: '6px',
+        marginTop: '1rem',
+        fontSize: '0.9rem',
+        color: '#2e7d32'
+      }}>
+        <strong>✓ Includes:</strong>
+        <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem', marginBottom: 0 }}>
+          <li>Weather-resistant exterior paint</li>
+          <li>Proper surface prep and priming</li>
+          <li>UV protection for lasting durability</li>
+        </ul>
+      </div>
+    </div>
+  );
+
+  const renderStaircaseForm = () => (
+    <div className="form-group-container">
+      <h3>Staircase Measurements</h3>
+      <p className="form-help">Staircase painting includes difficulty multipliers for safety and access</p>
+
+      <div className="form-group">
+        <label htmlFor="wallArea">Wall Area (square feet)</label>
+        <input
+          type="number"
+          id="wallArea"
+          min="0"
+          step="1"
+          placeholder="e.g. 150"
+          value={formData.wallArea || ''}
+          onChange={(e) => updateFormData('wallArea', e.target.value)}
+        />
+        <small>Stairwell walls only (not including adjacent hallways)</small>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="ceilingArea">Ceiling Area (square feet)</label>
+        <input
+          type="number"
+          id="ceilingArea"
+          min="0"
+          step="1"
+          placeholder="e.g. 80"
+          value={formData.ceilingArea || ''}
+          onChange={(e) => updateFormData('ceilingArea', e.target.value)}
+        />
+        <small>Overhead ceiling above stairs</small>
+      </div>
+
+      <h4 style={{ marginTop: '1.5rem' }}>Optional Add-Ons</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeRailings || false}
+            onChange={(e) => updateFormData('includeRailings', e.target.checked)}
+          />
+          <span>Include Railings/Banisters</span>
+        </label>
+      </div>
+
+      {formData.includeRailings && (
+        <div className="form-group" style={{ marginTop: '1rem', paddingLeft: '1.5rem', borderLeft: '3px solid #1a1a1a' }}>
+          <label htmlFor="railingsLength">Railing Length (linear feet) *</label>
+          <input
+            type="number"
+            id="railingsLength"
+            min="0"
+            step="0.5"
+            placeholder="e.g. 20"
+            value={formData.railingsLength || ''}
+            onChange={(e) => updateFormData('railingsLength', e.target.value)}
+            required
+          />
+          <small>Total length of all railings/banisters</small>
+        </div>
+      )}
+
+      <div className="info-box" style={{
+        background: '#fff3cd',
+        padding: '1rem',
+        borderRadius: '6px',
+        marginTop: '1rem',
+        fontSize: '0.9rem',
+        color: '#856404'
+      }}>
+        <strong>Note:</strong> Staircase painting includes additional labor costs due to:
+        <ul style={{ marginTop: '0.5rem', paddingLeft: '1.5rem' }}>
+          <li>Difficult access and positioning</li>
+          <li>Safety equipment requirements</li>
+          <li>Overhead work on angles</li>
+        </ul>
       </div>
     </div>
   );
@@ -380,14 +1004,21 @@ const CalculatedServiceForm = ({
       case 'ceiling':
         return renderCeilingForm();
       case 'small-bathroom':
-      case 'foyer-entryway':
-        return renderRoomForm();
+        return renderBathroomForm();
+      case 'kitchen-walls':
+        return renderKitchenWallsForm();
+      case 'basement-painting':
+        return renderBasementForm();
       case 'trimming-baseboards':
         return renderBaseboardForm();
-      case 'staircase-railings':
-      case 'deck-railings':
-      case 'small-porch':
-        return renderRailingForm();
+      case 'bedroom-painting':
+        return renderBedroomForm();
+      case 'staircase-painting':
+        return renderStaircaseForm();
+      case 'fence-painting':
+        return renderFenceForm();
+      case 'exterior-railings':
+        return renderExteriorRailingsForm();
       default:
         return <p>Form not implemented for this service</p>;
     }
@@ -400,19 +1031,81 @@ const CalculatedServiceForm = ({
       {estimate && (
         <div className="estimate-preview">
           <div className="estimate-header">
-            <h3>Preliminary Estimate</h3>
-            <div className="estimate-total">{formatCurrency(estimate.totalCost)}</div>
+            <div className="estimate-badge">💰 Your Estimate</div>
+            <div className="estimate-total-section">
+              <div className="estimate-label">Estimated Total</div>
+              <div className="estimate-total">{formatCurrency(estimate.totalCost)}</div>
+              <div className="estimate-subtitle">Professional review pending</div>
+            </div>
           </div>
-          <div className="estimate-breakdown">
-            {estimate.breakdown.map((line, index) => (
-              <div key={index} className="breakdown-line">{line}</div>
-            ))}
+
+          <div className="estimate-details">
+            {/* Time Section */}
+            <div className="estimate-section">
+              <div className="section-title">
+                <span className="section-icon">⏱️</span>
+                <span>Time Required</span>
+              </div>
+              <div className="section-content">
+                <div className="detail-row">
+                  <span>Labor Hours</span>
+                  <span className="detail-value">{estimate.laborHours} hrs</span>
+                </div>
+                <div className="detail-row subtle">
+                  <span>Setup & Cleanup</span>
+                  <span className="detail-value">{estimate.setupCleanupHours} hrs</span>
+                </div>
+                <div className="detail-row total-row">
+                  <span>Total Time</span>
+                  <span className="detail-value">{estimate.totalHours} hrs</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Cost Breakdown */}
+            <div className="estimate-section">
+              <div className="section-title">
+                <span className="section-icon">📊</span>
+                <span>Cost Breakdown</span>
+              </div>
+              <div className="section-content">
+                <div className="detail-row">
+                  <span>Labor ({estimate.totalHours} hrs @ ${RATES.LABOR_RATE}/hr)</span>
+                  <span className="detail-value">{formatCurrency(estimate.laborCost)}</span>
+                </div>
+                <div className="detail-row">
+                  <span>Paint ({estimate.paintGallons} gallons @ ${RATES.PAINT_RATE}/gal)</span>
+                  <span className="detail-value">{formatCurrency(estimate.paintCost)}</span>
+                </div>
+                <div className="detail-row">
+                  <span>Supplies</span>
+                  <span className="detail-value">{formatCurrency(estimate.suppliesCost)}</span>
+                </div>
+                <div className="detail-row">
+                  <span>Other Fees</span>
+                  <span className="detail-value">{formatCurrency(estimate.prepFee + estimate.travelFee)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Total */}
+            <div className="estimate-section estimate-total-box">
+              <div className="detail-row total-final">
+                <span>Total Price</span>
+                <span className="detail-value-large">{formatCurrency(estimate.totalCost)}</span>
+              </div>
+            </div>
           </div>
+
           <div className="estimate-disclaimer">
-            <strong>Note:</strong> This is a preliminary estimate. Final pricing will be confirmed by our professionals after review.
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.93 12.93h-1.86v-1.86h1.86v1.86zm0-3.72H7.07V3.07h1.86v6.14z"/>
+            </svg>
+            <span>This is a preliminary estimate. Final pricing will be confirmed by our professionals after review.</span>
           </div>
+          
           <button className="btn-continue-estimate" onClick={handleContinue}>
-            Continue with This Estimate
+            Continue with This Estimate →
           </button>
         </div>
       )}

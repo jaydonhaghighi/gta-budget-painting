@@ -9,6 +9,8 @@ export interface Service {
   icon: string;
   flatRate?: number; // For flat-rate services
   category: 'interior' | 'exterior' | 'specialty';
+  featured?: boolean; // For bestsellers
+  badge?: 'most-popular' | 'trending' | 'quick-refresh' | 'high-value'; // Badge type
 }
 
 // All Services
@@ -20,7 +22,9 @@ export const allServices: Service[] = [
     description: 'Colour consultation & feature wall repainting for instant impact.',
     type: 'calculated',
     icon: '🎨',
-    category: 'interior'
+    category: 'interior',
+    featured: true,
+    badge: 'trending'
   },
   {
     id: 'ceiling',
@@ -36,15 +40,9 @@ export const allServices: Service[] = [
     description: 'Moisture-tolerant finishes, clean cut lines, and quick turnarounds.',
     type: 'calculated',
     icon: '🚿',
-    category: 'interior'
-  },
-  {
-    id: 'foyer-entryway',
-    name: 'Foyer/Entryway',
-    description: 'High-traffic walls & trim refreshed quickly with durable scuff-resistant paints.',
-    type: 'calculated',
-    icon: '🚪',
-    category: 'interior'
+    category: 'interior',
+    featured: true,
+    badge: 'quick-refresh'
   },
   {
     id: 'trimming-baseboards',
@@ -52,6 +50,40 @@ export const allServices: Service[] = [
     description: 'Gap-free caulking and tough enamel finishes where scuffs happen most.',
     type: 'calculated',
     icon: '📏',
+    category: 'interior'
+  },
+  {
+    id: 'bedroom-painting',
+    name: 'Bedroom(s) Painting',
+    description: 'Complete bedroom painting including walls, ceiling, trim, doors, and windows.',
+    type: 'calculated',
+    icon: '🛏️',
+    category: 'interior',
+    featured: true,
+    badge: 'most-popular'
+  },
+  {
+    id: 'staircase-painting',
+    name: 'Staircase Painting',
+    description: 'Staircase painting with increased labor for difficulty and safety requirements.',
+    type: 'calculated',
+    icon: '🪜',
+    category: 'interior'
+  },
+  {
+    id: 'kitchen-walls',
+    name: 'Kitchen Walls',
+    description: 'High-traffic kitchen walls with durable, scrubbable finishes perfect for cooking spaces.',
+    type: 'calculated',
+    icon: '🍳',
+    category: 'interior'
+  },
+  {
+    id: 'basement-painting',
+    name: 'Basement Painting',
+    description: 'Transform your basement with fresh paint - walls, ceiling, and trim for livable space.',
+    type: 'calculated',
+    icon: '🏠',
     category: 'interior'
   },
   
@@ -66,21 +98,22 @@ export const allServices: Service[] = [
     category: 'interior'
   },
   {
+    id: 'interior-door',
+    name: 'Interior Door',
+    description: 'Single interior door painting including both sides and edges.',
+    type: 'flat-rate',
+    icon: '🚪',
+    flatRate: 89,
+    category: 'interior',
+    featured: true
+  },
+  {
     id: 'front-door',
     name: 'Front Door',
     description: 'Front entry repaints with premium exterior enamel for a flawless finish.',
     type: 'flat-rate',
     icon: '🏠',
     flatRate: 200,
-    category: 'exterior'
-  },
-  {
-    id: 'mailbox-post',
-    name: 'Mailbox and Post',
-    description: 'Quick refresh for mailbox posts & boxes to sharpen first impressions.',
-    type: 'flat-rate',
-    icon: '📮',
-    flatRate: 100,
     category: 'exterior'
   },
   {
@@ -93,47 +126,24 @@ export const allServices: Service[] = [
     category: 'exterior'
   },
   {
-    id: 'small-fence',
-    name: 'Small Fence',
-    description: 'Spot repairs and repaint/stain for compact fence sections.',
-    type: 'flat-rate',
+    id: 'fence-painting',
+    name: 'Fence Painting',
+    description: 'Fence painting/staining for any size - residential fences, privacy panels, and more.',
+    type: 'calculated',
     icon: '🚧',
-    flatRate: 250,
     category: 'exterior'
   },
   
   // Custom Quote Services
   {
-    id: 'cabinet-touchups',
-    name: 'Touch-Ups on Kitchen Cabinets',
-    description: 'Colour-matched cabinet fixes, scratch and chip repair, and sheen blending.',
+    id: 'kitchen-cabinets',
+    name: 'Kitchen Cabinet Painting',
+    description: 'Complete cabinet transformation - doors, frames, and hardware with professional spray or brush finish.',
     type: 'custom-quote',
     icon: '🏺',
-    category: 'interior'
-  },
-  {
-    id: 'fireplace-mantel',
-    name: 'Fire Place Mantel',
-    description: 'Crisp lines & smooth enamel finishes to make your mantel a focal point again.',
-    type: 'custom-quote',
-    icon: '🔥',
-    category: 'interior'
-  },
-  {
-    id: 'builtin-shelving',
-    name: 'Built-in Shelving',
-    description: 'Priming, caulking, and fine-finish spraying or rolling for built-ins.',
-    type: 'custom-quote',
-    icon: '📚',
-    category: 'interior'
-  },
-  {
-    id: 'staircase-railings',
-    name: 'Staircase Railings',
-    description: 'Hand-sand, prime, and repaint/clear-coat for durability and safety.',
-    type: 'calculated',
-    icon: '🪜',
-    category: 'interior'
+    category: 'interior',
+    featured: true,
+    badge: 'high-value'
   },
   {
     id: 'garage-door',
@@ -144,20 +154,22 @@ export const allServices: Service[] = [
     category: 'exterior'
   },
   {
-    id: 'small-porch',
-    name: 'Small Porch',
-    description: 'Rails, posts, ceilings & doors refreshed with weather-tough systems.',
+    id: 'exterior-railings',
+    name: 'Exterior Railings & Porch',
+    description: 'Deck railings, porch rails, posts, and ceilings with weather-resistant finishes.',
     type: 'calculated',
     icon: '🏡',
     category: 'exterior'
   },
+  
+  // Custom Quote
   {
-    id: 'deck-railings',
-    name: 'Deck Railings',
-    description: 'Prep & repaint for wood/metal rails to resist weathering.',
-    type: 'calculated',
-    icon: '🏗️',
-    category: 'exterior'
+    id: 'custom-project',
+    name: 'Custom Project',
+    description: 'Tell us what you need and we\'ll get back to you with a quote within 24 hours.',
+    type: 'custom-quote',
+    icon: '✨',
+    category: 'specialty'
   }
 ];
 
