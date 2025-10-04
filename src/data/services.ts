@@ -104,8 +104,7 @@ export const allServices: Service[] = [
     type: 'flat-rate',
     icon: '🚪',
     flatRate: 89,
-    category: 'interior',
-    featured: true
+    category: 'interior'
   },
   {
     id: 'front-door',

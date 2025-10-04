@@ -32,13 +32,18 @@
   margin-bottom: 2rem;
 }
 
-/* Featured Grid - 5 cards in one row */
+/* Featured Grid Wrapper - Centers the grid */
+.featured-grid-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* Featured Grid - 4 cards in one row */
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 1200px;
 }
 
 /* Featured Card Styling */
@@ -54,7 +59,18 @@
 .featured-card:hover {
   transform: translateY(-8px) scale(1.02) !important;
   box-shadow: 0 12px 32px rgba(240, 193, 75, 0.25) !important;
-  border-color: #f0c14b !important;
+  animation: borderPulse 1.5s ease-in-out infinite !important;
+}
+
+@keyframes borderPulse {
+  0%, 100% {
+    border-color: #f0c14b;
+    box-shadow: 0 12px 32px rgba(240, 193, 75, 0.25);
+  }
+  50% {
+    border-color: #ffd700;
+    box-shadow: 0 12px 32px rgba(255, 215, 0, 0.4);
+  }
 }
 
 /* Featured Badge */
@@ -68,7 +84,6 @@
   font-weight: 700;
   color: white;
   z-index: 10;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 .featured-badge.most-popular {
@@ -89,15 +104,6 @@
 .featured-badge.high-value {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
 }
 
 /* All Services Section */
@@ -128,10 +134,15 @@
   margin: 0 auto;
 }
 
+/* Custom Project Card - Full Width */
+.custom-project-card {
+  grid-column: 1 / -1;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 1280px) {
   .featured-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
 

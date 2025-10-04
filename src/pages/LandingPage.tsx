@@ -11,7 +11,8 @@ const LandingPage = () => {
 
   // Separate featured and other services
   const featuredServices = allServices.filter(s => s.featured);
-  const otherServices = allServices.filter(s => !s.featured);
+  const customProject = allServices.find(s => s.id === 'custom-project');
+  const otherServices = allServices.filter(s => !s.featured && s.id !== 'custom-project');
 
   const getBadgeLabel = (badge?: string) => {
     switch (badge) {
@@ -79,8 +80,10 @@ const LandingPage = () => {
           <h2>🏆 Most Popular Services</h2>
           <p className="section-subtitle">Our best-selling services trusted by thousands of GTA homeowners</p>
           
-          <div className="services-grid featured-grid">
-            {featuredServices.map((service) => renderServiceCard(service, true))}
+          <div className="featured-grid-wrapper">
+            <div className="services-grid featured-grid">
+              {featuredServices.map((service) => renderServiceCard(service, true))}
+            </div>
           </div>
         </div>
       </section>
@@ -93,6 +96,19 @@ const LandingPage = () => {
           
           <div className="services-grid">
             {otherServices.map((service) => renderServiceCard(service, false))}
+            
+            {/* Custom Project Card - Full Width */}
+            {customProject && (
+              <div
+                className="service-card custom-project-card"
+                onClick={() => handleServiceClick('custom-project')}
+              >
+                <span className="service-icon">{customProject.icon}</span>
+                <h3>{customProject.name}</h3>
+                <p>{customProject.description}</p>
+                <div className="service-badge">Custom Quote</div>
+              </div>
+            )}
           </div>
         </div>
       </section>
