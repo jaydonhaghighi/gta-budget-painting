@@ -1,12 +1,36 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { allServices } from '../data/services';
+import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [showPostalVerification, setShowPostalVerification] = useState(false);
+  const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
 
   const handleServiceClick = (serviceId: string) => {
-    navigate(`/services/${serviceId}`);
+    // Check if user is already verified
+    if (isPostalCodeVerified()) {
+      navigate(`/services/${serviceId}`);
+    } else {
+      // Show verification popup
+      setPendingServiceId(serviceId);
+      setShowPostalVerification(true);
+    }
+  };
+
+  const handlePostalVerificationClose = () => {
+    setShowPostalVerification(false);
+    setPendingServiceId(null);
+  };
+
+  const handlePostalVerificationSuccess = () => {
+    setShowPostalVerification(false);
+    if (pendingServiceId) {
+      navigate(`/services/${pendingServiceId}`);
+    }
+    setPendingServiceId(null);
   };
 
   // Separate featured and other services
@@ -103,6 +127,13 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Postal Code Verification Modal */}
+      <PostalCodeVerification
+        isOpen={showPostalVerification}
+        onClose={handlePostalVerificationClose}
+        onVerified={handlePostalVerificationSuccess}
+      />
     </div>
   );
 };
