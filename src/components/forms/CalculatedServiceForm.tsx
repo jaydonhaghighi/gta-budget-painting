@@ -21,6 +21,7 @@ interface CalculatedServiceFormProps {
   initialEstimate?: EstimateBreakdown | null;
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
   onFormDataChange?: (formData: any) => void; // NEW: Callback for every form change
+  onAddToCart?: (estimate: EstimateBreakdown, formData: any) => void;
 }
 
 const CalculatedServiceForm = ({ 
@@ -28,7 +29,8 @@ const CalculatedServiceForm = ({
   initialFormData = {}, 
   initialEstimate = null,
   onEstimateCalculated,
-  onFormDataChange 
+  onFormDataChange,
+  onAddToCart,
 }: CalculatedServiceFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
@@ -1197,9 +1199,15 @@ const CalculatedServiceForm = ({
             <span>This is a preliminary estimate. Final pricing will be confirmed by our professionals after review.</span>
           </div>
           
-          <button className="btn-continue-estimate" onClick={handleContinue}>
-            Continue with This Estimate →
-          </button>
+          <div className="estimate-actions">
+            <button className="btn-secondary" onClick={(e) => {
+              e.preventDefault()
+              if (estimate && onAddToCart) onAddToCart(estimate, formData)
+            }}>Add to Cart</button>
+            <button className="btn-continue-estimate" onClick={handleContinue}>
+              Continue with This Estimate
+            </button>
+          </div>
         </div>
       )}
     </div>
