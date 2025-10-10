@@ -17,12 +17,7 @@ import type { ServiceRequest, ServiceRequestSubmission } from '../types/ServiceR
 
 const SERVICE_REQUESTS_COLLECTION = 'serviceRequests';
 
-// Generate a unique ID for the service request
-const generateServiceRequestId = (): string => {
-  const timestamp = Date.now().toString(36);
-  const random = Math.random().toString(36).substring(2, 8);
-  return `SR-${timestamp}-${random}`.toUpperCase();
-};
+// (Removed) generateServiceRequestId was unused after switching to Firestore auto IDs
 
 // Submit a new service request to Firestore
 export const submitServiceRequest = async (submission: ServiceRequestSubmission): Promise<string> => {
