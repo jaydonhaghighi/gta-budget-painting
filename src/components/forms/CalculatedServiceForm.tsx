@@ -22,6 +22,7 @@ interface CalculatedServiceFormProps {
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
   onFormDataChange?: (formData: any) => void; // NEW: Callback for every form change
   onAddToCart?: (estimate: EstimateBreakdown, formData: any) => void;
+  onSaveEdit?: (estimate: EstimateBreakdown, formData: any) => void;
   isEditMode?: boolean;
 }
 
@@ -32,6 +33,7 @@ const CalculatedServiceForm = ({
   onEstimateCalculated,
   onFormDataChange,
   onAddToCart,
+  onSaveEdit,
   isEditMode = false,
 }: CalculatedServiceFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
@@ -1206,7 +1208,7 @@ const CalculatedServiceForm = ({
               <>
                 <button className="btn-secondary" onClick={(e) => {
                   e.preventDefault()
-                  if (estimate && onAddToCart) onAddToCart(estimate, formData)
+                  if (estimate && onSaveEdit) onSaveEdit(estimate, formData)
                 }}>Save Changes</button>
                 <button className="btn-continue-estimate" onClick={(e) => { e.preventDefault(); window.history.back() }}>
                   Cancel

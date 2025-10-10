@@ -7,7 +7,7 @@ import {onRequest} from "firebase-functions/v2/https";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {Resend} from "resend";
-import {generateCustomerEmail, generateAdminEmail} from "./emailTemplates";
+import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail} from "./emailTemplates";
 
 // Set global options for cost control
 setGlobalOptions({maxInstances: 10});
@@ -38,29 +38,51 @@ export const sendServiceRequestEmails = onRequest(
       // Convert createdAt string back to Date object
       serviceRequestData.createdAt = new Date(serviceRequestData.createdAt);
 
+      // Check if this is a cart order (has lineItems) or single service
+      const isCartOrder = serviceRequestData.lineItems && Array.isArray(serviceRequestData.lineItems);
+
       logger.info("Sending service request emails", {
         requestId: serviceRequestData.requestId,
         customerEmail: serviceRequestData.customerInfo.email,
+        isCartOrder: isCartOrder,
+        itemCount: isCartOrder ? serviceRequestData.lineItems.length : 1
       });
 
-      // Send customer confirmation email
-      const customerEmail = await resend.emails.send({
-        from: "GTA Budget Painting <onboarding@resend.dev>",
-        to: serviceRequestData.customerInfo.email,
-        subject: `Service Request Confirmed - ${serviceRequestData.serviceName}`,
-        html: generateCustomerEmail(serviceRequestData),
-      });
+      let customerEmail, adminEmail;
+
+      if (isCartOrder) {
+        // Cart order emails
+        customerEmail = await resend.emails.send({
+          from: "GTA Budget Painting <onboarding@resend.dev>",
+          to: serviceRequestData.customerInfo.email,
+          subject: `Order Confirmed - ${serviceRequestData.lineItems.length} Service${serviceRequestData.lineItems.length > 1 ? 's' : ''}`,
+          html: generateCartCustomerEmail(serviceRequestData),
+        });
+
+        adminEmail = await resend.emails.send({
+          from: "GTA Budget Painting System <onboarding@resend.dev>",
+          to: "info@gtabudgetpainting.ca",
+          subject: `🛒 New Cart Order: ${serviceRequestData.lineItems.length} Service${serviceRequestData.lineItems.length > 1 ? 's' : ''} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
+          html: generateCartAdminEmail(serviceRequestData),
+        });
+      } else {
+        // Single service emails
+        customerEmail = await resend.emails.send({
+          from: "GTA Budget Painting <onboarding@resend.dev>",
+          to: serviceRequestData.customerInfo.email,
+          subject: `Service Request Confirmed - ${serviceRequestData.serviceName}`,
+          html: generateCustomerEmail(serviceRequestData),
+        });
+
+        adminEmail = await resend.emails.send({
+          from: "GTA Budget Painting System <onboarding@resend.dev>",
+          to: "info@gtabudgetpainting.ca",
+          subject: `🔔 New Service Request: ${serviceRequestData.serviceName}`,
+          html: generateAdminEmail(serviceRequestData),
+        });
+      }
 
       logger.info("Customer email sent", {emailId: customerEmail.data?.id});
-
-      // Send admin notification email
-      const adminEmail = await resend.emails.send({
-        from: "GTA Budget Painting System <onboarding@resend.dev>",
-        to: "info@gtabudgetpainting.ca",
-        subject: `🔔 New Service Request: ${serviceRequestData.serviceName}`,
-        html: generateAdminEmail(serviceRequestData),
-      });
-
       logger.info("Admin email sent", {emailId: adminEmail.data?.id});
 
       // Return success response

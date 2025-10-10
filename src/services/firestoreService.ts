@@ -20,57 +20,99 @@ const SERVICE_REQUESTS_COLLECTION = 'serviceRequests';
 // (Removed) generateServiceRequestId was unused after switching to Firestore auto IDs
 
 // Submit a new service request to Firestore
-export const submitServiceRequest = async (submission: ServiceRequestSubmission): Promise<string> => {
+export const submitServiceRequest = async (submission: ServiceRequestSubmission | any): Promise<string> => {
   try {
-    
-    const serviceRequest: Omit<ServiceRequest, 'id'> = {
-      serviceId: submission.serviceId,
-      serviceName: getServiceName(submission.serviceId),
-      serviceType: getServiceType(submission.serviceId),
-      customerInfo: submission.customerInfo,
-      estimate: submission.estimate,
-      formData: submission.formData,
-      customProjectDetails: submission.customProjectDetails,
-      status: 'pending',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      source: 'website',
-      priority: determinePriority(submission),
-    };
+    // Check if this is a cart submission (has lineItems)
+    if (submission.lineItems && Array.isArray(submission.lineItems)) {
+      // Cart submission with multiple line items
+      const firestoreData: any = {
+        customerInfo: submission.customerInfo,
+        lineItems: submission.lineItems,
+        totals: submission.totals,
+        status: 'pending',
+        createdAt: Timestamp.fromDate(submission.createdAt),
+        updatedAt: Timestamp.fromDate(new Date()),
+        source: 'website',
+        priority: determineCartPriority(submission.totals),
+        type: 'cart-order'
+      };
 
-    // Filter out undefined values for Firestore
-    const firestoreData: any = {
-      serviceId: serviceRequest.serviceId,
-      serviceName: serviceRequest.serviceName,
-      serviceType: serviceRequest.serviceType,
-      customerInfo: serviceRequest.customerInfo,
-      formData: serviceRequest.formData,
-      status: serviceRequest.status,
-      createdAt: Timestamp.fromDate(serviceRequest.createdAt),
-      updatedAt: Timestamp.fromDate(serviceRequest.updatedAt),
-      source: serviceRequest.source,
-      priority: serviceRequest.priority,
-    };
+      // Add scheduled date range if provided
+      if (submission.scheduledDate) {
+        firestoreData.scheduledDate = {
+          earliestStart: Timestamp.fromDate(submission.scheduledDate.earliestStart),
+          latestFinish: Timestamp.fromDate(submission.scheduledDate.latestFinish)
+        };
+      }
 
-    // Only add estimate if it exists
-    if (serviceRequest.estimate) {
-      firestoreData.estimate = serviceRequest.estimate;
+      // Filter out undefined values for Firestore
+      const filteredData = Object.fromEntries(
+        Object.entries(firestoreData).filter(([_, value]) => value !== undefined)
+      );
+
+      // Also filter lineItems array to remove any items with undefined values
+      if (filteredData.lineItems && Array.isArray(filteredData.lineItems)) {
+        filteredData.lineItems = filteredData.lineItems.map((item: any) => {
+          return Object.fromEntries(
+            Object.entries(item).filter(([_, value]) => value !== undefined)
+          );
+        });
+      }
+
+      const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), filteredData);
+      console.log('Cart order submitted successfully:', docRef.id);
+      return docRef.id;
+    } else {
+      // Single service submission (legacy)
+      const serviceRequest: Omit<ServiceRequest, 'id'> = {
+        serviceId: submission.serviceId,
+        serviceName: getServiceName(submission.serviceId),
+        serviceType: getServiceType(submission.serviceId),
+        customerInfo: submission.customerInfo,
+        estimate: submission.estimate,
+        formData: submission.formData,
+        customProjectDetails: submission.customProjectDetails,
+        status: 'pending',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        source: 'website',
+        priority: determinePriority(submission),
+      };
+
+      // Filter out undefined values for Firestore
+      const firestoreData: any = {
+        serviceId: serviceRequest.serviceId,
+        serviceName: serviceRequest.serviceName,
+        serviceType: serviceRequest.serviceType,
+        customerInfo: serviceRequest.customerInfo,
+        formData: serviceRequest.formData,
+        status: serviceRequest.status,
+        createdAt: Timestamp.fromDate(serviceRequest.createdAt),
+        updatedAt: Timestamp.fromDate(serviceRequest.updatedAt),
+        source: serviceRequest.source,
+        priority: serviceRequest.priority,
+        type: 'single-service'
+      };
+
+      // Only add estimate if it exists
+      if (serviceRequest.estimate) {
+        firestoreData.estimate = serviceRequest.estimate;
+      }
+
+      // Only add customProjectDetails if it exists
+      if (serviceRequest.customProjectDetails) {
+        firestoreData.customProjectDetails = serviceRequest.customProjectDetails;
+      }
+
+      // Only add scheduledDate if it exists
+      if (submission.customProjectDetails?.timeline) {
+        firestoreData.scheduledDate = Timestamp.fromDate(new Date(submission.customProjectDetails.timeline));
+      }
+
+      const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), firestoreData);
+      console.log('Service request submitted successfully:', docRef.id);
+      return docRef.id;
     }
-
-    // Only add customProjectDetails if it exists
-    if (serviceRequest.customProjectDetails) {
-      firestoreData.customProjectDetails = serviceRequest.customProjectDetails;
-    }
-
-    // Only add scheduledDate if it exists
-    if (submission.customProjectDetails?.timeline) {
-      firestoreData.scheduledDate = Timestamp.fromDate(new Date(submission.customProjectDetails.timeline));
-    }
-
-    const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), firestoreData);
-
-    console.log('Service request submitted successfully:', docRef.id);
-    return docRef.id;
   } catch (error) {
     console.error('Error submitting service request:', error);
     throw new Error('Failed to submit service request. Please try again.');
@@ -241,6 +283,19 @@ const determinePriority = (submission: ServiceRequestSubmission): 'low' | 'mediu
   
   if (submission.estimate && submission.estimate.totalCost > 1000) {
     return 'medium'; // Medium-value projects
+  }
+  
+  return 'low'; // Standard priority
+};
+
+const determineCartPriority = (totals: any): 'low' | 'medium' | 'high' => {
+  // Determine priority based on cart total value
+  if (totals.grandTotal > 2000) {
+    return 'high'; // High-value orders
+  }
+  
+  if (totals.grandTotal > 1000) {
+    return 'medium'; // Medium-value orders
   }
   
   return 'low'; // Standard priority

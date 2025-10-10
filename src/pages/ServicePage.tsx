@@ -356,23 +356,6 @@ const ServicePage = () => {
                       otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
                       subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
                     };
-                    if (editId) {
-                      const cartEstimate = {
-                        totalCost: est.totalCost,
-                        laborHours: est.laborHours,
-                        totalHours: est.totalHours,
-                        setupCleanupHours: est.setupCleanupHours,
-                        paintGallons: est.paintGallons,
-                        paintCost: est.paintCost,
-                        laborCost: est.laborCost,
-                        suppliesCost: est.suppliesCost,
-                        otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
-                        subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
-                      };
-                      updateItem(editId, { formData: data, estimate: cartEstimate })
-                      navigate('/cart')
-                      return
-                    }
                     addItem({
                       serviceId: service.id,
                       serviceName: service.name,
@@ -388,6 +371,24 @@ const ServicePage = () => {
                     setFormData({});
                     setStep('service-form');
                     navigate('/');
+                  }}
+                  onSaveEdit={(est, data) => {
+                    const cartEstimate = {
+                      totalCost: est.totalCost,
+                      laborHours: est.laborHours,
+                      totalHours: est.totalHours,
+                      setupCleanupHours: est.setupCleanupHours,
+                      paintGallons: est.paintGallons,
+                      paintCost: est.paintCost,
+                      laborCost: est.laborCost,
+                      suppliesCost: est.suppliesCost,
+                      otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
+                      subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
+                    };
+                    if (editId) {
+                      updateItem(editId, { formData: data, estimate: cartEstimate })
+                      navigate('/cart')
+                    }
                   }}
                 />
               )}
