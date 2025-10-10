@@ -79,6 +79,3 @@ export interface ServiceRequestSubmission {
     timeline?: string;
   };
 }
-
-// Export types as a namespace for easier importing
-export type { ServiceRequest, ServiceRequestSubmission };

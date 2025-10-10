@@ -27,7 +27,6 @@ const generateServiceRequestId = (): string => {
 // Submit a new service request to Firestore
 export const submitServiceRequest = async (submission: ServiceRequestSubmission): Promise<string> => {
   try {
-    const serviceRequestId = generateServiceRequestId();
     
     const serviceRequest: Omit<ServiceRequest, 'id'> = {
       serviceId: submission.serviceId,

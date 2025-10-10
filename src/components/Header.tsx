@@ -15,7 +15,7 @@ function CartIcon({ count }: { count: number }) {
 }
 
 function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const { cart, totals, removeItem, clear } = useCart()
+  const { cart, totals, removeItem } = useCart()
   const navigate = useNavigate()
   return (
     <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
