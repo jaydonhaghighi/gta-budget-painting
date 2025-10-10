@@ -55,14 +55,14 @@ export const sendServiceRequestEmails = onRequest(
         customerEmail = await resend.emails.send({
           from: "GTA Budget Painting <onboarding@resend.dev>",
           to: serviceRequestData.customerInfo.email,
-          subject: `Order Confirmed - ${serviceRequestData.lineItems.length} Service${serviceRequestData.lineItems.length > 1 ? 's' : ''}`,
+          subject: `Your Order #${serviceRequestData.requestId} Has Been Received`,
           html: generateCartCustomerEmail(serviceRequestData),
         });
 
         adminEmail = await resend.emails.send({
           from: "GTA Budget Painting System <onboarding@resend.dev>",
           to: "info@gtabudgetpainting.ca",
-          subject: `🛒 New Cart Order: ${serviceRequestData.lineItems.length} Service${serviceRequestData.lineItems.length > 1 ? 's' : ''} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
+          subject: `🛒 New Cart Order #${serviceRequestData.requestId} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
           html: generateCartAdminEmail(serviceRequestData),
         });
       } else {
@@ -70,14 +70,14 @@ export const sendServiceRequestEmails = onRequest(
         customerEmail = await resend.emails.send({
           from: "GTA Budget Painting <onboarding@resend.dev>",
           to: serviceRequestData.customerInfo.email,
-          subject: `Service Request Confirmed - ${serviceRequestData.serviceName}`,
+          subject: `Your Service Request #${serviceRequestData.requestId} Has Been Received`,
           html: generateCustomerEmail(serviceRequestData),
         });
 
         adminEmail = await resend.emails.send({
           from: "GTA Budget Painting System <onboarding@resend.dev>",
           to: "info@gtabudgetpainting.ca",
-          subject: `🔔 New Service Request: ${serviceRequestData.serviceName}`,
+          subject: `🔔 New Service Request #${serviceRequestData.requestId} - ${serviceRequestData.serviceName}`,
           html: generateAdminEmail(serviceRequestData),
         });
       }
