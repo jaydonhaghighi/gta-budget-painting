@@ -54,7 +54,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: #a6b2b5; padding: 40px 30px; text-align: center;">
-                    <img src="https://gtabudgetpainting.com/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 16px;" />
+                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 16px;" />
                     <p style="margin: 0; color: #ffffff; font-size: 14px; opacity: 0.9;">Professional Painting Services in the GTA</p>
                   </td>
                 </tr>
@@ -258,7 +258,7 @@ export const generateCartCustomerEmail = (data: any): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: #2b2b2b; padding: 24px 32px; text-align: center;">
-                    <img src="https://gtabudgetpainting.com/logo_BW.png" alt="GTA Budget Painting" style="height: 60px; width: auto; margin-bottom: 12px;" />
+                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 60px; width: auto; margin-bottom: 12px;" />
                     <p style="margin: 0; color: #a6b2b5; font-size: 13px; font-weight: 400;">Professional Painting Services</p>
                   </td>
                 </tr>
@@ -408,7 +408,7 @@ export const generateCartAdminEmail = (data: any): string => {
                 <!-- Alert Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 20px 32px; text-align: center;">
-                    <img src="https://gtabudgetpainting.com/logo_BW.png" alt="GTA Budget Painting" style="height: 50px; width: auto; margin-bottom: 8px; filter: brightness(0) invert(1);" />
+                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 50px; width: auto; margin-bottom: 8px; filter: brightness(0) invert(1);" />
                     <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">🚨 NEW CART ORDER</h1>
                     <p style="margin: 4px 0 0; color: #ffffff; font-size: 14px; opacity: 0.9;">${lineItems.length} service${lineItems.length > 1 ? 's' : ''} • $${totals.grandTotal.toFixed(2)}</p>
                   </td>
@@ -588,7 +588,7 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 30px; text-align: center;">
-                    <img src="https://gtabudgetpainting.com/logo_BW.png" alt="GTA Budget Painting" style="height: 60px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1);" />
+                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 60px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1);" />
                     <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 700;">🔔 New Service Request</h1>
                     <p style="margin: 10px 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">${serviceName}</p>
                   </td>
