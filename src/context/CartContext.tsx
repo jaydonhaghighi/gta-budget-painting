@@ -18,6 +18,7 @@ export type CartItem = {
     otherFees: number // includes travel (hidden)
     subtotal: number
   }
+  customProjectDetails?: any // optional for custom projects
   createdAt: number
 }
 

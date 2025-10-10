@@ -246,173 +246,92 @@ export const generateCartCustomerEmail = (data: any): string => {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order Confirmation</title>
+        <title>Order Confirmation - GTA Budget Painting</title>
       </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fa;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f7fa; padding: 20px;">
+      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; padding: 20px;">
           <tr>
             <td align="center">
-              <!-- Main Container -->
-              <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              <!-- Invoice Container -->
+              <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 
                 <!-- Header -->
                 <tr>
-                  <td style="background: #a6b2b5; padding: 40px 30px; text-align: center;">
-                    <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 600;">GTA Budget Painting</h1>
-                    <p style="margin: 10px 0 0; color: #ffffff; font-size: 14px; opacity: 0.9;">Professional Painting Services in the GTA</p>
+                  <td style="background: #2b2b2b; padding: 24px 32px; text-align: center;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700; letter-spacing: 0.5px;">GTA BUDGET PAINTING</h1>
+                    <p style="margin: 4px 0 0; color: #a6b2b5; font-size: 13px; font-weight: 400;">Professional Painting Services</p>
                   </td>
                 </tr>
 
-                <!-- Success Banner -->
+                <!-- Invoice Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 30px; text-align: center;">
-                    <div style="display: inline-block; background-color: #10b981; border-radius: 50%; width: 60px; height: 60px; line-height: 60px; margin-bottom: 15px;">
-                      <span style="font-size: 32px; color: white;">✓</span>
-                    </div>
-                    <h2 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">Order Received!</h2>
-                    <p style="margin: 10px 0 0; color: #e7e6e3; font-size: 16px;">Thank you for choosing GTA Budget Painting</p>
-                  </td>
-                </tr>
-
-                <!-- Content -->
-                <tr>
-                  <td style="padding: 40px 30px;">
-                    <p style="margin: 0 0 20px; color: #4a5355; font-size: 16px; line-height: 1.6;">
-                      Hi ${customerInfo.firstName},
-                    </p>
-                    
-                    <p style="margin: 0 0 25px; color: #4a5355; font-size: 16px; line-height: 1.6;">
-                      We've received your order for <strong>${lineItems.length} service${lineItems.length > 1 ? 's' : ''}</strong> and our team will review it shortly. Here's a summary of your order:
-                    </p>
-
-                    <!-- Order Details -->
-                    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f7fa; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+                  <td style="padding: 24px 32px 16px; background: #ffffff;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td>
-                          <table width="100%" cellpadding="8" cellspacing="0">
-                            <tr>
-                              <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Order ID:</td>
-                              <td style="color: #4a5355; font-size: 14px; text-align: right;">${requestId}</td>
-                            </tr>
-                            <tr>
-                              <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Date:</td>
-                              <td style="color: #4a5355; font-size: 14px; text-align: right;">${createdAt.toLocaleDateString()}</td>
-                            </tr>
-                            <tr>
-                              <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Services:</td>
-                              <td style="color: #4a5355; font-size: 14px; text-align: right;">${lineItems.length} item${lineItems.length > 1 ? 's' : ''}</td>
-                            </tr>
-                          </table>
+                        <td style="width: 50%; vertical-align: top;">
+                          <h2 style="margin: 0 0 8px; color: #1a1a1a; font-size: 18px; font-weight: 600;">ORDER CONFIRMATION</h2>
+                          <p style="margin: 0; color: #6b7577; font-size: 13px;">Order #${requestId}</p>
+                          <p style="margin: 4px 0 0; color: #6b7577; font-size: 13px;">${createdAt.toLocaleDateString()}</p>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; text-align: right;">
+                          <p style="margin: 0 0 4px; color: #6b7577; font-size: 13px; font-weight: 600;">Bill To:</p>
+                          <p style="margin: 0; color: #1a1a1a; font-size: 14px; font-weight: 600;">${customerInfo.firstName} ${customerInfo.lastName}</p>
+                          <p style="margin: 2px 0 0; color: #4a5355; font-size: 13px;">${customerInfo.email}</p>
+                          <p style="margin: 2px 0 0; color: #4a5355; font-size: 13px;">${customerInfo.phone}</p>
                         </td>
                       </tr>
                     </table>
+                  </td>
+                </tr>
 
-                    <!-- Services List -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 20px; font-weight: 600;">Your Services</h3>
-                    ${lineItems.map((item: any, index: number) => `
-                      <table width="100%" cellpadding="0" cellspacing="0" style="border: 2px solid #a6b2b5; border-radius: 8px; margin-bottom: 15px;">
+                <!-- Services Table -->
+                <tr>
+                  <td style="padding: 0 32px 24px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e5e7eb;">
+                      <!-- Table Header -->
+                      <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Service</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; text-align: right;">Amount</td>
+                      </tr>
+                      
+                      <!-- Service Items -->
+                      ${lineItems.map((item: any, index: number) => `
                         <tr>
-                          <td style="padding: 15px;">
-                            <h4 style="margin: 0 0 10px; color: #1a1a1a; font-size: 16px; font-weight: 600;">${index + 1}. ${item.serviceName}</h4>
-                            ${item.estimate ? `
-                              <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                  <td style="color: #4a5355; font-size: 14px;">Estimated Cost:</td>
-                                  <td style="color: #1a1a1a; font-size: 14px; font-weight: 600; text-align: right;">$${item.estimate.totalCost.toFixed(2)}</td>
-                                </tr>
-                              </table>
-                            ` : ''}
-                          </td>
+                          <td style="padding: 16px; border-bottom: 1px solid #f3f4f6; color: #1a1a1a; font-size: 14px; font-weight: 500;">${item.serviceName}</td>
+                          <td style="padding: 16px; border-bottom: 1px solid #f3f4f6; color: #1a1a1a; font-size: 14px; font-weight: 600; text-align: right;">$${item.estimate ? item.estimate.totalCost.toFixed(2) : '0.00'}</td>
                         </tr>
-                      </table>
-                    `).join('')}
+                      `).join('')}
+                    </table>
+                  </td>
+                </tr>
 
-                    <!-- Order Total -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 20px; font-weight: 600;">Order Summary</h3>
-                    <table width="100%" cellpadding="0" cellspacing="0" style="border: 2px solid #a6b2b5; border-radius: 8px; overflow: hidden; margin-bottom: 25px;">
+                <!-- Totals -->
+                <tr>
+                  <td style="padding: 0 32px 24px;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="background-color: #f5f7fa; padding: 15px;">
-                          <table width="100%" cellpadding="8" cellspacing="0">
+                        <td style="width: 70%;"></td>
+                        <td style="width: 30%;">
+                          <table width="100%" cellpadding="0" cellspacing="0">
                             <tr>
-                              <td style="color: #4a5355; font-size: 14px;">Subtotal:</td>
-                              <td style="color: #4a5355; font-size: 14px; text-align: right;">$${totals.itemsSubtotal.toFixed(2)}</td>
+                              <td style="padding: 8px 0; color: #6b7577; font-size: 14px;">Subtotal:</td>
+                              <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; font-weight: 500; text-align: right;">$${totals.itemsSubtotal.toFixed(2)}</td>
                             </tr>
                             ${totals.travelFeeAdjustment > 0 ? `
                             <tr>
-                              <td style="color: #4a5355; font-size: 14px;">Travel Adjustment:</td>
-                              <td style="color: #4a5355; font-size: 14px; text-align: right;">+$${totals.travelFeeAdjustment.toFixed(2)}</td>
+                              <td style="padding: 8px 0; color: #6b7577; font-size: 14px;">Travel Fee:</td>
+                              <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; font-weight: 500; text-align: right;">$${totals.travelFeeAdjustment.toFixed(2)}</td>
                             </tr>
                             ` : ''}
                             ${totals.discount > 0 ? `
                             <tr>
-                              <td style="color: #10b981; font-size: 14px; font-weight: 600;">Discount (15%):</td>
-                              <td style="color: #10b981; font-size: 14px; font-weight: 600; text-align: right;">-$${totals.discount.toFixed(2)}</td>
+                              <td style="padding: 8px 0; color: #10b981; font-size: 14px; font-weight: 600;">Discount (15%):</td>
+                              <td style="padding: 8px 0; color: #10b981; font-size: 14px; font-weight: 600; text-align: right;">-$${totals.discount.toFixed(2)}</td>
                             </tr>
                             ` : ''}
-                            <tr style="border-top: 2px solid #a6b2b5;">
-                              <td style="color: #1a1a1a; font-size: 18px; font-weight: 700; padding-top: 12px;">Total:</td>
-                              <td style="color: #1a1a1a; font-size: 18px; font-weight: 700; text-align: right; padding-top: 12px;">$${totals.grandTotal.toFixed(2)}</td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                    </table>
-
-                    <!-- Next Steps -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 20px; font-weight: 600;">What Happens Next?</h3>
-                    <table width="100%" cellpadding="0" cellspacing="0">
-                      <tr>
-                        <td style="padding: 12px 0;">
-                          <table cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td style="width: 30px; vertical-align: top;">
-                                <div style="background-color: #a6b2b5; color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">1</div>
-                              </td>
-                              <td style="padding-left: 12px; color: #4a5355; font-size: 14px; line-height: 1.6;">
-                                Our team will review your order within 24 hours
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 12px 0;">
-                          <table cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td style="width: 30px; vertical-align: top;">
-                                <div style="background-color: #a6b2b5; color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">2</div>
-                              </td>
-                              <td style="padding-left: 12px; color: #4a5355; font-size: 14px; line-height: 1.6;">
-                                You'll receive a detailed quote via ${customerInfo.preferredContact}
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 12px 0;">
-                          <table cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td style="width: 30px; vertical-align: top;">
-                                <div style="background-color: #a6b2b5; color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">3</div>
-                              </td>
-                              <td style="padding-left: 12px; color: #4a5355; font-size: 14px; line-height: 1.6;">
-                                Once approved, we'll schedule your services at convenient times
-                              </td>
-                            </tr>
-                          </table>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 12px 0;">
-                          <table cellpadding="0" cellspacing="0">
-                            <tr>
-                              <td style="width: 30px; vertical-align: top;">
-                                <div style="background-color: #a6b2b5; color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">4</div>
-                              </td>
-                              <td style="padding-left: 12px; color: #4a5355; font-size: 14px; line-height: 1.6;">
-                                Our professional team completes your projects to perfection!
-                              </td>
+                            <tr style="border-top: 2px solid #1a1a1a;">
+                              <td style="padding: 12px 0 8px; color: #1a1a1a; font-size: 16px; font-weight: 700;">TOTAL:</td>
+                              <td style="padding: 12px 0 8px; color: #1a1a1a; font-size: 16px; font-weight: 700; text-align: right;">$${totals.grandTotal.toFixed(2)}</td>
                             </tr>
                           </table>
                         </td>
@@ -421,16 +340,28 @@ export const generateCartCustomerEmail = (data: any): string => {
                   </td>
                 </tr>
 
-                <!-- Contact Section -->
+                <!-- Status & Next Steps -->
                 <tr>
-                  <td style="background-color: #f5f7fa; padding: 30px; text-align: center;">
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 600;">Need to Make Changes?</h3>
-                    <p style="margin: 0 0 20px; color: #4a5355; font-size: 14px;">Contact us anytime and we'll be happy to help!</p>
+                  <td style="padding: 24px 32px; background-color: #f8f9fa; border-top: 1px solid #e5e7eb;">
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td align="center">
-                          <a href="tel:6473907181" style="display: inline-block; padding: 12px 24px; background-color: #a6b2b5; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">📞 Call (647) 390-7181</a>
-                          <a href="mailto:info@gtabudgetpainting.com" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">✉️ Email Us</a>
+                        <td style="width: 60%; vertical-align: top;">
+                          <h3 style="margin: 0 0 12px; color: #1a1a1a; font-size: 16px; font-weight: 600;">Order Status</h3>
+                          <p style="margin: 0 0 8px; color: #4a5355; font-size: 14px; line-height: 1.5;">
+                            <strong>✓ Order Received</strong> - We've received your order and our team will review it within 24 hours.
+                          </p>
+                          <p style="margin: 0; color: #4a5355; font-size: 14px; line-height: 1.5;">
+                            You'll receive a detailed quote via ${customerInfo.preferredContact} once reviewed.
+                          </p>
+                        </td>
+                        <td style="width: 40%; vertical-align: top; text-align: right;">
+                          <h3 style="margin: 0 0 12px; color: #1a1a1a; font-size: 16px; font-weight: 600;">Contact Us</h3>
+                          <p style="margin: 0 0 4px; color: #4a5355; font-size: 14px;">
+                            <a href="tel:6473907181" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">(647) 390-7181</a>
+                          </p>
+                          <p style="margin: 0; color: #4a5355; font-size: 14px;">
+                            <a href="mailto:info@gtabudgetpainting.com" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">info@gtabudgetpainting.com</a>
+                          </p>
                         </td>
                       </tr>
                     </table>
@@ -439,12 +370,10 @@ export const generateCartCustomerEmail = (data: any): string => {
 
                 <!-- Footer -->
                 <tr>
-                  <td style="background-color: #1a1a1a; padding: 30px; text-align: center;">
-                    <p style="margin: 0 0 10px; color: #e7e6e3; font-size: 14px;">GTA Budget Painting</p>
-                    <p style="margin: 0; color: #a6b2b5; font-size: 12px;">Professional Painting Services in the Greater Toronto Area</p>
-                    <p style="margin: 15px 0 0; color: #a6b2b5; font-size: 12px;">
-                      <a href="mailto:info@gtabudgetpainting.com" style="color: #a6b2b5; text-decoration: none;">info@gtabudgetpainting.com</a> | 
-                      <a href="tel:6473907181" style="color: #a6b2b5; text-decoration: none;">(647) 390-7181</a>
+                  <td style="background-color: #2b2b2b; padding: 20px 32px; text-align: center;">
+                    <p style="margin: 0; color: #a6b2b5; font-size: 12px; line-height: 1.4;">
+                      GTA Budget Painting • Professional Painting Services in the Greater Toronto Area<br>
+                      This is a preliminary estimate. Final pricing will be confirmed by our professionals.
                     </p>
                   </td>
                 </tr>
@@ -467,152 +396,152 @@ export const generateCartAdminEmail = (data: any): string => {
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>New Cart Order</title>
+        <title>New Cart Order - GTA Budget Painting</title>
       </head>
-      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fa;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f7fa; padding: 20px;">
+      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8f9fa; padding: 20px;">
           <tr>
             <td align="center">
-              <!-- Main Container -->
-              <table width="650" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+              <!-- Admin Alert Container -->
+              <table width="650" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                 
-                <!-- Header -->
+                <!-- Alert Header -->
                 <tr>
-                  <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 30px; text-align: center;">
-                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 700;">🛒 New Cart Order</h1>
-                    <p style="margin: 10px 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">${lineItems.length} service${lineItems.length > 1 ? 's' : ''} - $${totals.grandTotal.toFixed(2)}</p>
+                  <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 20px 32px; text-align: center;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">🚨 NEW CART ORDER</h1>
+                    <p style="margin: 4px 0 0; color: #ffffff; font-size: 14px; opacity: 0.9;">${lineItems.length} service${lineItems.length > 1 ? 's' : ''} • $${totals.grandTotal.toFixed(2)}</p>
                   </td>
                 </tr>
 
-                <!-- Alert Banner -->
+                <!-- Urgent Action Banner -->
                 <tr>
-                  <td style="background-color: #fef3c7; padding: 20px; border-left: 4px solid #f59e0b;">
+                  <td style="background-color: #fef3c7; padding: 16px 32px; border-left: 4px solid #f59e0b;">
                     <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                      ⚡ Action Required: Review and respond within 24 hours
+                      ⚡ URGENT: Review and respond within 24 hours
                     </p>
                   </td>
                 </tr>
 
-                <!-- Order Info -->
+                <!-- Order Summary -->
                 <tr>
-                  <td style="padding: 30px;">
-                    <h2 style="margin: 0 0 20px; color: #1a1a1a; font-size: 22px; font-weight: 700;">Order Details</h2>
-                    
-                    <table width="100%" cellpadding="12" cellspacing="0" style="background-color: #f5f7fa; border-radius: 8px; margin-bottom: 25px;">
+                  <td style="padding: 24px 32px; background: #ffffff;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="width: 40%; color: #6b7577; font-size: 14px; font-weight: 600;">Order ID:</td>
-                        <td style="color: #1a1a1a; font-size: 14px; font-weight: 700;">${requestId}</td>
-                      </tr>
-                      <tr>
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Received:</td>
-                        <td style="color: #4a5355; font-size: 14px;">${createdAt.toLocaleString()}</td>
-                      </tr>
-                      <tr>
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Services:</td>
-                        <td style="color: #4a5355; font-size: 14px; font-weight: 700;">${lineItems.length} item${lineItems.length > 1 ? 's' : ''}</td>
-                      </tr>
-                      <tr>
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Total Value:</td>
-                        <td style="color: #1a1a1a; font-size: 14px; font-weight: 700;">$${totals.grandTotal.toFixed(2)}</td>
+                        <td style="width: 50%; vertical-align: top;">
+                          <h2 style="margin: 0 0 8px; color: #1a1a1a; font-size: 18px; font-weight: 600;">ORDER SUMMARY</h2>
+                          <p style="margin: 0; color: #6b7577; font-size: 13px;">Order #${requestId}</p>
+                          <p style="margin: 4px 0 0; color: #6b7577; font-size: 13px;">${createdAt.toLocaleString()}</p>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; text-align: right;">
+                          <p style="margin: 0 0 4px; color: #6b7577; font-size: 13px; font-weight: 600;">Customer:</p>
+                          <p style="margin: 0; color: #1a1a1a; font-size: 14px; font-weight: 600;">${customerInfo.firstName} ${customerInfo.lastName}</p>
+                          <p style="margin: 2px 0 0; color: #4a5355; font-size: 13px;">${customerInfo.email}</p>
+                          <p style="margin: 2px 0 0; color: #4a5355; font-size: 13px;">${customerInfo.phone}</p>
+                        </td>
                       </tr>
                     </table>
+                  </td>
+                </tr>
 
-                    <!-- Customer Information -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 700;">Customer Information</h3>
-                    <table width="100%" cellpadding="12" cellspacing="0" style="border: 2px solid #a6b2b5; border-radius: 8px; margin-bottom: 25px;">
-                      <tr>
-                        <td style="width: 40%; color: #6b7577; font-size: 14px; font-weight: 600;">Name:</td>
-                        <td style="color: #4a5355; font-size: 14px;">${customerInfo.firstName} ${customerInfo.lastName}</td>
+                <!-- Services Table -->
+                <tr>
+                  <td style="padding: 0 32px 24px;">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e5e7eb;">
+                      <!-- Table Header -->
+                      <tr style="background-color: #f8f9fa;">
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Service</td>
+                        <td style="padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #374151; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; text-align: right;">Amount</td>
                       </tr>
-                      <tr style="background-color: #f5f7fa;">
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Email:</td>
-                        <td style="color: #4a5355; font-size: 14px;"><a href="mailto:${customerInfo.email}" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">${customerInfo.email}</a></td>
-                      </tr>
-                      <tr>
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Phone:</td>
-                        <td style="color: #4a5355; font-size: 14px;"><a href="tel:${customerInfo.phone}" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">${customerInfo.phone}</a></td>
-                      </tr>
-                      <tr style="background-color: #f5f7fa;">
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Address:</td>
-                        <td style="color: #4a5355; font-size: 14px;">${customerInfo.address}, ${customerInfo.city}, ${customerInfo.postalCode}</td>
-                      </tr>
-                      <tr>
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Preferred Contact:</td>
-                        <td style="color: #4a5355; font-size: 14px;">${customerInfo.preferredContact}</td>
-                      </tr>
-                      ${customerInfo.bestTimeToCall ? `
-                      <tr style="background-color: #f5f7fa;">
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Best Time to Call:</td>
-                        <td style="color: #4a5355; font-size: 14px;">${customerInfo.bestTimeToCall}</td>
-                      </tr>
-                      ` : ''}
-                      ${customerInfo.howDidYouHear ? `
-                      <tr>
-                        <td style="color: #6b7577; font-size: 14px; font-weight: 600;">Referral Source:</td>
-                        <td style="color: #4a5355; font-size: 14px;">${customerInfo.howDidYouHear}</td>
-                      </tr>
-                      ` : ''}
-                    </table>
-
-                    <!-- Services Breakdown -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 700;">Services Breakdown</h3>
-                    ${lineItems.map((item: any, index: number) => `
-                      <table width="100%" cellpadding="12" cellspacing="0" style="border: 2px solid #a6b2b5; border-radius: 8px; margin-bottom: 15px;">
+                      
+                      <!-- Service Items -->
+                      ${lineItems.map((item: any, index: number) => `
                         <tr>
-                          <td style="background-color: #f5f7fa;">
-                            <h4 style="margin: 0 0 10px; color: #1a1a1a; font-size: 16px; font-weight: 600;">${index + 1}. ${item.serviceName}</h4>
-                            ${item.estimate ? `
-                              <table width="100%" cellpadding="8" cellspacing="0">
-                                <tr>
-                                  <td style="color: #4a5355; font-size: 14px;">Estimated Cost:</td>
-                                  <td style="color: #1a1a1a; font-size: 14px; font-weight: 600; text-align: right;">$${item.estimate.totalCost.toFixed(2)}</td>
-                                </tr>
-                              </table>
-                            ` : ''}
-                          </td>
+                          <td style="padding: 16px; border-bottom: 1px solid #f3f4f6; color: #1a1a1a; font-size: 14px; font-weight: 500;">${item.serviceName}</td>
+                          <td style="padding: 16px; border-bottom: 1px solid #f3f4f6; color: #1a1a1a; font-size: 14px; font-weight: 600; text-align: right;">$${item.estimate ? item.estimate.totalCost.toFixed(2) : '0.00'}</td>
                         </tr>
-                      </table>
-                    `).join('')}
+                      `).join('')}
+                    </table>
+                  </td>
+                </tr>
 
-                    <!-- Order Total -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 700;">Order Summary</h3>
-                    <table width="100%" cellpadding="12" cellspacing="0" style="background-color: #1a1a1a; border-radius: 8px; color: white; margin-bottom: 25px;">
+                <!-- Totals -->
+                <tr>
+                  <td style="padding: 0 32px 24px;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
-                        <td style="font-size: 14px;">Subtotal:</td>
-                        <td style="text-align: right; font-size: 14px;">$${totals.itemsSubtotal.toFixed(2)}</td>
-                      </tr>
-                      ${totals.travelFeeAdjustment > 0 ? `
-                      <tr>
-                        <td style="font-size: 14px;">Travel Adjustment:</td>
-                        <td style="text-align: right; font-size: 14px;">+$${totals.travelFeeAdjustment.toFixed(2)}</td>
-                      </tr>
-                      ` : ''}
-                      ${totals.discount > 0 ? `
-                      <tr>
-                        <td style="font-size: 14px; color: #10b981;">Discount (15%):</td>
-                        <td style="text-align: right; font-size: 14px; color: #10b981;">-$${totals.discount.toFixed(2)}</td>
-                      </tr>
-                      ` : ''}
-                      <tr style="border-top: 2px solid #a6b2b5;">
-                        <td style="font-size: 18px; font-weight: 700; padding-top: 12px;">Total:</td>
-                        <td style="text-align: right; font-size: 18px; font-weight: 700; padding-top: 12px;">$${totals.grandTotal.toFixed(2)}</td>
+                        <td style="width: 70%;"></td>
+                        <td style="width: 30%;">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding: 8px 0; color: #6b7577; font-size: 14px;">Subtotal:</td>
+                              <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; font-weight: 500; text-align: right;">$${totals.itemsSubtotal.toFixed(2)}</td>
+                            </tr>
+                            ${totals.travelFeeAdjustment > 0 ? `
+                            <tr>
+                              <td style="padding: 8px 0; color: #6b7577; font-size: 14px;">Travel Fee:</td>
+                              <td style="padding: 8px 0; color: #1a1a1a; font-size: 14px; font-weight: 500; text-align: right;">$${totals.travelFeeAdjustment.toFixed(2)}</td>
+                            </tr>
+                            ` : ''}
+                            ${totals.discount > 0 ? `
+                            <tr>
+                              <td style="padding: 8px 0; color: #10b981; font-size: 14px; font-weight: 600;">Discount (15%):</td>
+                              <td style="padding: 8px 0; color: #10b981; font-size: 14px; font-weight: 600; text-align: right;">-$${totals.discount.toFixed(2)}</td>
+                            </tr>
+                            ` : ''}
+                            <tr style="border-top: 2px solid #dc2626;">
+                              <td style="padding: 12px 0 8px; color: #dc2626; font-size: 16px; font-weight: 700;">TOTAL:</td>
+                              <td style="padding: 12px 0 8px; color: #dc2626; font-size: 16px; font-weight: 700; text-align: right;">$${totals.grandTotal.toFixed(2)}</td>
+                            </tr>
+                          </table>
+                        </td>
                       </tr>
                     </table>
+                  </td>
+                </tr>
 
+                <!-- Customer Details -->
+                <tr>
+                  <td style="padding: 24px 32px; background-color: #f8f9fa; border-top: 1px solid #e5e7eb;">
+                    <h3 style="margin: 0 0 16px; color: #1a1a1a; font-size: 16px; font-weight: 600;">Customer Details</h3>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="width: 50%; vertical-align: top; padding-right: 16px;">
+                          <p style="margin: 0 0 4px; color: #6b7577; font-size: 13px; font-weight: 600;">Contact Information</p>
+                          <p style="margin: 0 0 2px; color: #1a1a1a; font-size: 14px; font-weight: 600;">${customerInfo.firstName} ${customerInfo.lastName}</p>
+                          <p style="margin: 0 0 2px; color: #4a5355; font-size: 13px;">
+                            <a href="mailto:${customerInfo.email}" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">${customerInfo.email}</a>
+                          </p>
+                          <p style="margin: 0 0 2px; color: #4a5355; font-size: 13px;">
+                            <a href="tel:${customerInfo.phone}" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">${customerInfo.phone}</a>
+                          </p>
+                          <p style="margin: 4px 0 0; color: #4a5355; font-size: 13px;">${customerInfo.address}, ${customerInfo.city}, ${customerInfo.postalCode}</p>
+                        </td>
+                        <td style="width: 50%; vertical-align: top; padding-left: 16px;">
+                          <p style="margin: 0 0 4px; color: #6b7577; font-size: 13px; font-weight: 600;">Preferences</p>
+                          <p style="margin: 0 0 2px; color: #4a5355; font-size: 13px;">Preferred Contact: ${customerInfo.preferredContact}</p>
+                          ${customerInfo.bestTimeToCall ? `<p style="margin: 0 0 2px; color: #4a5355; font-size: 13px;">Best Time: ${customerInfo.bestTimeToCall}</p>` : ''}
+                          ${customerInfo.howDidYouHear ? `<p style="margin: 0 0 2px; color: #4a5355; font-size: 13px;">Source: ${customerInfo.howDidYouHear}</p>` : ''}
+                        </td>
+                      </tr>
+                    </table>
+                    
                     ${customerInfo.additionalNotes ? `
-                    <!-- Additional Notes -->
-                    <h3 style="margin: 0 0 15px; color: #1a1a1a; font-size: 18px; font-weight: 700;">Additional Notes</h3>
-                    <div style="background-color: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; border-radius: 4px; margin-bottom: 25px;">
-                      <p style="margin: 0; color: #92400e; font-size: 14px; line-height: 1.6;">${customerInfo.additionalNotes}</p>
+                    <div style="margin-top: 16px; padding: 12px; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                      <p style="margin: 0 0 4px; color: #92400e; font-size: 13px; font-weight: 600;">Additional Notes:</p>
+                      <p style="margin: 0; color: #92400e; font-size: 13px; line-height: 1.4;">${customerInfo.additionalNotes}</p>
                     </div>
                     ` : ''}
+                  </td>
+                </tr>
 
-                    <!-- Action Buttons -->
-                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 30px;">
+                <!-- Action Buttons -->
+                <tr>
+                  <td style="padding: 24px 32px; background: #ffffff; text-align: center;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center">
-                          <a href="https://console.firebase.google.com/project/gta-budget-painting/firestore" style="display: inline-block; padding: 14px 32px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">View in Firestore</a>
-                          <a href="tel:${customerInfo.phone}" style="display: inline-block; padding: 14px 32px; background-color: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">Call Customer</a>
+                          <a href="https://console.firebase.google.com/project/gta-budget-painting/firestore" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">View in Firestore</a>
+                          <a href="tel:${customerInfo.phone}" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">Call Customer</a>
                         </td>
                       </tr>
                     </table>
@@ -621,9 +550,9 @@ export const generateCartAdminEmail = (data: any): string => {
 
                 <!-- Footer -->
                 <tr>
-                  <td style="background-color: #1a1a1a; padding: 20px; text-align: center;">
-                    <p style="margin: 0; color: #a6b2b5; font-size: 12px;">
-                      This is an automated notification from GTA Budget Painting booking system
+                  <td style="background-color: #2b2b2b; padding: 16px 32px; text-align: center;">
+                    <p style="margin: 0; color: #a6b2b5; font-size: 12px; line-height: 1.4;">
+                      GTA Budget Painting Admin System • Automated notification
                     </p>
                   </td>
                 </tr>
