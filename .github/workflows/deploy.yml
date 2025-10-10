@@ -25,6 +25,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Debug secrets availability
+        run: |
+          echo "Checking if secrets are available..."
+          if [ -n "${{ secrets.VITE_FIREBASE_API_KEY }}" ]; then
+            echo "VITE_FIREBASE_API_KEY is available"
+          else
+            echo "VITE_FIREBASE_API_KEY is NOT available"
+          fi
+          if [ -n "${{ secrets.VITE_FIREBASE_PROJECT_ID }}" ]; then
+            echo "VITE_FIREBASE_PROJECT_ID is available"
+          else
+            echo "VITE_FIREBASE_PROJECT_ID is NOT available"
+          fi
+
       - name: Create production environment file
         run: |
           echo "VITE_FIREBASE_API_KEY=${{ secrets.VITE_FIREBASE_API_KEY }}" > .env.production
