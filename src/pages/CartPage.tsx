@@ -23,7 +23,7 @@ const CartPage = () => {
           </div>
         ) : (
           <div className="cart-layout">
-            <section className="cart-list">
+            <section className={`cart-list ${count > 5 ? 'scrollable' : ''}`}>
               {cart.items.map((it) => (
                 <article key={it.id} className="cart-item">
                   <div className="cart-item-main">

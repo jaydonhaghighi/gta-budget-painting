@@ -50,20 +50,18 @@ function generateId(prefix = 'item'): string {
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<Cart>({ items: [] })
-
-  // restore
-  useEffect(() => {
+  const [cart, setCart] = useState<Cart>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) {
         const parsed = JSON.parse(raw)
         if (parsed && Array.isArray(parsed.items)) {
-          setCart({ items: parsed.items })
+          return { items: parsed.items }
         }
       }
     } catch {}
-  }, [])
+    return { items: [] }
+  })
 
   // persist
   useEffect(() => {

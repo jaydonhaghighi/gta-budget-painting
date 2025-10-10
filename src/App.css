@@ -259,6 +259,9 @@ p {
 
 .cart-layout { display: grid; grid-template-columns: 1.25fr .85fr; gap: 20px; }
 .cart-list { display: grid; gap: 12px; }
+.cart-list.scrollable { max-height: 420px; overflow-y: auto; padding-right: 4px; }
+.cart-list.scrollable::-webkit-scrollbar { width: 8px; }
+.cart-list.scrollable::-webkit-scrollbar-thumb { background: var(--color-grey-300); border-radius: 6px; }
 .cart-item { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 10px; background: var(--color-white); border: 1px solid var(--color-grey-200); border-radius: 12px; padding: 14px; }
 .cart-item-title { font-weight: 800; color: var(--color-text-dark); }
 .cart-item-meta { font-size: .9rem; color: var(--color-text-medium); }
