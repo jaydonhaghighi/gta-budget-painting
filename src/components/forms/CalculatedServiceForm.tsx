@@ -22,6 +22,7 @@ interface CalculatedServiceFormProps {
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
   onFormDataChange?: (formData: any) => void; // NEW: Callback for every form change
   onAddToCart?: (estimate: EstimateBreakdown, formData: any) => void;
+  isEditMode?: boolean;
 }
 
 const CalculatedServiceForm = ({ 
@@ -31,6 +32,7 @@ const CalculatedServiceForm = ({
   onEstimateCalculated,
   onFormDataChange,
   onAddToCart,
+  isEditMode = false,
 }: CalculatedServiceFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
@@ -1200,13 +1202,27 @@ const CalculatedServiceForm = ({
           </div>
           
           <div className="estimate-actions">
-            <button className="btn-secondary" onClick={(e) => {
-              e.preventDefault()
-              if (estimate && onAddToCart) onAddToCart(estimate, formData)
-            }}>Add to Cart</button>
-            <button className="btn-continue-estimate" onClick={handleContinue}>
-              Continue with This Estimate
-            </button>
+            {isEditMode ? (
+              <>
+                <button className="btn-secondary" onClick={(e) => {
+                  e.preventDefault()
+                  if (estimate && onAddToCart) onAddToCart(estimate, formData)
+                }}>Save Changes</button>
+                <button className="btn-continue-estimate" onClick={(e) => { e.preventDefault(); window.history.back() }}>
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="btn-secondary" onClick={(e) => {
+                  e.preventDefault()
+                  if (estimate && onAddToCart) onAddToCart(estimate, formData)
+                }}>Add to Cart</button>
+                <button className="btn-continue-estimate" onClick={handleContinue}>
+                  Continue with This Estimate
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

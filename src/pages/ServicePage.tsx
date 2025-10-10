@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getServiceById } from '../data/services';
 import { type EstimateBreakdown } from '../utils/estimationCalculator';
 import CalculatedServiceForm from '../components/forms/CalculatedServiceForm';
@@ -35,8 +35,11 @@ interface SavedBookingState {
 }
 
 const ServicePage = () => {
-  const { addItem } = useCart();
+  const { addItem, updateItem } = useCart();
   const { serviceId } = useParams<{ serviceId: string }>();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const editId = searchParams.get('editId');
   const navigate = useNavigate();
   
   const service = serviceId ? getServiceById(serviceId) : null;
@@ -326,6 +329,7 @@ const ServicePage = () => {
                   service={service}
                   initialFormData={formData}
                   initialEstimate={estimate}
+                  isEditMode={Boolean(editId)}
                   onEstimateCalculated={(est, data) => {
                     setEstimate(est);
                     setFormData(data);
@@ -352,6 +356,23 @@ const ServicePage = () => {
                       otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
                       subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
                     };
+                    if (editId) {
+                      const cartEstimate = {
+                        totalCost: est.totalCost,
+                        laborHours: est.laborHours,
+                        totalHours: est.totalHours,
+                        setupCleanupHours: est.setupCleanupHours,
+                        paintGallons: est.paintGallons,
+                        paintCost: est.paintCost,
+                        laborCost: est.laborCost,
+                        suppliesCost: est.suppliesCost,
+                        otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
+                        subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
+                      };
+                      updateItem(editId, { formData: data, estimate: cartEstimate })
+                      navigate('/cart')
+                      return
+                    }
                     addItem({
                       serviceId: service.id,
                       serviceName: service.name,

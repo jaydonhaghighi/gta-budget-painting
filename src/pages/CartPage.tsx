@@ -1,53 +1,78 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 
 const CartPage = () => {
-  const { cart, totals, removeItem, clear } = useCart()
+  const { cart, totals, removeItem } = useCart()
+  const navigate = useNavigate()
+  const count = cart.items.length
   return (
-    <main className="cart-page" style={{ padding: '2rem 0' }}>
+    <main className="cart-page">
       <div className="container">
-        <h1>Your Cart</h1>
-        {cart.items.length === 0 ? (
-          <p>Your cart is empty. <Link to="/">Browse services</Link>.</p>
+        <div className="cart-header">
+          <div className="cart-title">
+            <h1>Your Cart</h1>
+            <span className="cart-count">{count} {count === 1 ? 'item' : 'items'}</span>
+          </div>
+          {/* Clear Cart removed as requested */}
+        </div>
+
+        {count === 0 ? (
+          <div className="cart-empty">
+            <p>Your cart is empty.</p>
+            <Link to="/" className="btn-primary">Browse Services</Link>
+          </div>
         ) : (
-          <div className="cart-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '24px' }}>
-            <div>
+          <div className="cart-layout">
+            <section className="cart-list">
               {cart.items.map((it) => (
-                <div key={it.id} className="cart-line" style={{ border: '1px solid var(--color-background-dark)', borderRadius: 12, padding: 16, marginBottom: 12, background: 'white' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <div style={{ fontWeight: 800, color: 'var(--color-text-dark)' }}>{it.serviceName}</div>
-                      <div style={{ fontSize: '.9rem', color: 'var(--color-text-medium)' }}>{it.serviceType}</div>
-                    </div>
-                    <div style={{ fontWeight: 800 }}>${it.estimate.totalCost.toFixed(2)}</div>
+                <article key={it.id} className="cart-item">
+                  <div className="cart-item-main">
+                    <div className="cart-item-title">{it.serviceName}</div>
                   </div>
-                  <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-                    <button className="btn-secondary" onClick={() => removeItem(it.id)}>Remove</button>
-                  </div>
-                </div>
+                  <div className="cart-item-price">${it.estimate.totalCost.toFixed(2)}</div>
+                  <button
+                    className="icon-btn"
+                    onClick={() => {
+                      try {
+                        const stateKey = `booking-${it.serviceId}`
+                        const saved = {
+                          step: 'service-form',
+                          estimate: it.estimate,
+                          formData: it.formData,
+                          customerInfo: {
+                            firstName: '', lastName: '', email: '', phone: '', address: '', city: '', postalCode: '', preferredContact: 'phone', bestTimeToCall: '', howDidYouHear: '', additionalNotes: ''
+                          },
+                          preferredDate: '',
+                          timestamp: Date.now()
+                        }
+                        localStorage.setItem(stateKey, JSON.stringify(saved))
+                      } catch {}
+                      navigate(`/services/${it.serviceId}?editId=${encodeURIComponent(it.id)}`)
+                    }}
+                    aria-label="Edit"
+                  >
+                    <img src="/pen.svg" alt="Edit" />
+                  </button>
+                  <button className="cart-remove" onClick={() => removeItem(it.id)} aria-label="Remove">×</button>
+                </article>
               ))}
-            </div>
-            <aside style={{ border: '1px solid var(--color-background-dark)', borderRadius: 12, background: 'white', padding: 16, height: 'fit-content' }}>
+            </section>
+
+            <aside className="cart-summary-card">
               <h3>Order Summary</h3>
-              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
-                <span>Subtotal</span><span>${totals.itemsSubtotal.toFixed(2)}</span>
+              <div className="cart-summary-rows">
+                <div className="row"><span>Subtotal</span><span>${totals.itemsSubtotal.toFixed(2)}</span></div>
+                {totals.travelFeeAdjustment > 0 && (
+                  <div className="row"><span>Travel Adjustment</span><span>+${totals.travelFeeAdjustment.toFixed(2)}</span></div>
+                )}
+                {totals.discount > 0 && (
+                  <div className="row discount"><span>Discount (15%)</span><span>- ${totals.discount.toFixed(2)}</span></div>
+                )}
+                <div className="row total"><span>Total</span><span>${totals.grandTotal.toFixed(2)}</span></div>
               </div>
-              {totals.travelFeeAdjustment > 0 && (
-                <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
-                  <span>Travel Adjustment</span><span>+${totals.travelFeeAdjustment.toFixed(2)}</span>
-                </div>
-              )}
-              {totals.discount > 0 && (
-                <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, color: '#166534' }}>
-                  <span>Discount (15%)</span><span>- ${totals.discount.toFixed(2)}</span>
-                </div>
-              )}
-              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, fontWeight: 800 }}>
-                <span>Total</span><span>${totals.grandTotal.toFixed(2)}</span>
-              </div>
-              <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
-                <button className="btn-secondary" onClick={clear}>Clear Cart</button>
-                <Link to="/checkout" className="btn-primary" style={{ textAlign: 'center', flex: 1 }}>Checkout</Link>
+              <div className="cart-summary-actions">
+                <Link to="/checkout" className="btn-primary">Checkout</Link>
+                <Link to="/" className="btn-secondary">Continue Shopping</Link>
               </div>
             </aside>
           </div>

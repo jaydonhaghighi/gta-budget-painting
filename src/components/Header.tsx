@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import '../App.css'
 import { useCart } from '../context/CartContext'
 
 function CartIcon({ count }: { count: number }) {
   return (
     <div className="cart-icon" aria-label="Cart">
-      <span className="cart-icon-bag">🛒</span>
+      <span className="cart-icon-bag">
+        <img src="/shopping-cart.svg" alt="Cart" />
+      </span>
       {count > 0 && <span className="cart-badge">{count}</span>}
     </div>
   )
@@ -14,6 +16,7 @@ function CartIcon({ count }: { count: number }) {
 
 function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const { cart, totals, removeItem, clear } = useCart()
+  const navigate = useNavigate()
   return (
     <div className={`cart-drawer-overlay ${isOpen ? 'open' : ''}`} onClick={onClose}>
       <aside className={`cart-drawer ${isOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
@@ -30,10 +33,29 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 <li key={it.id} className="cart-item">
                   <div className="cart-item-main">
                     <div className="cart-item-title">{it.serviceName}</div>
-                    <div className="cart-item-sub">{it.serviceType}</div>
                   </div>
                   <div className="cart-item-price">${it.estimate.totalCost.toFixed(2)}</div>
-                  <button className="cart-remove" onClick={() => removeItem(it.id)}>Remove</button>
+                  <button className="icon-btn" aria-label="Edit" onClick={() => {
+                    try {
+                      const stateKey = `booking-${it.serviceId}`
+                      const saved = {
+                        step: 'service-form',
+                        estimate: it.estimate,
+                        formData: it.formData,
+                        customerInfo: {
+                          firstName: '', lastName: '', email: '', phone: '', address: '', city: '', postalCode: '', preferredContact: 'phone', bestTimeToCall: '', howDidYouHear: '', additionalNotes: ''
+                        },
+                        preferredDate: '',
+                        timestamp: Date.now()
+                      }
+                      localStorage.setItem(stateKey, JSON.stringify(saved))
+                    } catch {}
+                    onClose();
+                    navigate(`/services/${it.serviceId}?editId=${encodeURIComponent(it.id)}`)
+                  }}>
+                    <img src="/pen.svg" alt="Edit" />
+                  </button>
+                  <button className="cart-remove" onClick={() => removeItem(it.id)} aria-label="Remove">×</button>
                 </li>
               ))}
             </ul>
@@ -51,7 +73,6 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             <div className="row total"><span>Total</span><span>${totals.grandTotal.toFixed(2)}</span></div>
           </div>
           <div className="cart-actions">
-            <button className="btn-secondary" onClick={clear}>Clear</button>
             <Link to="/cart" className="btn-primary" onClick={onClose}>View Cart</Link>
           </div>
         </div>

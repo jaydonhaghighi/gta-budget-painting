@@ -29,6 +29,7 @@ type CartContextValue = {
   cart: Cart
   addItem: (item: Omit<CartItem, 'id' | 'createdAt'>) => void
   removeItem: (id: string) => void
+  updateItem: (id: string, updates: Partial<Omit<CartItem, 'id' | 'createdAt'>>) => void
   clear: () => void
   // totals
   totals: {
@@ -88,6 +89,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setCart((prev) => ({ items: prev.items.filter((i) => i.id !== id) }))
   }
 
+  const updateItem: CartContextValue['updateItem'] = (id, updates) => {
+    setCart((prev) => ({
+      items: prev.items.map((i) => (i.id === id ? { ...i, ...updates } : i)),
+    }))
+  }
+
   const clear = () => setCart({ items: [] })
 
   const totals = useMemo(() => {
@@ -120,7 +127,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return { itemsSubtotal, discount, travelFeeMode, travelFeeAdjustment, grandTotal }
   }, [cart.items])
 
-  const value: CartContextValue = { cart, addItem, removeItem, clear, totals }
+  const value: CartContextValue = { cart, addItem, removeItem, updateItem, clear, totals }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 

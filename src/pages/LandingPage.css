@@ -151,6 +151,13 @@
   }
 }
 
+/* Force 2x2 in featured-grid-wrapper between 1055px and 769px */
+@media (max-width: 1055px) and (min-width: 769px) {
+  .featured-grid-wrapper .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 968px) {
   .featured-grid {
     grid-template-columns: repeat(2, 1fr);
