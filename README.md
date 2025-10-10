@@ -67,3 +67,4 @@ export default tseslint.config([
   },
 ])
 ```
+# Firebase configuration updated
