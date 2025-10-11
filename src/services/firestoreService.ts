@@ -162,13 +162,29 @@ export const getServiceRequest = async (requestId: string): Promise<ServiceReque
     
     if (docSnap.exists()) {
       const data = docSnap.data();
+      
+      // Helper function to safely convert Firestore timestamps
+      const safeToDate = (timestamp: any): Date | undefined => {
+        if (!timestamp) return undefined;
+        if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+          return timestamp.toDate();
+        }
+        if (timestamp instanceof Date) {
+          return timestamp;
+        }
+        if (typeof timestamp === 'string') {
+          return new Date(timestamp);
+        }
+        return undefined;
+      };
+      
       return {
         id: docSnap.id,
         ...data,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate(),
-        scheduledDate: data.scheduledDate?.toDate(),
-        completionDate: data.completionDate?.toDate(),
+        createdAt: safeToDate(data.createdAt) || new Date(),
+        updatedAt: safeToDate(data.updatedAt) || new Date(),
+        scheduledDate: safeToDate(data.scheduledDate),
+        completionDate: safeToDate(data.completionDate),
       } as ServiceRequest;
     }
     return null;
@@ -216,13 +232,29 @@ export const getServiceRequests = async (
     
     querySnapshot.forEach((doc) => {
       const data = doc.data();
+      
+      // Helper function to safely convert Firestore timestamps
+      const safeToDate = (timestamp: any): Date | undefined => {
+        if (!timestamp) return undefined;
+        if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+          return timestamp.toDate();
+        }
+        if (timestamp instanceof Date) {
+          return timestamp;
+        }
+        if (typeof timestamp === 'string') {
+          return new Date(timestamp);
+        }
+        return undefined;
+      };
+      
       requests.push({
         id: doc.id,
         ...data,
-        createdAt: data.createdAt.toDate(),
-        updatedAt: data.updatedAt.toDate(),
-        scheduledDate: data.scheduledDate?.toDate(),
-        completionDate: data.completionDate?.toDate(),
+        createdAt: safeToDate(data.createdAt) || new Date(),
+        updatedAt: safeToDate(data.updatedAt) || new Date(),
+        scheduledDate: safeToDate(data.scheduledDate),
+        completionDate: safeToDate(data.completionDate),
       } as ServiceRequest);
     });
     
