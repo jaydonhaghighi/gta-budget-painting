@@ -119,6 +119,12 @@ const Header = () => {
             >
               Book Now
             </Link>
+            <Link 
+              to="/admin" 
+              className="admin-link"
+            >
+              Admin
+            </Link>
             <button className="cart-header-btn" onClick={() => setIsCartOpen(true)}>
               <CartIcon count={cart.items.length} />
             </button>
@@ -145,6 +151,13 @@ const Header = () => {
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Book Now
+          </Link>
+          <Link 
+            to="/admin" 
+            className="admin-link"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Admin
           </Link>
           <button className="cart-mobile-btn" onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true) }}>
             <CartIcon count={cart.items.length} />

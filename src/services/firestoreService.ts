@@ -133,7 +133,17 @@ export const updateServiceRequestStatus = async (
     };
 
     if (additionalData) {
-      Object.assign(updateData, additionalData);
+      // Handle estimate updates
+      if (additionalData.estimate) {
+        updateData.estimate = additionalData.estimate;
+      }
+      
+      // Handle other fields
+      Object.keys(additionalData).forEach(key => {
+        if (key !== 'estimate' && key !== 'id') {
+          updateData[key] = additionalData[key as keyof ServiceRequest];
+        }
+      });
     }
 
     await updateDoc(docRef, updateData);

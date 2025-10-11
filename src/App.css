@@ -1180,3 +1180,21 @@ p {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Admin Link Styling */
+.admin-link {
+  color: var(--color-white);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--color-accent);
+}

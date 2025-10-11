@@ -10,6 +10,7 @@ import LandingPage from './pages/LandingPage.tsx'
 import ServicePage from './pages/ServicePage.tsx'
 import CartPage from './pages/CartPage.tsx'
 import CheckoutPage from './pages/CheckoutPage.tsx'
+import AdminPanel from './pages/AdminPanel.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/services/:serviceId" element={<ServicePage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/admin" element={<AdminPanel />} />
         </Routes>
         <Footer />
       </BrowserRouter>
