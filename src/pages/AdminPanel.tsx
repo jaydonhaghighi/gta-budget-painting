@@ -193,7 +193,7 @@ const AdminPanel: React.FC = () => {
                 </div>
 
                 <div className="estimate-info">
-                  <h4>Estimate</h4>
+                  <h4>Pricing & Details</h4>
                   {request.estimate ? (
                     <div className="estimate-details">
                       {editingRequest === request.id ? (
@@ -233,7 +233,36 @@ const AdminPanel: React.FC = () => {
                       <p><strong>Paint:</strong> ${request.estimate.paintCost.toFixed(2)}</p>
                     </div>
                   ) : (
-                    <p>No estimate available</p>
+                    <div className="no-estimate-info">
+                      {request.serviceType === 'flat-rate' ? (
+                        <div className="flat-rate-info">
+                          <p><strong>Service Type:</strong> Flat Rate</p>
+                          <p><strong>Status:</strong> Fixed pricing - no estimate needed</p>
+                          <p><em>This service has a predetermined price based on the service type.</em></p>
+                        </div>
+                      ) : request.serviceType === 'custom-quote' ? (
+                        <div className="custom-quote-info">
+                          <p><strong>Service Type:</strong> Custom Quote Required</p>
+                          <p><strong>Status:</strong> Manual quote needed</p>
+                          <p><em>This service requires a custom quote from your team.</em></p>
+                          {request.customProjectDetails && (
+                            <div className="custom-details">
+                              <p><strong>Project Description:</strong></p>
+                              <p>{request.customProjectDetails.description}</p>
+                              {request.customProjectDetails.budget && (
+                                <p><strong>Customer Budget:</strong> ${request.customProjectDetails.budget}</p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="missing-estimate-info">
+                          <p><strong>Service Type:</strong> {request.serviceType}</p>
+                          <p><strong>Status:</strong> Estimate missing</p>
+                          <p><em>This calculated service should have an estimate. Check form data for details.</em></p>
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
