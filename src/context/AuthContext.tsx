@@ -2,9 +2,9 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { 
   signInWithEmailAndPassword, 
   signOut, 
-  onAuthStateChanged, 
-  User 
+  onAuthStateChanged
 } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import { auth } from '../firebase';
 
 interface AuthContextType {
@@ -19,8 +19,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // List of admin emails - you can add more emails here
 const ADMIN_EMAILS = [
-  'admin@gta-budget-painting.com',
-  'jaydon@gta-budget-painting.com',
+  'info@gtabudgetpainting.ca',
   // Add more admin emails as needed
 ];
 
