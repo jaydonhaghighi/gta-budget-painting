@@ -13,6 +13,7 @@ const AdminPanel: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [editingRequest, setEditingRequest] = useState<string | null>(null);
   const [editedPrice, setEditedPrice] = useState<number>(0);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     loadRequests();
@@ -67,13 +68,15 @@ const AdminPanel: React.FC = () => {
         console.log('Updating cart order totals:', updatedTotals);
         await updateServiceRequestStatus(requestId, request.status, { totals: updatedTotals });
         
-        setRequests(prev => 
-          prev.map(req => 
+        setRequests(prev => {
+          const updated = prev.map(req => 
             req.id === requestId 
               ? { ...req, totals: updatedTotals, updatedAt: new Date() }
               : req
-          )
-        );
+          );
+          console.log('Updated requests state:', updated.find(r => r.id === requestId));
+          return updated;
+        });
       } else if (request.estimate) {
         // For single service requests
         const updatedEstimate = {
@@ -84,16 +87,25 @@ const AdminPanel: React.FC = () => {
         console.log('Updating single service estimate:', updatedEstimate);
         await updateServiceRequestStatus(requestId, request.status, { estimate: updatedEstimate });
         
-        setRequests(prev => 
-          prev.map(req => 
+        setRequests(prev => {
+          const updated = prev.map(req => 
             req.id === requestId 
               ? { ...req, estimate: updatedEstimate, updatedAt: new Date() }
               : req
-          )
-        );
+          );
+          console.log('Updated requests state:', updated.find(r => r.id === requestId));
+          return updated;
+        });
       }
       
       setEditingRequest(null);
+      setRefreshKey(prev => prev + 1); // Force re-render
+      
+      // Force a complete data refresh after a short delay
+      setTimeout(() => {
+        loadRequests();
+      }, 100);
+      
       console.log('Price updated successfully');
     } catch (err) {
       console.error('Error updating price:', err);
@@ -343,7 +355,7 @@ const AdminPanel: React.FC = () => {
           {filteredRequests.length === 0 ? (
             <div className="no-requests">No requests found</div>
           ) : (
-            <table className="requests-table">
+                <table className="requests-table" key={refreshKey}>
               <thead>
                 <tr>
                   <th>Service</th>
