@@ -44,7 +44,6 @@ const LandingPage = () => {
       className={`service-card ${isFeatured ? 'featured-card' : ''}`}
       onClick={() => handleServiceClick(service.id)}
     >
-      <span className="service-icon">{service.icon}</span>
       <h3>{service.name}</h3>
       <p>{service.description}</p>
       {service.type === 'flat-rate' && service.flatRate && (
@@ -118,7 +117,6 @@ const LandingPage = () => {
                 className="service-card custom-project-card"
                 onClick={() => handleServiceClick('custom-project')}
               >
-                <span className="service-icon">{customProject.icon}</span>
                 <h3>{customProject.name}</h3>
                 <p>{customProject.description}</p>
                 <div className="service-badge">Custom Quote</div>
