@@ -140,8 +140,8 @@ const AdminPanel: React.FC = () => {
           comparison = a.createdAt.getTime() - b.createdAt.getTime();
           break;
         case 'price':
-          const priceA = a.estimate?.totalCost || 0;
-          const priceB = b.estimate?.totalCost || 0;
+          const priceA = getRequestEstimate(a)?.totalCost || 0;
+          const priceB = getRequestEstimate(b)?.totalCost || 0;
           comparison = priceA - priceB;
           break;
         case 'status':
@@ -175,23 +175,21 @@ const AdminPanel: React.FC = () => {
 
   // Helper function to get estimate for both single service and cart orders
   const getRequestEstimate = (request: ServiceRequest) => {
-    // For cart orders, get the total from lineItems
-    if (request.type === 'cart-order' && request.lineItems) {
-      const totalCost = request.lineItems.reduce((sum, item) => {
-        return sum + (item.estimate?.totalCost || 0);
-      }, 0);
+    // For cart orders, use the totals.grandTotal (which gets updated when we edit)
+    if (request.type === 'cart-order' && request.totals) {
+      const totalCost = request.totals.grandTotal;
       
-      const totalHours = request.lineItems.reduce((sum, item) => {
+      const totalHours = request.lineItems?.reduce((sum, item) => {
         return sum + (item.estimate?.totalHours || 0);
-      }, 0);
+      }, 0) || 0;
       
-      const totalLaborCost = request.lineItems.reduce((sum, item) => {
+      const totalLaborCost = request.lineItems?.reduce((sum, item) => {
         return sum + (item.estimate?.laborCost || 0);
-      }, 0);
+      }, 0) || 0;
       
-      const totalPaintCost = request.lineItems.reduce((sum, item) => {
+      const totalPaintCost = request.lineItems?.reduce((sum, item) => {
         return sum + (item.estimate?.paintCost || 0);
-      }, 0);
+      }, 0) || 0;
       
       return {
         totalCost,
@@ -199,7 +197,7 @@ const AdminPanel: React.FC = () => {
         laborCost: totalLaborCost,
         paintCost: totalPaintCost,
         isCartOrder: true,
-        itemCount: request.lineItems.length
+        itemCount: request.lineItems?.length || 0
       };
     }
     
