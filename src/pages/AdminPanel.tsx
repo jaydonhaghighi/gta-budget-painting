@@ -185,9 +185,6 @@ const AdminPanel: React.FC = () => {
     return (
       <div className="admin-panel">
         <div className="admin-container">
-          <div className="admin-header">
-            <h1>Admin Panel</h1>
-          </div>
           <div className="loading">Loading requests...</div>
         </div>
       </div>
@@ -198,9 +195,6 @@ const AdminPanel: React.FC = () => {
     return (
       <div className="admin-panel">
         <div className="admin-container">
-          <div className="admin-header">
-            <h1>Admin Panel</h1>
-          </div>
           <div className="error">{error}</div>
         </div>
       </div>
@@ -211,19 +205,27 @@ const AdminPanel: React.FC = () => {
     <div className="admin-panel">
       <div className="admin-container">
         <div className="admin-header">
-          <h1>Admin Panel</h1>
           <div className="admin-stats">
-            <div className="stat">
-              <span className="stat-number">{requests.length}</span>
-              <span className="stat-label">Total</span>
+            <div className="stat-card total">
+              <div className="stat-icon">📊</div>
+              <div className="stat-content">
+                <div className="stat-number">{requests.length}</div>
+                <div className="stat-label">Total Requests</div>
+              </div>
             </div>
-            <div className="stat">
-              <span className="stat-number">{requests.filter(r => r.status === 'pending').length}</span>
-              <span className="stat-label">Pending</span>
+            <div className="stat-card pending">
+              <div className="stat-icon">⏳</div>
+              <div className="stat-content">
+                <div className="stat-number">{requests.filter(r => r.status === 'pending').length}</div>
+                <div className="stat-label">Pending Review</div>
+              </div>
             </div>
-            <div className="stat">
-              <span className="stat-number">{requests.filter(r => r.status === 'confirmed').length}</span>
-              <span className="stat-label">Confirmed</span>
+            <div className="stat-card confirmed">
+              <div className="stat-icon">✅</div>
+              <div className="stat-content">
+                <div className="stat-number">{requests.filter(r => r.status === 'confirmed').length}</div>
+                <div className="stat-label">Confirmed</div>
+              </div>
             </div>
           </div>
         </div>

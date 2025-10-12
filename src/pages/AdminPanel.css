@@ -13,42 +13,72 @@
 
 /* Header */
 .admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 30px;
   padding: 30px 0 20px 0;
-  border-bottom: 2px solid var(--color-primary-dark);
-}
-
-.admin-header h1 {
-  color: var(--color-text-dark);
-  font-size: 2.5rem;
-  margin: 0;
-  font-family: var(--font-heading);
 }
 
 .admin-stats {
-  display: flex;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
 }
 
-.stat {
-  text-align: center;
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card.total {
+  border-left: 4px solid #3b82f6;
+}
+
+.stat-card.pending {
+  border-left: 4px solid #f59e0b;
+}
+
+.stat-card.confirmed {
+  border-left: 4px solid #10b981;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.stat-content {
+  flex: 1;
 }
 
 .stat-number {
-  display: block;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--color-primary-dark);
+  color: var(--color-text-dark);
+  line-height: 1;
+  margin-bottom: 4px;
 }
 
 .stat-label {
-  display: block;
   font-size: 0.9rem;
   color: var(--color-text-medium);
-  margin-top: 5px;
+  font-weight: 500;
 }
 
 /* Controls */
@@ -135,18 +165,19 @@
 }
 
 .requests-table th {
-  background: var(--color-primary);
+  background: #1a1a1a;
   color: white;
-  padding: 16px 12px;
+  padding: 20px;
   text-align: left;
   font-weight: 600;
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  
 }
 
 .requests-table td {
-  padding: 16px 12px;
+  padding: 20px;
   border-bottom: 1px solid #f3f4f6;
   vertical-align: top;
 }
@@ -192,6 +223,10 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  background: rgb(234, 233, 233);
+  color: black;
+  border-radius: 8px;
+  padding: 4px;
 }
 
 .cart-info {
@@ -215,6 +250,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  
 }
 
 .price-input {
@@ -238,8 +274,8 @@
 }
 
 .btn-edit-price {
-  background: var(--color-primary);
   color: white;
+  background: #1a1a1a;
 }
 
 .btn-edit-price:hover {
@@ -335,12 +371,12 @@
 }
 
 .action-btn.complete {
-  background: var(--color-primary-dark);
+  background: #1a1a1a;
   color: white;
 }
 
 .action-btn.complete:hover {
-  background: var(--color-primary-darker);
+  background: black;
 }
 
 /* Loading and Error States */
@@ -377,6 +413,7 @@
   .requests-table td {
     padding: 12px 8px;
   }
+
 }
 
 @media (max-width: 768px) {
@@ -384,14 +421,23 @@
     padding: 0 15px;
   }
 
-  .admin-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+  .admin-stats {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 
-  .admin-stats {
-    gap: 20px;
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-icon {
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-number {
+    font-size: 1.5rem;
   }
 
   .filter-section {
