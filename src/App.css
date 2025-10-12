@@ -257,6 +257,10 @@ p {
   justify-content: flex-start;
 }
 
+.cart-mobile-btn .cart-icon-bag img {
+  filter: invert(0);
+}
+
 .cart-mobile-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
