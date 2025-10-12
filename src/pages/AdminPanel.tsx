@@ -64,6 +64,7 @@ const AdminPanel: React.FC = () => {
           itemsSubtotal: editedPrice - (request.totals?.travelFeeAdjustment || 0) - (request.totals?.discount || 0)
         };
         
+        console.log('Updating cart order totals:', updatedTotals);
         await updateServiceRequestStatus(requestId, request.status, { totals: updatedTotals });
         
         setRequests(prev => 
@@ -80,6 +81,7 @@ const AdminPanel: React.FC = () => {
           totalCost: editedPrice
         };
         
+        console.log('Updating single service estimate:', updatedEstimate);
         await updateServiceRequestStatus(requestId, request.status, { estimate: updatedEstimate });
         
         setRequests(prev => 
@@ -90,7 +92,9 @@ const AdminPanel: React.FC = () => {
           )
         );
       }
+      
       setEditingRequest(null);
+      console.log('Price updated successfully');
     } catch (err) {
       console.error('Error updating price:', err);
       alert('Failed to update price');
@@ -274,16 +278,23 @@ const AdminPanel: React.FC = () => {
           </div>
         </div>
 
-        <div className="admin-controls">
-          <div className="search-section">
-            <input
-              type="text"
-              placeholder="Search requests, customers, or IDs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-          </div>
+            <div className="admin-controls">
+              <div className="search-section">
+                <input
+                  type="text"
+                  placeholder="Search requests, customers, or IDs..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <button 
+                  onClick={loadRequests}
+                  className="btn-refresh"
+                  title="Refresh data"
+                >
+                  🔄 Refresh
+                </button>
+              </div>
           
           <div className="filter-section">
             <div className="filter-group">
