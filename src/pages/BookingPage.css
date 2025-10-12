@@ -75,6 +75,14 @@
   font-size: 1.5rem;
 }
 
+.hero-phone .hero-icon,
+.hero-email .hero-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  filter: brightness(0) invert(1);
+}
+
 /* Hero Contact Section */
 .hero-contact {
   display: flex;

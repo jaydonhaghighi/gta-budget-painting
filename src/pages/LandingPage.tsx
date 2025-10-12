@@ -70,11 +70,13 @@ const LandingPage = () => {
           <div className="hero-contact">
             <div className="hero-contact-info">
               <a href="tel:6473907181" className="hero-phone">
-                📞 Call (647) 390-7181
+                <img src="/telephone.png" alt="Phone" className="hero-icon" />
+                Call (647) 390-7181
               </a>
               <span className="hero-divider">|</span>
               <a href="mailto:info@gtabudgetpainting.com" className="hero-email">
-                ✉️ info@gtabudgetpainting.com
+                <img src="/mail.png" alt="Email" className="hero-icon" />
+                info@gtabudgetpainting.com
               </a>
             </div>
             <a 
