@@ -70,7 +70,7 @@ const LandingPage = () => {
           {/* Promotion Banner */}
           <div className="hero-promotion">
             <div className="promotion-badge">
-              <span className="promotion-icon">🎨</span>
+              <img src="/discount.png" alt="Discount" className="promotion-icon" />
               <span className="promotion-text">Limited Time Offer</span>
             </div>
             <h2 className="promotion-title">Get 15% Off Orders!</h2>
@@ -83,15 +83,15 @@ const LandingPage = () => {
           {/* Hero Features */}
           <div className="hero-features">
             <div className="hero-feature">
-              <span className="hero-icon">💰</span>
+              <img src="/money-bag.png" alt="Money" className="hero-icon" />
               <span>Best Prices</span>
             </div>
             <div className="hero-feature">
-              <span className="hero-icon">⭐</span>
+              <img src="/star.png" alt="Star" className="hero-icon" />
               <span>5-Star Rated</span>
             </div>
             <div className="hero-feature">
-              <span className="hero-icon">🛡️</span>
+              <img src="/security.png" alt="Security" className="hero-icon" />
               <span>Fully Insured</span>
             </div>
           </div>
