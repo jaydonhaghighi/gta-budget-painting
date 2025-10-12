@@ -156,9 +156,7 @@ p {
   padding: 8px;
   border-radius: 6px;
   transition: all 0.3s ease;
-  background: transparent;
-  border: none;
-  cursor: pointer;
+  position: relative;
 }
 
 .nav-home-link img {
@@ -177,6 +175,16 @@ p {
 
 .nav-home-link.active img {
   filter: invert(0);
+}
+
+.nav-home-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-accent);
 }
 
 .nav a:hover {
