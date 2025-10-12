@@ -39,10 +39,11 @@
 .booking-hero {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   color: white;
-  padding: 2rem 0 1.5rem;
+  padding: 3rem 0 1.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
+  margin-top: 0;
 }
 
 .booking-hero::before {

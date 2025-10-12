@@ -34,6 +34,7 @@ body {
   color: var(--color-grey-800);
   line-height: 1.6;
   background-color: var(--color-white);
+  padding-top: 120px; /* Account for fixed header height */
 }
 
 .App {
@@ -86,9 +87,12 @@ p {
 .header {
   background: #2b2b2b;
   border-bottom: .5px solid rgba(255, 255, 255, 0.1);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .header .container {
