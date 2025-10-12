@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { getServiceRequests, updateServiceRequestStatus } from '../services/firestoreService';
 import type { ServiceRequest } from '../types/ServiceRequest';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 import './AdminPanel.css';
 
 const AdminPanel: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loginAttempts, setLoginAttempts] = useState(0);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  const [user, setUser] = useState<any>(null);
   
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -22,34 +25,48 @@ const AdminPanel: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    // Check if user is already authenticated
-    const authStatus = localStorage.getItem('adminAuth');
-    if (authStatus === 'authenticated') {
-      setIsAuthenticated(true);
-      loadRequests();
-    } else {
-      setLoading(false);
-    }
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        // Check if user has admin claims
+        const idTokenResult = await user.getIdTokenResult();
+        const isAdmin = idTokenResult.claims.admin === true;
+        
+        if (isAdmin) {
+          setUser(user);
+          setIsAuthenticated(true);
+          loadRequests();
+        } else {
+          setLoginError('Access denied. Admin privileges required.');
+          await signOut(auth);
+        }
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
     
-    // Simple hardcoded credentials (in production, use proper authentication)
-    const validCredentials = {
-      username: 'admin',
-      password: 'gta2024'
-    };
-    
-    if (username === validCredentials.username && password === validCredentials.password) {
-      setIsAuthenticated(true);
-      localStorage.setItem('adminAuth', 'authenticated');
-      setLoginAttempts(0);
-      loadRequests();
-    } else {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Authentication state change will be handled by onAuthStateChanged
+    } catch (error: any) {
       setLoginAttempts(prev => prev + 1);
-      setLoginError('Invalid credentials');
+      
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        setLoginError('Invalid email or password');
+      } else if (error.code === 'auth/too-many-requests') {
+        setLoginError('Too many failed attempts. Please try again later.');
+      } else {
+        setLoginError('Login failed. Please try again.');
+      }
       
       if (loginAttempts >= 2) {
         setLoginError('Too many failed attempts. Please try again later.');
@@ -61,12 +78,15 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('adminAuth');
-    setUsername('');
-    setPassword('');
-    setLoginError('');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setEmail('');
+      setPassword('');
+      setLoginError('');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const loadRequests = async () => {
@@ -275,12 +295,12 @@ const AdminPanel: React.FC = () => {
               <h2>Admin Login</h2>
               <form onSubmit={handleLogin}>
                 <div className="form-group">
-                  <label htmlFor="username">Username:</label>
+                  <label htmlFor="email">Email:</label>
                   <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={loginAttempts >= 3}
                   />

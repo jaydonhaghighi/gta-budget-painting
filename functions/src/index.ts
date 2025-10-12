@@ -7,6 +7,8 @@ import {onRequest} from "firebase-functions/v2/https";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {Resend} from "resend";
+import {getAuth} from "firebase-admin/auth";
+import {initializeApp, getApps} from "firebase-admin/app";
 import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail} from "./emailTemplates";
 
 // Set global options for cost control
@@ -14,6 +16,11 @@ setGlobalOptions({maxInstances: 10});
 
 // Define the Resend API key as a secret
 const resendApiKey = defineSecret("RESEND_API_KEY");
+
+// Initialize Firebase Admin if not already initialized
+if (getApps().length === 0) {
+  initializeApp();
+}
 
 /**
  * Send emails when a new service request is submitted
@@ -97,6 +104,57 @@ export const sendServiceRequestEmails = onRequest(
       response.status(500).json({
         success: false,
         error: "Failed to send emails",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+);
+
+/**
+ * Set admin custom claims for a user
+ * This function allows you to grant admin privileges to a user
+ */
+export const setAdminClaims = onRequest(
+  {cors: true},
+  async (request, response) => {
+    try {
+      // Validate request method
+      if (request.method !== "POST") {
+        response.status(405).json({error: "Method not allowed"});
+        return;
+      }
+
+      const {uid, adminSecret} = request.body;
+
+      // Simple secret check (in production, use a more secure method)
+      if (adminSecret !== "gta-admin-2024") {
+        response.status(401).json({error: "Unauthorized"});
+        return;
+      }
+
+      if (!uid) {
+        response.status(400).json({error: "UID is required"});
+        return;
+      }
+
+      // Set custom claims for admin
+      await getAuth().setCustomUserClaims(uid, {
+        admin: true,
+        role: "admin"
+      });
+
+      logger.info("Admin claims set for user", {uid});
+
+      response.status(200).json({
+        success: true,
+        message: "Admin privileges granted",
+        uid: uid
+      });
+    } catch (error) {
+      logger.error("Error setting admin claims", {error});
+      response.status(500).json({
+        success: false,
+        error: "Failed to set admin claims",
         details: error instanceof Error ? error.message : String(error),
       });
     }
