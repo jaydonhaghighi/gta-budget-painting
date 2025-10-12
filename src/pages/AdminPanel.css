@@ -544,6 +544,21 @@
   color: #3730a3;
 }
 
+.status-scheduled {
+  background-color: #f3e8ff;
+  color: #8b5cf6;
+}
+
+.status-cancelled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.status-unknown {
+  background-color: #f9fafb;
+  color: #374151;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: flex;

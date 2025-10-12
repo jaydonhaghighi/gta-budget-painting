@@ -185,10 +185,12 @@ const AdminPanel: React.FC = () => {
       pending: { text: 'Pending', class: 'status-pending' },
       confirmed: { text: 'Confirmed', class: 'status-confirmed' },
       denied: { text: 'Denied', class: 'status-denied' },
-      completed: { text: 'Completed', class: 'status-completed' }
+      completed: { text: 'Completed', class: 'status-completed' },
+      scheduled: { text: 'Scheduled', class: 'status-scheduled' },
+      cancelled: { text: 'Cancelled', class: 'status-cancelled' }
     };
     
-    const config = statusConfig[status];
+    const config = statusConfig[status] || { text: status, class: 'status-unknown' };
     return <span className={`status-badge ${config.class}`}>{config.text}</span>;
   };
 
