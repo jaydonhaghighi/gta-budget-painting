@@ -90,7 +90,9 @@ const AdminPanel: React.FC = () => {
         const updatedTotals = {
           ...request.totals,
           grandTotal: editedPrice,
-          itemsSubtotal: editedPrice - (request.totals?.travelFeeAdjustment || 0) - (request.totals?.discount || 0)
+          itemsSubtotal: editedPrice - (request.totals?.travelFeeAdjustment || 0) - (request.totals?.discount || 0),
+          travelFeeAdjustment: request.totals?.travelFeeAdjustment || 0,
+          discount: request.totals?.discount || 0
         };
         
         console.log('Updating cart order totals:', updatedTotals);
