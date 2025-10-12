@@ -43,6 +43,9 @@ const LandingPage = () => {
       key={service.id}
       className={`service-card ${isFeatured ? 'featured-card' : ''}`}
       onClick={() => handleServiceClick(service.id)}
+      style={service.backgroundImage ? {
+        '--bg-image': `url(${service.backgroundImage})`
+      } as React.CSSProperties : {}}
     >
       <span className="service-icon">{service.icon}</span>
       <h3>{service.name}</h3>
@@ -64,8 +67,34 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
+          {/* Promotion Banner */}
+          <div className="hero-promotion">
+            <div className="promotion-badge">
+              <span className="promotion-icon">🎨</span>
+              <span className="promotion-text">Limited Time Offer</span>
+            </div>
+            <h2 className="promotion-title">Get 15% Off Orders!</h2>
+            <p className="promotion-description">Spend $1000 or more on your painting project and save 15%. Valid for all customers.</p>
+          </div>
+
           <h1 style={{color: 'white'}}>Budget Painting Services in the GTA</h1>
           <p className="hero-subtitle">Fast, Affordable, Professional • Quick Jobs & Budget-Friendly Prices</p>
+          
+          {/* Hero Features */}
+          <div className="hero-features">
+            <div className="hero-feature">
+              <span className="hero-icon">💰</span>
+              <span>Best Prices</span>
+            </div>
+            <div className="hero-feature">
+              <span className="hero-icon">⭐</span>
+              <span>5-Star Rated</span>
+            </div>
+            <div className="hero-feature">
+              <span className="hero-icon">🛡️</span>
+              <span>Fully Insured</span>
+            </div>
+          </div>
           
           <div className="hero-contact">
             <div className="hero-contact-info">
@@ -97,10 +126,8 @@ const LandingPage = () => {
           <h2>Most Popular Services</h2>
           <p className="section-subtitle">Our best-selling services trusted by thousands of GTA homeowners</p>
           
-          <div className="featured-grid-wrapper">
-            <div className="services-grid featured-grid">
-              {featuredServices.map((service) => renderServiceCard(service, true))}
-            </div>
+          <div className="services-grid featured-grid">
+            {featuredServices.map((service) => renderServiceCard(service, true))}
           </div>
         </div>
       </section>
@@ -119,6 +146,9 @@ const LandingPage = () => {
               <div
                 className="service-card custom-project-card"
                 onClick={() => handleServiceClick('custom-project')}
+                style={customProject.backgroundImage ? {
+                  '--bg-image': `url(${customProject.backgroundImage})`
+                } as React.CSSProperties : {}}
               >
                 <span className="service-icon">{customProject.icon}</span>
                 <h3>{customProject.name}</h3>

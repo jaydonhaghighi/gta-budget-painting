@@ -11,6 +11,7 @@ export interface Service {
   category: 'interior' | 'exterior' | 'specialty';
   featured?: boolean; // For bestsellers
   badge?: 'most-popular' | 'trending' | 'quick-refresh' | 'high-value'; // Badge type
+  backgroundImage?: string; // Background image path
 }
 
 // All Services
@@ -24,7 +25,8 @@ export const allServices: Service[] = [
     icon: '',
     category: 'interior',
     featured: true,
-    badge: 'trending'
+    badge: 'trending',
+    backgroundImage: '/services/accent-wall/0e12ab43ba833f8eb4a8e8f6919cc4d3.jpg'
   },
   {
     id: 'ceiling',
@@ -32,7 +34,8 @@ export const allServices: Service[] = [
     description: 'Roll-perfect ceilings with stain-blocking where needed.',
     type: 'calculated',
     icon: '',
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/ceiling/915e96cd556424de9648fd44f742373a.jpg'
   },
   {
     id: 'small-bathroom',
@@ -42,7 +45,8 @@ export const allServices: Service[] = [
     icon: '',
     category: 'interior',
     featured: true,
-    badge: 'quick-refresh'
+    badge: 'quick-refresh',
+    backgroundImage: '/services/bathroom/0773a067ee1c3fda8473965d13a360b0.jpg'
   },
   {
     id: 'trimming-baseboards',
@@ -50,7 +54,8 @@ export const allServices: Service[] = [
     description: 'Gap-free caulking and tough enamel finishes where scuffs happen most.',
     type: 'calculated',
     icon: '',
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/trimming/2169f21924b68c9e2503f9c2788d794d.jpg'
   },
   {
     id: 'bedroom-painting',
@@ -60,7 +65,8 @@ export const allServices: Service[] = [
     icon: '',
     category: 'interior',
     featured: true,
-    badge: 'most-popular'
+    badge: 'most-popular',
+    backgroundImage: '/services/bedroom/e1077bd2751943866c972d4cb3b3a576.jpg'
   },
   {
     id: 'staircase-painting',
@@ -68,7 +74,8 @@ export const allServices: Service[] = [
     description: 'Staircase painting with increased labor for difficulty and safety requirements.',
     type: 'calculated',
     icon: '',
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/staircase/5db3f964bfa951122f3c9defc12d3bfb.jpg'
   },
   {
     id: 'kitchen-walls',
@@ -76,7 +83,8 @@ export const allServices: Service[] = [
     description: 'High-traffic kitchen walls with durable, scrubbable finishes perfect for cooking spaces.',
     type: 'calculated',
     icon: '',
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg'
   },
   {
     id: 'basement-painting',
@@ -84,7 +92,8 @@ export const allServices: Service[] = [
     description: 'Transform your basement with fresh paint - walls, ceiling, and trim for livable space.',
     type: 'calculated',
     icon: '',
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/basement/ede4060fc66d608019efd65027cfa170.jpg'
   },
   
   // Flat Rate Services (Interior)
@@ -95,7 +104,8 @@ export const allServices: Service[] = [
     type: 'flat-rate',
     icon: '',
     flatRate: 150,
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/closet/cd3c175530ce127003382d5845296b2b.jpg'
   },
   {
     id: 'interior-door',
@@ -104,7 +114,8 @@ export const allServices: Service[] = [
     type: 'flat-rate',
     icon: '',
     flatRate: 89,
-    category: 'interior'
+    category: 'interior',
+    backgroundImage: '/services/interior-door/663b0736b9625a124d64f7f2338b3b9b.jpg'
   },
   {
     id: 'front-door',
@@ -113,7 +124,8 @@ export const allServices: Service[] = [
     type: 'flat-rate',
     icon: '',
     flatRate: 200,
-    category: 'exterior'
+    category: 'exterior',
+    backgroundImage: '/services/front-door/d324393011a6ef7779fe4081482baf84.jpg'
   },
   {
     id: 'shutters',
@@ -122,7 +134,8 @@ export const allServices: Service[] = [
     type: 'flat-rate',
     icon: '',
     flatRate: 120,
-    category: 'exterior'
+    category: 'exterior',
+    backgroundImage: '/services/shutters/d21acebc2f3ad3f06b55c76e17ee5147.jpg'
   },
   {
     id: 'fence-painting',
@@ -130,7 +143,8 @@ export const allServices: Service[] = [
     description: 'Fence painting/staining for any size - residential fences, privacy panels, and more.',
     type: 'calculated',
     icon: '',
-    category: 'exterior'
+    category: 'exterior',
+    backgroundImage: '/services/fence/739cc85f924bf84f79f5414f52957d1c.jpg'
   },
   
   // Custom Quote Services
@@ -142,7 +156,8 @@ export const allServices: Service[] = [
     icon: '',
     category: 'interior',
     featured: true,
-    badge: 'high-value'
+    badge: 'high-value',
+    backgroundImage: '/services/kitchen-cabinets/1d5d1205901c93bfef8674023d3ed719.jpg'
   },
   {
     id: 'garage-door',
@@ -150,7 +165,8 @@ export const allServices: Service[] = [
     description: 'Clean prep, smooth spray/roll, and durable exterior finish.',
     type: 'custom-quote',
     icon: '',
-    category: 'exterior'
+    category: 'exterior',
+    backgroundImage: '/services/garage/c17cfed3ff5e1fa1bc19c27d41bc7f9a.jpg'
   },
   {
     id: 'exterior-railings',
@@ -158,7 +174,8 @@ export const allServices: Service[] = [
     description: 'Deck railings, porch rails, posts, and ceilings with weather-resistant finishes.',
     type: 'calculated',
     icon: '',
-    category: 'exterior'
+    category: 'exterior',
+    backgroundImage: '/services/railings/7e0e0eca999d1b8d42b34d1d4d3b5acb.jpg'
   },
   
   // Custom Quote
