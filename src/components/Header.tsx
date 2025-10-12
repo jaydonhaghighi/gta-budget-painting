@@ -115,9 +115,9 @@ const Header = () => {
           <nav className="nav desktop-nav">
             <Link 
               to="/" 
-              className={currentPage === 'home' ? 'active' : ''}
+              className={`nav-home-link ${currentPage === 'home' ? 'active' : ''}`}
             >
-              Book Now
+              <img src="/home.png" alt="Home" />
             </Link>
             <button className="cart-header-btn" onClick={() => setIsCartOpen(true)}>
               <CartIcon count={cart.items.length} />
@@ -141,10 +141,11 @@ const Header = () => {
         <nav className="mobile-nav">
           <Link 
             to="/" 
-            className={currentPage === 'home' ? 'active' : ''}
+            className={`mobile-nav-home-link ${currentPage === 'home' ? 'active' : ''}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            Book Now
+            <img src="/home.png" alt="Home" />
+            <span>Home</span>
           </Link>
           <button className="cart-mobile-btn" onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true) }}>
             <CartIcon count={cart.items.length} />

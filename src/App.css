@@ -149,6 +149,33 @@ p {
   border-radius: 1px;
 }
 
+.nav-home-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.nav-home-link img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+}
+
+.nav-home-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-home-link.active {
+  background: var(--color-accent);
+}
+
+.nav-home-link.active img {
+  filter: invert(0);
+}
+
 .nav a:hover {
   color: white;
 }
@@ -457,6 +484,18 @@ p {
   font-weight: 600;
   background: var(--color-primary-light);
   border-color: var(--color-primary);
+}
+
+.mobile-nav-home-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-nav-home-link img {
+  width: 20px;
+  height: 20px;
+  filter: invert(0);
 }
 
 /* Hero Section */
