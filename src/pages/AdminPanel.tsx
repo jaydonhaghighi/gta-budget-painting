@@ -4,6 +4,12 @@ import type { ServiceRequest } from '../types/ServiceRequest';
 import './AdminPanel.css';
 
 const AdminPanel: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,8 +22,52 @@ const AdminPanel: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    loadRequests();
+    // Check if user is already authenticated
+    const authStatus = localStorage.getItem('adminAuth');
+    if (authStatus === 'authenticated') {
+      setIsAuthenticated(true);
+      loadRequests();
+    } else {
+      setLoading(false);
+    }
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    
+    // Simple hardcoded credentials (in production, use proper authentication)
+    const validCredentials = {
+      username: 'admin',
+      password: 'gta2024'
+    };
+    
+    if (username === validCredentials.username && password === validCredentials.password) {
+      setIsAuthenticated(true);
+      localStorage.setItem('adminAuth', 'authenticated');
+      setLoginAttempts(0);
+      loadRequests();
+    } else {
+      setLoginAttempts(prev => prev + 1);
+      setLoginError('Invalid credentials');
+      
+      if (loginAttempts >= 2) {
+        setLoginError('Too many failed attempts. Please try again later.');
+        setTimeout(() => {
+          setLoginAttempts(0);
+          setLoginError('');
+        }, 30000); // 30 second lockout
+      }
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('adminAuth');
+    setUsername('');
+    setPassword('');
+    setLoginError('');
+  };
 
   const loadRequests = async () => {
     try {
@@ -215,6 +265,55 @@ const AdminPanel: React.FC = () => {
     }).format(date);
   };
 
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="admin-panel">
+        <div className="admin-container">
+          <div className="login-container">
+            <div className="login-form">
+              <h2>Admin Login</h2>
+              <form onSubmit={handleLogin}>
+                <div className="form-group">
+                  <label htmlFor="username">Username:</label>
+                  <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    disabled={loginAttempts >= 3}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="password">Password:</label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={loginAttempts >= 3}
+                  />
+                </div>
+                {loginError && (
+                  <div className="login-error">{loginError}</div>
+                )}
+                <button 
+                  type="submit" 
+                  className="btn-login"
+                  disabled={loginAttempts >= 3}
+                >
+                  Login
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="admin-panel">
@@ -239,6 +338,12 @@ const AdminPanel: React.FC = () => {
     <div className="admin-panel">
       <div className="admin-container">
         <div className="admin-header">
+          <div className="admin-header-top">
+            <h1>Admin Panel</h1>
+            <button onClick={handleLogout} className="btn-logout">
+              Logout
+            </button>
+          </div>
           <div className="admin-stats">
             <div className="stat-card total">
               <div className="stat-icon">
@@ -297,13 +402,6 @@ const AdminPanel: React.FC = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="search-input"
                 />
-                <button 
-                  onClick={loadRequests}
-                  className="btn-refresh"
-                  title="Refresh data"
-                >
-                  🔄 Refresh
-                </button>
               </div>
           
           <div className="filter-section">
