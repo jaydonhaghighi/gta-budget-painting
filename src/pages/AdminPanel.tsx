@@ -150,10 +150,12 @@ const AdminPanel: React.FC = () => {
   if (loading) {
     return (
       <div className="admin-panel">
-        <div className="admin-header">
-          <h1>Admin Panel</h1>
+        <div className="admin-container">
+          <div className="admin-header">
+            <h1>Admin Panel</h1>
+          </div>
+          <div className="loading">Loading requests...</div>
         </div>
-        <div className="loading">Loading requests...</div>
       </div>
     );
   }
@@ -161,204 +163,208 @@ const AdminPanel: React.FC = () => {
   if (error) {
     return (
       <div className="admin-panel">
-        <div className="admin-header">
-          <h1>Admin Panel</h1>
+        <div className="admin-container">
+          <div className="admin-header">
+            <h1>Admin Panel</h1>
+          </div>
+          <div className="error">{error}</div>
         </div>
-        <div className="error">{error}</div>
       </div>
     );
   }
 
   return (
     <div className="admin-panel">
-      <div className="admin-header">
-        <h1>Admin Panel</h1>
-        <div className="admin-stats">
-          <div className="stat">
-            <span className="stat-number">{requests.length}</span>
-            <span className="stat-label">Total</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">{requests.filter(r => r.status === 'pending').length}</span>
-            <span className="stat-label">Pending</span>
-          </div>
-          <div className="stat">
-            <span className="stat-number">{requests.filter(r => r.status === 'confirmed').length}</span>
-            <span className="stat-label">Confirmed</span>
+      <div className="admin-container">
+        <div className="admin-header">
+          <h1>Admin Panel</h1>
+          <div className="admin-stats">
+            <div className="stat">
+              <span className="stat-number">{requests.length}</span>
+              <span className="stat-label">Total</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">{requests.filter(r => r.status === 'pending').length}</span>
+              <span className="stat-label">Pending</span>
+            </div>
+            <div className="stat">
+              <span className="stat-number">{requests.filter(r => r.status === 'confirmed').length}</span>
+              <span className="stat-label">Confirmed</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="admin-controls">
-        <div className="search-section">
-          <input
-            type="text"
-            placeholder="Search requests, customers, or IDs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-        </div>
-        
-        <div className="filter-section">
-          <div className="filter-group">
-            <label>Status:</label>
-            <select 
-              value={filter} 
-              onChange={(e) => setFilter(e.target.value as any)}
-              className="filter-select"
-            >
-              <option value="all">All ({requests.length})</option>
-              <option value="pending">Pending ({requests.filter(r => r.status === 'pending').length})</option>
-              <option value="confirmed">Confirmed ({requests.filter(r => r.status === 'confirmed').length})</option>
-              <option value="denied">Denied ({requests.filter(r => r.status === 'denied').length})</option>
-              <option value="completed">Completed ({requests.filter(r => r.status === 'completed').length})</option>
-            </select>
+        <div className="admin-controls">
+          <div className="search-section">
+            <input
+              type="text"
+              placeholder="Search requests, customers, or IDs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
           </div>
           
-          <div className="filter-group">
-            <label>Sort by:</label>
-            <select 
-              value={sortBy} 
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="filter-select"
-            >
-              <option value="date">Date</option>
-              <option value="price">Price</option>
-              <option value="status">Status</option>
-            </select>
-          </div>
-          
-          <div className="filter-group">
-            <label>Order:</label>
-            <select 
-              value={sortOrder} 
-              onChange={(e) => setSortOrder(e.target.value as any)}
-              className="filter-select"
-            >
-              <option value="desc">Newest First</option>
-              <option value="asc">Oldest First</option>
-            </select>
+          <div className="filter-section">
+            <div className="filter-group">
+              <label>Status:</label>
+              <select 
+                value={filter} 
+                onChange={(e) => setFilter(e.target.value as any)}
+                className="filter-select"
+              >
+                <option value="all">All ({requests.length})</option>
+                <option value="pending">Pending ({requests.filter(r => r.status === 'pending').length})</option>
+                <option value="confirmed">Confirmed ({requests.filter(r => r.status === 'confirmed').length})</option>
+                <option value="denied">Denied ({requests.filter(r => r.status === 'denied').length})</option>
+                <option value="completed">Completed ({requests.filter(r => r.status === 'completed').length})</option>
+              </select>
+            </div>
+            
+            <div className="filter-group">
+              <label>Sort by:</label>
+              <select 
+                value={sortBy} 
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="filter-select"
+              >
+                <option value="date">Date</option>
+                <option value="price">Price</option>
+                <option value="status">Status</option>
+              </select>
+            </div>
+            
+            <div className="filter-group">
+              <label>Order:</label>
+              <select 
+                value={sortOrder} 
+                onChange={(e) => setSortOrder(e.target.value as any)}
+                className="filter-select"
+              >
+                <option value="desc">Newest First</option>
+                <option value="asc">Oldest First</option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="requests-table-container">
-        {filteredRequests.length === 0 ? (
-          <div className="no-requests">No requests found</div>
-        ) : (
-          <table className="requests-table">
-            <thead>
-              <tr>
-                <th>Service</th>
-                <th>Customer</th>
-                <th>Type</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredRequests.map(request => (
-                <tr key={request.id} className="request-row">
-                  <td>
-                    <div className="service-cell">
-                      <div className="service-name">{request.serviceName}</div>
-                      <div className="service-id">#{request.id.slice(-8)}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="customer-cell">
-                      <div className="customer-name">{request.customerInfo.firstName} {request.customerInfo.lastName}</div>
-                      <div className="customer-email">{request.customerInfo.email}</div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className="service-type">{getServiceTypeLabel(request.serviceType)}</span>
-                  </td>
-                  <td>
-                    {request.estimate ? (
-                      editingRequest === request.id ? (
-                        <div className="price-edit">
-                          <input
-                            type="number"
-                            value={editedPrice}
-                            onChange={(e) => setEditedPrice(Number(e.target.value))}
-                            className="price-input"
-                          />
-                          <button 
-                            onClick={() => handlePriceSave(request.id)}
-                            className="btn-save"
-                          >
-                            Save
-                          </button>
-                          <button 
-                            onClick={() => setEditingRequest(null)}
-                            className="btn-cancel"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="price-display">
-                          <span className="price">${request.estimate.totalCost.toFixed(2)}</span>
-                          <button 
-                            onClick={() => handlePriceEdit(request)}
-                            className="btn-edit-price"
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      )
-                    ) : (
-                      <span className="no-price">No estimate</span>
-                    )}
-                  </td>
-                  <td>
-                    {getStatusBadge(request.status)}
-                  </td>
-                  <td>
-                    <div className="date-cell">
-                      {formatDate(request.createdAt)}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="action-buttons">
-                      {request.status === 'pending' && (
-                        <>
-                          <button 
-                            onClick={() => handleStatusUpdate(request.id, 'confirmed')}
-                            className="action-btn confirm"
-                            title="Confirm"
-                          >
-                            Confirm
-                          </button>
-                          <button 
-                            onClick={() => handleStatusUpdate(request.id, 'denied')}
-                            className="action-btn deny"
-                            title="Deny"
-                          >
-                            Deny
-                          </button>
-                        </>
-                      )}
-                      {request.status === 'confirmed' && (
-                        <button 
-                          onClick={() => handleStatusUpdate(request.id, 'completed')}
-                          className="action-btn complete"
-                          title="Mark Complete"
-                        >
-                          Complete
-                        </button>
-                      )}
-                    </div>
-                  </td>
+        <div className="requests-table-container">
+          {filteredRequests.length === 0 ? (
+            <div className="no-requests">No requests found</div>
+          ) : (
+            <table className="requests-table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Customer</th>
+                  <th>Type</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </thead>
+              <tbody>
+                {filteredRequests.map(request => (
+                  <tr key={request.id} className="request-row">
+                    <td>
+                      <div className="service-cell">
+                        <div className="service-name">{request.serviceName}</div>
+                        <div className="service-id">#{request.id.slice(-8)}</div>
+                      </div>
+                    </td>
+                    <td>
+                      <div className="customer-cell">
+                        <div className="customer-name">{request.customerInfo.firstName} {request.customerInfo.lastName}</div>
+                        <div className="customer-email">{request.customerInfo.email}</div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className="service-type">{getServiceTypeLabel(request.serviceType)}</span>
+                    </td>
+                    <td>
+                      {request.estimate ? (
+                        editingRequest === request.id ? (
+                          <div className="price-edit">
+                            <input
+                              type="number"
+                              value={editedPrice}
+                              onChange={(e) => setEditedPrice(Number(e.target.value))}
+                              className="price-input"
+                            />
+                            <button 
+                              onClick={() => handlePriceSave(request.id)}
+                              className="btn-save"
+                            >
+                              Save
+                            </button>
+                            <button 
+                              onClick={() => setEditingRequest(null)}
+                              className="btn-cancel"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="price-display">
+                            <span className="price">${request.estimate.totalCost.toFixed(2)}</span>
+                            <button 
+                              onClick={() => handlePriceEdit(request)}
+                              className="btn-edit-price"
+                            >
+                              Edit
+                            </button>
+                          </div>
+                        )
+                      ) : (
+                        <span className="no-price">No estimate</span>
+                      )}
+                    </td>
+                    <td>
+                      {getStatusBadge(request.status)}
+                    </td>
+                    <td>
+                      <div className="date-cell">
+                        {formatDate(request.createdAt)}
+                      </div>
+                    </td>
+                    <td>
+                      <div className="action-buttons">
+                        {request.status === 'pending' && (
+                          <>
+                            <button 
+                              onClick={() => handleStatusUpdate(request.id, 'confirmed')}
+                              className="action-btn confirm"
+                              title="Confirm"
+                            >
+                              Confirm
+                            </button>
+                            <button 
+                              onClick={() => handleStatusUpdate(request.id, 'denied')}
+                              className="action-btn deny"
+                              title="Deny"
+                            >
+                              Deny
+                            </button>
+                          </>
+                        )}
+                        {request.status === 'confirmed' && (
+                          <button 
+                            onClick={() => handleStatusUpdate(request.id, 'completed')}
+                            className="action-btn complete"
+                            title="Mark Complete"
+                          >
+                            Complete
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );

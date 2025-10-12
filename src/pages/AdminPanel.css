@@ -2,8 +2,13 @@
 .admin-panel {
   min-height: 100vh;
   background-color: var(--color-background-light);
-  padding: 20px;
   font-family: var(--font-body);
+}
+
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 /* Header */
@@ -12,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  padding-bottom: 20px;
+  padding: 30px 0 20px 0;
   border-bottom: 2px solid var(--color-primary-dark);
 }
 
@@ -355,6 +360,10 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
+  .admin-container {
+    padding: 0 15px;
+  }
+  
   .requests-table {
     font-size: 0.9rem;
   }
@@ -366,8 +375,8 @@
 }
 
 @media (max-width: 768px) {
-  .admin-panel {
-    padding: 15px;
+  .admin-container {
+    padding: 0 15px;
   }
 
   .admin-header {
@@ -409,6 +418,10 @@
 }
 
 @media (max-width: 480px) {
+  .admin-container {
+    padding: 0 10px;
+  }
+
   .admin-header h1 {
     font-size: 2rem;
   }
