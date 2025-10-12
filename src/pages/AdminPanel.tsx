@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { getServiceRequests, updateServiceRequestStatus } from '../services/firestoreService';
-import { auth } from '../firebase';
-import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
-import { checkAdminStatus, getAllAdminUsers, setAdminUserClaims, removeAdminUserClaims, AdminUser, AdminClaims } from '../services/adminService';
+import { useAuth } from '../context/AuthContext';
 import type { ServiceRequest } from '../types/ServiceRequest';
 import './AdminPanel.css';
 
 const AdminPanel: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminClaims, setAdminClaims] = useState<AdminClaims | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [loginAttempts, setLoginAttempts] = useState(0);
+  const { user, loading: authLoading, isAdmin, signIn, logout } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  
-  // Admin management states
-  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
-  const [showAdminManagement, setShowAdminManagement] = useState(false);
-  const [newAdminEmail, setNewAdminEmail] = useState('');
-  const [newAdminRole, setNewAdminRole] = useState<'admin' | 'manager'>('admin');
   
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,105 +22,29 @@ const AdminPanel: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUser(user);
-        // Check admin status using custom claims
-        const claims = await checkAdminStatus(user);
-        if (claims) {
-          setAdminClaims(claims);
-          setIsAdmin(true);
-          setIsAuthenticated(true);
-          loadRequests();
-          loadAdminUsers();
-        } else {
-          setAdminClaims(null);
-          setIsAdmin(false);
-          setIsAuthenticated(false);
-        }
-      } else {
-        setUser(null);
-        setAdminClaims(null);
-        setIsAdmin(false);
-        setIsAuthenticated(false);
-      }
+    if (user && isAdmin) {
+      loadRequests();
+    } else {
       setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+    }
+  }, [user, isAdmin]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
     
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // Authentication state will be handled by onAuthStateChanged
+      await signIn(email, password);
     } catch (error: any) {
-      setLoginAttempts(prev => prev + 1);
-      
-      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-        setLoginError('Invalid email or password');
-      } else if (error.code === 'auth/too-many-requests') {
-        setLoginError('Too many failed attempts. Please try again later.');
-      } else {
-        setLoginError('Login failed. Please try again.');
-      }
-      
-      if (loginAttempts >= 2) {
-        setLoginError('Too many failed attempts. Please try again later.');
-        setTimeout(() => {
-          setLoginAttempts(0);
-          setLoginError('');
-        }, 30000); // 30 second lockout
-      }
+      setLoginError(error.message || 'Login failed');
     }
   };
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setEmail('');
-      setPassword('');
-      setLoginError('');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
-  const loadAdminUsers = async () => {
-    try {
-      const users = await getAllAdminUsers();
-      setAdminUsers(users);
-    } catch (error) {
-      console.error('Error loading admin users:', error);
-    }
-  };
-
-  const handleAddAdmin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      // Note: In production, you'd need to create the user first or have them sign up
-      // For now, this assumes the user already exists
-      await setAdminUserClaims('temp-uid', newAdminEmail, newAdminRole);
-      setNewAdminEmail('');
-      setNewAdminRole('admin');
-      loadAdminUsers();
-    } catch (error) {
-      console.error('Error adding admin:', error);
-      alert('Failed to add admin user');
-    }
-  };
-
-  const handleRemoveAdmin = async (uid: string) => {
-    try {
-      await removeAdminUserClaims(uid);
-      loadAdminUsers();
-    } catch (error) {
-      console.error('Error removing admin:', error);
-      alert('Failed to remove admin user');
-    }
+    await logout();
+    setEmail('');
+    setPassword('');
+    setLoginError('');
   };
 
   const loadRequests = async () => {
@@ -331,8 +243,36 @@ const AdminPanel: React.FC = () => {
     }).format(date);
   };
 
+  // Show loading while checking authentication
+  if (authLoading) {
+    return (
+      <div className="admin-panel">
+        <div className="admin-container">
+          <div className="loading">Checking authentication...</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show access denied if user is authenticated but not admin
+  if (user && !isAdmin) {
+    return (
+      <div className="admin-panel">
+        <div className="admin-container">
+          <div className="access-denied">
+            <h2>Access Denied</h2>
+            <p>You don't have admin privileges.</p>
+            <button onClick={handleLogout} className="btn-logout">
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Show login form if not authenticated
-  if (!isAuthenticated) {
+  if (!user) {
     return (
       <div className="admin-panel">
         <div className="admin-container">
@@ -348,7 +288,6 @@ const AdminPanel: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    disabled={loginAttempts >= 3}
                   />
                 </div>
                 <div className="form-group">
@@ -359,7 +298,6 @@ const AdminPanel: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    disabled={loginAttempts >= 3}
                   />
                 </div>
                 {loginError && (
@@ -368,19 +306,10 @@ const AdminPanel: React.FC = () => {
                 <button 
                   type="submit" 
                   className="btn-login"
-                  disabled={loginAttempts >= 3}
                 >
                   Login
                 </button>
               </form>
-              {user && !isAdmin && (
-                <div className="access-denied">
-                  <p>Access denied. This account does not have admin privileges.</p>
-                  <button onClick={handleLogout} className="btn-logout-small">
-                    Sign Out
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -414,23 +343,9 @@ const AdminPanel: React.FC = () => {
         <div className="admin-header">
           <div className="admin-header-top">
             <h1>Admin Panel</h1>
-            <div className="admin-header-actions">
-              {adminClaims?.isSuperAdmin && (
-                <button 
-                  onClick={() => setShowAdminManagement(!showAdminManagement)}
-                  className="btn-admin-management"
-                >
-                  Manage Admins
-                </button>
-              )}
-              <div className="user-info">
-                <span className="user-email">{user?.email}</span>
-                <span className="user-role">{adminClaims?.role}</span>
-              </div>
-              <button onClick={handleLogout} className="btn-logout">
-                Logout
-              </button>
-            </div>
+            <button onClick={handleLogout} className="btn-logout">
+              Logout
+            </button>
           </div>
           <div className="admin-stats">
             <div className="stat-card total">
@@ -481,65 +396,7 @@ const AdminPanel: React.FC = () => {
           </div>
         </div>
 
-        {showAdminManagement && adminClaims?.isSuperAdmin && (
-          <div className="admin-management-section">
-            <h2>Admin User Management</h2>
-            <div className="admin-management-content">
-              <div className="add-admin-form">
-                <h3>Add New Admin</h3>
-                <form onSubmit={handleAddAdmin}>
-                  <div className="form-group">
-                    <label htmlFor="newAdminEmail">Email:</label>
-                    <input
-                      type="email"
-                      id="newAdminEmail"
-                      value={newAdminEmail}
-                      onChange={(e) => setNewAdminEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="newAdminRole">Role:</label>
-                    <select
-                      id="newAdminRole"
-                      value={newAdminRole}
-                      onChange={(e) => setNewAdminRole(e.target.value as 'admin' | 'manager')}
-                    >
-                      <option value="admin">Admin</option>
-                      <option value="manager">Manager</option>
-                    </select>
-                  </div>
-                  <button type="submit" className="btn-add-admin">
-                    Add Admin
-                  </button>
-                </form>
-              </div>
-              
-              <div className="admin-users-list">
-                <h3>Current Admin Users</h3>
-                <div className="admin-users-table">
-                  {adminUsers.map((adminUser) => (
-                    <div key={adminUser.id} className="admin-user-item">
-                      <div className="admin-user-info">
-                        <span className="admin-user-email">{adminUser.email}</span>
-                        <span className="admin-user-role">{adminUser.role}</span>
-                      </div>
-                      <button
-                        onClick={() => handleRemoveAdmin(adminUser.uid)}
-                        className="btn-remove-admin"
-                        disabled={adminUser.uid === user?.uid}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="admin-controls">
+            <div className="admin-controls">
               <div className="search-section">
                 <input
                   type="text"

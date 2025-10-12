@@ -8,7 +8,7 @@ import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {Resend} from "resend";
 import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail} from "./emailTemplates";
-import {setAdminClaims, removeAdminClaims, getAdminUsers, initializeSuperAdmin} from "./adminManagement";
+import {grantAdminPrivileges, revokeAdminPrivileges, listAdminUsers} from "./adminManagement";
 
 // Set global options for cost control
 setGlobalOptions({maxInstances: 10});
@@ -105,4 +105,4 @@ export const sendServiceRequestEmails = onRequest(
 );
 
 // Export admin management functions
-export {setAdminClaims, removeAdminClaims, getAdminUsers, initializeSuperAdmin};
+export {grantAdminPrivileges, revokeAdminPrivileges, listAdminUsers};
