@@ -29,23 +29,42 @@ export interface EstimateDetails {
   breakdown: string[];
 }
 
-export interface ServiceRequest {
-  id: string;
+export interface CartLineItem {
   serviceId: string;
   serviceName: string;
   serviceType: 'flat-rate' | 'calculated' | 'custom-quote';
+  estimate?: EstimateDetails;
+  formData: Record<string, any>;
+}
+
+export interface CartTotals {
+  itemsSubtotal: number;
+  travelFeeAdjustment: number;
+  discount: number;
+  grandTotal: number;
+}
+
+export interface ServiceRequest {
+  id: string;
+  serviceId?: string; // Optional for cart orders
+  serviceName?: string; // Optional for cart orders
+  serviceType?: 'flat-rate' | 'calculated' | 'custom-quote'; // Optional for cart orders
   
   // Customer Information
   customerInfo: CustomerInfo;
   
-  // Estimate Details (for calculated services)
+  // Estimate Details (for single service requests)
   estimate?: EstimateDetails;
   
-  // Form Data (service-specific inputs)
-  formData: Record<string, any>;
+  // Form Data (for single service requests)
+  formData?: Record<string, any>;
+  
+  // Cart Order fields
+  lineItems?: CartLineItem[];
+  totals?: CartTotals;
   
   // Request Status
-  status: 'pending' | 'confirmed' | 'scheduled' | 'completed' | 'cancelled';
+  status: 'pending' | 'confirmed' | 'scheduled' | 'completed' | 'cancelled' | 'denied';
   
   // Timestamps
   createdAt: Date;
@@ -57,6 +76,9 @@ export interface ServiceRequest {
   assignedTo?: string;
   scheduledDate?: Date;
   completionDate?: Date;
+  
+  // Request type
+  type?: 'single-service' | 'cart-order';
   
   // Custom project specific
   customProjectDetails?: {

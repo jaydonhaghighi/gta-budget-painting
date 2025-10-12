@@ -137,6 +137,40 @@ const AdminPanel: React.FC = () => {
     }
   };
 
+  // Helper function to get estimate for both single service and cart orders
+  const getRequestEstimate = (request: ServiceRequest) => {
+    // For cart orders, get the total from lineItems
+    if (request.type === 'cart-order' && request.lineItems) {
+      const totalCost = request.lineItems.reduce((sum, item) => {
+        return sum + (item.estimate?.totalCost || 0);
+      }, 0);
+      
+      const totalHours = request.lineItems.reduce((sum, item) => {
+        return sum + (item.estimate?.totalHours || 0);
+      }, 0);
+      
+      const totalLaborCost = request.lineItems.reduce((sum, item) => {
+        return sum + (item.estimate?.laborCost || 0);
+      }, 0);
+      
+      const totalPaintCost = request.lineItems.reduce((sum, item) => {
+        return sum + (item.estimate?.paintCost || 0);
+      }, 0);
+      
+      return {
+        totalCost,
+        totalHours,
+        laborCost: totalLaborCost,
+        paintCost: totalPaintCost,
+        isCartOrder: true,
+        itemCount: request.lineItems.length
+      };
+    }
+    
+    // For single service requests
+    return request.estimate ? { ...request.estimate, isCartOrder: false } : null;
+  };
+
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-CA', {
       year: 'numeric',
@@ -267,24 +301,30 @@ const AdminPanel: React.FC = () => {
               <tbody>
                 {filteredRequests.map(request => (
                   <tr key={request.id} className="request-row">
-                    <td>
-                      <div className="service-cell">
-                        <div className="service-name">{request.serviceName}</div>
-                        <div className="service-id">#{request.id.slice(-8)}</div>
+                  <td>
+                    <div className="service-cell">
+                      <div className="service-name">
+                        {request.type === 'cart-order' ? `Cart Order (${request.lineItems?.length || 0} items)` : request.serviceName}
                       </div>
-                    </td>
-                    <td>
-                      <div className="customer-cell">
-                        <div className="customer-name">{request.customerInfo.firstName} {request.customerInfo.lastName}</div>
-                        <div className="customer-email">{request.customerInfo.email}</div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="service-type">{getServiceTypeLabel(request.serviceType)}</span>
-                    </td>
-                    <td>
-                      {request.estimate ? (
-                        editingRequest === request.id ? (
+                      <div className="service-id">#{request.id.slice(-8)}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="customer-cell">
+                      <div className="customer-name">{request.customerInfo.firstName} {request.customerInfo.lastName}</div>
+                      <div className="customer-email">{request.customerInfo.email}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="service-type">
+                      {request.type === 'cart-order' ? 'Cart Order' : getServiceTypeLabel(request.serviceType)}
+                    </span>
+                  </td>
+                  <td>
+                    {(() => {
+                      const estimate = getRequestEstimate(request);
+                      if (estimate) {
+                        return editingRequest === request.id ? (
                           <div className="price-edit">
                             <input
                               type="number"
@@ -307,7 +347,12 @@ const AdminPanel: React.FC = () => {
                           </div>
                         ) : (
                           <div className="price-display">
-                            <span className="price">${request.estimate.totalCost.toFixed(2)}</span>
+                            <span className="price">${estimate.totalCost.toFixed(2)}</span>
+                            {estimate.isCartOrder && (
+                              <div className="cart-info">
+                                <small>{estimate.itemCount} items</small>
+                              </div>
+                            )}
                             <button 
                               onClick={() => handlePriceEdit(request)}
                               className="btn-edit-price"
@@ -315,11 +360,12 @@ const AdminPanel: React.FC = () => {
                               Edit
                             </button>
                           </div>
-                        )
-                      ) : (
-                        <span className="no-price">No estimate</span>
-                      )}
-                    </td>
+                        );
+                      } else {
+                        return <span className="no-price">No estimate</span>;
+                      }
+                    })()}
+                  </td>
                     <td>
                       {getStatusBadge(request.status)}
                     </td>

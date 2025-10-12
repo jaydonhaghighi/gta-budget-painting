@@ -190,8 +190,13 @@
 
 .price-display {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cart-info {
+  font-size: 0.8rem;
+  color: var(--color-text-medium);
 }
 
 .price {
