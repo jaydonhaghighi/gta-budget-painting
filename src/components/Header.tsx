@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../App.css'
 import { useCart } from '../context/CartContext'
 
@@ -82,12 +82,8 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 }
 
 const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
-  const location = useLocation()
   const { cart } = useCart()
-  
-  const currentPage = location.pathname === '/' ? 'home' : 'services'
 
   return (
     <>
@@ -100,16 +96,6 @@ const Header = () => {
             </Link>
           </div>
           
-          {/* Hamburger Menu Button */}
-          <button 
-            className={`hamburger-btn ${isMobileMenuOpen ? 'open' : ''}`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle mobile menu"
-          >
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-            <span className="hamburger-line"></span>
-          </button>
 
           {/* Desktop Navigation */}
           <nav className="nav desktop-nav">
@@ -120,25 +106,6 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile Navigation Panel */}
-      <div className={`mobile-nav-overlay ${isMobileMenuOpen ? 'open' : ''}`}>
-        <div className="mobile-nav-header">
-          <h3 className="mobile-nav-title">GTA Budget Painting</h3>
-          <button 
-            className="mobile-nav-close"
-            onClick={() => setIsMobileMenuOpen(false)}
-            aria-label="Close mobile menu"
-          >
-            <span className="close-icon">×</span>
-          </button>
-        </div>
-        <nav className="mobile-nav">
-          <button className="cart-mobile-btn" onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true) }}>
-            <CartIcon count={cart.items.length} />
-            <span>Cart ({cart.items.length})</span>
-          </button>
-        </nav>
-      </div>
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
