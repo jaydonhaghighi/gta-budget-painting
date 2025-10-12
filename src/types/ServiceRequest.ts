@@ -39,8 +39,8 @@ export interface CartLineItem {
 
 export interface CartTotals {
   itemsSubtotal: number;
-  travelFeeAdjustment: number;
-  discount: number;
+  travelFeeAdjustment?: number;
+  discount?: number;
   grandTotal: number;
 }
 

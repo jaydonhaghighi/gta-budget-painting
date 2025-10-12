@@ -150,7 +150,7 @@ const AdminPanel: React.FC = () => {
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
         return (
-          request.serviceName.toLowerCase().includes(searchLower) ||
+          (request.serviceName?.toLowerCase().includes(searchLower) || false) ||
           request.customerInfo.firstName.toLowerCase().includes(searchLower) ||
           request.customerInfo.lastName.toLowerCase().includes(searchLower) ||
           request.customerInfo.email.toLowerCase().includes(searchLower) ||
@@ -184,8 +184,10 @@ const AdminPanel: React.FC = () => {
     const statusConfig = {
       pending: { text: 'Pending', class: 'status-pending' },
       confirmed: { text: 'Confirmed', class: 'status-confirmed' },
+      scheduled: { text: 'Scheduled', class: 'status-scheduled' },
       denied: { text: 'Denied', class: 'status-denied' },
-      completed: { text: 'Completed', class: 'status-completed' }
+      completed: { text: 'Completed', class: 'status-completed' },
+      cancelled: { text: 'Cancelled', class: 'status-cancelled' }
     };
     
     const config = statusConfig[status];
@@ -485,7 +487,7 @@ const AdminPanel: React.FC = () => {
                   </td>
                   <td>
                     <span className="service-type">
-                      {request.type === 'cart-order' ? 'Cart Order' : getServiceTypeLabel(request.serviceType)}
+                      {request.type === 'cart-order' ? 'Cart Order' : getServiceTypeLabel(request.serviceType || '')}
                     </span>
                   </td>
                       <td>
