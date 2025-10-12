@@ -148,6 +148,7 @@ const Header = () => {
           </Link>
           <button className="cart-mobile-btn" onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true) }}>
             <CartIcon count={cart.items.length} />
+            <span>Cart ({cart.items.length})</span>
           </button>
         </nav>
       </div>
