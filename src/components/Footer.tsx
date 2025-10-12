@@ -10,15 +10,6 @@ const Footer = () => {
             <p>Your trusted painting professionals in the Greater Toronto Area.</p>
           </div>
           <div className="footer-section">
-            <h4>Services</h4>
-            <ul>
-              <li>Interior Painting</li>
-              <li>Exterior Painting</li>
-              <li>Commercial Painting</li>
-              <li>Color Consultation</li>
-            </ul>
-          </div>
-          <div className="footer-section">
             <h4>Contact</h4>
             <p>Phone: (647) 390-7181</p>
             <p>Email: info@gtabudgetpainting.com</p>
