@@ -1207,7 +1207,7 @@ p {
   }
   
   .desktop-nav {
-    display: none;
+    display: flex;
   }
   
   .services-grid {
