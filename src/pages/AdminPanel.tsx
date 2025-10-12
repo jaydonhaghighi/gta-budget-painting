@@ -207,21 +207,34 @@ const AdminPanel: React.FC = () => {
         <div className="admin-header">
           <div className="admin-stats">
             <div className="stat-card total">
-              <div className="stat-icon">📊</div>
+              <div className="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 3V21H21V3H3ZM19 19H5V5H19V19Z" fill="currentColor"/>
+                  <path d="M7 7H17V9H7V7ZM7 11H17V13H7V11ZM7 15H14V17H7V15Z" fill="currentColor"/>
+                </svg>
+              </div>
               <div className="stat-content">
                 <div className="stat-number">{requests.length}</div>
                 <div className="stat-label">Total Requests</div>
               </div>
             </div>
             <div className="stat-card pending">
-              <div className="stat-icon">⏳</div>
+              <div className="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+                </svg>
+              </div>
               <div className="stat-content">
                 <div className="stat-number">{requests.filter(r => r.status === 'pending').length}</div>
                 <div className="stat-label">Pending Review</div>
               </div>
             </div>
             <div className="stat-card confirmed">
-              <div className="stat-icon">✅</div>
+              <div className="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
+                </svg>
+              </div>
               <div className="stat-content">
                 <div className="stat-number">{requests.filter(r => r.status === 'confirmed').length}</div>
                 <div className="stat-label">Confirmed</div>
