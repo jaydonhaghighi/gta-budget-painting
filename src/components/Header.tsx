@@ -7,7 +7,7 @@ function CartIcon({ count }: { count: number }) {
   return (
     <div className="cart-icon" aria-label="Cart">
       <span className="cart-icon-bag">
-        <img src="/shopping-cart.svg" alt="Cart" />
+        <img src="/shopping-cart.png" alt="Cart" />
       </span>
       {count > 0 && <span className="cart-badge">{count}</span>}
     </div>
@@ -99,13 +99,19 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="nav desktop-nav">
-            <button className="cart-header-btn" onClick={() => setIsCartOpen(true)}>
-              <CartIcon count={cart.items.length} />
-            </button>
+            {/* Cart button removed - now using floating cart */}
           </nav>
         </div>
       </header>
 
+      {/* Floating Cart Button */}
+      <button 
+        className="floating-cart-btn" 
+        onClick={() => setIsCartOpen(true)}
+        aria-label="Open Cart"
+      >
+        <CartIcon count={cart.items.length} />
+      </button>
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>

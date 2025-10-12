@@ -34,7 +34,6 @@ body {
   color: var(--color-grey-800);
   line-height: 1.6;
   background-color: var(--color-white);
-  padding-top: 120px; /* Account for fixed header height */
 }
 
 .App {
@@ -87,12 +86,7 @@ p {
 .header {
   background: #2b2b2b;
   border-bottom: .5px solid rgba(255, 255, 255, 0.1);
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  width: 100%;
+  position: static;
 }
 
 .header .container {
@@ -164,6 +158,74 @@ p {
   cursor: pointer;
   position: relative;
 }
+
+/* Floating Cart Button */
+.floating-cart-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  background: #2b2b2b;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  opacity: 1;
+}
+
+.floating-cart-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  background: #1a1a1a;
+}
+
+.floating-cart-btn .cart-icon {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-cart-btn .cart-icon-bag img {
+  width: 28px;
+  height: 28px;
+  filter: invert(1);
+  display: block;
+}
+
+.floating-cart-btn .cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid white;
+}
+
+@media (max-width: 768px) {
+  .floating-cart-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 56px;
+    height: 56px;
+  }
+}
 .cart-icon {
   position: relative;
   display: inline-flex;
@@ -172,7 +234,7 @@ p {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  background: rgba(255,255,255,0.08);
+  background: transparent;
   color: white;
 }
 .cart-icon-bag img { width: 18px; height: 18px; filter: invert(1); display: block; }
