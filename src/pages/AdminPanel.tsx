@@ -2,17 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { getServiceRequests, updateServiceRequestStatus } from '../services/firestoreService';
 import { auth } from '../firebase';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { checkAdminStatus, getAllAdminUsers, setAdminUserClaims, removeAdminUserClaims, AdminUser, AdminClaims } from '../services/adminService';
 import type { ServiceRequest } from '../types/ServiceRequest';
 import './AdminPanel.css';
 
 const AdminPanel: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [adminClaims, setAdminClaims] = useState<AdminClaims | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  
+  // Admin management states
+  const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+  const [showAdminManagement, setShowAdminManagement] = useState(false);
+  const [newAdminEmail, setNewAdminEmail] = useState('');
+  const [newAdminRole, setNewAdminRole] = useState<'admin' | 'manager'>('admin');
   
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,15 +37,22 @@ const AdminPanel: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUser(user);
-        // Check if user is admin (you can implement custom claims here)
-        const isAdminUser = await checkAdminStatus(user);
-        setIsAdmin(isAdminUser);
-        setIsAuthenticated(isAdminUser);
-        if (isAdminUser) {
+        // Check admin status using custom claims
+        const claims = await checkAdminStatus(user);
+        if (claims) {
+          setAdminClaims(claims);
+          setIsAdmin(true);
+          setIsAuthenticated(true);
           loadRequests();
+          loadAdminUsers();
+        } else {
+          setAdminClaims(null);
+          setIsAdmin(false);
+          setIsAuthenticated(false);
         }
       } else {
         setUser(null);
+        setAdminClaims(null);
         setIsAdmin(false);
         setIsAuthenticated(false);
       }
@@ -46,16 +61,6 @@ const AdminPanel: React.FC = () => {
 
     return () => unsubscribe();
   }, []);
-
-  const checkAdminStatus = async (user: User): Promise<boolean> => {
-    // For now, use a simple email-based check
-    // In production, you'd check custom claims or a database
-    const adminEmails = [
-      'admin@gta-budget-painting.com',
-      'manager@gta-budget-painting.com'
-    ];
-    return adminEmails.includes(user.email || '');
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,6 +98,40 @@ const AdminPanel: React.FC = () => {
       setLoginError('');
     } catch (error) {
       console.error('Logout error:', error);
+    }
+  };
+
+  const loadAdminUsers = async () => {
+    try {
+      const users = await getAllAdminUsers();
+      setAdminUsers(users);
+    } catch (error) {
+      console.error('Error loading admin users:', error);
+    }
+  };
+
+  const handleAddAdmin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      // Note: In production, you'd need to create the user first or have them sign up
+      // For now, this assumes the user already exists
+      await setAdminUserClaims('temp-uid', newAdminEmail, newAdminRole);
+      setNewAdminEmail('');
+      setNewAdminRole('admin');
+      loadAdminUsers();
+    } catch (error) {
+      console.error('Error adding admin:', error);
+      alert('Failed to add admin user');
+    }
+  };
+
+  const handleRemoveAdmin = async (uid: string) => {
+    try {
+      await removeAdminUserClaims(uid);
+      loadAdminUsers();
+    } catch (error) {
+      console.error('Error removing admin:', error);
+      alert('Failed to remove admin user');
     }
   };
 
@@ -375,9 +414,23 @@ const AdminPanel: React.FC = () => {
         <div className="admin-header">
           <div className="admin-header-top">
             <h1>Admin Panel</h1>
-            <button onClick={handleLogout} className="btn-logout">
-              Logout
-            </button>
+            <div className="admin-header-actions">
+              {adminClaims?.isSuperAdmin && (
+                <button 
+                  onClick={() => setShowAdminManagement(!showAdminManagement)}
+                  className="btn-admin-management"
+                >
+                  Manage Admins
+                </button>
+              )}
+              <div className="user-info">
+                <span className="user-email">{user?.email}</span>
+                <span className="user-role">{adminClaims?.role}</span>
+              </div>
+              <button onClick={handleLogout} className="btn-logout">
+                Logout
+              </button>
+            </div>
           </div>
           <div className="admin-stats">
             <div className="stat-card total">
@@ -428,7 +481,65 @@ const AdminPanel: React.FC = () => {
           </div>
         </div>
 
-            <div className="admin-controls">
+        {showAdminManagement && adminClaims?.isSuperAdmin && (
+          <div className="admin-management-section">
+            <h2>Admin User Management</h2>
+            <div className="admin-management-content">
+              <div className="add-admin-form">
+                <h3>Add New Admin</h3>
+                <form onSubmit={handleAddAdmin}>
+                  <div className="form-group">
+                    <label htmlFor="newAdminEmail">Email:</label>
+                    <input
+                      type="email"
+                      id="newAdminEmail"
+                      value={newAdminEmail}
+                      onChange={(e) => setNewAdminEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="newAdminRole">Role:</label>
+                    <select
+                      id="newAdminRole"
+                      value={newAdminRole}
+                      onChange={(e) => setNewAdminRole(e.target.value as 'admin' | 'manager')}
+                    >
+                      <option value="admin">Admin</option>
+                      <option value="manager">Manager</option>
+                    </select>
+                  </div>
+                  <button type="submit" className="btn-add-admin">
+                    Add Admin
+                  </button>
+                </form>
+              </div>
+              
+              <div className="admin-users-list">
+                <h3>Current Admin Users</h3>
+                <div className="admin-users-table">
+                  {adminUsers.map((adminUser) => (
+                    <div key={adminUser.id} className="admin-user-item">
+                      <div className="admin-user-info">
+                        <span className="admin-user-email">{adminUser.email}</span>
+                        <span className="admin-user-role">{adminUser.role}</span>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveAdmin(adminUser.uid)}
+                        className="btn-remove-admin"
+                        disabled={adminUser.uid === user?.uid}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="admin-controls">
               <div className="search-section">
                 <input
                   type="text"
