@@ -70,11 +70,11 @@ const LandingPage = () => {
           <div className="hero-contact">
             <div className="hero-contact-info">
               <a href="tel:6473907181" className="hero-phone">
-                📞 Call (647) 390-7181
+                Call (647) 390-7181
               </a>
               <span className="hero-divider">|</span>
               <a href="mailto:info@gtabudgetpainting.com" className="hero-email">
-                ✉️ info@gtabudgetpainting.com
+                info@gtabudgetpainting.com
               </a>
             </div>
             <a 
@@ -92,7 +92,7 @@ const LandingPage = () => {
       {/* Featured Services Section */}
       <section className="featured-services-section">
         <div className="container">
-          <h2>🏆 Most Popular Services</h2>
+          <h2>Most Popular Services</h2>
           <p className="section-subtitle">Our best-selling services trusted by thousands of GTA homeowners</p>
           
           <div className="featured-grid-wrapper">

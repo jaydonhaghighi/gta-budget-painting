@@ -21,7 +21,7 @@ export const allServices: Service[] = [
     name: 'Accent Wall',
     description: 'Colour consultation & feature wall repainting for instant impact.',
     type: 'calculated',
-    icon: '🎨',
+    icon: '●',
     category: 'interior',
     featured: true,
     badge: 'trending'
@@ -31,7 +31,7 @@ export const allServices: Service[] = [
     name: 'Ceiling',
     description: 'Roll-perfect ceilings with stain-blocking where needed.',
     type: 'calculated',
-    icon: '⬆️',
+    icon: '●',
     category: 'interior'
   },
   {
@@ -39,7 +39,7 @@ export const allServices: Service[] = [
     name: 'Small Bathroom Painting',
     description: 'Moisture-tolerant finishes, clean cut lines, and quick turnarounds.',
     type: 'calculated',
-    icon: '🚿',
+    icon: '●',
     category: 'interior',
     featured: true,
     badge: 'quick-refresh'
@@ -49,7 +49,7 @@ export const allServices: Service[] = [
     name: 'Trimming & Baseboards',
     description: 'Gap-free caulking and tough enamel finishes where scuffs happen most.',
     type: 'calculated',
-    icon: '📏',
+    icon: '●',
     category: 'interior'
   },
   {
@@ -57,7 +57,7 @@ export const allServices: Service[] = [
     name: 'Bedroom(s) Painting',
     description: 'Complete bedroom painting including walls, ceiling, trim, doors, and windows.',
     type: 'calculated',
-    icon: '🛏️',
+    icon: '●',
     category: 'interior',
     featured: true,
     badge: 'most-popular'
@@ -67,7 +67,7 @@ export const allServices: Service[] = [
     name: 'Staircase Painting',
     description: 'Staircase painting with increased labor for difficulty and safety requirements.',
     type: 'calculated',
-    icon: '🪜',
+    icon: '●',
     category: 'interior'
   },
   {
@@ -75,7 +75,7 @@ export const allServices: Service[] = [
     name: 'Kitchen Walls',
     description: 'High-traffic kitchen walls with durable, scrubbable finishes perfect for cooking spaces.',
     type: 'calculated',
-    icon: '🍳',
+    icon: '●',
     category: 'interior'
   },
   {
@@ -83,7 +83,7 @@ export const allServices: Service[] = [
     name: 'Basement Painting',
     description: 'Transform your basement with fresh paint - walls, ceiling, and trim for livable space.',
     type: 'calculated',
-    icon: '🏠',
+    icon: '●',
     category: 'interior'
   },
   
@@ -93,7 +93,7 @@ export const allServices: Service[] = [
     name: 'Small Closet Interior',
     description: 'Clean, bright closet interiors with durable, scuff-resistant finishes.',
     type: 'flat-rate',
-    icon: '🚪',
+    icon: '●',
     flatRate: 150,
     category: 'interior'
   },
@@ -102,7 +102,7 @@ export const allServices: Service[] = [
     name: 'Interior Door',
     description: 'Single interior door painting including both sides and edges.',
     type: 'flat-rate',
-    icon: '🚪',
+    icon: '●',
     flatRate: 89,
     category: 'interior'
   },
@@ -111,7 +111,7 @@ export const allServices: Service[] = [
     name: 'Front Door',
     description: 'Front entry repaints with premium exterior enamel for a flawless finish.',
     type: 'flat-rate',
-    icon: '🏠',
+    icon: '●',
     flatRate: 200,
     category: 'exterior'
   },
@@ -120,7 +120,7 @@ export const allServices: Service[] = [
     name: 'Shutters',
     description: 'UV-resistant coatings and secure refitting for lasting curb appeal.',
     type: 'flat-rate',
-    icon: '🪟',
+    icon: '●',
     flatRate: 120,
     category: 'exterior'
   },
@@ -129,7 +129,7 @@ export const allServices: Service[] = [
     name: 'Fence Painting',
     description: 'Fence painting/staining for any size - residential fences, privacy panels, and more.',
     type: 'calculated',
-    icon: '🚧',
+    icon: '●',
     category: 'exterior'
   },
   
@@ -139,7 +139,7 @@ export const allServices: Service[] = [
     name: 'Kitchen Cabinet Painting',
     description: 'Complete cabinet transformation - doors, frames, and hardware with professional spray or brush finish.',
     type: 'custom-quote',
-    icon: '🏺',
+    icon: '●',
     category: 'interior',
     featured: true,
     badge: 'high-value'
@@ -149,7 +149,7 @@ export const allServices: Service[] = [
     name: 'Garage Door',
     description: 'Clean prep, smooth spray/roll, and durable exterior finish.',
     type: 'custom-quote',
-    icon: '🚗',
+    icon: '●',
     category: 'exterior'
   },
   {
@@ -157,7 +157,7 @@ export const allServices: Service[] = [
     name: 'Exterior Railings & Porch',
     description: 'Deck railings, porch rails, posts, and ceilings with weather-resistant finishes.',
     type: 'calculated',
-    icon: '🏡',
+    icon: '●',
     category: 'exterior'
   },
   
@@ -167,7 +167,7 @@ export const allServices: Service[] = [
     name: 'Custom Project',
     description: 'Tell us what you need and we\'ll get back to you with a quote within 24 hours.',
     type: 'custom-quote',
-    icon: '✨',
+    icon: '●',
     category: 'specialty'
   }
 ];
