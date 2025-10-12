@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { getServiceRequests, updateServiceRequestStatus } from '../services/firestoreService';
+import { auth } from '../firebase';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import type { ServiceRequest } from '../types/ServiceRequest';
 import './AdminPanel.css';
 
 const AdminPanel: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const [loginAttempts, setLoginAttempts] = useState(0);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   
@@ -22,45 +26,54 @@ const AdminPanel: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    // Check if user is already authenticated
-    const authStatus = localStorage.getItem('adminAuth');
-    if (authStatus === 'authenticated') {
-      setIsAuthenticated(true);
-      loadRequests();
-    } else {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUser(user);
+        // Check if user is admin (you can implement custom claims here)
+        const isAdminUser = await checkAdminStatus(user);
+        setIsAdmin(isAdminUser);
+        setIsAuthenticated(isAdminUser);
+        if (isAdminUser) {
+          loadRequests();
+        }
+      } else {
+        setUser(null);
+        setIsAdmin(false);
+        setIsAuthenticated(false);
+      }
       setLoading(false);
-    }
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const checkAdminStatus = async (user: User): Promise<boolean> => {
+    // For now, use a simple email-based check
+    // In production, you'd check custom claims or a database
+    const adminEmails = [
+      'admin@gta-budget-painting.com',
+      'manager@gta-budget-painting.com'
+    ];
+    return adminEmails.includes(user.email || '');
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
     
-    // Admin credentials and email list
-    const validCredentials = {
-      username: 'admin',
-      password: 'gta2024'
-    };
-    
-    // List of admin emails (you can add more here)
-    const adminEmails = [
-      'admin@gta-budget-painting.com',
-      'jaydon@gta-budget-painting.com',
-      // Add more admin emails here
-    ];
-    
-    // Check if it's a valid admin email
-    const isAdminEmail = adminEmails.includes(username.toLowerCase());
-    
-    if ((username === validCredentials.username && password === validCredentials.password) || 
-        (isAdminEmail && password === 'gta2024')) {
-      setIsAuthenticated(true);
-      localStorage.setItem('adminAuth', 'authenticated');
-      setLoginAttempts(0);
-      loadRequests();
-    } else {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      // Authentication state will be handled by onAuthStateChanged
+    } catch (error: any) {
       setLoginAttempts(prev => prev + 1);
-      setLoginError('Invalid credentials');
+      
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        setLoginError('Invalid email or password');
+      } else if (error.code === 'auth/too-many-requests') {
+        setLoginError('Too many failed attempts. Please try again later.');
+      } else {
+        setLoginError('Login failed. Please try again.');
+      }
       
       if (loginAttempts >= 2) {
         setLoginError('Too many failed attempts. Please try again later.');
@@ -72,12 +85,15 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem('adminAuth');
-    setUsername('');
-    setPassword('');
-    setLoginError('');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setEmail('');
+      setPassword('');
+      setLoginError('');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const loadRequests = async () => {
@@ -286,13 +302,12 @@ const AdminPanel: React.FC = () => {
               <h2>Admin Login</h2>
               <form onSubmit={handleLogin}>
                 <div className="form-group">
-                  <label htmlFor="username">Username or Email:</label>
+                  <label htmlFor="email">Email:</label>
                   <input
-                    type="text"
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="admin or your-email@domain.com"
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={loginAttempts >= 3}
                   />
@@ -319,6 +334,14 @@ const AdminPanel: React.FC = () => {
                   Login
                 </button>
               </form>
+              {user && !isAdmin && (
+                <div className="access-denied">
+                  <p>Access denied. This account does not have admin privileges.</p>
+                  <button onClick={handleLogout} className="btn-logout-small">
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

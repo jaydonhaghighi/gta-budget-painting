@@ -282,6 +282,37 @@
   border: 1px solid #fecaca;
 }
 
+.access-denied {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-align: center;
+  border: 1px solid #fecaca;
+}
+
+.access-denied p {
+  margin: 0 0 15px 0;
+  font-weight: 500;
+}
+
+.btn-logout-small {
+  padding: 8px 16px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-logout-small:hover {
+  background: #dc2626;
+}
+
 .filter-section {
   display: flex;
   gap: 20px;
