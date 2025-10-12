@@ -242,27 +242,33 @@ p {
 .cart-actions .btn-primary { flex: 1; text-align: center; }
 .cart-mobile-btn { 
   background: transparent; 
-  border: none; 
-  padding: 12px 16px; 
+  border: 1px solid transparent;
+  padding: 1rem 1.5rem; 
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: var(--color-white);
-  font-size: 1rem;
+  gap: 12px;
+  color: var(--color-grey-700);
+  font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 6px;
+  transition: all 0.3s ease;
+  border-radius: 12px;
   width: 100%;
   justify-content: flex-start;
+  margin-top: 0.5rem;
 }
 
 .cart-mobile-btn .cart-icon-bag img {
   filter: invert(0);
+  width: 20px;
+  height: 20px;
 }
 
 .cart-mobile-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  transform: translateX(4px);
 }
 
 @media (max-width: 640px) {
@@ -418,8 +424,9 @@ p {
 .mobile-nav {
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem 2rem;
+  padding: 1.5rem 2rem 2rem;
   flex: 1;
+  gap: 0.5rem;
 }
 
 .mobile-nav a {
@@ -428,24 +435,28 @@ p {
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--color-grey-100);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
   transition: all 0.3s ease;
   cursor: pointer;
-}
-
-.mobile-nav a:last-child {
-  border-bottom: none;
-}
-
-.mobile-nav a.active {
-  color: var(--color-black);
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
 }
 
 .mobile-nav a:hover {
-  color: var(--color-black);
-  padding-left: 1rem;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.mobile-nav a.active {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
 }
 
 /* Hero Section */
