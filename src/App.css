@@ -156,6 +156,9 @@ p {
   padding: 8px;
   border-radius: 6px;
   transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .nav-home-link img {
@@ -490,12 +493,36 @@ p {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--color-grey-700);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .mobile-nav-home-link img {
   width: 20px;
   height: 20px;
   filter: invert(0);
+}
+
+.mobile-nav-home-link:hover {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.mobile-nav-home-link.active {
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  background: var(--color-primary-light);
+  border-color: var(--color-primary);
 }
 
 /* Hero Section */
