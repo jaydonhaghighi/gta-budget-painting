@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { 
-  User, 
   signInWithEmailAndPassword, 
   signOut, 
-  onAuthStateChanged,
-  createUserWithEmailAndPassword
+  onAuthStateChanged, 
+  User 
 } from 'firebase/auth';
 import { auth } from '../firebase';
 
@@ -13,11 +12,17 @@ interface AuthContextType {
   loading: boolean;
   isAdmin: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// List of admin emails - you can add more emails here
+const ADMIN_EMAILS = [
+  'admin@gta-budget-painting.com',
+  'jaydon@gta-budget-painting.com',
+  // Add more admin emails as needed
+];
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -34,20 +39,10 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
-      
-      if (user) {
-        // Check if user has admin claims
-        const idTokenResult = await user.getIdTokenResult();
-        setIsAdmin(!!idTokenResult.claims.admin);
-      } else {
-        setIsAdmin(false);
-      }
-      
       setLoading(false);
     });
 
@@ -55,24 +50,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    await signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const signUp = async (email: string, password: string) => {
-    await createUserWithEmailAndPassword(auth, email, password);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   };
 
   const logout = async () => {
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
   };
+
+  const isAdmin = user ? ADMIN_EMAILS.includes(user.email || '') : false;
 
   const value = {
     user,
     loading,
     isAdmin,
     signIn,
-    signUp,
-    logout
+    logout,
   };
 
   return (

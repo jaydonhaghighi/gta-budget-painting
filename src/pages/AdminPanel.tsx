@@ -90,9 +90,7 @@ const AdminPanel: React.FC = () => {
         const updatedTotals = {
           ...request.totals,
           grandTotal: editedPrice,
-          itemsSubtotal: editedPrice - (request.totals?.travelFeeAdjustment || 0) - (request.totals?.discount || 0),
-          travelFeeAdjustment: request.totals?.travelFeeAdjustment || 0,
-          discount: request.totals?.discount || 0
+          itemsSubtotal: editedPrice - (request.totals?.travelFeeAdjustment || 0) - (request.totals?.discount || 0)
         };
         
         console.log('Updating cart order totals:', updatedTotals);
@@ -187,12 +185,10 @@ const AdminPanel: React.FC = () => {
       pending: { text: 'Pending', class: 'status-pending' },
       confirmed: { text: 'Confirmed', class: 'status-confirmed' },
       denied: { text: 'Denied', class: 'status-denied' },
-      completed: { text: 'Completed', class: 'status-completed' },
-      scheduled: { text: 'Scheduled', class: 'status-scheduled' },
-      cancelled: { text: 'Cancelled', class: 'status-cancelled' }
+      completed: { text: 'Completed', class: 'status-completed' }
     };
     
-    const config = statusConfig[status] || { text: status, class: 'status-unknown' };
+    const config = statusConfig[status];
     return <span className={`status-badge ${config.class}`}>{config.text}</span>;
   };
 
@@ -343,15 +339,15 @@ const AdminPanel: React.FC = () => {
 
   return (
     <div className="admin-panel">
-      <div className="admin-container">
-        <div className="admin-header">
-          <div className="admin-header-top">
-            <h1>Admin Panel</h1>
-            <button onClick={handleLogout} className="btn-logout">
-              Logout
-            </button>
-          </div>
-          <div className="admin-stats">
+        <div className="admin-container">
+          <div className="admin-header">
+            <div className="admin-header-top">
+              <h1>Admin Panel</h1>
+              <button onClick={handleLogout} className="btn-logout">
+                Logout
+              </button>
+            </div>
+            <div className="admin-stats">
             <div className="stat-card total">
               <div className="stat-icon">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

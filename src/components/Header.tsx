@@ -111,18 +111,24 @@ const Header = () => {
             <span className="hamburger-line"></span>
           </button>
 
-              {/* Desktop Navigation */}
-              <nav className="nav desktop-nav">
-                <Link 
-                  to="/" 
-                  className={currentPage === 'home' ? 'active' : ''}
-                >
-                  Book Now
-                </Link>
-                <button className="cart-header-btn" onClick={() => setIsCartOpen(true)}>
-                  <CartIcon count={cart.items.length} />
-                </button>
-              </nav>
+          {/* Desktop Navigation */}
+          <nav className="nav desktop-nav">
+            <Link 
+              to="/" 
+              className={currentPage === 'home' ? 'active' : ''}
+            >
+              Book Now
+            </Link>
+            <Link 
+              to="/admin" 
+              className="admin-link"
+            >
+              Admin
+            </Link>
+            <button className="cart-header-btn" onClick={() => setIsCartOpen(true)}>
+              <CartIcon count={cart.items.length} />
+            </button>
+          </nav>
         </div>
       </header>
 
@@ -138,18 +144,25 @@ const Header = () => {
             <span className="close-icon">×</span>
           </button>
         </div>
-            <nav className="mobile-nav">
-              <Link 
-                to="/" 
-                className={currentPage === 'home' ? 'active' : ''}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Book Now
-              </Link>
-              <button className="cart-mobile-btn" onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true) }}>
-                <CartIcon count={cart.items.length} />
-              </button>
-            </nav>
+        <nav className="mobile-nav">
+          <Link 
+            to="/" 
+            className={currentPage === 'home' ? 'active' : ''}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Book Now
+          </Link>
+          <Link 
+            to="/admin" 
+            className="admin-link"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Admin
+          </Link>
+          <button className="cart-mobile-btn" onClick={() => { setIsMobileMenuOpen(false); setIsCartOpen(true) }}>
+            <CartIcon count={cart.items.length} />
+          </button>
+        </nav>
       </div>
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
