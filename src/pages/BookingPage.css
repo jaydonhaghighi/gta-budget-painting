@@ -37,7 +37,7 @@
 
 /* Hero Section */
 .booking-hero {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-calm-blue-gray) 100%);
   color: white;
   padding: 3rem 0 1.5rem;
   text-align: center;
@@ -60,32 +60,44 @@
 
 /* Hero Promotion */
 .hero-promotion {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, var(--color-golden-beige) 0%, var(--color-golden-beige) 100%);
   border-radius: 12px;
   padding: 1.5rem;
   margin-bottom: 2rem;
   position: relative;
   z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: gentle-pulse 2s ease-in-out infinite;
+  transform: scale(1.02);
+}
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .promotion-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--color-golden-beige);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   margin-bottom: 1rem;
   font-size: 0.875rem;
   font-weight: 600;
   backdrop-filter: blur(10px);
+  color: var(--color-soft-charcoal);
 }
 
 .promotion-icon {
   width: 20px;
   height: 20px;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(0.2);
 }
 
 .promotion-title {
@@ -225,7 +237,7 @@
 }
 
 .hero-cta-button {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
   color: white;
   text-decoration: none;
   padding: 0.875rem 1.75rem;
@@ -238,7 +250,7 @@
 }
 
 .hero-cta-button:hover {
-  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  background: linear-gradient(135deg, #660000 0%, #8B0000 100%);
   transform: translateY(-2px);
 }
 
@@ -296,12 +308,12 @@
 }
 
 .progress-step.active .step-circle {
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
 }
 
 .progress-step.completed .step-circle {
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
 }
 
@@ -312,7 +324,7 @@
 }
 
 .progress-step.active .step-label {
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
   font-weight: 600;
 }
 
@@ -355,11 +367,11 @@
 .service-card:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  border-color: #1a1a1a;
+  border-color: var(--color-steel-blue);
 }
 
 .service-card.selected {
-  border-color: #1a1a1a;
+  border-color: var(--color-steel-blue);
   background: #f5f5f5;
 }
 
@@ -385,7 +397,7 @@
 .service-price {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
   margin-top: 0.5rem;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(15px);
@@ -455,7 +467,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
 }
 
@@ -500,7 +512,7 @@
 
 .emergency-service-item:hover {
   background: #f7fafc;
-  border-color: #1a1a1a;
+  border-color: var(--color-steel-blue);
   transform: translateX(4px);
 }
 
@@ -534,8 +546,8 @@
 }
 
 .btn-back:hover {
-  border-color: #1a1a1a;
-  color: #1a1a1a;
+  border-color: var(--color-steel-blue);
+  color: var(--color-steel-blue);
   transform: translateX(-4px);
 }
 
@@ -560,7 +572,7 @@
 }
 
 .emergency-subservice {
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
@@ -652,7 +664,7 @@
 }
 
 .btn-primary {
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -710,7 +722,7 @@
 .estimate-total-large {
   font-size: 3rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -746,7 +758,7 @@
 .btn-continue {
   width: 100%;
   padding: 1rem;
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
   border: none;
   font-size: 1rem;
@@ -826,13 +838,13 @@
 .summary-item .price-highlight {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
 }
 
 .btn-submit-booking {
   width: 100%;
   padding: 0.75rem;
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
   border: none;
   font-size: 0.9rem;

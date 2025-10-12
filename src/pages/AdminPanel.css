@@ -443,7 +443,7 @@
 }
 
 .action-btn.deny:hover {
-  background: #dc2626;
+  background: var(--color-golden-beige);
 }
 
 .action-btn.complete {
@@ -540,12 +540,12 @@
 }
 
 .btn-logout:hover {
-  background: #dc2626;
+  background: var(--color-golden-beige);
 }
 
 .login-error {
   background: #fef2f2;
-  color: #dc2626;
+  color: var(--color-golden-beige);
   padding: 12px;
   border-radius: 6px;
   margin-bottom: 20px;

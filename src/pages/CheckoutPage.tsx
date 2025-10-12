@@ -313,7 +313,7 @@ const CheckoutPage = () => {
               </div>
 
               {submitError && (
-                <div style={{ color: '#dc2626', marginTop: '1rem', padding: '0.5rem', background: '#fef2f2', borderRadius: '4px' }}>
+                <div style={{ color: 'var(--color-golden-beige)', marginTop: '1rem', padding: '0.5rem', background: '#fef2f2', borderRadius: '4px' }}>
                   {submitError}
                 </div>
               )}

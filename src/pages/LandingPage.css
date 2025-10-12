@@ -13,10 +13,93 @@
   padding: 0 1.5rem;
 }
 
+/* Sticky Promotion Banner */
+.sticky-promo-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--color-golden-beige) 0%, var(--color-golden-beige) 100%);
+  z-index: 1001;
+  transform: translateY(-100%);
+  transition: transform 0.8s ease-out;
+}
+
+.sticky-promo-banner.show {
+  transform: translateY(0);
+  transition: transform 0.8s ease-out;
+}
+
+.sticky-promo-banner.hidden {
+  transform: translateY(-100%);
+  transition: transform 0.8s ease-in;
+}
+
+.promo-banner-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  position: relative;
+}
+
+.promo-banner-text {
+  color: var(--color-soft-charcoal);
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.promo-banner-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(0.2);
+}
+
+.deal-bubble {
+  background: #FFF8DC;
+  color: var(--color-soft-charcoal);
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-left: 0.3rem;
+  display: inline-block;
+  animation: deal-pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes deal-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.promo-banner-close {
+  position: absolute;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--color-soft-charcoal);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.promo-banner-close:hover {
+  opacity: 0.7;
+}
+
 /* Featured Services Section */
 .featured-services-section {
   padding: 2rem 0 3rem;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-calm-blue-gray) 100%);
 }
 
 .featured-services-section h2 {
@@ -44,7 +127,7 @@
 /* Featured Card Styling */
 .featured-card {
   position: relative;
-  border: 1px solid var(--color-grey-200) !important;
+  border: 1px solid #EDEAEO !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
   background: white !important;
   transform: scale(1);
@@ -56,6 +139,7 @@
 .service-card {
   position: relative;
   overflow: hidden;
+  border: 1px solid #EDEAEO;
 }
 
 .service-card::before {
@@ -85,29 +169,55 @@
   color: white !important;
 }
 
+/* Discount Badge */
+.discount-badge {
+  display: inline-block;
+  background: var(--color-golden-beige);
+  color: var(--color-soft-charcoal);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  animation: discount-pulse 1.5s ease-in-out infinite;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@keyframes discount-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(217, 182, 101, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(217, 182, 101, 0.5);
+  }
+}
+
 /* Ensure text is readable over background images */
 .service-card h3,
 .service-card h3 * {
-  color: white !important;
+  color: #EDEAEO !important;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 700;
 }
 
 .service-card p,
 .service-card p * {
-  color: white !important;
+  color: #EDEAEO !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   font-weight: 500;
 }
 
 /* Override any inherited text colors */
 .service-card * {
-  color: white !important;
+  color: #EDEAEO !important;
 }
 
 /* Exception for service price - should have white text on dark background */
 .service-card .service-price {
-  background: #2c2c2c !important;
+  background: var(--color-warm-gray) !important;
   backdrop-filter: blur(15px);
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -124,7 +234,7 @@
 }
 
 .service-card .service-badge {
-  background: #2c2c2c !important;
+  background: var(--color-warm-gray) !important;
   backdrop-filter: blur(15px);
   border: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -173,7 +283,7 @@
 
 /* Custom project card background */
 .custom-project-card {
-  background-color: #2c2c2c !important;
+  background-color: var(--color-steel-blue) !important;
   background-image: none !important;
 }
 
@@ -197,7 +307,7 @@
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  color: #1a1a1a !important;
+  color: var(--color-steel-blue) !important;
   font-weight: 700;
 }
 
@@ -238,14 +348,14 @@
 /* All Services Section */
 .all-services-section {
   padding: 3rem 0 4rem;
-  background: #f5f7fa;
+  background: var(--color-bone);
 }
 
 .all-services-section h2 {
   text-align: center;
   font-size: 1.75rem;
   margin-bottom: 0.5rem;
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
 }
 
 .all-services-section .section-subtitle {

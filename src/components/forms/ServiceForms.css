@@ -598,7 +598,7 @@
 }
 
 .btn-remove-image:hover {
-  background: #dc2626;
+  background: var(--color-golden-beige);
   transform: scale(1.1);
 }
 

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { allServices } from '../data/services';
 import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
 import './LandingPage.css';
@@ -7,7 +7,27 @@ import './LandingPage.css';
 const LandingPage = () => {
   const navigate = useNavigate();
   const [showPostalVerification, setShowPostalVerification] = useState(false);
+  const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
+
+  // Scroll-triggered banner logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const featuredSection = document.querySelector('.featured-services-section');
+      if (featuredSection) {
+        const rect = featuredSection.getBoundingClientRect();
+        // Show banner when the top of the featured services section hits the top of viewport
+        if (rect.top <= 0) {
+          setShowPromoBanner(true);
+        } else {
+          setShowPromoBanner(false);
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleServiceClick = (serviceId: string) => {
     // Check if user is already verified
@@ -51,7 +71,12 @@ const LandingPage = () => {
       <h3>{service.name}</h3>
       <p>{service.description}</p>
       {service.type === 'flat-rate' && service.flatRate && (
-        <div className="service-price">Starting at ${service.flatRate}</div>
+        <div className="service-price">
+          Starting at ${service.flatRate}
+          {service.flatRate >= 1000 && (
+            <span className="discount-badge">SAVE 15%</span>
+          )}
+        </div>
       )}
       {service.type === 'calculated' && (
         <div className="service-badge">Instant Estimate</div>
@@ -64,6 +89,17 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
+      {/* Sticky Promotion Banner */}
+      <div className={`sticky-promo-banner ${showPromoBanner ? 'show' : 'hidden'}`}>
+        <div className="promo-banner-content">
+          <span className="promo-banner-text">
+            <img src="/megaphone.png" alt="Megaphone" className="promo-banner-icon" />
+            Big projects deserve big savings <span className="deal-bubble">15% off $1000+ painting jobs!</span>
+          </span>
+          <button className="promo-banner-close" onClick={() => setShowPromoBanner(false)}>×</button>
+        </div>
+      </div>
+      
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
@@ -78,7 +114,7 @@ const LandingPage = () => {
           </div>
 
           <h1 style={{color: 'white'}}>Budget Painting Services in the GTA</h1>
-          <p className="hero-subtitle">Fast, Affordable, Professional • Quick Jobs & Budget-Friendly Prices</p>
+          <p className="hero-subtitle">We paint your home like it’s our own — with quality work that fits your budget</p>
           
           {/* Hero Features */}
           <div className="hero-features">
