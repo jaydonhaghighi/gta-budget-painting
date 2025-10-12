@@ -179,6 +179,8 @@
   align-items: center;
   gap: 1rem;
   margin: 1.5rem 0 1rem;
+  position: relative;
+  z-index: 10;
 }
 
 .hero-contact-info {
@@ -204,6 +206,9 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
+  position: relative;
+  z-index: 10;
+  cursor: pointer;
 }
 
 .hero-phone:hover,
