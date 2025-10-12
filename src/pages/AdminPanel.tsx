@@ -46,15 +46,35 @@ const AdminPanel: React.FC = () => {
   };
 
   const handlePriceEdit = (request: ServiceRequest) => {
+    const estimate = getRequestEstimate(request);
     setEditingRequest(request.id);
-    setEditedPrice(request.estimate?.totalCost || 0);
+    setEditedPrice(estimate?.totalCost || 0);
   };
 
   const handlePriceSave = async (requestId: string) => {
     try {
-      // Update the request with new price
       const request = requests.find(r => r.id === requestId);
-      if (request && request.estimate) {
+      if (!request) return;
+
+      if (request.type === 'cart-order' && request.lineItems) {
+        // For cart orders, update the totals
+        const updatedTotals = {
+          ...request.totals,
+          grandTotal: editedPrice,
+          itemsSubtotal: editedPrice - (request.totals?.travelFeeAdjustment || 0) - (request.totals?.discount || 0)
+        };
+        
+        await updateServiceRequestStatus(requestId, request.status, { totals: updatedTotals });
+        
+        setRequests(prev => 
+          prev.map(req => 
+            req.id === requestId 
+              ? { ...req, totals: updatedTotals, updatedAt: new Date() }
+              : req
+          )
+        );
+      } else if (request.estimate) {
+        // For single service requests
         const updatedEstimate = {
           ...request.estimate,
           totalCost: editedPrice
@@ -346,52 +366,55 @@ const AdminPanel: React.FC = () => {
                       {request.type === 'cart-order' ? 'Cart Order' : getServiceTypeLabel(request.serviceType)}
                     </span>
                   </td>
-                  <td>
-                    {(() => {
-                      const estimate = getRequestEstimate(request);
-                      if (estimate) {
-                        return editingRequest === request.id ? (
-                          <div className="price-edit">
-                            <input
-                              type="number"
-                              value={editedPrice}
-                              onChange={(e) => setEditedPrice(Number(e.target.value))}
-                              className="price-input"
-                            />
-                            <button 
-                              onClick={() => handlePriceSave(request.id)}
-                              className="btn-save"
-                            >
-                              Save
-                            </button>
-                            <button 
-                              onClick={() => setEditingRequest(null)}
-                              className="btn-cancel"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="price-display">
-                            <span className="price">${estimate.totalCost.toFixed(2)}</span>
-                            {estimate.isCartOrder && (
-                              <div className="cart-info">
-                                <small>{estimate.itemCount} items</small>
+                      <td>
+                        {(() => {
+                          const estimate = getRequestEstimate(request);
+                          if (estimate) {
+                            return editingRequest === request.id ? (
+                              <div className="price-edit">
+                                <input
+                                  type="number"
+                                  value={editedPrice}
+                                  onChange={(e) => setEditedPrice(Number(e.target.value))}
+                                  className="price-input"
+                                />
+                                <button 
+                                  onClick={() => handlePriceSave(request.id)}
+                                  className="btn-save"
+                                >
+                                  Save
+                                </button>
+                                <button 
+                                  onClick={() => setEditingRequest(null)}
+                                  className="btn-cancel"
+                                >
+                                  Cancel
+                                </button>
                               </div>
-                            )}
-                            <button 
-                              onClick={() => handlePriceEdit(request)}
-                              className="btn-edit-price"
-                            >
-                              Edit
-                            </button>
-                          </div>
-                        );
-                      } else {
-                        return <span className="no-price">No estimate</span>;
-                      }
-                    })()}
-                  </td>
+                            ) : (
+                              <div className="price-display">
+                                <div className="price-content">
+                                  <span className="price">${estimate.totalCost.toFixed(2)}</span>
+                                  {estimate.isCartOrder && (
+                                    <div className="cart-info">
+                                      <small>{estimate.itemCount} items</small>
+                                    </div>
+                                  )}
+                                </div>
+                                <button 
+                                  onClick={() => handlePriceEdit(request)}
+                                  className="btn-edit-price"
+                                  title="Edit price"
+                                >
+                                  <img src="/pen.svg" alt="Edit" />
+                                </button>
+                              </div>
+                            );
+                          } else {
+                            return <span className="no-price">No estimate</span>;
+                          }
+                        })()}
+                      </td>
                     <td>
                       {getStatusBadge(request.status)}
                     </td>
