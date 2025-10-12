@@ -113,12 +113,6 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="nav desktop-nav">
-            <Link 
-              to="/" 
-              className={currentPage === 'home' ? 'active' : ''}
-            >
-              Book Now
-            </Link>
             <button className="cart-header-btn" onClick={() => setIsCartOpen(true)}>
               <CartIcon count={cart.items.length} />
             </button>
