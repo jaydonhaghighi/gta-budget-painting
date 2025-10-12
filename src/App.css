@@ -498,7 +498,7 @@ p {
 .hero p {
   font-family: var(--font-body);
   font-size: 1.3rem;
-  color: var(--color-grey-600);
+  color: white;
   margin-bottom: 3rem;
   max-width: 600px;
   margin-left: auto;
