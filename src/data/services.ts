@@ -95,6 +95,17 @@ export const allServices: Service[] = [
     category: 'interior',
     backgroundImage: '/services/basement/ede4060fc66d608019efd65027cfa170.jpg'
   },
+  {
+    id: 'kitchen-cabinet-painting',
+    name: 'Kitchen Cabinet Painting',
+    description: 'Professional cabinet painting with precise measurements for doors, frames, and hardware.',
+    type: 'calculated',
+    icon: '',
+    category: 'interior',
+    featured: true,
+    badge: 'high-value',
+    backgroundImage: '/services/kitchen-cabinets/1d5d1205901c93bfef8674023d3ed719.jpg'
+  },
   
   // Flat Rate Services (Interior)
   {
@@ -148,17 +159,6 @@ export const allServices: Service[] = [
   },
   
   // Custom Quote Services
-  {
-    id: 'kitchen-cabinets',
-    name: 'Kitchen Cabinet Painting',
-    description: 'Complete cabinet transformation - doors, frames, and hardware with professional spray or brush finish.',
-    type: 'custom-quote',
-    icon: '',
-    category: 'interior',
-    featured: true,
-    badge: 'high-value',
-    backgroundImage: '/services/kitchen-cabinets/1d5d1205901c93bfef8674023d3ed719.jpg'
-  },
   {
     id: 'garage-door',
     name: 'Garage Door',

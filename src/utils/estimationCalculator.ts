@@ -665,6 +665,113 @@ export function calculateFence(params: {
   };
 }
 
+// Calculate kitchen cabinet painting
+export function calculateKitchenCabinets(params: {
+  cabinetSections: Array<{
+    doors: number;
+    frames: number;
+    drawers: number;
+    height: number;
+    width: number;
+    includeHardware?: boolean;
+  }>;
+}): EstimateBreakdown {
+  const { cabinetSections } = params;
+  
+  // Cabinet painting is more complex than walls - detailed prep, multiple coats, hardware removal/replacement
+  const CABINET_PRODUCTION_RATES = {
+    DOORS_PER_HOUR: 2, // 2 doors per hour (prep + prime + 2 coats + hardware)
+    FRAMES_PER_HOUR: 3, // 3 frames per hour (prep + prime + 2 coats)
+    DRAWERS_PER_HOUR: 4, // 4 drawer fronts per hour
+    HARDWARE_PER_HOUR: 6, // 6 pieces of hardware per hour (removal + replacement)
+  };
+  
+  // Calculate totals across all sections
+  let totalDoors = 0;
+  let totalFrames = 0;
+  let totalDrawers = 0;
+  let totalHardwarePieces = 0;
+  let totalArea = 0;
+  
+  cabinetSections.forEach(section => {
+    totalDoors += section.doors;
+    totalFrames += section.frames;
+    totalDrawers += section.drawers;
+    
+    // Calculate area for this section
+    const sectionArea = (section.doors + section.frames + section.drawers) * (section.height * section.width / 144);
+    totalArea += sectionArea;
+    
+    // Count hardware pieces if included
+    if (section.includeHardware) {
+      totalHardwarePieces += section.doors + section.drawers;
+    }
+  });
+  
+  // Calculate labor hours for each component
+  const doorHours = Math.ceil(totalDoors / CABINET_PRODUCTION_RATES.DOORS_PER_HOUR);
+  const frameHours = Math.ceil(totalFrames / CABINET_PRODUCTION_RATES.FRAMES_PER_HOUR);
+  const drawerHours = Math.ceil(totalDrawers / CABINET_PRODUCTION_RATES.DRAWERS_PER_HOUR);
+  const hardwareHours = Math.ceil(totalHardwarePieces / CABINET_PRODUCTION_RATES.HARDWARE_PER_HOUR);
+  
+  const rawLaborHours = doorHours + frameHours + drawerHours + hardwareHours;
+  const roundedLaborHours = Math.ceil(rawLaborHours);
+  
+  // Cabinet painting requires more setup/cleanup due to complexity
+  const setupCleanupHours = Math.ceil(roundedLaborHours / 4); // More setup time for cabinets
+  const totalHours = roundedLaborHours + setupCleanupHours;
+  
+  // Cabinet painting requires more paint (multiple coats, better coverage)
+  const paintMultiplier = 2.5; // More paint needed for cabinets
+  const paintGallons = Math.ceil((totalArea / RATES.PAINT_COVERAGE) * paintMultiplier);
+  
+  // Calculate costs
+  const laborCost = totalHours * RATES.LABOR_RATE;
+  const paintCost = paintGallons * RATES.PAINT_RATE;
+  const suppliesCost = totalHours * RATES.SUPPLIES_RATE;
+  const prepFee = Math.ceil(laborCost * RATES.PREP_FEE_PERCENTAGE);
+  const travelFee = RATES.TRAVEL_FEE;
+  
+  const subtotal = laborCost + paintCost + suppliesCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  const breakdown: string[] = [
+    `Cabinet sections: ${cabinetSections.length} sections`,
+    `Total doors: ${totalDoors} doors`,
+    `Total frames: ${totalFrames} frames`,
+    `Total drawers: ${totalDrawers} drawers`,
+    `Total area: ${totalArea.toFixed(1)} sq ft`,
+    '',
+    `Door labor: ${totalDoors} doors / ${CABINET_PRODUCTION_RATES.DOORS_PER_HOUR} = ${doorHours} hours`,
+    `Frame labor: ${totalFrames} frames / ${CABINET_PRODUCTION_RATES.FRAMES_PER_HOUR} = ${frameHours} hours`,
+    `Drawer labor: ${totalDrawers} drawers / ${CABINET_PRODUCTION_RATES.DRAWERS_PER_HOUR} = ${drawerHours} hours`,
+    totalHardwarePieces > 0 ? `Hardware labor: ${totalHardwarePieces} pieces / ${CABINET_PRODUCTION_RATES.HARDWARE_PER_HOUR} = ${hardwareHours} hours` : 'Hardware: Not included',
+    `Setup/cleanup: ${setupCleanupHours} hours`,
+    `Total hours: ${totalHours}`,
+    '',
+    `Paint: ${paintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`,
+    `Labor: ${totalHours} hours × $${RATES.LABOR_RATE} = $${laborCost}`,
+    `Supplies: ${totalHours} hours × $${RATES.SUPPLIES_RATE} = $${suppliesCost}`,
+    `Other fees (prep & travel): $${otherFees}`
+  ];
+  
+  return {
+    laborHours: roundedLaborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
 // Format currency
 export function formatCurrency(amount: number): string {
   return `$${amount.toFixed(2)}`;

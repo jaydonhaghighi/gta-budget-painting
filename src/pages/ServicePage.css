@@ -108,15 +108,15 @@
 }
 
 .progress-step.active .step-number {
-  border-color: #1a1a1a;
-  background: #1a1a1a;
+  border-color: var(--color-steel-blue);
+  background: var(--color-steel-blue);
   color: white;
   animation: pulse 2s ease-in-out infinite;
 }
 
 .progress-step.completed .step-number {
-  border-color: #1a1a1a;
-  background: #1a1a1a;
+  border-color: var(--color-steel-blue);
+  background: var(--color-steel-blue);
   color: white;
 }
 
@@ -130,7 +130,7 @@
 }
 
 .progress-step.active .step-label {
-  color: #1a1a1a;
+  color: var(--color-steel-blue);
   font-weight: 600;
   transform: scale(1.05);
 }

@@ -8,13 +8,14 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [showPostalVerification, setShowPostalVerification] = useState(false);
   const [showPromoBanner, setShowPromoBanner] = useState(false);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
   const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
 
   // Scroll-triggered banner logic
   useEffect(() => {
     const handleScroll = () => {
       const featuredSection = document.querySelector('.featured-services-section');
-      if (featuredSection) {
+      if (featuredSection && !bannerDismissed) {
         const rect = featuredSection.getBoundingClientRect();
         // Show banner when the top of the featured services section hits the top of viewport
         if (rect.top <= 0) {
@@ -27,7 +28,12 @@ const LandingPage = () => {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [bannerDismissed]);
+
+  const handleBannerDismiss = () => {
+    setBannerDismissed(true);
+    setShowPromoBanner(false);
+  };
 
   const handleServiceClick = (serviceId: string) => {
     // Check if user is already verified
@@ -96,7 +102,7 @@ const LandingPage = () => {
             <img src="/megaphone.png" alt="Megaphone" className="promo-banner-icon" />
             Big projects deserve big savings <span className="deal-bubble">15% off $1000+ painting jobs!</span>
           </span>
-          <button className="promo-banner-close" onClick={() => setShowPromoBanner(false)}>×</button>
+          <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
         </div>
       </div>
       
