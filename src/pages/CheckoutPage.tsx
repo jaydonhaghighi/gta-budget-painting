@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { submitServiceRequest } from '../services/firestoreService'
 import type { CustomerInfo } from '../types/ServiceRequest'
+import './CheckoutPage.css'
 
 interface CheckoutFormData {
   earliestStart: string
@@ -167,7 +168,10 @@ const CheckoutPage = () => {
                 {/* Date Range Section */}
                 <div className="form-section">
                   <div className="section-header">
-                    <h3>📅 Preferred Date Range</h3>
+                    <h3>
+                      <img src="/checkout/calendar-lines.svg" alt="Calendar" className="section-icon" />
+                      Preferred Date Range
+                    </h3>
                     <p className="section-description">When would you like us to start and finish your project?</p>
                   </div>
                   <div className="form-row">
@@ -201,7 +205,10 @@ const CheckoutPage = () => {
                 {/* Contact Information Section */}
                 <div className="form-section">
                   <div className="section-header">
-                    <h3>👤 Contact Information</h3>
+                    <h3>
+                      <img src="/checkout/circle-user.svg" alt="User" className="section-icon" />
+                      Contact Information
+                    </h3>
                     <p className="section-description">Tell us how to reach you</p>
                   </div>
                   <div className="form-row">
@@ -261,7 +268,10 @@ const CheckoutPage = () => {
                 {/* Address Section */}
                 <div className="form-section">
                   <div className="section-header">
-                    <h3>🏠 Service Address</h3>
+                    <h3>
+                      <img src="/checkout/home.svg" alt="Home" className="section-icon" />
+                      Service Address
+                    </h3>
                     <p className="section-description">Where will we be painting?</p>
                   </div>
                   <div className="form-group">
@@ -307,7 +317,10 @@ const CheckoutPage = () => {
                 {/* Additional Information Section */}
                 <div className="form-section">
                   <div className="section-header">
-                    <h3>ℹ️ Additional Information</h3>
+                    <h3>
+                      <img src="/checkout/info.svg" alt="Info" className="section-icon" />
+                      Additional Information
+                    </h3>
                     <p className="section-description">Help us provide the best service</p>
                   </div>
                   <div className="form-row">
@@ -319,8 +332,8 @@ const CheckoutPage = () => {
                         value={formData.preferredContact}
                         onChange={handleInputChange}
                       >
-                        <option value="phone">📞 Phone Call</option>
-                        <option value="email">📧 Email</option>
+                        <option value="phone">Phone Call</option>
+                        <option value="email">Email</option>
                       </select>
                     </div>
                     <div className="form-group">
@@ -332,12 +345,12 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                       >
                         <option value="">Select best time...</option>
-                        <option value="morning">🌅 Morning (8AM-12PM)</option>
-                        <option value="afternoon">☀️ Afternoon (12PM-5PM)</option>
-                        <option value="evening">🌆 Evening (5PM-8PM)</option>
-                        <option value="weekdays">📅 Weekdays</option>
-                        <option value="weekends">🏖️ Weekends</option>
-                        <option value="anytime">⏰ Anytime</option>
+                        <option value="morning">Morning (8AM-12PM)</option>
+                        <option value="afternoon">Afternoon (12PM-5PM)</option>
+                        <option value="evening">Evening (5PM-8PM)</option>
+                        <option value="weekdays">Weekdays</option>
+                        <option value="weekends">Weekends</option>
+                        <option value="anytime">Anytime</option>
                       </select>
                     </div>
                   </div>
@@ -350,11 +363,11 @@ const CheckoutPage = () => {
                       onChange={handleInputChange}
                     >
                       <option value="">Select an option...</option>
-                      <option value="google">🔍 Google Search</option>
-                      <option value="facebook">📘 Facebook</option>
-                      <option value="instagram">📷 Instagram</option>
-                      <option value="referral">👥 Referral</option>
-                      <option value="other">📝 Other</option>
+                      <option value="google">Google Search</option>
+                      <option value="facebook">Facebook</option>
+                      <option value="instagram">Instagram</option>
+                      <option value="referral">Referral</option>
+                      <option value="other">Other</option>
                     </select>
                   </div>
                   <div className="form-group">
@@ -381,10 +394,19 @@ const CheckoutPage = () => {
                 {/* Form Actions */}
                 <div className="form-actions">
                   <button className="btn-secondary" type="button" onClick={() => navigate('/cart')}>
-                    ← Back to Cart
+                    Back to Cart
                   </button>
                   <button className="btn-primary" type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? '⏳ Submitting Request...' : '✅ Submit Request'}
+                    {isSubmitting ? (
+                      <>
+                        <img src="/checkout/hourglass-end.svg" alt="Loading" className="btn-icon" />
+                        Submitting Request...
+                      </>
+                    ) : (
+                      <>
+                        Submit Request
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
