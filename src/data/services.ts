@@ -162,8 +162,8 @@ export const allServices: Service[] = [
   {
     id: 'garage-door',
     name: 'Garage Door',
-    description: 'Clean prep, smooth spray/roll, and durable exterior finish.',
-    type: 'custom-quote',
+    description: 'Professional garage door painting with weather-resistant exterior finishes.',
+    type: 'calculated',
     icon: '',
     category: 'exterior',
     backgroundImage: '/services/garage/c17cfed3ff5e1fa1bc19c27d41bc7f9a.jpg'

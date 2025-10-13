@@ -141,209 +141,304 @@ const CheckoutPage = () => {
   }
 
   return (
-    <main className="checkout-page" style={{ padding: '2rem 0' }}>
+    <main className="checkout-page">
       <div className="container">
-        <h1>Checkout</h1>
+        {/* Header */}
+        <div className="checkout-header">
+          <h1>Complete Your Request</h1>
+          <p className="checkout-subtitle">Please provide your information to finalize your painting service request</p>
+        </div>
+
         {cart.items.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            <p>No items in cart.</p>
-            <button className="btn-primary" onClick={() => navigate('/')}>
-              Browse Services
-            </button>
+          <div className="checkout-empty">
+            <div className="empty-state">
+              <h3>No items in cart</h3>
+              <p>Add some services to your cart before checking out.</p>
+              <button className="btn-primary" onClick={() => navigate('/')}>
+                Browse Services
+              </button>
+            </div>
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '24px' }}>
-            <form onSubmit={handleSubmit}>
-              <h3>Preferred Date Range</h3>
-              <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group">
-                  <label>Earliest Start</label>
-                  <input 
-                    type="date" 
-                    name="earliestStart"
-                    value={formData.earliestStart}
-                    onChange={handleInputChange}
-                    required 
-                  />
+          <div className="checkout-layout">
+            {/* Main Form */}
+            <div className="checkout-form-section">
+              <form onSubmit={handleSubmit} className="checkout-form">
+                {/* Date Range Section */}
+                <div className="form-section">
+                  <div className="section-header">
+                    <h3>📅 Preferred Date Range</h3>
+                    <p className="section-description">When would you like us to start and finish your project?</p>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="earliestStart">Earliest Start Date</label>
+                      <input 
+                        type="date" 
+                        id="earliestStart"
+                        name="earliestStart"
+                        value={formData.earliestStart}
+                        onChange={handleInputChange}
+                        required 
+                      />
+                      <small>When can we begin?</small>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="latestFinish">Latest Finish Date</label>
+                      <input 
+                        type="date" 
+                        id="latestFinish"
+                        name="latestFinish"
+                        value={formData.latestFinish}
+                        onChange={handleInputChange}
+                        required 
+                      />
+                      <small>When should we be done by?</small>
+                    </div>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Latest Finish</label>
-                  <input 
-                    type="date" 
-                    name="latestFinish"
-                    value={formData.latestFinish}
-                    onChange={handleInputChange}
-                    required 
-                  />
-                </div>
-              </div>
 
-              <h3 style={{ marginTop: 16 }}>Contact Information</h3>
-              <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group">
-                  <label>First Name</label>
-                  <input 
-                    type="text" 
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleInputChange}
-                    required 
-                  />
+                {/* Contact Information Section */}
+                <div className="form-section">
+                  <div className="section-header">
+                    <h3>👤 Contact Information</h3>
+                    <p className="section-description">Tell us how to reach you</p>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="firstName">First Name</label>
+                      <input 
+                        type="text" 
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                        required 
+                        placeholder="Enter your first name"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="lastName">Last Name</label>
+                      <input 
+                        type="text" 
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                        required 
+                        placeholder="Enter your last name"
+                      />
+                    </div>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="email">Email Address</label>
+                      <input 
+                        type="email" 
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required 
+                        placeholder="your.email@example.com"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="phone">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required 
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Last Name</label>
-                  <input 
-                    type="text" 
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    required 
-                  />
-                </div>
-              </div>
-              <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group">
-                  <label>Email</label>
-                  <input 
-                    type="email" 
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Phone</label>
-                  <input 
-                    type="tel" 
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    required 
-                  />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Address</label>
-                <input 
-                  type="text" 
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  required 
-                />
-              </div>
-              <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group">
-                  <label>City</label>
-                  <input 
-                    type="text" 
-                    name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    required 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Postal Code</label>
-                  <input 
-                    type="text" 
-                    name="postalCode"
-                    value={formData.postalCode}
-                    onChange={handleInputChange}
-                    required 
-                  />
-                </div>
-              </div>
 
-              <h3 style={{ marginTop: 16 }}>Additional Information</h3>
-              <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div className="form-group">
-                  <label>Preferred Contact</label>
-                  <select 
-                    name="preferredContact"
-                    value={formData.preferredContact}
-                    onChange={handleInputChange}
-                  >
-                    <option value="phone">Phone</option>
-                    <option value="email">Email</option>
-                  </select>
+                {/* Address Section */}
+                <div className="form-section">
+                  <div className="section-header">
+                    <h3>🏠 Service Address</h3>
+                    <p className="section-description">Where will we be painting?</p>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="address">Street Address</label>
+                    <input 
+                      type="text" 
+                      id="address"
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required 
+                      placeholder="123 Main Street"
+                    />
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="city">City</label>
+                      <input 
+                        type="text" 
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        required 
+                        placeholder="Toronto"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="postalCode">Postal Code</label>
+                      <input 
+                        type="text" 
+                        id="postalCode"
+                        name="postalCode"
+                        value={formData.postalCode}
+                        onChange={handleInputChange}
+                        required 
+                        placeholder="M5V 3A8"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Best Time to Call</label>
-                  <select 
-                    name="bestTimeToCall"
-                    value={formData.bestTimeToCall}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select...</option>
-                    <option value="morning">Morning (8AM-12PM)</option>
-                    <option value="afternoon">Afternoon (12PM-5PM)</option>
-                    <option value="evening">Evening (5PM-8PM)</option>
-                    <option value="weekdays">Weekdays</option>
-                    <option value="weekends">Weekends</option>
-                    <option value="anytime">Anytime</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group">
-                <label>How did you hear about us?</label>
-                <select 
-                  name="howDidYouHear"
-                  value={formData.howDidYouHear}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select...</option>
-                  <option value="google">Google Search</option>
-                  <option value="facebook">Facebook</option>
-                  <option value="instagram">Instagram</option>
-                  <option value="referral">Referral</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Additional Notes</label>
-                <textarea 
-                  name="additionalNotes"
-                  value={formData.additionalNotes}
-                  onChange={handleInputChange}
-                  rows={3}
-                  placeholder="Any special requirements or notes..."
-                />
-              </div>
 
-              {submitError && (
-                <div style={{ color: 'var(--color-golden-beige)', marginTop: '1rem', padding: '0.5rem', background: '#fef2f2', borderRadius: '4px' }}>
-                  {submitError}
+                {/* Additional Information Section */}
+                <div className="form-section">
+                  <div className="section-header">
+                    <h3>ℹ️ Additional Information</h3>
+                    <p className="section-description">Help us provide the best service</p>
+                  </div>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="preferredContact">Preferred Contact Method</label>
+                      <select 
+                        id="preferredContact"
+                        name="preferredContact"
+                        value={formData.preferredContact}
+                        onChange={handleInputChange}
+                      >
+                        <option value="phone">📞 Phone Call</option>
+                        <option value="email">📧 Email</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="bestTimeToCall">Best Time to Call</label>
+                      <select 
+                        id="bestTimeToCall"
+                        name="bestTimeToCall"
+                        value={formData.bestTimeToCall}
+                        onChange={handleInputChange}
+                      >
+                        <option value="">Select best time...</option>
+                        <option value="morning">🌅 Morning (8AM-12PM)</option>
+                        <option value="afternoon">☀️ Afternoon (12PM-5PM)</option>
+                        <option value="evening">🌆 Evening (5PM-8PM)</option>
+                        <option value="weekdays">📅 Weekdays</option>
+                        <option value="weekends">🏖️ Weekends</option>
+                        <option value="anytime">⏰ Anytime</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="howDidYouHear">How did you hear about us?</label>
+                    <select 
+                      id="howDidYouHear"
+                      name="howDidYouHear"
+                      value={formData.howDidYouHear}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select an option...</option>
+                      <option value="google">🔍 Google Search</option>
+                      <option value="facebook">📘 Facebook</option>
+                      <option value="instagram">📷 Instagram</option>
+                      <option value="referral">👥 Referral</option>
+                      <option value="other">📝 Other</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="additionalNotes">Additional Notes</label>
+                    <textarea 
+                      id="additionalNotes"
+                      name="additionalNotes"
+                      value={formData.additionalNotes}
+                      onChange={handleInputChange}
+                      rows={4}
+                      placeholder="Any special requirements, access instructions, or additional notes..."
+                    />
+                    <small>Let us know about any special requirements or access instructions</small>
+                  </div>
                 </div>
-              )}
 
-              <div style={{ marginTop: 16, display: 'flex', gap: 8 }}>
-                <button className="btn-secondary" type="button" onClick={() => navigate('/cart')}>
-                  Back to Cart
-                </button>
-                <button className="btn-primary" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? 'Submitting...' : 'Submit Request'}
-                </button>
-              </div>
-            </form>
-            <aside style={{ border: '1px solid var(--color-background-dark)', borderRadius: 12, background: 'white', padding: 16, height: 'fit-content' }}>
-              <h3>Order Summary</h3>
-              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
-                <span>Subtotal</span><span>${totals.itemsSubtotal.toFixed(2)}</span>
-              </div>
-              {totals.travelFeeAdjustment > 0 && (
-                <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
-                  <span>Travel Adjustment</span><span>+${totals.travelFeeAdjustment.toFixed(2)}</span>
+                {/* Error Display */}
+                {submitError && (
+                  <div className="error-message">
+                    <strong>⚠️ Error:</strong> {submitError}
+                  </div>
+                )}
+
+                {/* Form Actions */}
+                <div className="form-actions">
+                  <button className="btn-secondary" type="button" onClick={() => navigate('/cart')}>
+                    ← Back to Cart
+                  </button>
+                  <button className="btn-primary" type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? '⏳ Submitting Request...' : '✅ Submit Request'}
+                  </button>
                 </div>
-              )}
-              {totals.discount > 0 && (
-                <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, color: '#166534' }}>
-                  <span>Discount (15%)</span><span>- ${totals.discount.toFixed(2)}</span>
+              </form>
+            </div>
+
+            {/* Order Summary Sidebar */}
+            <aside className="checkout-summary">
+              <div className="summary-card">
+                <div className="summary-header">
+                  <h3>📋 Order Summary</h3>
+                  <span className="item-count">{cart.items.length} {cart.items.length === 1 ? 'service' : 'services'}</span>
                 </div>
-              )}
-              <div className="row" style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12, fontWeight: 800 }}>
-                <span>Total</span><span>${totals.grandTotal.toFixed(2)}</span>
+                
+                <div className="summary-items">
+                  {cart.items.map((item, index) => (
+                    <div key={item.id} className="summary-item">
+                      <div className="item-info">
+                        <h4>{item.serviceName}</h4>
+                        <span className="item-type">{item.serviceType}</span>
+                      </div>
+                      <div className="item-price">${item.estimate.totalCost.toFixed(2)}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="summary-totals">
+                  <div className="total-row">
+                    <span>Subtotal</span>
+                    <span>${totals.itemsSubtotal.toFixed(2)}</span>
+                  </div>
+                  {totals.travelFeeAdjustment > 0 && (
+                    <div className="total-row">
+                      <span>Travel Adjustment</span>
+                      <span>+${totals.travelFeeAdjustment.toFixed(2)}</span>
+                    </div>
+                  )}
+                  {totals.discount > 0 && (
+                    <div className="total-row discount">
+                      <span>Discount (15%)</span>
+                      <span>-${totals.discount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="total-row final-total">
+                    <span>Total</span>
+                    <span>${totals.grandTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="summary-footer">
+                  <p className="summary-note">
+                    💡 <strong>What happens next?</strong><br/>
+                    We'll review your request and contact you within 24 hours to confirm details and schedule your project.
+                  </p>
+                </div>
               </div>
             </aside>
           </div>

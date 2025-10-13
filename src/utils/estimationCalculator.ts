@@ -772,6 +772,100 @@ export function calculateKitchenCabinets(params: {
   };
 }
 
+// Calculate garage door painting
+export function calculateGarageDoor(params: {
+  width: number;
+  height: number;
+  doors: number;
+  material: 'steel' | 'wood' | 'aluminum' | 'fiberglass';
+  condition: 'good' | 'fair' | 'poor';
+  includeHardware?: boolean;
+}): EstimateBreakdown {
+  const { width, height, doors, material, condition, includeHardware } = params;
+  
+  // Calculate door area
+  const doorArea = width * height;
+  
+  // Garage door painting production rates (sq ft per hour)
+  const GARAGE_DOOR_PRODUCTION_RATES = {
+    STEEL: 80,      // Steel doors are easier to paint
+    WOOD: 60,       // Wood requires more prep work
+    ALUMINUM: 70,   // Aluminum needs special prep
+    FIBERGLASS: 65  // Fiberglass requires careful handling
+  };
+  
+  // Condition multipliers affect prep time
+  const CONDITION_MULTIPLIERS = {
+    good: 1.0,   // Minimal prep needed
+    fair: 1.3,  // Some prep required
+    poor: 1.6   // Extensive prep needed
+  };
+  
+  // Calculate base labor hours
+  const baseProductionRate = GARAGE_DOOR_PRODUCTION_RATES[material.toUpperCase() as keyof typeof GARAGE_DOOR_PRODUCTION_RATES];
+  const conditionMultiplier = CONDITION_MULTIPLIERS[condition];
+  const rawLaborHours = (doorArea / baseProductionRate) * conditionMultiplier;
+  const roundedLaborHours = Math.ceil(rawLaborHours);
+  
+  // Door complexity adds time
+  const doorComplexityHours = Math.ceil(doors * 0.2); // 0.2 hours per door
+  const hardwareHours = includeHardware ? doors : 0; // 1 hour per door for hardware removal/replacement
+  
+  const totalLaborHours = roundedLaborHours + doorComplexityHours + hardwareHours;
+  
+  // Setup/cleanup for exterior work
+  const setupCleanupHours = Math.ceil(totalLaborHours / 3); // More setup for exterior
+  const totalHours = totalLaborHours + setupCleanupHours;
+  
+  // Paint calculation - exterior requires more paint
+  const paintMultiplier = 2.2; // Exterior paint coverage
+  const paintGallons = Math.ceil((doorArea / RATES.PAINT_COVERAGE) * paintMultiplier);
+  
+  // Calculate costs
+  const laborCost = totalHours * RATES.LABOR_RATE;
+  const paintCost = paintGallons * RATES.PAINT_RATE;
+  const suppliesCost = totalHours * RATES.SUPPLIES_RATE;
+  const prepFee = Math.ceil(laborCost * RATES.PREP_FEE_PERCENTAGE);
+  const travelFee = RATES.TRAVEL_FEE;
+  
+  const subtotal = laborCost + paintCost + suppliesCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  const breakdown: string[] = [
+    `Garage door: ${width}' × ${height}' = ${doorArea} sq ft`,
+    `Material: ${material.charAt(0).toUpperCase() + material.slice(1)}`,
+    `Doors: ${doors} door${doors > 1 ? 's' : ''}`,
+    `Condition: ${condition.charAt(0).toUpperCase() + condition.slice(1)}`,
+    '',
+    `Base labor: ${doorArea} sq ft / ${baseProductionRate} PR × ${conditionMultiplier} = ${rawLaborHours.toFixed(2)} → ${roundedLaborHours} hours`,
+    `Door complexity: ${doors} door${doors > 1 ? 's' : ''} × 0.2 = ${doorComplexityHours} hours`,
+    includeHardware ? `Hardware: ${doors} hour${doors > 1 ? 's' : ''}` : 'Hardware: Not included',
+    `Setup/cleanup: ${setupCleanupHours} hours`,
+    `Total hours: ${totalHours}`,
+    '',
+    `Paint: ${paintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`,
+    `Labor: ${totalHours} hours × $${RATES.LABOR_RATE} = $${laborCost}`,
+    `Supplies: ${totalHours} hours × $${RATES.SUPPLIES_RATE} = $${suppliesCost}`,
+    `Other fees (prep & travel): $${otherFees}`
+  ];
+  
+  return {
+    laborHours: totalLaborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
 // Format currency
 export function formatCurrency(amount: number): string {
   return `$${amount.toFixed(2)}`;

@@ -7,6 +7,7 @@ import Header from './components/Header.tsx'
 import { CartProvider } from './context/CartContext.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import Footer from './components/Footer.tsx'
+import ScrollToTop from './components/ScrollToTop.tsx'
 import LandingPage from './pages/LandingPage.tsx'
 import ServicePage from './pages/ServicePage.tsx'
 import CartPage from './pages/CartPage.tsx'
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Header />
           <Routes>
             <Route path="/" element={<LandingPage />} />

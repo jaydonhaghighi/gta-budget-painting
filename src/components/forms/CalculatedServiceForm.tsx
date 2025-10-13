@@ -9,6 +9,7 @@ import {
   calculateFence,
   calculateMultipleBedrooms,
   calculateKitchenCabinets,
+  calculateGarageDoor,
   formatCurrency,
   RATES,
   PRODUCTION_RATES,
@@ -188,6 +189,19 @@ const CalculatedServiceForm = ({
                 width: parseFloat(section.width) || 0,
                 includeHardware: section.includeHardware || false,
               }))
+            });
+          }
+          break;
+
+        case 'garage-door':
+          if (data.width && data.height && data.doors && data.material && data.condition) {
+            newEstimate = calculateGarageDoor({
+              width: parseFloat(data.width) || 0,
+              height: parseFloat(data.height) || 0,
+              doors: parseInt(data.doors) || 0,
+              material: data.material,
+              condition: data.condition,
+              includeHardware: data.includeHardware || false,
             });
           }
           break;
@@ -1470,6 +1484,129 @@ const CalculatedServiceForm = ({
     </div>
   );
 
+  const renderGarageDoorForm = () => (
+    <div className="form-group-container">
+      <h3>Garage Door Details</h3>
+      <p className="form-help">
+        Provide details about your garage door for an accurate exterior painting estimate. 
+        Weather-resistant finishes ensure long-lasting protection.
+      </p>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="width">Door Width (feet) *</label>
+          <input
+            type="number"
+            id="width"
+            min="6"
+            max="20"
+            step="0.5"
+            placeholder="e.g., 16"
+            value={formData.width || ''}
+            onChange={(e) => updateFormData('width', e.target.value)}
+            required
+          />
+          <small>Standard garage doors are 8-18 feet wide</small>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="height">Door Height (feet) *</label>
+          <input
+            type="number"
+            id="height"
+            min="6"
+            max="8"
+            step="0.5"
+            placeholder="e.g., 7"
+            value={formData.height || ''}
+            onChange={(e) => updateFormData('height', e.target.value)}
+            required
+          />
+          <small>Standard garage doors are 7-8 feet tall</small>
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="doors">Number of Doors</label>
+          <input
+            type="number"
+            id="doors"
+            min="1"
+            max="4"
+            placeholder="e.g., 2"
+            value={formData.doors || ''}
+            onChange={(e) => updateFormData('doors', e.target.value)}
+          />
+          <small>Count the number of garage door sections</small>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="material">Door Material *</label>
+          <select
+            id="material"
+            value={formData.material || ''}
+            onChange={(e) => updateFormData('material', e.target.value)}
+            required
+          >
+            <option value="">Select material</option>
+            <option value="steel">Steel</option>
+            <option value="wood">Wood</option>
+            <option value="aluminum">Aluminum</option>
+            <option value="fiberglass">Fiberglass</option>
+          </select>
+          <small>Different materials require different prep work</small>
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="condition">Current Condition *</label>
+          <select
+            id="condition"
+            value={formData.condition || ''}
+            onChange={(e) => updateFormData('condition', e.target.value)}
+            required
+          >
+            <option value="">Select condition</option>
+            <option value="good">Good - Minimal prep needed</option>
+            <option value="fair">Fair - Some prep required</option>
+            <option value="poor">Poor - Extensive prep needed</option>
+          </select>
+          <small>Condition affects prep time and cost</small>
+        </div>
+
+        <div className="form-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.includeHardware || false}
+              onChange={(e) => updateFormData('includeHardware', e.target.checked)}
+            />
+            <span>Include hardware removal and replacement</span>
+          </label>
+          <small>Remove and reinstall handles, hinges, and hardware</small>
+        </div>
+      </div>
+
+      <div className="info-box" style={{
+        background: 'var(--color-bone)',
+        padding: '1.5rem',
+        borderRadius: '12px',
+        marginTop: '1.5rem',
+        fontSize: '0.95rem',
+        color: 'var(--color-steel-blue)',
+        border: '2px solid var(--color-calm-blue-gray)',
+        boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
+        fontWeight: '500'
+      }}>
+        <strong>💡 Note:</strong> Garage door painting includes weather-resistant exterior paint, 
+        proper surface preparation, and protection of surrounding areas. Different materials 
+        and conditions affect prep time and final cost.
+      </div>
+    </div>
+  );
+
   const renderForm = () => {
     switch (service.id) {
       case 'accent-wall':
@@ -1482,6 +1619,8 @@ const CalculatedServiceForm = ({
         return renderKitchenWallsForm();
       case 'kitchen-cabinet-painting':
         return renderKitchenCabinetForm();
+      case 'garage-door':
+        return renderGarageDoorForm();
       case 'basement-painting':
         return renderBasementForm();
       case 'trimming-baseboards':
