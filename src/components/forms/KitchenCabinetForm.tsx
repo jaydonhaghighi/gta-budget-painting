@@ -9,7 +9,6 @@ import {
 import './ServiceForms.css';
 
 interface KitchenCabinetFormProps {
-  service: Service;
   initialFormData?: any;
   initialEstimate?: EstimateBreakdown | null;
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
@@ -20,7 +19,6 @@ interface KitchenCabinetFormProps {
 }
 
 const KitchenCabinetForm = ({ 
-  service, 
   initialFormData = {}, 
   initialEstimate = null,
   onEstimateCalculated,
@@ -56,12 +54,14 @@ const KitchenCabinetForm = ({
 
     try {
       const estimate = calculateKitchenCabinets({
-        cabinetDoors: parseInt(data.cabinetDoors) || 0,
-        cabinetFrames: parseInt(data.cabinetFrames) || 0,
-        drawerFronts: parseInt(data.drawerFronts) || 0,
-        cabinetHeight: parseFloat(data.cabinetHeight) || 0,
-        cabinetWidth: parseFloat(data.cabinetWidth) || 0,
-        includeHardware: data.includeHardware || false,
+        cabinetSections: [{
+          doors: parseInt(data.cabinetDoors) || 0,
+          frames: parseInt(data.cabinetFrames) || 0,
+          drawers: parseInt(data.drawerFronts) || 0,
+          height: parseFloat(data.cabinetHeight) || 0,
+          width: parseFloat(data.cabinetWidth) || 0,
+          includeHardware: data.includeHardware || false,
+        }]
       });
 
       setEstimate(estimate);

@@ -424,7 +424,7 @@ const CheckoutPage = () => {
                 </div>
                 
                 <div className="summary-items">
-                  {cart.items.map((item, index) => (
+                  {cart.items.map((item) => (
                     <div key={item.id} className="summary-item">
                       <div className="item-info">
                         <h4>{item.serviceName}</h4>
