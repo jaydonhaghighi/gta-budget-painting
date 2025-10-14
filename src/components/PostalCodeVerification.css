@@ -15,8 +15,9 @@
 
 .postal-verification-modal {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(44, 61, 75, 0.1);
+  border: 2px solid var(--color-calm-blue-gray);
   max-width: 500px;
   width: 100%;
   max-height: 90vh;
@@ -39,42 +40,48 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 1.5rem 0;
-  border-bottom: 1px solid #e2e8f0;
+  padding: 2rem 2rem 0;
+  border-bottom: 2px solid var(--color-calm-blue-gray);
   margin-bottom: 1.5rem;
 }
 
 .postal-verification-header h2 {
   font-size: 1.5rem;
-  font-weight: 600;
-  color: #1a202c;
+  font-weight: 700;
+  color: var(--color-steel-blue);
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .postal-verification-close {
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #718096;
+  color: var(--color-calm-blue-gray);
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
   line-height: 1;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  border-radius: 8px;
 }
 
 .postal-verification-close:hover {
-  color: #1a202c;
+  color: var(--color-steel-blue);
+  background: var(--color-bone);
 }
 
 .postal-verification-content {
-  padding: 0 1.5rem 1.5rem;
+  padding: 0 2rem 2rem;
 }
 
 .postal-verification-description {
-  color: #4a5568;
+  color: var(--color-calm-blue-gray);
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
+  font-weight: 500;
 }
 
 .postal-verification-form {
@@ -88,37 +95,40 @@
 .postal-verification-form label {
   display: block;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--color-steel-blue);
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 .postal-verification-form input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e2e8f0;
+  padding: 1rem;
+  border: 2px solid var(--color-calm-blue-gray);
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: white;
+  color: var(--color-soft-charcoal);
+  transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .postal-verification-form input:focus {
   outline: none;
-  border-color: #1a1a1a;
-  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.1);
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+  transform: translateY(-1px);
 }
 
 .postal-verification-form input.error {
-  border-color: #e53e3e;
-  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 .error-message {
   display: block;
-  color: #e53e3e;
+  color: #dc2626;
   font-size: 0.875rem;
   margin-top: 0.5rem;
   font-weight: 500;
@@ -127,45 +137,51 @@
 .postal-verification-actions {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--color-calm-blue-gray);
 }
 
 .postal-verification-actions .btn-primary,
 .postal-verification-actions .btn-secondary {
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 1.5rem;
   border-radius: 8px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
   cursor: pointer;
   border: none;
 }
 
 .postal-verification-actions .btn-primary {
-  background: #1a1a1a;
+  background: var(--color-steel-blue);
   color: white;
 }
 
 .postal-verification-actions .btn-primary:hover:not(:disabled) {
-  background: #2d2d2d;
-  transform: translateY(-1px);
+  background: var(--color-calm-blue-gray);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(44, 61, 75, 0.2);
 }
 
 .postal-verification-actions .btn-primary:disabled {
-  background: #a0aec0;
+  background: var(--color-calm-blue-gray);
   cursor: not-allowed;
   transform: none;
+  opacity: 0.7;
 }
 
 .postal-verification-actions .btn-secondary {
   background: transparent;
-  color: #4a5568;
-  border: 2px solid #e2e8f0;
+  color: var(--color-steel-blue);
+  border: 2px solid var(--color-steel-blue);
 }
 
 .postal-verification-actions .btn-secondary:hover {
-  background: #f7fafc;
-  border-color: #cbd5e0;
+  background: var(--color-steel-blue);
+  color: white;
+  transform: translateY(-2px);
 }
 
 
@@ -176,11 +192,11 @@
   }
   
   .postal-verification-modal {
-    border-radius: 8px;
+    border-radius: 12px;
   }
   
   .postal-verification-header {
-    padding: 1rem 1rem 0;
+    padding: 1.5rem 1.5rem 0;
     margin-bottom: 1rem;
   }
   
@@ -189,11 +205,12 @@
   }
   
   .postal-verification-content {
-    padding: 0 1rem 1rem;
+    padding: 0 1.5rem 1.5rem;
   }
   
   .postal-verification-actions {
     flex-direction: column;
+    gap: 1rem;
   }
   
   .postal-verification-actions .btn-primary,

@@ -412,15 +412,15 @@ const CalculatedServiceForm = ({
         </div>
 
         {formData.includeBaseboards && (
-          <div className="form-group">
+          <div className="form-group" style={{ marginBottom: '1.5rem' }}>
             <label htmlFor="baseboardProfile">Baseboard Profile</label>
             <select
               id="baseboardProfile"
               value={formData.baseboardProfile || 'low'}
               onChange={(e) => updateFormData('baseboardProfile', e.target.value)}
             >
-              <option value="low">Low Profile (&lt;4")</option>
-              <option value="high">High Profile (&gt;5")</option>
+              <option value="low">Low Profile (4")</option>
+              <option value="high">High Profile (5")</option>
             </select>
           </div>
         )}
@@ -498,7 +498,7 @@ const CalculatedServiceForm = ({
         boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
         fontWeight: '500'
       }}>
-        <strong>💡 Note:</strong> Small bathrooms use moisture-resistant paint and require careful cutting around fixtures.
+        <strong>Note:</strong> Small bathrooms use moisture-resistant paint and require careful cutting around fixtures.
       </div>
     </div>
   );
@@ -612,7 +612,7 @@ const CalculatedServiceForm = ({
         boxShadow: '0 4px 12px rgba(217, 182, 101, 0.3)',
         fontWeight: '500'
       }}>
-        <strong>💡 Basement Tips:</strong>
+        <strong>Basement Tips:</strong>
         <ul style={{ marginTop: '0.75rem', paddingLeft: '1.5rem', marginBottom: 0, fontWeight: '500' }}>
           <li>We use mold/moisture-resistant paint for basement environments</li>
           <li>Unfinished basements may require primer for concrete walls</li>
@@ -687,7 +687,7 @@ const CalculatedServiceForm = ({
               )}
             </div>
 
-            <div className="form-group">
+            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
               <label htmlFor={`bedroom-${bedroom.id}-name`}>Bedroom Name (optional)</label>
               <input
                 type="text"
@@ -698,7 +698,7 @@ const CalculatedServiceForm = ({
               />
             </div>
 
-            <div className="form-row">
+            <div className="form-row" style={{ marginBottom: '1.5rem' }}>
               <div className="form-group">
                 <label htmlFor={`bedroom-${bedroom.id}-length`}>Length (feet) *</label>
                 <input
@@ -740,7 +740,7 @@ const CalculatedServiceForm = ({
               </div>
             </div>
 
-            <div className="checkbox-group" style={{ marginTop: '0.75rem' }}>
+            <div className="checkbox-group" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
               <label className="checkbox-label">
                 <input
                   type="checkbox"
@@ -759,7 +759,7 @@ const CalculatedServiceForm = ({
               </label>
             </div>
 
-            <div className="form-row" style={{ marginTop: '0.75rem' }}>
+            <div className="form-row" style={{ marginBottom: '0' }}>
               <div className="form-group">
                 <label htmlFor={`bedroom-${bedroom.id}-doors`}>Doors</label>
                 <input
@@ -793,7 +793,6 @@ const CalculatedServiceForm = ({
           style={{
             background: 'var(--color-steel-blue)',
             color: 'white',
-            border: '3px solid var(--color-golden-beige)',
             padding: '1rem 1.5rem',
             borderRadius: '12px',
             cursor: 'pointer',
@@ -910,7 +909,7 @@ const CalculatedServiceForm = ({
         boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
         fontWeight: '500'
       }}>
-        <strong>💡 Note:</strong> Kitchen walls use durable, scrubbable paint perfect for high-traffic cooking areas. Ceiling not typically included.
+        <strong>Note:</strong> Kitchen walls use durable, scrubbable paint perfect for high-traffic cooking areas. Ceiling not typically included.
       </div>
     </div>
   );
@@ -1095,10 +1094,13 @@ const CalculatedServiceForm = ({
             color: 'var(--color-steel-blue)',
             fontSize: '1.2rem',
             fontWeight: '700',
-            display: 'block',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
             marginBottom: '1rem'
           }}>
-            📸 Upload Cabinet Photos (Optional)
+            <img src="/camera.svg" alt="Camera" style={{ width: '24px', height: '24px', filter: 'brightness(0) saturate(100%) invert(20%) sepia(8%) saturate(2000%) hue-rotate(180deg) brightness(95%) contrast(90%)' }} />
+            Upload Cabinet Photos (Optional)
           </label>
           <p className="upload-help" style={{
             color: 'var(--color-calm-blue-gray)',
@@ -1148,7 +1150,8 @@ const CalculatedServiceForm = ({
               e.currentTarget.style.boxShadow = '0 4px 12px rgba(44, 61, 75, 0.1)';
             }}
           >
-            📁 Choose Images
+            <img src="/folder.svg" alt="Folder" style={{ width: '18px', height: '18px', marginRight: '0.5rem', filter: 'brightness(0) saturate(100%) invert(20%) sepia(8%) saturate(2000%) hue-rotate(180deg) brightness(95%) contrast(90%)' }} />
+            Choose Images
           </label>
           
           {formData.cabinetImages && formData.cabinetImages.length > 0 && (
@@ -1229,7 +1232,7 @@ const CalculatedServiceForm = ({
             fontSize: '0.9rem',
             fontWeight: '500'
           }}>
-            <strong>💡 Tip:</strong> Upload clear photos showing the current condition, style, and any specific details of your cabinets. This helps us provide the most accurate estimate.
+            <strong>Tip:</strong> Upload clear photos showing the current condition, style, and any specific details of your cabinets. This helps us provide the most accurate estimate.
           </div>
         </div>
 
@@ -1244,7 +1247,7 @@ const CalculatedServiceForm = ({
           boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
           fontWeight: '500'
         }}>
-          <strong>💡 Note:</strong> Cabinet painting requires detailed preparation, multiple coats, and careful attention to hardware. Each section can have different dimensions and hardware requirements.
+          <strong>Note:</strong> Cabinet painting requires detailed preparation, multiple coats, and careful attention to hardware. Each section can have different dimensions and hardware requirements.
         </div>
       </div>
     );
@@ -1600,7 +1603,7 @@ const CalculatedServiceForm = ({
         boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
         fontWeight: '500'
       }}>
-        <strong>💡 Note:</strong> Garage door painting includes weather-resistant exterior paint, 
+        <strong>Note:</strong> Garage door painting includes weather-resistant exterior paint, 
         proper surface preparation, and protection of surrounding areas. Different materials 
         and conditions affect prep time and final cost.
       </div>

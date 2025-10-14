@@ -416,7 +416,10 @@ const CheckoutPage = () => {
             <aside className="checkout-summary">
               <div className="summary-card">
                 <div className="summary-header">
-                  <h3>📋 Order Summary</h3>
+                  <h3>
+                    <img src="/checkout/clipboard.svg" alt="Order Summary" className="section-icon" />
+                    Order Summary
+                  </h3>
                   <span className="item-count">{cart.items.length} {cart.items.length === 1 ? 'service' : 'services'}</span>
                 </div>
                 

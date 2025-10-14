@@ -113,10 +113,12 @@ const LandingPage = () => {
           <div className="hero-promotion">
             <div className="promotion-badge">
               <img src="/discount.png" alt="Discount" className="promotion-icon" />
-              <span className="promotion-text">Limited Time Offer</span>
+              <span>Limited Time</span>
             </div>
-            <h2 className="promotion-title">Get 15% Off Orders!</h2>
-            <p className="promotion-description">Spend $1000 or more on your painting project and save 15%. Valid for all customers.</p>
+            <div className="promotion-content">
+              <h2 className="promotion-title">15% Off Orders $1000+</h2>
+              <p className="promotion-description">Save on your painting project today</p>
+            </div>
           </div>
 
           <h1 style={{color: 'white'}}>Budget Painting Services in the GTA</h1>

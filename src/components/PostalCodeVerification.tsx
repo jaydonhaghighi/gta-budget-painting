@@ -129,7 +129,10 @@ export const PostalCodeVerification: React.FC<PostalCodeVerificationProps> = ({
     <div className="postal-verification-overlay">
       <div className="postal-verification-modal">
         <div className="postal-verification-header">
-          <h2>📍 Toronto Region Verification</h2>
+          <h2>
+            <img src="/marker.svg" alt="Location" className="section-icon" />
+            Toronto Region Verification
+          </h2>
           <button 
             className="postal-verification-close" 
             onClick={onClose}
