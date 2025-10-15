@@ -53,14 +53,14 @@ export const sendServiceRequestEmails = onRequest(
       if (isCartOrder) {
         // Cart order emails
         customerEmail = await resend.emails.send({
-          from: "GTA Budget Painting <onboarding@resend.dev>",
+          from: "GTA Budget Painting <noreply@gtabudgetpainting.ca>",
           to: serviceRequestData.customerInfo.email,
           subject: `Your Order #${serviceRequestData.requestId} is Being Reviewed by our Team`,
           html: generateCartCustomerEmail(serviceRequestData),
         });
 
         adminEmail = await resend.emails.send({
-          from: "GTA Budget Painting System <onboarding@resend.dev>",
+          from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
           to: "info@gtabudgetpainting.ca",
           subject: `🛒 New Cart Order #${serviceRequestData.requestId} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
           html: generateCartAdminEmail(serviceRequestData),
@@ -68,14 +68,14 @@ export const sendServiceRequestEmails = onRequest(
       } else {
         // Single service emails
         customerEmail = await resend.emails.send({
-          from: "GTA Budget Painting <onboarding@resend.dev>",
+          from: "GTA Budget Painting <noreply@gtabudgetpainting.ca>",
           to: serviceRequestData.customerInfo.email,
           subject: `Your Order #${serviceRequestData.requestId} is Being Reviewed by our Team`,
           html: generateCustomerEmail(serviceRequestData),
         });
 
         adminEmail = await resend.emails.send({
-          from: "GTA Budget Painting System <onboarding@resend.dev>",
+          from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
           to: "info@gtabudgetpainting.ca",
           subject: `🔔 New Service Request #${serviceRequestData.requestId} - ${serviceRequestData.serviceName}`,
           html: generateAdminEmail(serviceRequestData),
@@ -132,7 +132,7 @@ export const sendInvoiceEmail = onRequest(
       // Send invoice email to client
       logger.info("Attempting to send invoice email to", {email: invoiceData.clientInfo.email});
       const invoiceEmail = await resend.emails.send({
-        from: "GTA Budget Painting <onboarding@resend.dev>",
+        from: "GTA Budget Painting <invoices@gtabudgetpainting.ca>",
         to: invoiceData.clientInfo.email,
         subject: `Your Order #${invoiceData.invoiceNumber} Has Been Accepted`,
         html: generateInvoiceEmail(invoiceData),
@@ -147,7 +147,7 @@ export const sendInvoiceEmail = onRequest(
       // Send notification to admin
       logger.info("Attempting to send admin notification to", {email: "info@gtabudgetpainting.ca"});
       const adminEmail = await resend.emails.send({
-        from: "GTA Budget Painting System <onboarding@resend.dev>",
+        from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
         to: "info@gtabudgetpainting.ca",
         subject: `📄 Invoice #${invoiceData.invoiceNumber} Sent to ${invoiceData.clientInfo.name}`,
         html: `
