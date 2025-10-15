@@ -127,7 +127,7 @@
 /* Featured Card Styling */
 .featured-card {
   position: relative;
-  border: 1px solid #EDEAEO !important;
+  border: 1px solid #EDEAE0 !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
   background: white !important;
   transform: scale(1);
@@ -139,7 +139,7 @@
 .service-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid #EDEAEO;
+  border: 1px solid #EDEAE0;
 }
 
 .service-card::before {
@@ -198,21 +198,21 @@
 /* Ensure text is readable over background images */
 .service-card h3,
 .service-card h3 * {
-  color: #EDEAEO !important;
+  color: #E5E5E5 !important; /* Changed to standard light gray instead of invalid hex */
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: 700;
 }
 
 .service-card p,
 .service-card p * {
-  color: #EDEAEO !important;
+  color: #E5E5E5 !important; /* Changed to standard light gray */
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
   font-weight: 500;
 }
 
 /* Override any inherited text colors */
 .service-card * {
-  color: #EDEAEO !important;
+  color: #E5E5E5 !important; /* Changed to standard light gray */
 }
 
 /* Exception for service price - should have white text on dark background */

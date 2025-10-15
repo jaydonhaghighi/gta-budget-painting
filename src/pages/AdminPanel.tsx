@@ -134,7 +134,17 @@ const AdminPanel: React.FC = () => {
     const total = subtotal + tax;
     
     // Generate invoice items from cart items or single service
-    let items = [];
+    type InvoiceItem = {
+      id: string;
+      serviceName: string;
+      serviceType: string;
+      description: string;
+      quantity: number;
+      unitPrice: number;
+      total: number;
+    };
+    
+    let items: InvoiceItem[] = [];
     
     if (request.lineItems && request.lineItems.length > 0) {
       // Cart order
@@ -361,14 +371,6 @@ const AdminPanel: React.FC = () => {
     return <span className={`status-badge ${config.class}`}>{config.text}</span>;
   };
 
-  const getServiceTypeLabel = (serviceType: string) => {
-    switch (serviceType) {
-      case 'flat-rate': return 'Flat Rate';
-      case 'custom-quote': return 'Custom Quote';
-      case 'calculated': return 'Calculated';
-      default: return serviceType;
-    }
-  };
 
   // Helper function to get estimate for both single service and cart orders
   const getRequestEstimate = (request: ServiceRequest) => {
