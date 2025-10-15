@@ -99,7 +99,7 @@ const LandingPage = () => {
       <div className={`sticky-promo-banner ${showPromoBanner ? 'show' : 'hidden'}`}>
         <div className="promo-banner-content">
           <span className="promo-banner-text">
-            <img src="/megaphone.png" alt="Megaphone" className="promo-banner-icon" />
+            <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" />
             Big projects deserve big savings <span className="deal-bubble">15% off $1000+ painting jobs!</span>
           </span>
           <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
@@ -109,17 +109,6 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
-          {/* Promotion Banner */}
-          <div className="hero-promotion">
-            <div className="promotion-badge">
-              <img src="/discount.png" alt="Discount" className="promotion-icon" />
-              <span>Limited Time</span>
-            </div>
-            <div className="promotion-content">
-              <h2 className="promotion-title">15% Off Orders $1000+</h2>
-              <p className="promotion-description">Save on your painting project today</p>
-            </div>
-          </div>
 
           <h1 style={{color: 'white'}}>Budget Painting Services in the GTA</h1>
           <p className="hero-subtitle">We paint your home like it’s our own — with quality work that fits your budget</p>

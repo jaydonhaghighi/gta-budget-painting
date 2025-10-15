@@ -20,6 +20,8 @@ const AdminPanel: React.FC = () => {
   const [editingRequest, setEditingRequest] = useState<string | null>(null);
   const [editedPrice, setEditedPrice] = useState<number>(0);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [selectedOrder, setSelectedOrder] = useState<ServiceRequest | null>(null);
+  const [showOrderDetails, setShowOrderDetails] = useState(false);
 
   useEffect(() => {
     if (user && isAdmin) {
@@ -203,6 +205,40 @@ const AdminPanel: React.FC = () => {
       default:
         return `Professional painting service with quality materials and expert craftsmanship`;
     }
+  };
+
+  const handleViewOrderDetails = (request: ServiceRequest) => {
+    setSelectedOrder(request);
+    setShowOrderDetails(true);
+  };
+
+  const closeOrderDetails = () => {
+    setShowOrderDetails(false);
+    setSelectedOrder(null);
+  };
+
+  const formatFormDataValue = (key: string, value: any): string => {
+    // Handle bedroom arrays specially
+    if (key === 'bedrooms' && Array.isArray(value)) {
+      return value.map((bedroom, index) => {
+        const bedroomNum = index + 1;
+        const name = bedroom.name ? ` (${bedroom.name})` : '';
+        return `Bedroom ${bedroomNum}${name}: ${bedroom.length}' × ${bedroom.width}' × ${bedroom.height}' - ${bedroom.windows} windows, ${bedroom.doors} doors${bedroom.includeCeiling ? ', includes ceiling' : ''}${bedroom.includeBaseboards ? ', includes baseboards' : ''}`;
+      }).join('; ');
+    }
+    
+    // Handle other arrays
+    if (Array.isArray(value)) {
+      return value.map(item => typeof item === 'object' ? JSON.stringify(item) : String(item)).join(', ');
+    }
+    
+    // Handle objects
+    if (typeof value === 'object' && value !== null) {
+      return JSON.stringify(value);
+    }
+    
+    // Handle primitive values
+    return String(value);
   };
 
   const handlePriceEdit = (request: ServiceRequest) => {
@@ -474,30 +510,19 @@ const AdminPanel: React.FC = () => {
     <div className="admin-panel">
         <div className="admin-container">
           <div className="admin-header">
-            <div className="admin-header-top">
-              <h1>Admin Panel</h1>
-              <button onClick={handleLogout} className="btn-logout">
-                Logout
-              </button>
-            </div>
             <div className="admin-stats">
             <div className="stat-card total">
               <div className="stat-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 3V21H21V3H3ZM19 19H5V5H19V19Z" fill="currentColor"/>
-                  <path d="M7 7H17V9H7V7ZM7 11H17V13H7V11ZM7 15H14V17H7V15Z" fill="currentColor"/>
-                </svg>
+                <img src="checkout/clipboard.svg" alt="Total Orders" className="stat-icon-img" />
               </div>
               <div className="stat-content">
                 <div className="stat-number">{requests.length}</div>
-                <div className="stat-label">Total Requests</div>
+                <div className="stat-label">Total Orders</div>
               </div>
             </div>
             <div className="stat-card pending">
               <div className="stat-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
-                </svg>
+                <img src="/labour-time.png" alt="Pending" className="stat-icon-img" />
               </div>
               <div className="stat-content">
                 <div className="stat-number">{requests.filter(r => r.status === 'pending').length}</div>
@@ -506,9 +531,7 @@ const AdminPanel: React.FC = () => {
             </div>
             <div className="stat-card confirmed">
               <div className="stat-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor"/>
-                </svg>
+                <img src="/breakdown.png" alt="Confirmed" className="stat-icon-img" />
               </div>
               <div className="stat-content">
                 <div className="stat-number">{requests.filter(r => r.status === 'confirmed').length}</div>
@@ -517,13 +540,14 @@ const AdminPanel: React.FC = () => {
             </div>
             <div className="stat-card completed">
               <div className="stat-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" fill="currentColor"/>
-                </svg>
+                <img src="/money-bag.png" alt="Revenue" className="stat-icon-img" />
               </div>
               <div className="stat-content">
-                <div className="stat-number">{requests.filter(r => r.status === 'completed').length}</div>
-                <div className="stat-label">Completed</div>
+                <div className="stat-number">${requests.filter(r => r.status === 'completed').reduce((sum, r) => {
+                  const estimate = r.lineItems ? r.lineItems.reduce((total, item) => total + (item.estimate?.totalCost || 0), 0) : (r.estimate?.totalCost || 0);
+                  return sum + estimate;
+                }, 0).toLocaleString()}</div>
+                <div className="stat-label">Revenue</div>
               </div>
             </div>
           </div>
@@ -592,7 +616,6 @@ const AdminPanel: React.FC = () => {
                 <tr>
                   <th>Service</th>
                   <th>Customer</th>
-                  <th>Type</th>
                   <th>Price</th>
                   <th>Status</th>
                   <th>Date</th>
@@ -601,7 +624,7 @@ const AdminPanel: React.FC = () => {
               </thead>
               <tbody>
                 {filteredRequests.map(request => (
-                  <tr key={request.id} className="request-row">
+                  <tr key={request.id} className="request-row" onClick={() => handleViewOrderDetails(request)} style={{cursor: 'pointer'}}>
                   <td>
                     <div className="service-cell">
                       <div className="service-name">
@@ -616,17 +639,12 @@ const AdminPanel: React.FC = () => {
                       <div className="customer-email">{request.customerInfo.email}</div>
                     </div>
                   </td>
-                  <td>
-                    <span className="service-type">
-                      {request.type === 'cart-order' ? 'Cart Order' : getServiceTypeLabel(request.serviceType || '')}
-                    </span>
-                  </td>
                       <td>
                         {(() => {
                           const estimate = getRequestEstimate(request);
                           if (estimate) {
                             return editingRequest === request.id ? (
-                              <div className="price-edit">
+                              <div className="price-edit" onClick={(e) => e.stopPropagation()}>
                                 <input
                                   type="number"
                                   value={editedPrice}
@@ -647,7 +665,7 @@ const AdminPanel: React.FC = () => {
                                 </button>
                               </div>
                             ) : (
-                              <div className="price-display">
+                              <div className="price-display" onClick={(e) => e.stopPropagation()}>
                                 <div className="price-content">
                                   <span className="price">${estimate.totalCost.toFixed(2)}</span>
                                   {estimate.isCartOrder && (
@@ -679,7 +697,7 @@ const AdminPanel: React.FC = () => {
                       </div>
                     </td>
                     <td>
-                      <div className="action-buttons">
+                      <div className="action-buttons" onClick={(e) => e.stopPropagation()}>
                         {request.status === 'pending' && (
                           <>
                             <button 
@@ -716,6 +734,190 @@ const AdminPanel: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Logout Button */}
+      <div className="admin-footer">
+        <button onClick={handleLogout} className="btn-logout">
+          Logout
+        </button>
+      </div>
+
+      {/* Order Details Modal */}
+      {showOrderDetails && selectedOrder && (
+        <div className="modal-overlay" onClick={closeOrderDetails}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Order Details - {selectedOrder.id}</h2>
+              <button className="modal-close" onClick={closeOrderDetails}>×</button>
+            </div>
+            
+            <div className="modal-body">
+              {/* Customer Information */}
+              <div className="details-section">
+                <h3>Customer Information</h3>
+                <div className="details-grid">
+                  <div className="detail-item">
+                    <label>Name:</label>
+                    <span>{selectedOrder.customerInfo.firstName} {selectedOrder.customerInfo.lastName}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Email:</label>
+                    <span>{selectedOrder.customerInfo.email}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Phone:</label>
+                    <span>{selectedOrder.customerInfo.phone}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Address:</label>
+                    <span>{selectedOrder.customerInfo.address}, {selectedOrder.customerInfo.city}, {selectedOrder.customerInfo.postalCode}</span>
+                  </div>
+                  <div className="detail-item">
+                    <label>Preferred Contact:</label>
+                    <span>{selectedOrder.customerInfo.preferredContact}</span>
+                  </div>
+                  {selectedOrder.customerInfo.bestTimeToCall && (
+                    <div className="detail-item">
+                      <label>Best Time to Call:</label>
+                      <span>{selectedOrder.customerInfo.bestTimeToCall}</span>
+                    </div>
+                  )}
+                  {selectedOrder.customerInfo.howDidYouHear && (
+                    <div className="detail-item">
+                      <label>How They Heard:</label>
+                      <span>{selectedOrder.customerInfo.howDidYouHear}</span>
+                    </div>
+                  )}
+                  {selectedOrder.customerInfo.additionalNotes && (
+                    <div className="detail-item full-width">
+                      <label>Additional Notes:</label>
+                      <span>{selectedOrder.customerInfo.additionalNotes}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Service Details */}
+              <div className="details-section">
+                <h3>Service Details</h3>
+                {selectedOrder.lineItems && selectedOrder.lineItems.length > 0 ? (
+                  // Cart Order
+                  <div className="service-list">
+                    {selectedOrder.lineItems.map((item, index) => (
+                      <div key={index} className="service-item">
+                        <div className="service-header">
+                          <h4>{item.serviceName}</h4>
+                          <span className="service-price">${item.estimate?.totalCost?.toFixed(2) || '0.00'}</span>
+                        </div>
+                        <div className="service-details">
+                          <p><strong>Service Type:</strong> {item.serviceType}</p>
+                          {item.formData && Object.keys(item.formData).length > 0 && (
+                            <div className="form-data">
+                              <h5>Service Specifications:</h5>
+                              <div className="form-data-grid">
+                                {Object.entries(item.formData).map(([key, value]) => (
+                                  <div key={key} className="form-data-item">
+                                    <label>{key.replace(/([A-Z])/g, ' $1').trim()}:</label>
+                                    <span>{formatFormDataValue(key, value)}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                    
+                    {/* Cart Totals */}
+                    {selectedOrder.totals && (
+                      <div className="cart-totals">
+                        <h4>Order Summary</h4>
+                        <div className="totals-grid">
+                          <div className="total-item">
+                            <span>Items Subtotal:</span>
+                            <span>${selectedOrder.totals.itemsSubtotal?.toFixed(2) || '0.00'}</span>
+                          </div>
+                          {selectedOrder.totals.travelFeeAdjustment && selectedOrder.totals.travelFeeAdjustment > 0 && (
+                            <div className="total-item">
+                              <span>Travel Fee:</span>
+                              <span>${selectedOrder.totals.travelFeeAdjustment.toFixed(2)}</span>
+                            </div>
+                          )}
+                          {selectedOrder.totals.discount && selectedOrder.totals.discount > 0 && (
+                            <div className="total-item discount">
+                              <span>Discount (15%):</span>
+                              <span>-${selectedOrder.totals.discount.toFixed(2)}</span>
+                            </div>
+                          )}
+                          <div className="total-item grand-total">
+                            <span>Grand Total:</span>
+                            <span>${selectedOrder.totals.grandTotal?.toFixed(2) || '0.00'}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Single Service
+                  <div className="service-item">
+                    <div className="service-header">
+                      <h4>{selectedOrder.serviceName}</h4>
+                      <span className="service-price">${selectedOrder.estimate?.totalCost?.toFixed(2) || '0.00'}</span>
+                    </div>
+                    <div className="service-details">
+                      <p><strong>Service Type:</strong> {selectedOrder.serviceType}</p>
+                      {selectedOrder.formData && Object.keys(selectedOrder.formData).length > 0 && (
+                        <div className="form-data">
+                          <h5>Service Specifications:</h5>
+                          <div className="form-data-grid">
+                            {Object.entries(selectedOrder.formData).map(([key, value]) => (
+                              <div key={key} className="form-data-item">
+                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}:</label>
+                                <span>{formatFormDataValue(key, value)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Order Status & Timeline */}
+              <div className="details-section">
+                <h3>Order Status & Timeline</h3>
+                <div className="status-timeline">
+                  <div className="timeline-item">
+                    <span className="timeline-date">{formatDate(selectedOrder.createdAt)}</span>
+                    <span className="timeline-status">Order Created</span>
+                  </div>
+                  <div className="timeline-item">
+                    <span className="timeline-date">{formatDate(selectedOrder.updatedAt)}</span>
+                    <span className="timeline-status">Status: {selectedOrder.status.toUpperCase()}</span>
+                  </div>
+                  {selectedOrder.scheduledDate && (
+                    <div className="timeline-item">
+                      <span className="timeline-date">{formatDate(selectedOrder.scheduledDate)}</span>
+                      <span className="timeline-status">Scheduled</span>
+                    </div>
+                  )}
+                  {selectedOrder.completionDate && (
+                    <div className="timeline-item">
+                      <span className="timeline-date">{formatDate(selectedOrder.completionDate)}</span>
+                      <span className="timeline-status">Completed</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <div className="modal-footer">
+              <button className="btn-secondary" onClick={closeOrderDetails}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
