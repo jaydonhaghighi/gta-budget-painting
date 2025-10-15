@@ -68,9 +68,140 @@ const AdminPanel: React.FC = () => {
           req.id === requestId ? { ...req, status: newStatus, updatedAt: new Date() } : req
         )
       );
+
+      // Send invoice email when status is confirmed
+      if (newStatus === 'confirmed') {
+        await sendInvoiceEmail(requestId);
+      }
     } catch (err) {
       console.error('Error updating status:', err);
       alert('Failed to update status');
+    }
+  };
+
+  const sendInvoiceEmail = async (requestId: string) => {
+    try {
+      const request = requests.find(req => req.id === requestId);
+      if (!request) {
+        console.error('Request not found');
+        return;
+      }
+
+      // Generate invoice data from service request
+      const invoiceData = generateInvoiceData(request);
+      
+      // Call the Cloud Function to send invoice email
+      const response = await fetch('https://us-central1-gta-budget-painting.cloudfunctions.net/sendInvoiceEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(invoiceData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Invoice email sent successfully:', result);
+        alert('Invoice email sent to client!');
+      } else {
+        throw new Error('Failed to send invoice email');
+      }
+    } catch (err) {
+      console.error('Error sending invoice email:', err);
+      alert('Failed to send invoice email. Please try again.');
+    }
+  };
+
+  const generateInvoiceData = (request: ServiceRequest) => {
+    const invoiceDate = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 30);
+    
+    // Calculate totals
+    let subtotal = 0;
+    
+    if (request.totals?.itemsSubtotal) {
+      // Cart order
+      subtotal = request.totals.itemsSubtotal;
+    } else if (request.estimate?.totalCost) {
+      // Single service
+      subtotal = request.estimate.totalCost;
+    }
+    
+    const tax = subtotal * 0.13; // 13% HST for Ontario
+    const total = subtotal + tax;
+    
+    // Generate invoice items from cart items or single service
+    let items = [];
+    
+    if (request.lineItems && request.lineItems.length > 0) {
+      // Cart order
+      items = request.lineItems.map((item, index) => ({
+        id: `item-${index + 1}`,
+        serviceName: item.serviceName,
+        serviceType: item.serviceType,
+        description: generateServiceDescription(item),
+        quantity: 1,
+        unitPrice: item.estimate?.totalCost || 0,
+        total: item.estimate?.totalCost || 0
+      }));
+    } else if (request.serviceName) {
+      // Single service
+      items = [{
+        id: 'item-1',
+        serviceName: request.serviceName,
+        serviceType: request.serviceType || 'calculated',
+        description: generateServiceDescription({ serviceName: request.serviceName, serviceType: request.serviceType }),
+        quantity: 1,
+        unitPrice: request.estimate?.totalCost || 0,
+        total: request.estimate?.totalCost || 0
+      }];
+    }
+    
+    return {
+      invoiceNumber: `GTA-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+      invoiceDate: invoiceDate.toLocaleDateString('en-CA', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      dueDate: dueDate.toLocaleDateString('en-CA', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      clientInfo: {
+        name: `${request.customerInfo.firstName} ${request.customerInfo.lastName}`,
+        email: request.customerInfo.email,
+        phone: request.customerInfo.phone,
+        address: request.customerInfo.address
+      },
+      serviceLocation: {
+        address: request.customerInfo.address,
+        city: request.customerInfo.city,
+        postalCode: request.customerInfo.postalCode
+      },
+      items,
+      subtotal,
+      tax,
+      total,
+      terms: 'Payment due within 30 days. All work guaranteed for 2 years.'
+    };
+  };
+
+  const generateServiceDescription = (item: any): string => {
+    const serviceName = item.serviceName || 'Painting Service';
+    const serviceType = item.serviceType || 'calculated';
+    
+    switch (serviceType) {
+      case 'calculated':
+        return `Professional ${serviceName.toLowerCase()} including materials, labor, and setup`;
+      case 'flat-rate':
+        return `Standard ${serviceName.toLowerCase()} package with all materials included`;
+      case 'custom-quote':
+        return `Custom ${serviceName.toLowerCase()} project with detailed specifications`;
+      default:
+        return `Professional painting service with quality materials and expert craftsmanship`;
     }
   };
 

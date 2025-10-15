@@ -565,6 +565,140 @@ export const generateCartAdminEmail = (data: any): string => {
   `;
 };
 
+// Invoice email template
+export const generateInvoiceEmail = (invoiceData: any): string => {
+  const { invoiceNumber, clientInfo, total, dueDate, items, subtotal, tax } = invoiceData;
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Invoice ${invoiceNumber}</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #EDEAEO;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #EDEAEO; padding: 20px;">
+          <tr>
+            <td align="center">
+              <!-- Main Container -->
+              <table width="800" cellpadding="0" cellspacing="0" style="background-color: #EDEAEO; border-radius: 8px; overflow: hidden;">
+                
+                <!-- Header with Company Info -->
+                <tr>
+                  <td style="padding: 30px; background-color: #EDEAEO;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="width: 60%; vertical-align: top;">
+                          <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 15px;" />
+                          <div>
+                            <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px; font-weight: 700;">GTA Budget Painting</p>
+                            <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px;">48 Fancamp Drive</p>
+                            <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px;">Phone: (647) 334-1234</p>
+                            <p style="margin: 0; color: #1E1E1E; font-size: 14px;">Email: peter@gtahomepainting.ca</p>
+                          </div>
+                        </td>
+                        <td style="width: 40%; vertical-align: top; text-align: right;">
+                          <div style="background-color: #ffffff; padding: 15px; border-radius: 6px; border: 2px solid #1E1E1E;">
+                            <h2 style="margin: 0 0 12px; color: #1E1E1E; font-size: 18px; font-weight: 700;">INVOICE</h2>
+                            <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;"><strong>Invoice #:</strong> ${invoiceNumber}</p>
+                            <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;"><strong>Date Issued:</strong> ${new Date().toLocaleDateString()}</p>
+                            <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;"><strong>Due On:</strong> ${dueDate}</p>
+                            <p style="margin: 0; color: #1E1E1E; font-size: 15px; font-weight: 700;"><strong>Balance:</strong> $${total.toFixed(2)}</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Bill To Section -->
+                <tr>
+                  <td style="padding: 0 30px 20px;">
+                    <h3 style="margin: 0 0 10px; color: #1E1E1E; font-size: 16px; font-weight: 700;">Bill To:</h3>
+                    <div style="background-color: #ffffff; padding: 15px; border-radius: 6px; border: 2px solid #1E1E1E;">
+                      <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 14px; font-weight: 700;">${clientInfo.name}</p>
+                      <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;">${clientInfo.address}</p>
+                      <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;">Phone: ${clientInfo.phone}</p>
+                      <p style="margin: 0; color: #1E1E1E; font-size: 13px;">Email: ${clientInfo.email}</p>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Services Table -->
+                <tr>
+                  <td style="padding: 0 30px 20px;">
+                    <h3 style="margin: 0 0 10px; color: #1E1E1E; font-size: 16px; font-weight: 700;">Services Purchased</h3>
+                    <table width="100%" cellpadding="10" cellspacing="0" style="background-color: #ffffff; border: 2px solid #1E1E1E; border-radius: 6px;">
+                      <tr style="background-color: #f5f5f5;">
+                        <th style="text-align: left; font-size: 13px; font-weight: 700; padding: 10px; color: #1E1E1E;">Service</th>
+                        <th style="text-align: left; font-size: 13px; font-weight: 700; padding: 10px; color: #1E1E1E;">Description</th>
+                        <th style="text-align: center; font-size: 13px; font-weight: 700; padding: 10px; color: #1E1E1E;">Qty</th>
+                        <th style="text-align: right; font-size: 13px; font-weight: 700; padding: 10px; color: #1E1E1E;">Amount</th>
+                      </tr>
+                      ${items.map((item: any) => `
+                        <tr style="border-top: 1px solid #1E1E1E;">
+                          <td style="padding: 10px; font-size: 13px; font-weight: 600; color: #1E1E1E;">${item.serviceName}</td>
+                          <td style="padding: 10px; font-size: 13px; color: #1E1E1E;">${item.description}</td>
+                          <td style="padding: 10px; text-align: center; font-size: 13px; color: #1E1E1E;">${item.quantity}</td>
+                          <td style="padding: 10px; text-align: right; font-size: 13px; font-weight: 600; color: #1E1E1E;">$${item.total.toFixed(2)}</td>
+                        </tr>
+                      `).join('')}
+                      <tr style="border-top: 2px solid #1E1E1E; background-color: #f5f5f5;">
+                        <td colspan="3" style="padding: 10px; font-size: 13px; font-weight: 600; color: #1E1E1E; text-align: right;">Subtotal:</td>
+                        <td style="padding: 10px; text-align: right; font-size: 13px; font-weight: 600; color: #1E1E1E;">$${subtotal.toFixed(2)}</td>
+                      </tr>
+                      <tr style="background-color: #f5f5f5;">
+                        <td colspan="3" style="padding: 10px; font-size: 13px; font-weight: 600; color: #1E1E1E; text-align: right;">HST (13%):</td>
+                        <td style="padding: 10px; text-align: right; font-size: 13px; font-weight: 600; color: #1E1E1E;">$${tax.toFixed(2)}</td>
+                      </tr>
+                      <tr style="background-color: #f5f5f5; color: #1E1E1E;">
+                        <td colspan="3" style="padding: 10px; font-size: 14px; font-weight: 700; text-align: right;">TOTAL:</td>
+                        <td style="padding: 10px; text-align: right; font-size: 14px; font-weight: 700;">$${total.toFixed(2)}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+
+                <!-- Terms & Conditions -->
+                <tr>
+                  <td style="padding: 0 30px 20px;">
+                    <h3 style="margin: 0 0 10px; color: #1E1E1E; font-size: 16px; font-weight: 700;">Terms & Conditions</h3>
+                    <div style="background-color: #ffffff; padding: 15px; border-radius: 6px; border: 2px solid #1E1E1E; font-size: 11px; line-height: 1.5; color: #1E1E1E;">
+                      <p style="margin: 0 0 10px; font-weight: 600;">By paying the due balance on invoices provided, the Client hereby acknowledges that all requested service items for this date and/or any other dates listed above in the description section of the table, have been performed and have been tested showing successful satisfactory install/repair, unless otherwise stated on the invoice, in which labor service charges still apply if any repairs have been made. By accepting this invoice, the Client agrees to pay in full the amount listed in the Total section of the invoice.</p>
+                      
+                      <p style="margin: 0 0 6px; font-weight: 600;">Payment Terms:</p>
+                      <p style="margin: 0 0 4px;">• Payment is due within 30 days of invoice date</p>
+                      <p style="margin: 0 0 4px;">• Accepted payment methods: Cash, Check, E-Transfer, Credit Card</p>
+                      <p style="margin: 0 0 6px;">• Late payment fee: 1.5% per month on overdue accounts</p>
+                      
+                      <p style="margin: 0 0 6px; font-weight: 600;">Warranty:</p>
+                      <p style="margin: 0 0 4px;">• All work guaranteed for 2 years from completion date</p>
+                      <p style="margin: 0 0 4px;">• Materials and supplies included in quoted price</p>
+                      <p style="margin: 0;">• GTA Budget Painting is fully insured and bonded</p>
+                    </div>
+                  </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 30px; background-color: #EDEAEO; text-align: center;">
+                    <h3 style="margin: 0 0 10px; color: #1E1E1E; font-size: 16px; font-weight: 700;">Contact Information</h3>
+                    <p style="margin: 0 0 8px; color: #1E1E1E; font-size: 14px; font-weight: 600;">Thank you for choosing GTA Budget Painting!</p>
+                    <p style="margin: 0 0 12px; color: #1E1E1E; font-size: 13px; font-style: italic;">We paint your home like it's our own — with quality work that fits your budget</p>
+                    <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;">Phone: (647) 334-1234</p>
+                    <p style="margin: 0; color: #1E1E1E; font-size: 13px;">Email: peter@gtahomepainting.ca</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+};
+
 export const generateAdminEmail = (data: ServiceRequestData): string => {
   const {customerInfo, serviceName, estimate, formData, requestId, createdAt} = data;
 

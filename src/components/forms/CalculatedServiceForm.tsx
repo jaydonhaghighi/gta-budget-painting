@@ -969,7 +969,7 @@ const CalculatedServiceForm = ({
                   border: 'none',
                   borderRadius: '8px',
                   padding: '0.5rem 1rem',
-                  fontSize: '0.9rem',
+        fontSize: '0.9rem',
                   fontWeight: '700',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
@@ -1248,9 +1248,9 @@ const CalculatedServiceForm = ({
           fontWeight: '500'
         }}>
           <strong>Note:</strong> Cabinet painting requires detailed preparation, multiple coats, and careful attention to hardware. Each section can have different dimensions and hardware requirements.
-        </div>
       </div>
-    );
+    </div>
+  );
   };
 
   const renderFenceForm = () => (

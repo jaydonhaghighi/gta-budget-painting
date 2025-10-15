@@ -7,7 +7,7 @@ import {onRequest} from "firebase-functions/v2/https";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {Resend} from "resend";
-import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail} from "./emailTemplates";
+import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail, generateInvoiceEmail} from "./emailTemplates";
 
 // Set global options for cost control
 setGlobalOptions({maxInstances: 10});
@@ -55,7 +55,7 @@ export const sendServiceRequestEmails = onRequest(
         customerEmail = await resend.emails.send({
           from: "GTA Budget Painting <onboarding@resend.dev>",
           to: serviceRequestData.customerInfo.email,
-          subject: `Your Order #${serviceRequestData.requestId} Has Been Received`,
+          subject: `Your Order #${serviceRequestData.requestId} is Being Reviewed by our Team`,
           html: generateCartCustomerEmail(serviceRequestData),
         });
 
@@ -70,7 +70,7 @@ export const sendServiceRequestEmails = onRequest(
         customerEmail = await resend.emails.send({
           from: "GTA Budget Painting <onboarding@resend.dev>",
           to: serviceRequestData.customerInfo.email,
-          subject: `Your Service Request #${serviceRequestData.requestId} Has Been Received`,
+          subject: `Your Order #${serviceRequestData.requestId} is Being Reviewed by our Team`,
           html: generateCustomerEmail(serviceRequestData),
         });
 
@@ -97,6 +97,90 @@ export const sendServiceRequestEmails = onRequest(
       response.status(500).json({
         success: false,
         error: "Failed to send emails",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+);
+
+/**
+ * Send invoice email to client
+ * This function sends a professional invoice email to the client
+ */
+export const sendInvoiceEmail = onRequest(
+  {cors: true, secrets: [resendApiKey]},
+  async (request, response) => {
+    try {
+      // Validate request method
+      if (request.method !== "POST") {
+        response.status(405).json({error: "Method not allowed"});
+        return;
+      }
+
+      // Initialize Resend with the secret API key
+      const resend = new Resend(resendApiKey.value());
+
+      // Extract invoice data from request body
+      const invoiceData = request.body;
+
+      logger.info("Sending invoice email", {
+        invoiceNumber: invoiceData.invoiceNumber,
+        clientEmail: invoiceData.clientInfo.email,
+        total: invoiceData.total
+      });
+
+      // Send invoice email to client
+      logger.info("Attempting to send invoice email to", {email: invoiceData.clientInfo.email});
+      const invoiceEmail = await resend.emails.send({
+        from: "GTA Budget Painting <onboarding@resend.dev>",
+        to: invoiceData.clientInfo.email,
+        subject: `Your Order #${invoiceData.invoiceNumber} Has Been Accepted`,
+        html: generateInvoiceEmail(invoiceData),
+      });
+
+      logger.info("Invoice email result", {
+        success: invoiceEmail.data ? true : false,
+        emailId: invoiceEmail.data?.id,
+        error: invoiceEmail.error
+      });
+
+      // Send notification to admin
+      logger.info("Attempting to send admin notification to", {email: "info@gtabudgetpainting.ca"});
+      const adminEmail = await resend.emails.send({
+        from: "GTA Budget Painting System <onboarding@resend.dev>",
+        to: "info@gtabudgetpainting.ca",
+        subject: `📄 Invoice #${invoiceData.invoiceNumber} Sent to ${invoiceData.clientInfo.name}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #2C3D4B;">Invoice Sent</h2>
+            <p><strong>Invoice #:</strong> ${invoiceData.invoiceNumber}</p>
+            <p><strong>Client:</strong> ${invoiceData.clientInfo.name}</p>
+            <p><strong>Email:</strong> ${invoiceData.clientInfo.email}</p>
+            <p><strong>Amount:</strong> $${invoiceData.total.toFixed(2)}</p>
+            <p><strong>Due Date:</strong> ${invoiceData.dueDate}</p>
+            <p><strong>Sent:</strong> ${new Date().toLocaleString()}</p>
+          </div>
+        `,
+      });
+
+      logger.info("Admin email result", {
+        success: adminEmail.data ? true : false,
+        emailId: adminEmail.data?.id,
+        error: adminEmail.error
+      });
+
+      // Return success response
+      response.status(200).json({
+        success: true,
+        invoiceEmailId: invoiceEmail.data?.id,
+        adminEmailId: adminEmail.data?.id,
+        message: "Invoice email sent successfully",
+      });
+    } catch (error) {
+      logger.error("Error sending invoice email", {error});
+      response.status(500).json({
+        success: false,
+        error: "Failed to send invoice email",
         details: error instanceof Error ? error.message : String(error),
       });
     }
