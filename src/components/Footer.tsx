@@ -27,7 +27,7 @@ const Footer = () => {
                 <img src="/facebook.png" alt="Facebook" className="social-icon-img" />
               </a>
               <a 
-                href="https://www.instagram.com/gta_budget_painting/" 
+                href="https://www.instagram.com/gtabudgetpainting/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="social-link instagram"
