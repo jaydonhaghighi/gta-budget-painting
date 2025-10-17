@@ -108,12 +108,10 @@ const LandingPage = () => {
               <img src="/money-bag.png" alt="Budget Friendly" className="proof-icon" />
               <span className="proof-label">Budget Friendly</span>
             </div>
-            <div className="proof-divider">•</div>
             <div className="proof-item">
               <img src="/labour-time.png" alt="Quick Turnaround" className="proof-icon" />
               <span className="proof-label">Quick Turnaround</span>
             </div>
-            <div className="proof-divider">•</div>
             <div className="proof-item">
               <img src="/star.png" alt="5 Star Rated" className="proof-icon" />
               <span className="proof-label">5★ Rated Service</span>

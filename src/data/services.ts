@@ -9,6 +9,8 @@ export interface Service {
   category: 'interior' | 'exterior' | 'specialty';
   featured?: boolean; // For bestsellers
   backgroundImage?: string; // Background image path
+  description?: string; // Optional description (used in forms/pages)
+  flatRate?: number; // Optional flat rate pricing
 }
 
 // All Services
