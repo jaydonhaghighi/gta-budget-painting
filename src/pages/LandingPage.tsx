@@ -67,29 +67,18 @@ const LandingPage = () => {
   const renderServiceCard = (service: typeof allServices[0], isFeatured: boolean = false) => (
     <div
       key={service.id}
-      className={`service-card ${isFeatured ? 'featured-card' : ''}`}
+      className="service-card-wrapper"
       onClick={() => handleServiceClick(service.id)}
-      style={service.backgroundImage ? {
-        '--bg-image': `url(${service.backgroundImage})`
-      } as React.CSSProperties : {}}
     >
-      <span className="service-icon">{service.icon}</span>
-      <h3>{service.name}</h3>
-      <p>{service.description}</p>
-      {service.type === 'flat-rate' && service.flatRate && (
-        <div className="service-price">
-          Starting at ${service.flatRate}
-          {service.flatRate >= 1000 && (
-            <span className="discount-badge">SAVE 15%</span>
-          )}
-        </div>
-      )}
-      {service.type === 'calculated' && (
-        <div className="service-badge">Instant Estimate</div>
-      )}
-      {service.type === 'custom-quote' && (
-        <div className="service-badge">Custom Quote</div>
-      )}
+      <div
+        className={`service-card ${isFeatured ? 'featured-card' : ''}`}
+        style={service.backgroundImage ? {
+          '--bg-image': `url(${service.backgroundImage})`
+        } as React.CSSProperties : {}}
+      >
+        <span className="service-icon">{service.icon}</span>
+      </div>
+      <h3 className="service-card-title">{service.name}</h3>
     </div>
   );
 
@@ -110,45 +99,25 @@ const LandingPage = () => {
       <section className="booking-hero">
         <div className="container">
 
-          <h1 style={{color: 'white'}}>Budget Painting Services in the GTA</h1>
-          <p className="hero-subtitle">We paint your home like it’s our own — with quality work that fits your budget</p>
+          <h1 style={{color: 'var(--color-steel-blue)'}}>Budget Painting Services in the GTA</h1>
+          <p className="hero-subtitle">We paint your home like it's our own — with quality work that fits your budget</p>
           
-          {/* Hero Features */}
-          <div className="hero-features">
-            <div className="hero-feature">
-              <img src="/money-bag.png" alt="Money" className="hero-icon" />
-              <span>Best Prices</span>
+          {/* Social Proof */}
+          <div className="hero-social-proof">
+            <div className="proof-item">
+              <img src="/money-bag.png" alt="Budget Friendly" className="proof-icon" />
+              <span className="proof-label">Budget Friendly</span>
             </div>
-            <div className="hero-feature">
-              <img src="/star.png" alt="Star" className="hero-icon" />
-              <span>5-Star Rated</span>
+            <div className="proof-divider">•</div>
+            <div className="proof-item">
+              <img src="/labour-time.png" alt="Quick Turnaround" className="proof-icon" />
+              <span className="proof-label">Quick Turnaround</span>
             </div>
-            <div className="hero-feature">
-              <img src="/security.png" alt="Security" className="hero-icon" />
-              <span>Fully Insured</span>
+            <div className="proof-divider">•</div>
+            <div className="proof-item">
+              <img src="/star.png" alt="5 Star Rated" className="proof-icon" />
+              <span className="proof-label">5★ Rated Service</span>
             </div>
-          </div>
-          
-          <div className="hero-contact">
-            <div className="hero-contact-info">
-              <a href="tel:6473907181" className="hero-phone">
-                <img src="/telephone.png" alt="Phone" className="hero-icon" />
-                Call (647) 390-7181
-              </a>
-              <span className="hero-divider">|</span>
-              <a href="mailto:info@gtabudgetpainting.com" className="hero-email">
-                <img src="/mail.png" alt="Email" className="hero-icon" />
-                info@gtabudgetpainting.com
-              </a>
-            </div>
-            <a 
-              href="https://gtahomepainting.ca" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hero-cta-button"
-            >
-              For Larger Jobs: Visit GTA Home Painting
-            </a>
           </div>
         </div>
       </section>
@@ -177,16 +146,23 @@ const LandingPage = () => {
             {/* Custom Project Card - Full Width */}
             {customProject && (
               <div
-                className="service-card custom-project-card"
+                className="service-card-wrapper custom-project-wrapper"
                 onClick={() => handleServiceClick('custom-project')}
-                style={customProject.backgroundImage ? {
-                  '--bg-image': `url(${customProject.backgroundImage})`
-                } as React.CSSProperties : {}}
               >
-                <span className="service-icon">{customProject.icon}</span>
-                <h3>{customProject.name}</h3>
-                <p>{customProject.description}</p>
-                <div className="service-badge">Custom Quote</div>
+                <div
+                  className="service-card custom-project-card"
+                  style={customProject.backgroundImage ? {
+                    '--bg-image': `url(${customProject.backgroundImage})`
+                  } as React.CSSProperties : {}}
+                >
+                  <div className="custom-project-content">
+                    <span className="service-icon">{customProject.icon}</span>
+                    <div className="custom-project-text">
+                      <h3>{customProject.name}</h3>
+                      <p>Have a unique project in mind? Get a personalized quote for your custom painting needs.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

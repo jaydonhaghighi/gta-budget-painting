@@ -96,11 +96,17 @@ const Header = () => {
             </Link>
           </div>
           
-
-          {/* Desktop Navigation */}
-          <nav className="nav desktop-nav">
-            {/* Cart button removed - now using floating cart */}
-          </nav>
+          {/* Contact Info */}
+          <div className="header-contact">
+            <a href="tel:6473907181" className="header-contact-link">
+              <img src="/telephone.png" alt="Phone" className="header-contact-icon" />
+              <span className="header-contact-text">(647) 390-7181</span>
+            </a>
+            <a href="mailto:info@gtabudgetpainting.com" className="header-contact-link">
+              <img src="/mail.png" alt="Email" className="header-contact-icon" />
+              <span className="header-contact-text">info@gtabudgetpainting.com</span>
+            </a>
+          </div>
         </div>
       </header>
 

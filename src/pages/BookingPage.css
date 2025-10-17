@@ -2,7 +2,7 @@
 
 .booking-page {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: var(--color-bone);
   width: 100%;
 }
 
@@ -37,8 +37,8 @@
 
 /* Hero Section */
 .booking-hero {
-  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-calm-blue-gray) 100%);
-  color: white;
+  background: var(--color-bone);
+  color: var(--color-steel-blue);
   padding: 3rem 0 1.5rem;
   text-align: center;
   position: relative;
@@ -119,16 +119,139 @@
   font-size: 1.75rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
-  color: white;
+  color: var(--color-steel-blue);
   position: relative;
   z-index: 2;
 }
 
 .hero-subtitle {
   font-size: 0.95rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   opacity: 0.95;
+  color: var(--color-steel-blue);
+}
+
+/* Social Proof Section */
+.hero-social-proof {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem auto;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+
+.proof-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.proof-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(8%) saturate(2000%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.proof-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-steel-blue);
+  line-height: 1;
+}
+
+.proof-label {
+  font-size: 0.75rem;
+  color: var(--color-steel-blue);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.proof-divider {
+  color: var(--color-steel-blue);
+  opacity: 0.3;
+  font-size: 1.2rem;
+}
+
+/* CTA Group */
+.hero-cta-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem auto;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+
+.hero-primary-cta {
+  background: var(--color-steel-blue);
   color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--color-steel-blue);
+}
+
+.hero-primary-cta:hover {
+  background: var(--color-soft-charcoal);
+  border-color: var(--color-soft-charcoal);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hero-secondary-cta {
+  background: transparent;
+  color: var(--color-steel-blue);
+  padding: 0.875rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 2px solid var(--color-steel-blue);
+}
+
+.hero-secondary-cta:hover {
+  background: var(--color-steel-blue);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Service Area */
+.hero-service-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.5rem auto 1rem;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+}
+
+.service-area-label {
+  color: var(--color-steel-blue);
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.service-area-cities {
+  color: var(--color-steel-blue);
+  opacity: 0.7;
+  font-weight: 500;
 }
 
 .hero-features {
@@ -206,6 +329,7 @@
 .hero-phone,
 .hero-email {
   color: white;
+  background: var(--color-steel-blue);
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 600;
@@ -214,27 +338,24 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 2px solid var(--color-steel-blue);
   position: relative;
   z-index: 10;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .hero-phone:hover,
 .hero-email:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: var(--color-soft-charcoal);
+  border-color: var(--color-soft-charcoal);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .hero-divider {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 1.2rem;
-  font-weight: 300;
+  display: none;
 }
 
 .hero-cta-button {
@@ -897,6 +1018,49 @@
 
   .booking-hero h1 {
     font-size: 1.5rem;
+  }
+
+  .hero-social-proof {
+    gap: 0.5rem;
+    margin: 1rem auto;
+  }
+
+  .proof-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .proof-number {
+    font-size: 1.25rem;
+  }
+
+  .proof-label {
+    font-size: 0.7rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1rem auto;
+  }
+
+  .hero-primary-cta,
+  .hero-secondary-cta {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .hero-service-area {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem auto;
+    font-size: 0.8rem;
+  }
+
+  .service-area-cities {
+    text-align: center;
   }
 
   .hero-features {
