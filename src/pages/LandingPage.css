@@ -115,7 +115,6 @@
   margin-bottom: 2rem;
 }
 
-/* Featured Grid - use same styles as all services */
 .featured-services-section .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -128,38 +127,60 @@
 .service-card-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
   cursor: pointer;
+  border-radius: 12px ; /* Round ONLY top corners so image corners aren't white */
+  overflow: hidden; /* Ensures inner square edges are clipped to wrapper radius */
+  background: transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
-/* Featured Card Styling */
-.featured-card {
-  position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
-  transform: scale(1);
-  transition: all 0.3s ease !important;
-  overflow: hidden;
-  border: none !important;
+.service-card-wrapper:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
-  
-/* Service Card Background Images */
+
+/* Service Card */
 .service-card {
   position: relative;
   overflow: hidden;
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0 !important; /* Rounded top, square bottom */
+  transform: none !important;
 }
 
-/* Service Card Title */
-.service-card-title {
-  color: var(--color-steel-blue);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0;
-  text-align: center;
-  line-height: 1.3;
+/* Hard override global .service-card styles within Landing page grids */
+.featured-services-section .service-card,
+.all-services-section .service-card {
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 12px 12px 0 0 !important;
 }
 
+/* Prevent any hover effects on service card image */
+.service-card-wrapper:hover .service-card {
+  transform: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.service-card-wrapper:hover .service-card::before {
+  transform: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.service-card-wrapper:hover .service-card::after {
+  transform: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Service Card Background Image */
 .service-card::before {
   content: '';
   position: absolute;
@@ -173,101 +194,12 @@
   background-repeat: no-repeat;
   opacity: 0.8;
   z-index: 1;
-  transition: opacity 0.3s ease;
+  transition: none;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
-.service-card:hover::before {
-  opacity: 0.9;
-}
-
-/* Service card content should be above background */
-.service-card > * {
-  position: relative;
-  z-index: 2;
-  color: white !important;
-}
-
-/* Discount Badge */
-.discount-badge {
-  display: inline-block;
-  background: var(--color-golden-beige);
-  color: var(--color-soft-charcoal);
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  margin-left: 0.5rem;
-  animation: discount-pulse 1.5s ease-in-out infinite;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-@keyframes discount-pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 2px 8px rgba(217, 182, 101, 0.3);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(217, 182, 101, 0.5);
-  }
-}
-
-/* Ensure text is readable over background images */
-.service-card h3,
-.service-card h3 * {
-  color: #E5E5E5 !important; /* Changed to standard light gray instead of invalid hex */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-  font-weight: 700;
-}
-
-.service-card p,
-.service-card p * {
-  color: #E5E5E5 !important; /* Changed to standard light gray */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-  font-weight: 500;
-}
-
-/* Override any inherited text colors */
-.service-card * {
-  color: #E5E5E5 !important; /* Changed to standard light gray */
-}
-
-/* Exception for service price - should have white text on dark background */
-.service-card .service-price {
-  background: var(--color-warm-gray) !important;
-  backdrop-filter: blur(15px);
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-weight: 600;
-  color: white !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  position: relative;
-  z-index: 3;
-  display: inline-block;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-}
-
-.service-card .service-badge {
-  background: var(--color-warm-gray) !important;
-  backdrop-filter: blur(15px);
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  font-weight: 600;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  position: relative;
-  z-index: 3;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-/* Dark overlay for better text readability */
+/* Service Card Overlay */
 .service-card::after {
   content: '';
   position: absolute;
@@ -282,36 +214,90 @@
     rgba(0, 0, 0, 0.1) 100%
   );
   z-index: 1;
-  transition: background 0.3s ease;
+  transition: none;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
-.service-card:hover::after {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.15) 0%,
-    rgba(0, 0, 0, 0.3) 50%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
+/* Service Icon */
+.service-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 3rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
-/* Remove overlay for custom project card */
-.custom-project-card::after {
-  display: none;
+/* Service Card Title */
+.service-card-title {
+  color: var(--color-steel-blue);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  line-height: 1.3;
+  padding: 1rem 1.25rem;
+  background: white;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0; /* Title stays square; wrapper controls rounding */
 }
 
-/* Custom project card background */
+/* Featured Card Styling */
+.featured-card {
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+  transform: scale(1);
+  transition: none !important;
+  overflow: hidden;
+  border: none !important;
+}
+
+.featured-card:hover {
+  transform: none !important;
+}
+
+.featured-card::before {
+  opacity: 0.85;
+}
+
+/* Custom Project Card */
+.custom-project-wrapper {
+  grid-column: 1 / -1;
+  max-width: 100%;
+}
+
+.custom-project-wrapper .service-card {
+  width: 100%;
+  min-height: 200px;
+  aspect-ratio: auto;
+}
+
 .custom-project-card {
   background-color: var(--color-steel-blue) !important;
   background-image: none !important;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: center;
   padding: 2rem;
+  border-radius: 12px !important;
+}
+
+.custom-project-wrapper {
+  background: var(--color-steel-blue) !important;
+}
+
+.custom-project-card::after {
+  display: none;
 }
 
 .custom-project-content {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
   width: 100%;
   max-width: 800px;
@@ -326,83 +312,36 @@
 
 .custom-project-text {
   flex: 1;
-  text-align: left;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .custom-project-text h3 {
-  color: white;
+  color: white !important;
   font-size: 1.75rem;
   font-weight: 600;
   margin: 0 0 0.75rem 0;
 }
 
 .custom-project-text p {
-  color: rgba(255, 255, 255, 0.9);
+  color: white !important;
   font-size: 1rem;
   line-height: 1.5;
   margin: 0;
 }
 
-.featured-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Featured cards with background images */
-.featured-card::before {
-  opacity: 0.85;
-}
-
-.featured-card:hover::before {
-  opacity: 0.95;
-}
-
-/* Featured badge styling */
-.featured-badge {
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  color: var(--color-steel-blue) !important;
-  font-weight: 700;
-}
-
-
-/* Featured Badge */
-.featured-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: white;
-  z-index: 10;
-}
-
-.featured-badge.most-popular {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-}
-
-.featured-badge.trending {
-  background: linear-gradient(135deg, #ff8c42 0%, #ff6f42 100%);
-  box-shadow: 0 4px 12px rgba(255, 140, 66, 0.3);
-}
-
-.featured-badge.quick-refresh {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
-}
-
-.featured-badge.high-value {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
 /* All Services Section */
 .all-services-section {
-  padding: 3rem 0 4rem;
+  padding: 3rem 0 0rem;
+  background: var(--color-bone);
+}
+
+/* Custom Project Section */
+.custom-project-section {
+  padding: 1rem 0 1rem;
   background: var(--color-bone);
 }
 
@@ -419,7 +358,6 @@
   margin-bottom: 2rem;
 }
 
-/* All Services Grid - 4 columns */
 .all-services-section .services-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -428,38 +366,20 @@
   margin: 0 auto;
 }
 
-/* Custom Project Card - Full Width */
-.custom-project-wrapper {
-  grid-column: 1 / -1;
-  max-width: 100%;
-}
-
-.custom-project-wrapper .service-card {
-  width: 100%;
-  min-height: 200px;
-  aspect-ratio: auto;
-}
-
-/* Mobile Responsiveness */
+/* Responsive Design */
 @media (max-width: 1280px) {
-  .featured-services-section .services-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  }
-
+  .featured-services-section .services-grid,
   .all-services-section .services-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
   }
 }
 
 @media (max-width: 968px) {
-  .featured-services-section .services-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  }
-
+  .featured-services-section .services-grid,
   .all-services-section .services-grid {
     grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
   }
 }
 
@@ -481,17 +401,6 @@
     font-size: 1.35rem;
   }
 
-  .featured-badge {
-    font-size: 0.7rem;
-    padding: 0.3rem 0.6rem;
-  }
-
-  .featured-card:hover {
-    transform: translateY(-4px) scale(1.01) !important;
-  }
-}
-
-@media (max-width: 768px) {
   .custom-project-content {
     flex-direction: column;
     gap: 1.5rem;
@@ -550,11 +459,4 @@
   .custom-project-content .service-icon {
     font-size: 2.5rem;
   }
-
-  .featured-badge {
-    top: 8px;
-    right: 8px;
-  }
 }
-
-

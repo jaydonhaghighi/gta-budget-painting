@@ -140,32 +140,36 @@ const LandingPage = () => {
           
           <div className="services-grid">
             {otherServices.map((service) => renderServiceCard(service, false))}
-            
-            {/* Custom Project Card - Full Width */}
-            {customProject && (
-              <div
-                className="service-card-wrapper custom-project-wrapper"
-                onClick={() => handleServiceClick('custom-project')}
-              >
-                <div
-                  className="service-card custom-project-card"
-                  style={customProject.backgroundImage ? {
-                    '--bg-image': `url(${customProject.backgroundImage})`
-                  } as React.CSSProperties : {}}
-                >
-                  <div className="custom-project-content">
-                    <span className="service-icon">{customProject.icon}</span>
-                    <div className="custom-project-text">
-                      <h3>{customProject.name}</h3>
-                      <p>Have a unique project in mind? Get a personalized quote for your custom painting needs.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>
+
+      {/* Custom Project Section */}
+      {customProject && (
+        <section className="custom-project-section">
+          <div className="container">
+            <div
+              className="service-card-wrapper custom-project-wrapper"
+              onClick={() => handleServiceClick('custom-project')}
+            >
+              <div
+                className="service-card custom-project-card"
+                style={customProject.backgroundImage ? {
+                  '--bg-image': `url(${customProject.backgroundImage})`
+                } as React.CSSProperties : {}}
+              >
+                <div className="custom-project-content">
+                  <span className="service-icon">{customProject.icon}</span>
+                  <div className="custom-project-text">
+                    <h3>{customProject.name}</h3>
+                    <p>Have a unique project in mind? Get a personalized quote for your custom painting needs.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Postal Code Verification Modal */}
       <PostalCodeVerification
