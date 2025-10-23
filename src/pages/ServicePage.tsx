@@ -291,7 +291,6 @@ const ServicePage = () => {
                   onEstimateCalculated={(est, data) => {
                     setEstimate(est);
                     setFormData(data);
-                    setStep('customer-info');
                   }}
                   onFormDataChange={(data) => {
                     setFormData(data);
