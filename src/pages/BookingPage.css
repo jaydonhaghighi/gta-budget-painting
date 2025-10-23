@@ -116,7 +116,7 @@
 }
 
 .booking-hero h1 {
-  font-size: 1.75rem;
+  font-size: 2.25rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
   color: var(--color-steel-blue);
@@ -125,10 +125,109 @@
 }
 
 .hero-subtitle {
-  font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
   opacity: 0.95;
   color: var(--color-steel-blue);
+  line-height: 1.6;
+}
+
+/* SEO Hero Content */
+.hero-seo-content {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.keyword-tag {
+  background: var(--color-steel-blue);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.keyword-tag:hover {
+  background: var(--color-golden-beige);
+  transform: translateY(-2px);
+}
+
+.hero-locations {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid var(--color-steel-blue);
+}
+
+.hero-locations h3 {
+  color: var(--color-steel-blue);
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.hero-locations p {
+  color: #4a5568;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.hero-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.benefit-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.benefit-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.benefit-text h4 {
+  color: var(--color-steel-blue);
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.benefit-text p {
+  color: #4a5568;
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
 /* Social Proof Section */
@@ -380,91 +479,17 @@
   transform: translateY(0);
 }
 
-/* Progress Indicator */
-.progress-indicator {
-  padding: 2rem 0;
-  background: white;
-  border-radius: 12px;
-  margin: 2rem 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.progress-steps {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-  padding: 0 2rem;
-}
-
-.progress-steps::before {
-  content: '';
-  position: absolute;
-  top: 20px;
-  left: 10%;
-  right: 10%;
-  height: 2px;
-  background: #e0e0e0;
-  z-index: 0;
-}
-
-.progress-step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-.step-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.progress-step.active .step-circle {
-  background: var(--color-steel-blue);
-  color: white;
-}
-
-.progress-step.completed .step-circle {
-  background: var(--color-steel-blue);
-  color: white;
-}
-
-.step-label {
-  font-size: 0.875rem;
-  color: #666;
-  font-weight: 500;
-}
-
-.progress-step.active .step-label {
-  color: var(--color-steel-blue);
-  font-weight: 600;
-}
 
 /* Service Selection */
 .service-selection-section {
   padding: 1.5rem 0;
 }
 
-.service-selection-section h2 {
-  text-align: center;
-  font-size: 1.75rem;
-  margin-bottom: 0.25rem;
-  color: #1a202c;
-}
+
 
 .section-subtitle {
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: white;
   margin-bottom: 1.5rem;
 }
@@ -656,20 +681,19 @@
 }
 
 .btn-back {
-  background: white;
-  border: 2px solid #e2e8f0;
+  background: var(--color-steel-blue);
+  color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-bottom: 2rem;
 }
 
 .btn-back:hover {
   border-color: var(--color-steel-blue);
-  color: var(--color-steel-blue);
+  color: white;
   transform: translateX(-4px);
 }
 
@@ -1017,7 +1041,58 @@
   }
 
   .booking-hero h1 {
-    font-size: 1.5rem;
+    font-size: 1.875rem;
+  }
+  
+  .hero-seo-content {
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .hero-keywords {
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .keyword-tag {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .hero-locations {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-locations h3 {
+    font-size: 1.1rem;
+  }
+  
+  .hero-locations p {
+    font-size: 0.85rem;
+  }
+  
+  .hero-benefits {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .benefit-item {
+    padding: 0.75rem;
+  }
+  
+  .benefit-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .benefit-text h4 {
+    font-size: 0.9rem;
+  }
+  
+  .benefit-text p {
+    font-size: 0.8rem;
   }
 
   .hero-social-proof {
@@ -1098,13 +1173,6 @@
     font-size: 1rem;
   }
 
-  .progress-steps {
-    padding: 0 1rem;
-  }
-
-  .step-label {
-    font-size: 0.75rem;
-  }
 
   .services-grid {
     grid-template-columns: 1fr;

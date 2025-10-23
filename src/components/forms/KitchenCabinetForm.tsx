@@ -1,33 +1,22 @@
 import { useState, useEffect } from 'react';
 import {
   calculateKitchenCabinets,
-  formatCurrency,
-  RATES,
   type EstimateBreakdown
 } from '../../utils/estimationCalculator';
 import './ServiceForms.css';
 
 interface KitchenCabinetFormProps {
   initialFormData?: any;
-  initialEstimate?: EstimateBreakdown | null;
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
   onFormDataChange?: (formData: any) => void;
-  onAddToCart?: (estimate: EstimateBreakdown, formData: any) => void;
-  onSaveEdit?: (estimate: EstimateBreakdown, formData: any) => void;
-  isEditMode?: boolean;
 }
 
 const KitchenCabinetForm = ({ 
   initialFormData = {}, 
-  initialEstimate = null,
   onEstimateCalculated,
   onFormDataChange,
-  onAddToCart,
-  onSaveEdit,
-  isEditMode = false,
 }: KitchenCabinetFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
-  const [estimate, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
 
   // Update form data when initial props change
   useEffect(() => {
@@ -37,17 +26,9 @@ const KitchenCabinetForm = ({
     }
   }, [JSON.stringify(initialFormData)]);
 
-  // Recalculate estimate when initial estimate changes
-  useEffect(() => {
-    if (initialEstimate) {
-      setEstimate(initialEstimate);
-    }
-  }, [initialEstimate]);
-
   const calculateEstimate = (data: any) => {
     if (!data.cabinetDoors || !data.cabinetFrames || !data.drawerFronts || 
         !data.cabinetHeight || !data.cabinetWidth) {
-      setEstimate(null);
       return;
     }
 
@@ -63,11 +44,9 @@ const KitchenCabinetForm = ({
         }]
       });
 
-      setEstimate(estimate);
       onEstimateCalculated(estimate, data);
     } catch (error) {
       console.error('Error calculating estimate:', error);
-      setEstimate(null);
     }
   };
 
@@ -83,17 +62,6 @@ const KitchenCabinetForm = ({
     calculateEstimate(newFormData);
   };
 
-  const handleAddToCart = () => {
-    if (estimate && onAddToCart) {
-      onAddToCart(estimate, formData);
-    }
-  };
-
-  const handleSaveEdit = () => {
-    if (estimate && onSaveEdit) {
-      onSaveEdit(estimate, formData);
-    }
-  };
 
   return (
     <div className="kitchen-cabinet-form">
@@ -190,107 +158,6 @@ const KitchenCabinetForm = ({
         </div>
       </div>
 
-      {estimate && (
-        <div className="estimate-preview">
-          <div className="estimate-header">
-            <div className="estimate-badge">
-              <img src="/money-bag.png" alt="Money" className="estimate-badge-icon" />
-              Your Cabinet Painting Estimate
-            </div>
-            <div className="estimate-label">Total Project Cost</div>
-            <div className="estimate-total">{formatCurrency(estimate.totalCost)}</div>
-            <div className="estimate-subtitle">Professional cabinet painting with premium finishes</div>
-          </div>
-
-          <div className="estimate-details">
-            {/* Time Section */}
-            <div className="estimate-section">
-              <div className="section-title">
-                <img src="/labour-time.png" alt="Time" className="section-icon" />
-                <span>Time Required</span>
-              </div>
-              <div className="section-content">
-                <div className="detail-row">
-                  <span>Labor Hours</span>
-                  <span className="detail-value">{estimate.laborHours} hrs</span>
-                </div>
-                <div className="detail-row">
-                  <span>Setup & Cleanup</span>
-                  <span className="detail-value">{estimate.setupCleanupHours} hrs</span>
-                </div>
-                <div className="detail-row total-row">
-                  <span>Total Time</span>
-                  <span className="detail-value">{estimate.totalHours} hrs</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Cost Breakdown */}
-            <div className="estimate-section">
-              <div className="section-title">
-                <img src="/breakdown.png" alt="Breakdown" className="section-icon" />
-                <span>Cost Breakdown</span>
-              </div>
-              <div className="section-content">
-                <div className="detail-row">
-                  <span>Labor ({estimate.totalHours} hrs @ ${RATES.LABOR_RATE}/hr)</span>
-                  <span className="detail-value">{formatCurrency(estimate.laborCost)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Paint ({estimate.paintGallons} gallons @ ${RATES.PAINT_RATE}/gallon)</span>
-                  <span className="detail-value">{formatCurrency(estimate.paintCost)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Supplies & Materials</span>
-                  <span className="detail-value">{formatCurrency(estimate.suppliesCost)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Prep Work</span>
-                  <span className="detail-value">{formatCurrency(estimate.prepFee)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Travel Fee</span>
-                  <span className="detail-value">{formatCurrency(estimate.travelFee)}</span>
-                </div>
-                <div className="detail-row total-row">
-                  <span>Total Cost</span>
-                  <span className="detail-value">{formatCurrency(estimate.totalCost)}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="estimate-actions">
-              {isEditMode ? (
-                <button 
-                  className="btn-continue-estimate"
-                  onClick={handleSaveEdit}
-                >
-                  Save Changes
-                </button>
-              ) : (
-                <button 
-                  className="btn-continue-estimate"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                </button>
-              )}
-            </div>
-          </div>
-
-          <div className="estimate-disclaimer">
-            <strong>What's Included:</strong>
-            <ol>
-              <li>Professional cabinet preparation (cleaning, sanding, priming)</li>
-              <li>High-quality paint application with multiple coats</li>
-              <li>Hardware removal and replacement (if selected)</li>
-              <li>Cleanup and protection of surrounding areas</li>
-              <li>All materials, supplies, and labor included</li>
-            </ol>
-            <p><strong>Note:</strong> This estimate is based on standard cabinet painting. Complex designs or special finishes may require additional consultation.</p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

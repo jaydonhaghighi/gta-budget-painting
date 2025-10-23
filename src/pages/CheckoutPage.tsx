@@ -1,8 +1,9 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { submitServiceRequest } from '../services/firestoreService'
 import type { CustomerInfo } from '../types/ServiceRequest'
+import type { CartItem } from '../context/CartContext'
 import './CheckoutPage.css'
 
 interface CheckoutFormData {
@@ -22,10 +23,18 @@ interface CheckoutFormData {
 }
 
 const CheckoutPage = () => {
-  const { cart, totals, clear } = useCart()
+  const { cart, totals, clear, addItem } = useCart()
   const navigate = useNavigate()
+  const location = useLocation()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  
+  // Handle single-service checkout
+  const [singleService, setSingleService] = useState<CartItem | null>(null)
+  const [isSingleService, setIsSingleService] = useState(false)
+  const [purchaseCompleted, setPurchaseCompleted] = useState(false)
+  const [serviceAddedToCart, setServiceAddedToCart] = useState(false)
+  const serviceAddedRef = useRef(false)
   
   const [formData, setFormData] = useState<CheckoutFormData>({
     earliestStart: '',
@@ -42,6 +51,87 @@ const CheckoutPage = () => {
     howDidYouHear: '',
     additionalNotes: ''
   })
+
+  // Handle single-service checkout from location state
+  useEffect(() => {
+    if (location.state?.isSingleService && location.state?.singleService) {
+      setSingleService(location.state.singleService)
+      setIsSingleService(true)
+    }
+  }, [location.state])
+
+  // Handle adding single service to cart if user leaves without completing purchase
+  const addToCartIfNeeded = () => {
+    if (isSingleService && singleService && !purchaseCompleted && !serviceAddedRef.current) {
+      // Set ref immediately to prevent race conditions
+      serviceAddedRef.current = true;
+      setServiceAddedToCart(true);
+      
+      // Add the single service to cart when user leaves without completing purchase
+      addItem({
+        serviceId: singleService.serviceId,
+        serviceName: singleService.serviceName,
+        serviceType: singleService.serviceType,
+        estimate: singleService.estimate,
+        formData: singleService.formData
+      });
+    }
+  };
+
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      addToCartIfNeeded();
+    };
+
+    const handlePopState = () => {
+      addToCartIfNeeded();
+    };
+
+    // Add event listeners
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+
+    // Cleanup function - this runs when component unmounts (any navigation away)
+    return () => {
+      addToCartIfNeeded();
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isSingleService, singleService, purchaseCompleted, serviceAddedToCart, addItem])
+
+  // Additional detection for programmatic navigation
+  useEffect(() => {
+    const originalPushState = history.pushState;
+    const originalReplaceState = history.replaceState;
+
+    history.pushState = function(...args) {
+      addToCartIfNeeded();
+      return originalPushState.apply(history, args);
+    };
+
+    history.replaceState = function(...args) {
+      addToCartIfNeeded();
+      return originalReplaceState.apply(history, args);
+    };
+
+    return () => {
+      history.pushState = originalPushState;
+      history.replaceState = originalReplaceState;
+    };
+  }, [isSingleService, singleService, purchaseCompleted, serviceAddedToCart, addItem])
+
+  // Calculate totals for single-service checkout
+  const singleServiceTotals = singleService ? {
+    itemsSubtotal: singleService.estimate.totalCost,
+    discount: singleService.estimate.totalCost > 1000 ? singleService.estimate.totalCost * 0.15 : 0,
+    travelFeeAdjustment: 0, // Travel fee already included in otherFees
+    grandTotal: singleService.estimate.totalCost - (singleService.estimate.totalCost > 1000 ? singleService.estimate.totalCost * 0.15 : 0)
+  } : null
+
+  // Use appropriate totals based on checkout type
+  const displayTotals = isSingleService && singleServiceTotals ? singleServiceTotals : totals
+  const displayItems = isSingleService && singleService ? [singleService] : cart.items
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -70,9 +160,11 @@ const CheckoutPage = () => {
       }
 
       // Prepare service request data for cart submission
+      const itemsToProcess = isSingleService && singleService ? [singleService] : cart.items;
+      
       const serviceRequestData = {
         customerInfo,
-        lineItems: cart.items.map(item => {
+        lineItems: itemsToProcess.map(item => {
           const lineItem: any = {
             serviceId: item.serviceId,
             serviceName: item.serviceName,
@@ -93,10 +185,10 @@ const CheckoutPage = () => {
           latestFinish: new Date(formData.latestFinish)
         },
         totals: {
-          itemsSubtotal: totals.itemsSubtotal,
-          discount: totals.discount,
-          travelFeeAdjustment: totals.travelFeeAdjustment,
-          grandTotal: totals.grandTotal
+          itemsSubtotal: displayTotals.itemsSubtotal,
+          discount: displayTotals.discount,
+          travelFeeAdjustment: displayTotals.travelFeeAdjustment,
+          grandTotal: displayTotals.grandTotal
         },
         createdAt: new Date()
       }
@@ -104,6 +196,9 @@ const CheckoutPage = () => {
       // Submit to Firestore
       const requestId = await submitServiceRequest(serviceRequestData)
       console.log('Cart order submitted successfully:', requestId)
+      
+      // Mark purchase as completed to prevent adding to cart on exit
+      setPurchaseCompleted(true)
 
       // Send emails via Cloud Function
       try {
@@ -150,7 +245,7 @@ const CheckoutPage = () => {
           <p className="checkout-subtitle">Please provide your information to finalize your painting service request</p>
         </div>
 
-        {cart.items.length === 0 ? (
+        {displayItems.length === 0 ? (
           <div className="checkout-empty">
             <div className="empty-state">
               <h3>No items in cart</h3>
@@ -420,11 +515,11 @@ const CheckoutPage = () => {
                     <img src="/checkout/clipboard.svg" alt="Order Summary" className="section-icon" />
                     Order Summary
                   </h3>
-                  <span className="item-count">{cart.items.length} {cart.items.length === 1 ? 'service' : 'services'}</span>
+                  <span className="item-count">{displayItems.length} {displayItems.length === 1 ? 'service' : 'services'}</span>
                 </div>
                 
                 <div className="summary-items">
-                  {cart.items.map((item) => (
+                  {displayItems.map((item) => (
                     <div key={item.id} className="summary-item">
                       <div className="item-info">
                         <h4>{item.serviceName}</h4>
@@ -438,23 +533,23 @@ const CheckoutPage = () => {
                 <div className="summary-totals">
                   <div className="total-row">
                     <span>Subtotal</span>
-                    <span>${totals.itemsSubtotal.toFixed(2)}</span>
+                    <span>${displayTotals.itemsSubtotal.toFixed(2)}</span>
                   </div>
-                  {totals.travelFeeAdjustment > 0 && (
+                  {displayTotals.travelFeeAdjustment > 0 && (
                     <div className="total-row">
                       <span>Travel Adjustment</span>
-                      <span>+${totals.travelFeeAdjustment.toFixed(2)}</span>
+                      <span>+${displayTotals.travelFeeAdjustment.toFixed(2)}</span>
                     </div>
                   )}
-                  {totals.discount > 0 && (
+                  {displayTotals.discount > 0 && (
                     <div className="total-row discount">
                       <span>Discount (15%)</span>
-                      <span>-${totals.discount.toFixed(2)}</span>
+                      <span>-${displayTotals.discount.toFixed(2)}</span>
                     </div>
                   )}
                   <div className="total-row final-total">
                     <span>Total</span>
-                    <span>${totals.grandTotal.toFixed(2)}</span>
+                    <span>${displayTotals.grandTotal.toFixed(2)}</span>
                   </div>
                 </div>
 

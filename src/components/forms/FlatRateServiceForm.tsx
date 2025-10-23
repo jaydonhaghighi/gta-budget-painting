@@ -37,7 +37,7 @@ const FlatRateServiceForm = ({ service, onProceed }: FlatRateServiceFormProps) =
 
         <div className="service-details">
           <h4>Service Details:</h4>
-          <p>{service.description}</p>
+          <p>{service.seoDescription || service.description}</p>
         </div>
 
         <button

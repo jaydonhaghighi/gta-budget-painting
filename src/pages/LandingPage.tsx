@@ -59,28 +59,45 @@ const LandingPage = () => {
     setPendingServiceId(null);
   };
 
-  // Separate featured and other services
-  const featuredServices = allServices.filter(s => s.featured);
-  const customProject = allServices.find(s => s.id === 'custom-project');
-  const otherServices = allServices.filter(s => !s.featured && s.id !== 'custom-project');
+  // Get all services including custom project
+  const allServicesList = allServices;
 
-  const renderServiceCard = (service: typeof allServices[0], isFeatured: boolean = false) => (
-    <div
-      key={service.id}
-      className="service-card-wrapper"
-      onClick={() => handleServiceClick(service.id)}
-    >
+  const renderServiceCard = (service: typeof allServices[0], isFeatured: boolean = false) => {
+    // Special handling for custom project
+    if (service.id === 'custom-project') {
+      return (
+        <div
+          key={service.id}
+          className="service-card-wrapper custom-project-wrapper"
+          onClick={() => handleServiceClick(service.id)}
+        >
+              <div className="custom-project-text">
+                <h3>Service Not Here?</h3>
+                <p>Tell us what you need and we'll provide a personalized quote for your custom painting project.</p>
+              </div>
+            </div>
+      );
+    }
+
+    // Regular service cards
+    return (
       <div
-        className={`service-card ${isFeatured ? 'featured-card' : ''}`}
-        style={service.backgroundImage ? {
-          '--bg-image': `url(${service.backgroundImage})`
-        } as React.CSSProperties : {}}
+        key={service.id}
+        className="service-card-wrapper"
+        onClick={() => handleServiceClick(service.id)}
       >
-        <span className="service-icon">{service.icon}</span>
+        <div
+          className={`service-card ${isFeatured ? 'featured-card' : ''}`}
+          style={service.backgroundImage ? {
+            '--bg-image': `url(${service.backgroundImage})`
+          } as React.CSSProperties : {}}
+        >
+          <span className="service-icon">{service.icon}</span>
+        </div>
+        <h3 className="service-card-title">{service.name}</h3>
       </div>
-      <h3 className="service-card-title">{service.name}</h3>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="landing-page">
@@ -88,7 +105,7 @@ const LandingPage = () => {
       <div className={`sticky-promo-banner ${showPromoBanner ? 'show' : 'hidden'}`}>
         <div className="promo-banner-content">
           <span className="promo-banner-text">
-            <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" />
+            {/* <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" /> */}
             Big projects deserve big savings <span className="deal-bubble">15% off $1000+ painting jobs!</span>
           </span>
           <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
@@ -98,78 +115,23 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
-
-          <h1 style={{color: 'var(--color-steel-blue)'}}>Budget Painting Services in the GTA</h1>
-          <p className="hero-subtitle">We paint your home like it's our own — with quality work that fits your budget</p>
-          
-          {/* Social Proof */}
-          <div className="hero-social-proof">
-            <div className="proof-item">
-              <img src="/money-bag.png" alt="Budget Friendly" className="proof-icon" />
-              <span className="proof-label">Budget Friendly</span>
-            </div>
-            <div className="proof-item">
-              <img src="/labour-time.png" alt="Quick Turnaround" className="proof-icon" />
-              <span className="proof-label">Quick Turnaround</span>
-            </div>
-            <div className="proof-item">
-              <img src="/star.png" alt="5 Star Rated" className="proof-icon" />
-              <span className="proof-label">5★ Rated Service</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Services Section */}
-      <section className="featured-services-section">
-        <div className="container">
-          <h2>Most Popular Services</h2>
-          <p className="section-subtitle">Our best-selling services trusted by thousands of GTA homeowners</p>
-          
-          <div className="services-grid featured-grid">
-            {featuredServices.map((service) => renderServiceCard(service, true))}
-          </div>
+          <h1 style={{color: 'var(--color-steel-blue)'}}>Professional Painting Services in the GTA</h1>
+          <p className="hero-subtitle">Expert interior and exterior painting services across the Greater Toronto Area. Licensed, insured, and trusted by hundreds of homeowners.</p>
         </div>
       </section>
 
       {/* All Services Section */}
-      <section className="all-services-section">
+      <section className="featured-services-section">
         <div className="container">
-          <h2>All Services</h2>
-          <p className="section-subtitle">Browse our complete range of painting services</p>
+          <h3>Most Popular Services</h3>
+          <p className="section-subtitle">Our complete range of painting services trusted by thousands of GTA homeowners</p>
           
-          <div className="services-grid">
-            {otherServices.map((service) => renderServiceCard(service, false))}
+          <div className="services-grid featured-grid">
+            {allServicesList.map((service) => renderServiceCard(service, service.featured))}
           </div>
         </div>
       </section>
 
-      {/* Custom Project Section */}
-      {customProject && (
-        <section className="custom-project-section">
-          <div className="container">
-            <div
-              className="service-card-wrapper custom-project-wrapper"
-              onClick={() => handleServiceClick('custom-project')}
-            >
-              <div
-                className="service-card custom-project-card"
-                style={customProject.backgroundImage ? {
-                  '--bg-image': `url(${customProject.backgroundImage})`
-                } as React.CSSProperties : {}}
-              >
-                <div className="custom-project-content">
-                  <span className="service-icon">{customProject.icon}</span>
-                  <div className="custom-project-text">
-                    <h3>{customProject.name}</h3>
-                    <p>Have a unique project in mind? Get a personalized quote for your custom painting needs.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Postal Code Verification Modal */}
       <PostalCodeVerification

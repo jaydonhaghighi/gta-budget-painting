@@ -207,7 +207,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                       <tr>
                         <td align="center">
                           <a href="tel:6473907181" style="display: inline-block; padding: 12px 24px; background-color: #a6b2b5; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">📞 Call (647) 390-7181</a>
-                          <a href="mailto:info@gtabudgetpainting.com" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">✉️ Email Us</a>
+                          <a href="mailto:info@gtabudgetpainting.ca" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">✉️ Email Us</a>
                         </td>
                       </tr>
                     </table>
@@ -220,7 +220,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                     <p style="margin: 0 0 10px; color: #e7e6e3; font-size: 14px;">GTA Budget Painting</p>
                     <p style="margin: 0; color: #a6b2b5; font-size: 12px;">Professional Painting Services in the Greater Toronto Area</p>
                     <p style="margin: 15px 0 0; color: #a6b2b5; font-size: 12px;">
-                      <a href="mailto:info@gtabudgetpainting.com" style="color: #a6b2b5; text-decoration: none;">info@gtabudgetpainting.com</a> | 
+                      <a href="mailto:info@gtabudgetpainting.ca" style="color: #a6b2b5; text-decoration: none;">info@gtabudgetpainting.ca</a> | 
                       <a href="tel:6473907181" style="color: #a6b2b5; text-decoration: none;">(647) 390-7181</a>
                     </p>
                   </td>
@@ -358,7 +358,7 @@ export const generateCartCustomerEmail = (data: any): string => {
                             <a href="tel:6473907181" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">(647) 390-7181</a>
                           </p>
                           <p style="margin: 0; color: #4a5355; font-size: 14px;">
-                            <a href="mailto:info@gtabudgetpainting.com" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">info@gtabudgetpainting.com</a>
+                            <a href="mailto:info@gtabudgetpainting.ca" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">info@gtabudgetpainting.ca</a>
                           </p>
                         </td>
                       </tr>

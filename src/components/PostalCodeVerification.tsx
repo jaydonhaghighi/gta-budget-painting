@@ -165,13 +165,6 @@ export const PostalCodeVerification: React.FC<PostalCodeVerificationProps> = ({
             
             <div className="postal-verification-actions">
               <button 
-                type="button" 
-                onClick={onClose}
-                className="btn-secondary"
-              >
-                Cancel
-              </button>
-              <button 
                 type="submit" 
                 disabled={isVerifying || postalCode.replace(/\s/g, '').length < 6}
                 className="btn-primary"

@@ -259,6 +259,11 @@ const CalculatedServiceForm = ({
       }
 
       setEstimate(newEstimate);
+      
+      // Notify parent component of the new estimate
+      if (newEstimate) {
+        onEstimateCalculated(newEstimate, data);
+      }
     } catch (error) {
       console.error('Error calculating estimate:', error);
       setEstimate(null);
@@ -1645,110 +1650,6 @@ const CalculatedServiceForm = ({
     <div className="calculated-service-form">
       {renderForm()}
       
-      {estimate && (
-        <div className="estimate-preview">
-          <div className="estimate-header">
-            <div className="estimate-badge">
-              <img src="/money-bag.png" alt="Money" className="estimate-badge-icon" />
-              Your Estimate
-            </div>
-            <div className="estimate-total-section">
-              <div className="estimate-label">Estimated Total</div>
-              <div className="estimate-total">{formatCurrency(estimate.totalCost)}</div>
-              <div className="estimate-subtitle">Professional review pending</div>
-            </div>
-          </div>
-
-          <div className="estimate-details">
-            {/* Time Section */}
-            <div className="estimate-section">
-              <div className="section-title">
-                <img src="/labour-time.png" alt="Time" className="section-icon" />
-                <span>Time Required</span>
-              </div>
-              <div className="section-content">
-                <div className="detail-row">
-                  <span>Labor Hours</span>
-                  <span className="detail-value">{estimate.laborHours} hrs</span>
-                </div>
-                <div className="detail-row">
-                  <span>Setup & Cleanup</span>
-                  <span className="detail-value">{estimate.setupCleanupHours} hrs</span>
-                </div>
-                <div className="detail-row total-row">
-                  <span>Total Time</span>
-                  <span className="detail-value">{estimate.totalHours} hrs</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Cost Breakdown */}
-            <div className="estimate-section">
-              <div className="section-title">
-                <img src="/breakdown.png" alt="Breakdown" className="section-icon" />
-                <span>Cost Breakdown</span>
-              </div>
-              <div className="section-content">
-                <div className="detail-row">
-                  <span>Labor ({estimate.totalHours} hrs @ ${RATES.LABOR_RATE}/hr)</span>
-                  <span className="detail-value">{formatCurrency(estimate.laborCost)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Paint ({estimate.paintGallons} gallons @ ${RATES.PAINT_RATE}/gal)</span>
-                  <span className="detail-value">{formatCurrency(estimate.paintCost)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Supplies</span>
-                  <span className="detail-value">{formatCurrency(estimate.suppliesCost)}</span>
-                </div>
-                <div className="detail-row">
-                  <span>Other Fees</span>
-                  <span className="detail-value">{formatCurrency(estimate.prepFee + estimate.travelFee)}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Total */}
-            <div className="estimate-section estimate-total-box">
-              <div className="detail-row total-final">
-                <span>Total Price</span>
-                <span className="detail-value-large">{formatCurrency(estimate.totalCost)}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="estimate-disclaimer">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M8 0a8 8 0 100 16A8 8 0 008 0zm.93 12.93h-1.86v-1.86h1.86v1.86zm0-3.72H7.07V3.07h1.86v6.14z"/>
-            </svg>
-            <span>This is a preliminary estimate. Final pricing will be confirmed by our professionals after review.</span>
-          </div>
-          
-          <div className="estimate-actions">
-            {isEditMode ? (
-              <>
-                <button className="btn-secondary" onClick={(e) => {
-                  e.preventDefault()
-                  if (estimate && onSaveEdit) onSaveEdit(estimate, formData)
-                }}>Save Changes</button>
-                <button className="btn-continue-estimate" onClick={(e) => { e.preventDefault(); window.history.back() }}>
-                  Cancel
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="btn-secondary" onClick={(e) => {
-                  e.preventDefault()
-                  if (estimate && onAddToCart) onAddToCart(estimate, formData)
-                }}>Add to Cart</button>
-                <button className="btn-continue-estimate" onClick={handleContinue}>
-                  Continue with This Estimate
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

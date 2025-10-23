@@ -8,7 +8,11 @@ const Footer = () => {
           {/* Company Info */}
           <div className="footer-section footer-about">
             <h3>GTA Budget Painting</h3>
-            <p>Your trusted painting professionals in the Greater Toronto Area.</p>
+            <p>Your trusted painting professionals in the Greater Toronto Area. We provide expert interior and exterior painting services across the GTA with quality workmanship and competitive pricing.</p>
+            <div className="business-hours">
+              <h4>Business Hours</h4>
+              <p>Monday - Sunday: 8:00 AM - 8:00 PM</p> 
+            </div>
             <a 
               href="https://gtahomepainting.ca" 
               target="_blank" 
@@ -20,19 +24,36 @@ const Footer = () => {
             </a>
           </div>
 
+          {/* Services */}
+          <div className="footer-section">
+            <h4>Our Services</h4>
+            <ul className="footer-list">
+              <li><a href="/services/accent-wall">Accent Wall Painting</a></li>
+              <li><a href="/services/ceiling">Ceiling Painting</a></li>
+              <li><a href="/services/small-bathroom">Bathroom Painting</a></li>
+              <li><a href="/services/bedroom-painting">Bedroom Painting</a></li>
+              <li><a href="/services/kitchen-walls">Kitchen Painting</a></li>
+              <li><a href="/services/trimming-baseboards">Trimming & Baseboards</a></li>
+              <li><a href="/services/front-door">Front Door Painting</a></li>
+              <li><a href="/services/fence-painting">Fence Painting</a></li>
+            </ul>
+          </div>
+
           {/* Service Areas */}
           <div className="footer-section">
             <h4>Service Areas</h4>
             <ul className="footer-list">
+              <li>Vaughan</li>
               <li>Toronto</li>
               <li>Mississauga</li>
               <li>Brampton</li>
               <li>Markham</li>
-              <li>Vaughan</li>
+              <li>Richmond Hill</li>
+              <li>Thornhill</li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact & Social */}
           <div className="footer-section">
             <h4>Contact Us</h4>
             <ul className="footer-list">
@@ -43,17 +64,14 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="mailto:info@gtabudgetpainting.com" className="footer-contact-link">
+                <a href="mailto:info@gtabudgetpainting.ca" className="footer-contact-link">
                   <img src="/mail.png" alt="Email" className="footer-contact-icon" />
-                  info@gtabudgetpainting.com
+                  info@gtabudgetpainting.ca
                 </a>
               </li>
             </ul>
-          </div>
-
-          {/* Social Media */}
-          <div className="footer-section">
-            <h4>Follow Us</h4>
+            
+            <h5>Follow Us</h5>
             <div className="social-links">
               <a 
                 href="https://www.facebook.com/profile.php?id=61578315664485" 
@@ -78,7 +96,12 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; 2025 GTA Budget Painting. All rights reserved.</p>
+          <div className="footer-bottom-content">
+            <p>&copy; 2025 GTA Budget Painting. All rights reserved. | Licensed & Insured Painting Contractors</p>
+            <div className="footer-keywords">
+              <span>Professional Painters Toronto | Interior Painting GTA | Exterior Painting Services | Residential Painting Contractors | Commercial Painting | House Painting | Apartment Painting | Condo Painting | Office Painting | Restaurant Painting</span>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

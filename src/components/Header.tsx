@@ -102,9 +102,9 @@ const Header = () => {
               <img src="/telephone.png" alt="Phone" className="header-contact-icon" />
               <span className="header-contact-text">(647) 390-7181</span>
             </a>
-            <a href="mailto:info@gtabudgetpainting.com" className="header-contact-link">
+            <a href="mailto:info@gtabudgetpainting.ca" className="header-contact-link">
               <img src="/mail.png" alt="Email" className="header-contact-icon" />
-              <span className="header-contact-text">info@gtabudgetpainting.com</span>
+              <span className="header-contact-text">info@gtabudgetpainting.ca</span>
             </a>
           </div>
         </div>

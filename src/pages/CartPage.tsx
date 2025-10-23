@@ -10,8 +10,7 @@ const CartPage = () => {
       <div className="container">
         <div className="cart-header">
           <div className="cart-title">
-            <h1>Your Cart</h1>
-            <span className="cart-count">{count} {count === 1 ? 'item' : 'items'}</span>
+            <h3>Service Cart</h3>
           </div>
           {/* Clear Cart removed as requested */}
         </div>
@@ -59,7 +58,7 @@ const CartPage = () => {
             </section>
 
             <aside className="cart-summary-card">
-              <h3>Order Summary</h3>
+              <h3>Order Summary <span className="cart-count">({count} {count === 1 ? 'item' : 'items'})</span></h3>
               <div className="cart-summary-rows">
                 <div className="row"><span>Subtotal</span><span>${totals.itemsSubtotal.toFixed(2)}</span></div>
                 {totals.travelFeeAdjustment > 0 && (

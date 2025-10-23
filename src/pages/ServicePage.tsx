@@ -258,22 +258,6 @@ const ServicePage = () => {
     }
   };
 
-  // Determine current step number for progress indicator
-  const getStepNumber = () => {
-    switch (step) {
-      case 'service-form':
-        return 1;
-      case 'customer-info':
-        return 2;
-      case 'confirmation':
-        return 3;
-      default:
-        return 1;
-    }
-  };
-
-  const currentStepNumber = getStepNumber();
-
   return (
     <div className="service-page">
       {/* Back Button */}
@@ -284,32 +268,6 @@ const ServicePage = () => {
           </button>
         </div>
       </div>
-
-      {/* Progress Indicator */}
-      {step !== 'confirmation' && (
-        <div className="progress-container">
-          <div className="container">
-            <div className="progress-indicator">
-              <div className={`progress-step ${currentStepNumber >= 1 ? 'active' : ''} ${currentStepNumber > 1 ? 'completed' : ''}`}>
-                <div className="step-number">1</div>
-                <div className="step-label">
-                  Service Details
-                </div>
-              </div>
-              
-              <div className={`progress-step ${currentStepNumber >= 2 ? 'active' : ''} ${currentStepNumber > 2 ? 'completed' : ''}`}>
-                <div className="step-number">2</div>
-                <div className="step-label">Your Information</div>
-              </div>
-              
-              <div className={`progress-step ${currentStepNumber >= 3 ? 'active' : ''}`}>
-                <div className="step-number">3</div>
-                <div className="step-label">Confirmation</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Service Form */}
       {step === 'service-form' && (
@@ -625,6 +583,46 @@ const ServicePage = () => {
             </div>
           </div>
         </section>
+      )}
+
+      {/* Sticky Bottom Bar - Show estimate total when available */}
+      {estimate && step === 'service-form' && (
+        <div className="sticky-bottom-bar">
+          <div className="sticky-bar-content">
+            <div className="sticky-bar-total">
+              <div className="sticky-bar-label">Estimated Total</div>
+              <div className="sticky-bar-amount">${estimate.totalCost.toFixed(2)}</div>
+            </div>
+          </div>
+          <div className="sticky-bar-actions">
+            <button 
+              className="sticky-bar-btn sticky-bar-btn-primary"
+              onClick={() => {
+                if (estimate) {
+                  addItem({
+                    serviceId: serviceId!,
+                    serviceName: service!.name,
+                    serviceType: service!.type,
+                    estimate: {
+                      ...estimate,
+                      otherFees: estimate.prepFee + estimate.travelFee
+                    },
+                    formData: formData
+                  });
+                  navigate('/cart');
+                }
+              }}
+            >
+              Add to Cart
+            </button>
+            <button 
+              className="sticky-bar-btn sticky-bar-btn-secondary"
+              onClick={() => setStep('customer-info')}
+            >
+              Continue
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
