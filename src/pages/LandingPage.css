@@ -252,8 +252,8 @@
 /* Service Card Title */
 .service-card-title {
   color: var(--color-steel-blue) !important;
-  font-size: 20px !important;
-  font-weight: 400 !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
   margin: 0px !important;
   text-align: center;
   line-height: 1.3;

@@ -1381,6 +1381,19 @@ body.sticky-bar-present .floating-cart-btn {
   font-weight: 400;
 }
 
+.service-card-title {
+  font-family: 'Fira Sans', sans-serif !important;
+  color: var(--color-black);
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-style: normal;
+  text-decoration: none;
+  font-variant: normal;
+  text-transform: none;
+  letter-spacing: -0.02em;
+}
+
 .service-card p {
   font-family: var(--font-body);
   color: var(--color-grey-600);
