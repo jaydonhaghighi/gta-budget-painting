@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { allServices, getServicesByCategory } from '../data/services';
-import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
+import { getServicesByCategory } from '../data/services';
+import { PostalCodeVerification } from '../components/PostalCodeVerification';
 import './LandingPage.css';
 
 const ServicesPage = () => {
@@ -9,16 +9,6 @@ const ServicesPage = () => {
   const [showPostalVerification, setShowPostalVerification] = useState(false);
   const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
 
-  const handleServiceClick = (serviceId: string) => {
-    // Check if user is already verified
-    if (isPostalCodeVerified()) {
-      navigate(`/services/${serviceId}`);
-    } else {
-      // Show verification popup
-      setPendingServiceId(serviceId);
-      setShowPostalVerification(true);
-    }
-  };
 
   const handlePostalVerificationClose = () => {
     setShowPostalVerification(false);

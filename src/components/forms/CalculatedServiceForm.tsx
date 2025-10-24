@@ -32,7 +32,7 @@ const CalculatedServiceForm = ({
   onFormDataChange,
 }: CalculatedServiceFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
-  const [estimate, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
+  const [, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
 
   // Update form data when initial props change (e.g., when navigating back or restored from localStorage)
   useEffect(() => {

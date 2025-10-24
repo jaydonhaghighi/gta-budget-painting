@@ -692,12 +692,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  border: none;
 }
 
 .btn-back:hover {
   border-color: var(--color-steel-blue);
   color: white;
   transform: translateX(-4px);
+  border: none;
 }
 
 .service-form-header {

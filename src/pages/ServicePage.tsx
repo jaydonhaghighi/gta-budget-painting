@@ -9,7 +9,6 @@ import { submitServiceRequest } from '../services/firestoreService';
 import type { ServiceRequestSubmission } from '../types/ServiceRequest';
 import './ServicePage.css';
 import { useCart } from '../context/CartContext';
-import { isPostalCodeVerified } from '../components/PostalCodeVerification';
 
 type ServiceStep = 'service-form' | 'customer-info' | 'confirmation';
 
@@ -35,11 +34,9 @@ interface SavedBookingState {
 }
 
 const ServicePage = () => {
-  const { addItem, updateItem } = useCart();
+  const { addItem } = useCart();
   const { serviceId } = useParams<{ serviceId: string }>();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const editId = searchParams.get('editId');
   const navigate = useNavigate();
   
   // Get category from URL path
@@ -309,65 +306,12 @@ const ServicePage = () => {
                   service={service}
                   initialFormData={formData}
                   initialEstimate={estimate}
-                  isEditMode={Boolean(editId)}
-                  onEstimateCalculated={(est, data) => {
+                  onEstimateCalculated={(est: EstimateBreakdown, data: any) => {
                     setEstimate(est);
                     setFormData(data);
                   }}
-                  onFormDataChange={(data) => {
+                  onFormDataChange={(data: any) => {
                     setFormData(data);
-                  }}
-                  onAddToCart={(est, data) => {
-                    // Postal verification gating before add
-                    if (!isPostalCodeVerified()) {
-                      alert('Please verify your location before adding to cart.');
-                      return;
-                    }
-                    const cartEstimate = {
-                      totalCost: est.totalCost,
-                      laborHours: est.laborHours,
-                      totalHours: est.totalHours,
-                      setupCleanupHours: est.setupCleanupHours,
-                      paintGallons: est.paintGallons,
-                      paintCost: est.paintCost,
-                      laborCost: est.laborCost,
-                      suppliesCost: est.suppliesCost,
-                      otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
-                      subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
-                    };
-                    addItem({
-                      serviceId: service.id,
-                      serviceName: service.name,
-                      serviceType: service.type,
-                      formData: data,
-                      estimate: cartEstimate,
-                    });
-                    // Reset this service form state and saved progress
-                    try {
-                      if (serviceId) localStorage.removeItem(`booking-${serviceId}`);
-                    } catch {}
-                    setEstimate(null);
-                    setFormData({});
-                    setStep('service-form');
-                    navigate('/');
-                  }}
-                  onSaveEdit={(est, data) => {
-                    const cartEstimate = {
-                      totalCost: est.totalCost,
-                      laborHours: est.laborHours,
-                      totalHours: est.totalHours,
-                      setupCleanupHours: est.setupCleanupHours,
-                      paintGallons: est.paintGallons,
-                      paintCost: est.paintCost,
-                      laborCost: est.laborCost,
-                      suppliesCost: est.suppliesCost,
-                      otherFees: (est as any).otherFees ?? ((est as any).prepFee ?? 0) + ((est as any).travelFee ?? 0),
-                      subtotal: (est as any).subtotal ?? (est.laborCost + est.paintCost + est.suppliesCost),
-                    };
-                    if (editId) {
-                      updateItem(editId, { formData: data, estimate: cartEstimate })
-                      navigate('/cart')
-                    }
                   }}
                 />
               )}
