@@ -42,6 +42,15 @@ const ServicePage = () => {
   const editId = searchParams.get('editId');
   const navigate = useNavigate();
   
+  // Get category from URL path
+  const getCategoryFromPath = () => {
+    const pathSegments = location.pathname.split('/');
+    const categoryIndex = pathSegments.indexOf('services') + 1;
+    return pathSegments[categoryIndex] || '';
+  };
+  
+  const category = getCategoryFromPath();
+  
   const service = serviceId ? getServiceById(serviceId) : null;
   
   const [step, setStep] = useState<ServiceStep>('service-form');
@@ -251,10 +260,10 @@ const ServicePage = () => {
       );
       if (shouldClear) {
         localStorage.removeItem(`booking-${serviceId}`);
-        navigate('/');
+        navigate(`/services/${category}`);
       }
     } else {
-      navigate('/');
+      navigate(`/services/${category}`);
     }
   };
 
@@ -264,8 +273,21 @@ const ServicePage = () => {
       <div className="service-page-header">
         <div className="container">
           <button className="btn-back" onClick={handleBack}>
-            ← {step === 'service-form' ? 'Back to Services' : 'Back'}
+            ← {step === 'service-form' ? `Back to ${category === 'interior-painting' ? 'Interior Painting' : category === 'exterior-painting' ? 'Exterior Painting' : category === 'custom' ? 'Custom Projects' : 'Services'}` : 'Back'}
           </button>
+          
+          {/* Breadcrumb Navigation */}
+          <nav className="breadcrumb">
+            <a href="/services" className="breadcrumb-link">Services</a>
+            <span className="breadcrumb-separator">›</span>
+            <a href={`/services/${category}`} className="breadcrumb-link">
+              {category === 'interior-painting' ? 'Interior Painting' : 
+               category === 'exterior-painting' ? 'Exterior Painting' : 
+               category === 'custom' ? 'Custom Projects' : category}
+            </a>
+            <span className="breadcrumb-separator">›</span>
+            <span className="breadcrumb-current">{service?.name}</span>
+          </nav>
         </div>
       </div>
 

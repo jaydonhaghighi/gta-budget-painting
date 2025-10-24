@@ -1,24 +1,51 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { allServices } from '../data/services';
-import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
 import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [showPostalVerification, setShowPostalVerification] = useState(false);
   const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
-  const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
+
+  // Handle hash navigation
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash === '#company-section' || hash === '#areas-served-section') {
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, []);
+
+  // Handle hash changes when already on the page
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === '#company-section' || hash === '#areas-served-section') {
+        setTimeout(() => {
+          const element = document.querySelector(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Scroll-triggered banner logic
   useEffect(() => {
     const handleScroll = () => {
-      const featuredSection = document.querySelector('.featured-services-section');
-      if (featuredSection && !bannerDismissed) {
-        const rect = featuredSection.getBoundingClientRect();
-        // Show banner when the top of the featured services section hits the top of viewport
-        if (rect.top <= 0) {
+      const heroSection = document.querySelector('.booking-hero');
+      if (heroSection && !bannerDismissed) {
+        const rect = heroSection.getBoundingClientRect();
+        // Show banner when user scrolls past the hero section
+        if (rect.bottom <= 0) {
           setShowPromoBanner(true);
         } else {
           setShowPromoBanner(false);
@@ -35,69 +62,6 @@ const LandingPage = () => {
     setShowPromoBanner(false);
   };
 
-  const handleServiceClick = (serviceId: string) => {
-    // Check if user is already verified
-    if (isPostalCodeVerified()) {
-      navigate(`/services/${serviceId}`);
-    } else {
-      // Show verification popup
-      setPendingServiceId(serviceId);
-      setShowPostalVerification(true);
-    }
-  };
-
-  const handlePostalVerificationClose = () => {
-    setShowPostalVerification(false);
-    setPendingServiceId(null);
-  };
-
-  const handlePostalVerificationSuccess = () => {
-    setShowPostalVerification(false);
-    if (pendingServiceId) {
-      navigate(`/services/${pendingServiceId}`);
-    }
-    setPendingServiceId(null);
-  };
-
-  // Get all services including custom project
-  const allServicesList = allServices;
-
-  const renderServiceCard = (service: typeof allServices[0], isFeatured: boolean = false) => {
-    // Special handling for custom project
-    if (service.id === 'custom-project') {
-      return (
-        <div
-          key={service.id}
-          className="service-card-wrapper custom-project-wrapper"
-          onClick={() => handleServiceClick(service.id)}
-        >
-              <div className="custom-project-text">
-                <h3>Service Not Here?</h3>
-                <p>Tell us what you need and we'll provide a personalized quote for your custom painting project.</p>
-              </div>
-            </div>
-      );
-    }
-
-    // Regular service cards
-    return (
-      <div
-        key={service.id}
-        className="service-card-wrapper"
-        onClick={() => handleServiceClick(service.id)}
-      >
-        <div
-          className={`service-card ${isFeatured ? 'featured-card' : ''}`}
-          style={service.backgroundImage ? {
-            '--bg-image': `url(${service.backgroundImage})`
-          } as React.CSSProperties : {}}
-        >
-          <span className="service-icon">{service.icon}</span>
-        </div>
-        <h3 className="service-card-title">{service.name}</h3>
-      </div>
-    );
-  };
 
   return (
     <div className="landing-page">
@@ -115,30 +79,96 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
-          <h1 style={{color: 'var(--color-steel-blue)'}}>Professional Painting Services in the GTA</h1>
-          <p className="hero-subtitle">Expert interior and exterior painting services across the Greater Toronto Area. Licensed, insured, and trusted by hundreds of homeowners.</p>
-        </div>
-      </section>
-
-      {/* All Services Section */}
-      <section className="featured-services-section">
-        <div className="container">
-          <h3>Most Popular Services</h3>
-          <p className="section-subtitle">Our complete range of painting services trusted by thousands of GTA homeowners</p>
+          <h1>Affordable Painting Services in the Greater Toronto Area</h1>
+          <p className="hero-subtitle">Professional painting services that won't break the bank. Get free instant quotes from licensed & insured contractors across the GTA.</p>
           
-          <div className="services-grid featured-grid">
-            {allServicesList.map((service) => renderServiceCard(service, service.featured))}
+          {/* Contact Info */}
+          <div className="hero-contact">
+            <a href="tel:6473907181" className="hero-contact-link">
+              <img src="/telephone.png" alt="Phone" className="hero-contact-icon" />
+              <span className="hero-contact-text">Call (647) 390-7181</span>
+            </a>
+            <button 
+              className="hero-services-btn"
+              onClick={() => navigate('/services')}
+            >
+              <img src="/paint-roller.svg" alt="Paint Roller" className="hero-services-icon" />
+              Our Services
+            </button>
           </div>
         </div>
       </section>
 
+      {/* Company Section */}
+      <section id="company-section" className="company-section">
+        <div className="container">
+          <div className="company-content">
+            <div className="company-text">
+              <div className="company-text-content">
+                <h2>About GTA Budget Painting</h2>
+                <p className="company-description">
+                GTA Budget Painting is a specialized division of GTA Home Painting, designed to serve homeowners who need smaller, more affordable painting projects. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.
+                </p>
+              </div>
+              <div className="company-image">
+                <img src="/f16f1bd449899777bf18714eb6cb3df3.jpg" alt="Professional painting team at work" className="company-photo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      {/* Postal Code Verification Modal */}
-      <PostalCodeVerification
-        isOpen={showPostalVerification}
-        onClose={handlePostalVerificationClose}
-        onVerified={handlePostalVerificationSuccess}
-      />
+      {/* Areas Served Section */}
+      <section id="areas-served-section" className="areas-served-section">
+        <div className="container">
+          <div className="areas-content">
+            <div className="areas-text">
+              <div className="areas-image">
+                <img src="/9fb7ab8c0a24c06c0cc6648555a63ff9.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
+              </div>
+              <div className="areas-text-content">
+                <h2>Areas We Serve</h2>
+                <p className="areas-description">
+                  We proudly serve the entire Greater Toronto Area, bringing professional painting services to communities across the region. From downtown Toronto to the outer suburbs, our experienced team is ready to transform your space.
+                </p>
+                <div className="areas-list">
+                  <div className="areas-column">
+                    <ul>
+                      <li>Vaughan</li>
+                      <li>Richmond Hill</li>
+                      <li>Markham</li>
+                      <li>Thornhill</li>
+                      <li>Woodbridge</li>
+                      <li>Maple</li>
+                    </ul>
+                  </div>
+                  <div className="areas-column">
+                    <ul>
+                      <li>Downtown Toronto</li>
+                      <li>North York</li>
+                      <li>Scarborough</li>
+                      <li>Etobicoke</li>
+                      <li>York</li>
+                      <li>East York</li>
+                    </ul>
+                  </div>
+                  <div className="areas-column">
+                    <ul>
+                      <li>Mississauga</li>
+                      <li>Brampton</li>
+                      <li>Oakville</li>
+                      <li>Burlington</li>
+                      <li>Milton</li>
+                      <li>Caledon</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 };

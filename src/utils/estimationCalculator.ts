@@ -2,8 +2,8 @@
 
 // Constants from playbook
 export const RATES = {
-  LABOR_RATE: 50, // $ per hour
-  PAINT_RATE: 50, // $ per gallon
+  LABOR_RATE: 85, // $ per hour
+  PAINT_RATE: 100, // $ per gallon
   SUPPLIES_RATE: 2, // $ per man hour
   PAINT_COVERAGE: 400, // sq ft per gallon
   TWO_COAT_MULTIPLIER: 1.6, // For calculating 2-coat paint needs

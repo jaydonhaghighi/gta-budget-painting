@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import '../App.css'
 import { useCart } from '../context/CartContext'
 
@@ -83,7 +83,20 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
 const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { cart } = useCart()
+  const location = useLocation()
+
+  const handleSectionClick = (sectionId: string) => {
+    if (location.pathname === '/') {
+      // If already on landing page, scroll to section
+      const element = document.querySelector(sectionId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
+    }
+    // If not on landing page, Link will handle navigation
+  }
 
   return (
     <>
@@ -96,19 +109,48 @@ const Header = () => {
             </Link>
           </div>
           
-          {/* Contact Info */}
-          <div className="header-contact">
-            <a href="tel:6473907181" className="header-contact-link">
-              <img src="/telephone.png" alt="Phone" className="header-contact-icon" />
-              <span className="header-contact-text">(647) 390-7181</span>
-            </a>
-            <a href="mailto:info@gtabudgetpainting.ca" className="header-contact-link">
-              <img src="/mail.png" alt="Email" className="header-contact-icon" />
-              <span className="header-contact-text">info@gtabudgetpainting.ca</span>
-            </a>
+          {/* Navigation Menu */}
+          <nav className="desktop-nav">
+            <Link to="/#company-section" className="nav-link" onClick={() => handleSectionClick('#company-section')}>About Us</Link>
+            <Link to="/services" className="nav-link">Services</Link>
+            <Link to="/#areas-served-section" className="nav-link" onClick={() => handleSectionClick('#areas-served-section')}>Areas Served</Link>
+            <Link to="/gallery" className="nav-link">Gallery</Link>
+            <Link to="/contact" className="nav-link">Contact Us</Link>
+          </nav>
+
+          {/* Phone Number */}
+          <a href="tel:6473907181" className="nav-phone">
+            <img src="/telephone.png" alt="Phone" className="nav-phone-icon" />
+            Call (647) 390-7181
+          </a>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="mobile-menu-btn"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+              <span className={`hamburger-line ${isMobileMenuOpen ? 'active' : ''}`}></span>
+            </button>
           </div>
-        </div>
-      </header>
+
+          {/* Mobile Navigation Menu */}
+          <nav className={`mobile-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+            <div className="mobile-nav-header">
+              <h3>Navigation</h3>
+              <button className="mobile-nav-close" onClick={() => setIsMobileMenuOpen(false)}>×</button>
+            </div>
+            <div className="mobile-nav-body">
+              <Link to="/#company-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#company-section'); }}>About Us</Link>
+              <Link to="/services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+              <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
+              <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
+              <Link to="/contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
+            </div>
+          </nav>
+        </header>
 
       {/* Floating Cart Button */}
       <button 
