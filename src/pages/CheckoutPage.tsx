@@ -27,6 +27,17 @@ const CheckoutPage = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  
+  // Handle back navigation
+  const handleBack = () => {
+    // Check if user came from a service page (has serviceId in state)
+    if (location.state?.serviceId) {
+      navigate(`/services/${location.state.category}/${location.state.serviceId}`)
+    } else {
+      // Default to cart page
+      navigate('/cart')
+    }
+  }
   const [submitError, setSubmitError] = useState<string | null>(null)
   
   // Handle single-service checkout
@@ -239,6 +250,13 @@ const CheckoutPage = () => {
   return (
     <main className="checkout-page">
       <div className="container">
+        {/* Back Button */}
+        <div className="checkout-back-section">
+          <button className="checkout-back-btn" onClick={handleBack}>
+            ← Back
+          </button>
+        </div>
+
         {/* Header */}
         <div className="checkout-header">
           <h1>Complete Your Request</h1>

@@ -5,9 +5,31 @@
   min-height: 100vh;
 }
 
+
+
+.checkout-back-btn {
+  background: var(--color-steel-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkout-back-btn:hover {
+  background: var(--color-dark-blue);
+  transform: translateX(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .checkout-header {
   text-align: center;
-  margin-bottom: 3rem;
   padding: 2rem 0;
 }
 
@@ -364,10 +386,7 @@
     position: static;
   }
   
-  .checkout-form {
-    padding: 1.5rem;
-  }
-  
+
   .form-section {
     padding: 1.5rem;
   }
@@ -378,10 +397,6 @@
     font-size: 2rem;
   }
   
-  .checkout-form {
-    padding: 1rem;
-    gap: 1.5rem;
-  }
   
   .form-section {
     padding: 1.25rem;

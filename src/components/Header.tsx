@@ -84,6 +84,8 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false)
+  const [isMobileServicesDropdownOpen, setIsMobileServicesDropdownOpen] = useState(false)
   const { cart } = useCart()
   const location = useLocation()
 
@@ -112,7 +114,29 @@ const Header = () => {
           {/* Navigation Menu */}
           <nav className="desktop-nav">
             <Link to="/#company-section" className="nav-link" onClick={() => handleSectionClick('#company-section')}>About Us</Link>
-            <Link to="/services" className="nav-link">Services</Link>
+            
+            {/* Services Dropdown */}
+            <div className="nav-dropdown">
+              <button 
+                className="nav-link dropdown-trigger"
+                onMouseEnter={() => setIsServicesDropdownOpen(true)}
+                onMouseLeave={() => setIsServicesDropdownOpen(false)}
+              >
+                Services
+                <span className="dropdown-arrow">▼</span>
+              </button>
+              <div 
+                className={`dropdown-menu ${isServicesDropdownOpen ? 'open' : ''}`}
+                onMouseEnter={() => setIsServicesDropdownOpen(true)}
+                onMouseLeave={() => setIsServicesDropdownOpen(false)}
+              >
+                <Link to="/services" className="dropdown-link">All Services</Link>
+                <Link to="/services/interior-painting" className="dropdown-link">Interior Painting</Link>
+                <Link to="/services/exterior-painting" className="dropdown-link">Exterior Painting</Link>
+                <Link to="/services/custom" className="dropdown-link">Custom Projects</Link>
+              </div>
+            </div>
+            
             <Link to="/#areas-served-section" className="nav-link" onClick={() => handleSectionClick('#areas-served-section')}>Areas Served</Link>
             <Link to="/gallery" className="nav-link">Gallery</Link>
             <Link to="/contact" className="nav-link">Contact Us</Link>
@@ -144,7 +168,24 @@ const Header = () => {
             </div>
             <div className="mobile-nav-body">
               <Link to="/#company-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#company-section'); }}>About Us</Link>
-              <Link to="/services" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Services</Link>
+              
+              {/* Mobile Services Dropdown */}
+              <div className="mobile-nav-dropdown">
+                <button 
+                  className="mobile-nav-link mobile-dropdown-trigger"
+                  onClick={() => setIsMobileServicesDropdownOpen(!isMobileServicesDropdownOpen)}
+                >
+                  Services
+                  <span className="mobile-dropdown-arrow">{isMobileServicesDropdownOpen ? '▲' : '▼'}</span>
+                </button>
+                <div className={`mobile-dropdown-menu ${isMobileServicesDropdownOpen ? 'open' : ''}`}>
+                  <Link to="/services" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>All Services</Link>
+                  <Link to="/services/interior-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Interior Painting</Link>
+                  <Link to="/services/exterior-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Exterior Painting</Link>
+                  <Link to="/services/custom" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Custom Projects</Link>
+                </div>
+              </div>
+              
               <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
               <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
               <Link to="/contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>

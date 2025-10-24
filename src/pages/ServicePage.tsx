@@ -638,9 +638,28 @@ const ServicePage = () => {
             </button>
             <button 
               className="sticky-bar-btn sticky-bar-btn-secondary"
-              onClick={() => setStep('customer-info')}
+              onClick={() => {
+                if (estimate) {
+                  addItem({
+                    serviceId: serviceId!,
+                    serviceName: service!.name,
+                    serviceType: service!.type,
+                    estimate: {
+                      ...estimate,
+                      otherFees: estimate.prepFee + estimate.travelFee
+                    },
+                    formData: formData
+                  });
+                  navigate('/checkout', { 
+                    state: { 
+                      serviceId: serviceId,
+                      category: category 
+                    } 
+                  });
+                }
+              }}
             >
-              Continue
+              Request Now
             </button>
           </div>
         </div>

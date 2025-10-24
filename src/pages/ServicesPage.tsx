@@ -38,42 +38,6 @@ const ServicesPage = () => {
   const exteriorServices = getServicesByCategory('exterior');
   const customServices = getServicesByCategory('specialty');
 
-  const renderServiceCard = (service: typeof allServices[0], isFeatured: boolean = false) => {
-    // Special handling for custom project
-    if (service.id === 'custom-project') {
-      return (
-        <div
-          key={service.id}
-          className="service-card-wrapper custom-project-wrapper"
-          onClick={() => handleServiceClick(service.id)}
-        >
-              <div className="custom-project-text">
-                <h3>Service Not Here?</h3>
-                <p>Tell us what you need and we'll provide a personalized quote for your custom painting project.</p>
-              </div>
-            </div>
-      );
-    }
-
-    // Regular service cards
-    return (
-      <div
-        key={service.id}
-        className="service-card-wrapper"
-        onClick={() => handleServiceClick(service.id)}
-      >
-        <div
-          className={`service-card ${isFeatured ? 'featured-card' : ''}`}
-          style={service.backgroundImage ? {
-            '--bg-image': `url(${service.backgroundImage})`
-          } as React.CSSProperties : {}}
-        >
-          <span className="service-icon">{service.icon}</span>
-        </div>
-        <h3 className="service-card-title">{service.name}</h3>
-      </div>
-    );
-  };
 
   return (
     <div className="landing-page">
@@ -94,7 +58,6 @@ const ServicesPage = () => {
           <div className="services-categories-grid">
             <div className="category-card" onClick={() => navigate('/services/interior-painting')}>
               <div className="category-icon">
-                <span>🏠</span>
               </div>
               <h4>Interior Painting</h4>
               <p>Transform your indoor spaces with professional interior painting services</p>
@@ -103,7 +66,6 @@ const ServicesPage = () => {
 
             <div className="category-card" onClick={() => navigate('/services/exterior-painting')}>
               <div className="category-icon">
-                <span>🏡</span>
               </div>
               <h4>Exterior Painting</h4>
               <p>Protect and beautify your home's exterior with our expert exterior painting services</p>
@@ -112,7 +74,6 @@ const ServicesPage = () => {
 
             <div className="category-card" onClick={() => navigate('/services/custom')}>
               <div className="category-icon">
-                <span>🎨</span>
               </div>
               <h4>Custom Projects</h4>
               <p>Need something specific? We offer custom painting solutions tailored to your unique requirements</p>

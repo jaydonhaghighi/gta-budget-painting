@@ -10,7 +10,6 @@ import {
   calculateMultipleBedrooms,
   calculateKitchenCabinets,
   calculateGarageDoor,
-  formatCurrency,
   RATES,
   PRODUCTION_RATES,
   type EstimateBreakdown
@@ -23,9 +22,6 @@ interface CalculatedServiceFormProps {
   initialEstimate?: EstimateBreakdown | null;
   onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
   onFormDataChange?: (formData: any) => void; // NEW: Callback for every form change
-  onAddToCart?: (estimate: EstimateBreakdown, formData: any) => void;
-  onSaveEdit?: (estimate: EstimateBreakdown, formData: any) => void;
-  isEditMode?: boolean;
 }
 
 const CalculatedServiceForm = ({ 
@@ -34,9 +30,6 @@ const CalculatedServiceForm = ({
   initialEstimate = null,
   onEstimateCalculated,
   onFormDataChange,
-  onAddToCart,
-  onSaveEdit,
-  isEditMode = false,
 }: CalculatedServiceFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
@@ -270,11 +263,6 @@ const CalculatedServiceForm = ({
     }
   };
 
-  const handleContinue = () => {
-    if (estimate) {
-      onEstimateCalculated(estimate, formData);
-    }
-  };
 
   const renderAccentWallForm = () => (
     <div className="form-group-container">
