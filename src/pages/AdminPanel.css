@@ -1363,21 +1363,19 @@
 }
 
 .btn-secondary {
-  background: var(--color-calm-blue-gray);
-  color: white;
+  background:white;
+  color: var(--color-steel-blue);
   border: none;
   padding: 12px 24px;
-  border-radius: 25px;
+  border-radius: 6px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(44, 61, 75, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  border: 1px solid var(--color-grey-300);
 }
 
 .btn-secondary:hover {
-  box-shadow: 0 8px 20px rgba(44, 61, 75, 0.4);
+  color: var(--color-black);
 }
 
 /* Mobile Responsive */
