@@ -252,13 +252,8 @@ const ServicePage = () => {
   // Clear saved data when user navigates back to services
   const handleBackToServices = () => {
     if (serviceId && step !== 'confirmation') {
-      const shouldClear = window.confirm(
-        'Going back will clear your current progress. Are you sure?'
-      );
-      if (shouldClear) {
-        localStorage.removeItem(`booking-${serviceId}`);
-        navigate(`/services/${category}`);
-      }
+      localStorage.removeItem(`booking-${serviceId}`);
+      navigate(`/services/${category}`);
     } else {
       navigate(`/services/${category}`);
     }
