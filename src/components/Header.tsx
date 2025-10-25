@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import '../App.css'
+import './Header.css'
 import { useCart } from '../context/CartContext'
 
 function CartIcon({ count }: { count: number }) {

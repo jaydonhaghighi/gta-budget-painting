@@ -1,0 +1,506 @@
+/* Contact Us Page Styles */
+
+/* Import shared styles from BookingPage */
+@import './BookingPage.css';
+
+.contact-page {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+/* Basic Contact Page Styles */
+.contact-hero {
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-dark-blue) 100%);
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.contact-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.contact-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.contact-content {
+  padding: 4rem 0;
+}
+
+.contact-info {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+}
+
+.contact-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--color-steel-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.contact-details h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-steel-blue);
+  font-weight: 600;
+}
+
+.contact-details p {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.social-links {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-steel-blue);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: var(--color-dark-blue);
+}
+
+.social-link img {
+  width: 20px;
+  height: 20px;
+}
+
+.partnership-badge {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid var(--color-steel-blue);
+}
+
+.partnership-badge h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.partner-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.partner-logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.partner-logo span {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+}
+
+.partnership-badge p {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Basic Contact Page Responsive */
+@media (max-width: 768px) {
+  .contact-hero {
+    padding: 3rem 0;
+  }
+  
+  .contact-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .contact-hero p {
+    font-size: 1rem;
+  }
+  
+  .contact-content {
+    padding: 3rem 0;
+  }
+  
+  .contact-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+  
+  .partnership-badge {
+    padding: 1.5rem;
+  }
+  
+  .partner-logo {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-hero {
+    padding: 2rem 0;
+  }
+  
+  .contact-hero h1 {
+    font-size: 1.75rem;
+  }
+  
+  .contact-content {
+    padding: 2rem 0;
+  }
+  
+  .contact-item {
+    padding: 1rem 0;
+  }
+  
+  .contact-icon {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .contact-page .social-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.contact-page .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Contact Cards Section */
+.contact-cards-section {
+  padding: 4rem 0;
+  background: var(--color-background);
+}
+
+.contact-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.contact-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.contact-card-header {
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-dark-blue) 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-card-icon svg {
+  color: white;
+}
+
+.partner-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.contact-card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+.contact-card-content {
+  padding: 1.5rem;
+}
+
+/* Contact Information Card */
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.contact-item:last-child {
+  border-bottom: none;
+}
+
+.contact-item-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.contact-item-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.contact-item-details h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin: 0 0 0.25rem 0;
+}
+
+.contact-item-details a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.contact-item-details a:hover {
+  color: var(--color-steel-blue);
+}
+
+.contact-item .social-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.contact-item .social-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-item .social-links a:hover {
+  color: var(--color-steel-blue);
+}
+
+.contact-item .social-links img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Process Steps */
+.process-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.process-step:last-child {
+  border-bottom: none;
+}
+
+.process-number {
+  width: 32px;
+  height: 32px;
+  background: var(--color-steel-blue);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.process-details h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin: 0 0 0.25rem 0;
+}
+
+.process-details p {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Partnership Card */
+.partnership-info h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin: 0 0 0.75rem 0;
+}
+
+.partnership-info p {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.partnership-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.partnership-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.checkmark {
+  color: var(--color-steel-blue);
+  font-weight: 600;
+}
+
+/* Contact Cards Responsive */
+@media (max-width: 768px) {
+  .contact-cards-section {
+    padding: 3rem 0;
+  }
+  
+  .contact-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+  
+  .contact-card {
+    margin: 0 1rem;
+    border-radius: 12px;
+  }
+  
+  .contact-card-header {
+    padding: 1.25rem;
+  }
+  
+  .contact-card-content {
+    padding: 1.25rem;
+  }
+  
+  .contact-item {
+    padding: 1rem 0;
+  }
+  
+  .process-step {
+    padding: 1rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-cards-section {
+    padding: 2rem 0;
+  }
+  
+  .contact-cards-grid {
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+  
+  .contact-card {
+    margin: 0 0.5rem;
+    border-radius: 12px;
+  }
+  
+  .contact-card-header {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .contact-card-content {
+    padding: 1rem;
+  }
+  
+  .contact-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+  
+  .process-step {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
+  
+  .contact-item .social-links {
+    justify-content: center;
+  }
+}

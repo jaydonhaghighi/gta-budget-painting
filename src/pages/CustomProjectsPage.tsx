@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
 import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
-import './LandingPage.css';
+import './CustomProjectsPage.css';
 
 const CustomProjectsPage = () => {
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const CustomProjectsPage = () => {
   };
 
   return (
-    <div className="landing-page">
+    <div className="custom-projects-page">
       {/* Hero Section */}
       <section className="services-hero">
         <div className="container">

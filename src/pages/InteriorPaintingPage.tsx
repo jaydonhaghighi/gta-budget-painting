@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
 import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
-import './LandingPage.css';
+import './InteriorPaintingPage.css';
 
 const InteriorPaintingPage = () => {
   const navigate = useNavigate();
@@ -74,12 +74,12 @@ const InteriorPaintingPage = () => {
   };
 
   return (
-    <div className="landing-page">
+    <div className="interior-painting-page">
       {/* Hero Section */}
       <section className="services-hero">
         <div className="container">
-          <h1 style={{color: 'white'}}>Interior Painting Services</h1>
-          <p className="hero-subtitle" style={{color: 'white'}}>Transform your indoor spaces with professional interior painting services. Get free instant quotes from our estimator calculators.</p>
+          <h1>Interior Painting Services</h1>
+          <p className="hero-subtitle">Transform your indoor spaces with professional interior painting services. Get free instant quotes from our estimator calculators.</p>
         </div>
       </section>
 
