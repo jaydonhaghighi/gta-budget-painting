@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
 import { PostalCodeVerification } from '../components/PostalCodeVerification';
-import './LandingPage.css';
+import './ServicesPage.css';
 
 const ServicesPage = () => {
   const navigate = useNavigate();
@@ -30,12 +30,12 @@ const ServicesPage = () => {
 
 
   return (
-    <div className="landing-page">
+    <div className="services-page">
       {/* Hero Section */}
       <section className="services-hero">
         <div className="container">
-          <h1 style={{color: 'white'}}>Our Painting Services</h1>
-          <p className="hero-subtitle" style={{color: 'white'}}>Professional painting services that won't break the bank. Get free instant quotes from our estimator calculators or from our licensed & insured contractors across the GTA.</p>
+          <h1>Our Painting Services</h1>
+          <p className="hero-subtitle">Professional painting services that won't break the bank. Get free instant quotes from our estimator calculators or from our licensed & insured contractors across the GTA.</p>
         </div>
       </section>
 

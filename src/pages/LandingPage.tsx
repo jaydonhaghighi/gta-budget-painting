@@ -123,11 +123,8 @@ const LandingPage = () => {
         <div className="container">
           <div className="areas-content">
             <div className="areas-text">
-              <div className="areas-image">
-                <img src="/9fb7ab8c0a24c06c0cc6648555a63ff9.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
-              </div>
               <div className="areas-text-content">
-                <h2>Areas We Serve</h2>
+                <h2>Service Areas</h2>
                 <p className="areas-description">
                   We proudly serve the entire Greater Toronto Area, bringing professional painting services to communities across the region. From downtown Toronto to the outer suburbs, our experienced team is ready to transform your space.
                 </p>
@@ -163,6 +160,9 @@ const LandingPage = () => {
                     </ul>
                   </div>
                 </div>
+              </div>
+              <div className="areas-image">
+                <img src="/9fb7ab8c0a24c06c0cc6648555a63ff9.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
               </div>
             </div>
           </div>

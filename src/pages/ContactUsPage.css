@@ -1,0 +1,951 @@
+/* Contact Us Page Styles */
+
+/* Import shared styles from BookingPage */
+@import './BookingPage.css';
+
+/* Override booking hero with kitchen image for Contact Us page only */
+.contact-page .booking-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-page {
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+/* Basic Contact Page Styles */
+.contact-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.contact-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.contact-content {
+  padding: 4rem 0;
+}
+
+.contact-info {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+}
+
+.contact-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--color-steel-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.contact-details h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-steel-blue);
+  font-weight: 600;
+}
+
+.contact-details p {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.social-links {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-steel-blue);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: var(--color-dark-blue);
+}
+
+.social-link img {
+  width: 20px;
+  height: 20px;
+}
+
+.partnership-badge {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid var(--color-steel-blue);
+}
+
+.partnership-badge h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.partner-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.partner-logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.partner-logo span {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+}
+
+.partnership-badge p {
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Basic Contact Page Responsive */
+@media (max-width: 768px) {
+  .contact-page .booking-hero {
+    min-height: 50vh;
+    background-attachment: scroll;
+  }
+  
+  .contact-hero {
+    padding: 3rem 0;
+    min-height: 50vh;
+    background-attachment: scroll;
+  }
+  
+  .contact-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .contact-hero p {
+    font-size: 1rem;
+  }
+  
+  .contact-content {
+    padding: 3rem 0;
+  }
+  
+  .contact-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem 0;
+  }
+  
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .social-links {
+    justify-content: center;
+  }
+  
+  .partnership-badge {
+    padding: 1.5rem;
+  }
+  
+  .partner-logo {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-page .booking-hero {
+    min-height: 40vh;
+    background-attachment: scroll;
+  }
+  
+  .contact-hero {
+    padding: 2rem 0;
+    min-height: 40vh;
+    background-attachment: scroll;
+  }
+  
+  .contact-hero h1 {
+    font-size: 1.75rem;
+  }
+  
+  .contact-hero p {
+    font-size: 0.9rem;
+  }
+  
+  .contact-content {
+    padding: 2rem 0;
+  }
+  
+  .contact-item {
+    padding: 1rem 0;
+  }
+  
+  .contact-icon {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .contact-page .social-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+.contact-page .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Contact Cards Section */
+.contact-cards-section {
+  padding: 4rem 0;
+  background: var(--color-background);
+}
+
+.contact-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.contact-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.contact-card-header {
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-dark-blue) 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.contact-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-card-icon svg {
+  color: var(--color-steel-blue);
+}
+
+.partner-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.contact-card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-steel-blue);
+}
+
+.contact-card-content {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+/* Contact Information Card */
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem ;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.contact-item-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.contact-item-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.contact-item-details h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin: 0 0 0.25rem 0;
+}
+
+.contact-item-details a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.contact-item-details a:hover {
+  color: var(--color-steel-blue);
+}
+
+.contact-item .social-links {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.contact-item .social-links a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-item .social-links a:hover {
+  color: var(--color-steel-blue);
+}
+
+.contact-item .social-links img {
+  width: 16px;
+  height: 16px;
+}
+
+/* Clickable Contact Items */
+.clickable-contact-item {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.clickable-contact-item:hover {
+  background: rgba(70, 130, 180, 0.1);
+  border-color: var(--color-steel-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.clickable-contact-item:active {
+  transform: translateY(0);
+  background: rgba(70, 130, 180, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.clickable-contact-item:focus {
+  outline: 2px solid var(--color-steel-blue);
+  outline-offset: 2px;
+}
+
+.contact-value {
+  display: block;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0.25rem 0;
+}
+
+.contact-action {
+  display: block;
+  color: var(--color-steel-blue);
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+.clickable-contact-item:hover .contact-action {
+  opacity: 1;
+  color: var(--color-dark-blue);
+}
+
+/* Clickable Social Media Items */
+.social-link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 12px;
+  margin: 0.75rem 0;
+  border: 2px solid #e0e0e0;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.clickable-social-item {
+  cursor: pointer;
+  user-select: none;
+}
+
+.clickable-social-item:hover {
+  background: rgba(70, 130, 180, 0.1);
+  border-color: var(--color-steel-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+
+.clickable-social-item:active {
+  transform: translateY(-1px);
+  background: rgba(70, 130, 180, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.clickable-social-item:focus {
+  outline: 2px solid var(--color-steel-blue);
+  outline-offset: 2px;
+}
+
+.social-link-item img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.clickable-social-item:hover img {
+  transform: scale(1.1);
+}
+
+.social-link-item span {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.social-action {
+  color: var(--color-steel-blue);
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-left: auto;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.social-action::after {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.clickable-social-item:hover .social-action::after {
+  transform: translateX(3px);
+}
+
+.clickable-social-item:hover .social-action {
+  opacity: 1;
+  color: var(--color-dark-blue);
+}
+
+/* Facebook-specific blue hover effect */
+.facebook-item:hover {
+  background: linear-gradient(135deg, rgba(24, 119, 242, 0.15) 0%, rgba(66, 103, 178, 0.15) 100%);
+  border-color: #1877F2;
+  box-shadow: 0 8px 25px rgba(24, 119, 242, 0.3);
+  transform: translateY(-3px);
+}
+
+.facebook-item:hover .social-action {
+  color: #1877F2;
+  opacity: 1;
+}
+
+.facebook-item:hover .social-action::after {
+  color: #1877F2;
+}
+
+/* Instagram-specific pinkish-red hover effect */
+.instagram-item:hover {
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.15) 0%, rgba(255, 105, 180, 0.15) 100%);
+  border-color: #E1306C;
+  box-shadow: 0 8px 25px rgba(225, 48, 108, 0.3);
+  transform: translateY(-3px);
+}
+
+.instagram-item:hover .social-action {
+  color: #E1306C;
+  opacity: 1;
+}
+
+.instagram-item:hover .social-action::after {
+  color: #E1306C;
+}
+
+/* Timeline Styles */
+.timeline {
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--color-steel-blue), var(--color-dark-blue));
+  z-index: 1;
+}
+
+.timeline-step {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+}
+
+.timeline-step:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-icon {
+  width: 48px;
+  height: 48px;
+  background: white;
+  border: 1.5px solid var(--color-steel-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-icon svg {
+  color: var(--color-steel-blue);
+  width: 20px;
+  height: 20px;
+}
+
+.timeline-icon img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.timeline-content {
+  flex: 1;
+  padding-top: 0.5rem;
+}
+
+.timeline-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin: 0 0 0.25rem 0;
+}
+
+.timeline-content p {
+  font-size: 0.9rem;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Partnership Card - Unified Dark Red Gradient Background */
+.partnership-card {
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #B22222 100%);
+  color: white;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.partnership-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(139, 0, 0, 0.3);
+}
+
+.partnership-card:active {
+  transform: translateY(0);
+}
+
+.clickable-card {
+  cursor: pointer;
+  user-select: none;
+}
+
+.clickable-card:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.partnership-content {
+  padding: 2rem;
+}
+
+.partnership-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.partnership-logo {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.partnership-header h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+  color: white;
+}
+
+/* Partnership Card Content */
+.partnership-info h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  margin: 0 0 0.75rem 0;
+}
+
+.partnership-info p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.partnership-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.partnership-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.checkmark {
+  color: #FFD700;
+  font-weight: 600;
+}
+
+/* Contact Cards Responsive */
+@media (max-width: 768px) {
+  .contact-cards-section {
+    padding: 2rem 0;
+  }
+  
+  .contact-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0 1rem;
+    margin: 0;
+    max-width: 100%;
+  }
+  
+  .contact-card {
+    margin: 0;
+    border-radius: 12px;
+  }
+  
+  .contact-card-header {
+    padding: 1rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+  
+  .contact-card-content {
+    padding: 1rem;
+  }
+  
+  .contact-item {
+    padding: 0.75rem 0;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .contact-item-icon {
+    width: 35px;
+    height: 35px;
+    margin: 0 auto;
+  }
+  
+  .contact-item-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .contact-item-details h4 {
+    font-size: 0.9rem;
+  }
+  
+  .contact-value {
+    font-size: 0.85rem;
+  }
+  
+  .contact-action {
+    font-size: 0.75rem;
+  }
+  
+  .social-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .social-link-item {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+  }
+  
+  .social-link-item img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .social-link-item span {
+    font-size: 0.9rem;
+  }
+  
+  .social-action {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-cards-section {
+    padding: 1.5rem 0;
+  }
+  
+  .contact-cards-grid {
+    padding: 0 0.5rem;
+    margin: 0;
+    max-width: 100%;
+    gap: 1rem;
+  }
+  
+  .contact-card {
+    margin: 0;
+    border-radius: 12px;
+  }
+  
+  .contact-card-header {
+    padding: 0.75rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .contact-card-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .contact-card-content {
+    padding: 0.75rem;
+  }
+  
+  .partnership-content {
+    padding: 1rem;
+  }
+  
+  .partnership-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .partnership-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .partnership-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .partnership-info h4 {
+    font-size: 1rem;
+  }
+  
+  .partnership-info p {
+    font-size: 0.85rem;
+  }
+  
+  .partnership-feature {
+    font-size: 0.8rem;
+  }
+  
+  .contact-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
+  
+  .contact-item-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .contact-item-icon img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .contact-item-details h4 {
+    font-size: 0.85rem;
+  }
+  
+  .contact-value {
+    font-size: 0.8rem;
+  }
+  
+  .contact-action {
+    font-size: 0.7rem;
+  }
+  
+  .social-link-item {
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+  }
+  
+  .social-link-item img {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .social-link-item span {
+    font-size: 0.85rem;
+  }
+  
+  .social-action {
+    font-size: 0.7rem;
+  }
+  
+  .timeline {
+    padding: 0.5rem 0;
+  }
+  
+  .timeline-step {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+  }
+  
+  .timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .timeline-icon {
+    align-self: center;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .timeline-icon img {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .timeline-content h4 {
+    font-size: 0.9rem;
+  }
+  
+  .timeline-content p {
+    font-size: 0.8rem;
+  }
+  
+  .contact-item .social-links {
+    justify-content: center;
+  }
+}

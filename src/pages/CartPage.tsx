@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import './CartPage.css'
 
 const CartPage = () => {
   const { cart, totals, removeItem } = useCart()

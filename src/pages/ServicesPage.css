@@ -1,0 +1,205 @@
+/* Services Page Styles */
+
+/* Import shared styles from BookingPage */
+@import './BookingPage.css';
+
+.services-page {
+  min-height: 100vh;
+  background: var(--color-bone);
+  width: 100%;
+}
+
+.services-page .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Services Hero Section */
+.services-hero {
+  background: linear-gradient(135deg, rgba(44, 61, 75, 0.5) 0%, rgba(67, 84, 99, 0.5) 100%), url('/public/bdaa6c1110ec0c354821c7e42fb4ddc9.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 6rem 0 4rem;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.services-hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.services-hero .hero-subtitle {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  color: white;
+}
+
+/* Service Categories Section */
+.featured-services-section {
+  padding: 2rem 0 3rem;
+  background-color: #F5F5F5;
+}
+
+.featured-services-section h3 {
+  color: var(--color-steel-blue);
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.featured-services-section .section-subtitle {
+  color: var(--color-steel-blue);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 16px;
+}
+
+/* Service Categories Grid */
+.services-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.category-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: var(--color-steel-blue);
+}
+
+.category-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, #4a5d6b 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  color: white;
+}
+
+.category-card h4 {
+  font-size: 1.5rem;
+  color: var(--color-steel-blue);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.category-card p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.category-count {
+  background: var(--color-steel-blue);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .services-hero {
+    padding: 4rem 0 3rem;
+  }
+  
+  .services-hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .services-hero .hero-subtitle {
+    font-size: 1.1rem;
+  }
+  
+  .services-categories-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .category-card {
+    min-height: 250px;
+    padding: 1.5rem;
+  }
+  
+  .featured-services-section h3 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .services-hero {
+    padding: 3rem 0 2rem;
+  }
+  
+  .services-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .services-hero .hero-subtitle {
+    font-size: 1rem;
+  }
+  
+  .category-card {
+    min-height: 200px;
+    padding: 1rem;
+  }
+  
+  .category-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .category-card h4 {
+    font-size: 1.25rem;
+  }
+  
+  .category-card p {
+    font-size: 0.9rem;
+  }
+  
+  .featured-services-section h3 {
+    font-size: 20px;
+  }
+  
+  .featured-services-section .section-subtitle {
+    font-size: 14px;
+  }
+}

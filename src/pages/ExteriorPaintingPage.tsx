@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
 import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
-import './LandingPage.css';
+import './ExteriorPaintingPage.css';
 
 const ExteriorPaintingPage = () => {
   const navigate = useNavigate();
@@ -74,12 +74,12 @@ const ExteriorPaintingPage = () => {
   };
 
   return (
-    <div className="landing-page">
+    <div className="exterior-painting-page">
       {/* Hero Section */}
       <section className="services-hero">
         <div className="container">
-          <h1 style={{color: 'white'}}>Exterior Painting Services</h1>
-          <p className="hero-subtitle" style={{color: 'white'}}>Protect and beautify your home's exterior with our expert exterior painting services. Get free instant quotes from our estimator calculators.</p>
+          <h1>Exterior Painting Services</h1>
+          <p className="hero-subtitle">Protect and beautify your home's exterior with our expert exterior painting services. Get free instant quotes from our estimator calculators.</p>
         </div>
       </section>
 
