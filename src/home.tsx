@@ -12,7 +12,6 @@ import LandingPage from './pages/LandingPage.tsx'
 import ServicesPage from './pages/ServicesPage.tsx'
 import InteriorPaintingPage from './pages/InteriorPaintingPage.tsx'
 import ExteriorPaintingPage from './pages/ExteriorPaintingPage.tsx'
-import CustomProjectsPage from './pages/CustomProjectsPage.tsx'
 import ServicePage from './pages/ServicePage.tsx'
 import CartPage from './pages/CartPage.tsx'
 import CheckoutPage from './pages/CheckoutPage.tsx'
@@ -54,10 +53,9 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/interior-painting" element={<InteriorPaintingPage />} />
             <Route path="/services/exterior-painting" element={<ExteriorPaintingPage />} />
-            <Route path="/services/custom" element={<CustomProjectsPage />} />
             <Route path="/services/interior-painting/:serviceId" element={<ServicePage />} />
             <Route path="/services/exterior-painting/:serviceId" element={<ServicePage />} />
-            <Route path="/services/custom/:serviceId" element={<ServicePage />} />
+            <Route path="/services/custom-painting" element={<ServicePage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/contact" element={<ContactUsPage />} />

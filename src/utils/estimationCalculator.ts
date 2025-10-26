@@ -65,6 +65,89 @@ export interface EstimateBreakdown {
   breakdown: string[];
 }
 
+// Calculate popcorn ceiling removal estimate ($5 per sq ft + additional services)
+export function calculatePopcornCeilingRemoval(sqFt: number, includeSkimCoat: boolean = false, includePainting: boolean = false, includeFeesAndSetup: boolean = true): EstimateBreakdown {
+  const baseRatePerSqFt = 5; // $5 per square foot base rate
+  const skimCoatRatePerSqFt = 3; // $3 per square foot for skim coating
+  
+  // Calculate base removal cost
+  const baseLaborCost = sqFt * baseRatePerSqFt;
+  
+  // Calculate skim coating cost
+  const skimCoatCost = includeSkimCoat ? sqFt * skimCoatRatePerSqFt : 0;
+  
+  // Calculate base supplies cost
+  const baseSuppliesCost = sqFt * 0.5; // $0.50 per sq ft for basic supplies
+  const skimCoatSuppliesCost = includeSkimCoat ? sqFt * 0.3 : 0; // Additional supplies for skim coating
+  
+  // Calculate base hours
+  const baseHours = Math.ceil(sqFt / 50);
+  const skimCoatHours = includeSkimCoat ? Math.ceil(sqFt / 40) : 0; // Skim coating takes longer
+  
+  let totalLaborCost = baseLaborCost + skimCoatCost;
+  let totalSuppliesCost = baseSuppliesCost + skimCoatSuppliesCost;
+  let totalHours = baseHours + skimCoatHours;
+  let paintGallons = 0;
+  let paintCost = 0;
+  
+  // Build breakdown array
+  const breakdown = [
+    `Ceiling area: ${sqFt} sq ft`,
+    `Base removal: ${sqFt} sq ft × $${baseRatePerSqFt} = $${baseLaborCost}`
+  ];
+  
+  if (includeSkimCoat) {
+    breakdown.push(`Skim coating: ${sqFt} sq ft × $${skimCoatRatePerSqFt} = $${skimCoatCost}`);
+  }
+  
+  // If painting is included, use the regular ceiling painting calculation
+  if (includePainting) {
+    const ceilingPaintingEstimate = calculateCeiling(sqFt, false); // Don't include fees twice
+    
+    // Add painting costs to our totals
+    totalLaborCost += ceilingPaintingEstimate.laborCost;
+    totalSuppliesCost += ceilingPaintingEstimate.suppliesCost;
+    totalHours += ceilingPaintingEstimate.laborHours;
+    paintGallons = ceilingPaintingEstimate.paintGallons;
+    paintCost = ceilingPaintingEstimate.paintCost;
+    
+    // Add painting breakdown
+    breakdown.push(`Ceiling painting: ${sqFt} sq ft`);
+    breakdown.push(`Painting labor: ${ceilingPaintingEstimate.laborHours} hours × $${RATES.LABOR_RATE} = $${ceilingPaintingEstimate.laborCost}`);
+    breakdown.push(`Paint: ${paintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`);
+  }
+  
+  breakdown.push(`Supplies: $${totalSuppliesCost.toFixed(2)}`);
+  breakdown.push(`Total labor cost: $${totalLaborCost}`);
+  breakdown.push(`Total time: ${totalHours} hours`);
+  
+  const prepFee = includeFeesAndSetup ? Math.ceil(totalLaborCost * RATES.PREP_FEE_PERCENTAGE) : 0;
+  const travelFee = includeFeesAndSetup ? RATES.TRAVEL_FEE : 0;
+  
+  const subtotal = totalLaborCost + totalSuppliesCost + paintCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  if (includeFeesAndSetup) {
+    breakdown.push(`Other fees (prep & travel): $${otherFees}`);
+  }
+  
+  return {
+    laborHours: totalHours,
+    setupCleanupHours: includeFeesAndSetup ? Math.ceil(totalHours / RATES.SETUP_CLEANUP_DIVISOR) : 0,
+    totalHours: totalHours + (includeFeesAndSetup ? Math.ceil(totalHours / RATES.SETUP_CLEANUP_DIVISOR) : 0),
+    laborCost: totalLaborCost,
+    paintGallons,
+    paintCost,
+    suppliesCost: totalSuppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
 // Calculate ceiling estimate
 export function calculateCeiling(sqFt: number, includeFeesAndSetup: boolean = true): EstimateBreakdown {
   const laborHours = sqFt / PRODUCTION_RATES.CEILING;
@@ -747,6 +830,91 @@ export function calculateKitchenCabinets(params: {
     `Frame labor: ${totalFrames} frames / ${CABINET_PRODUCTION_RATES.FRAMES_PER_HOUR} = ${frameHours} hours`,
     `Drawer labor: ${totalDrawers} drawers / ${CABINET_PRODUCTION_RATES.DRAWERS_PER_HOUR} = ${drawerHours} hours`,
     totalHardwarePieces > 0 ? `Hardware labor: ${totalHardwarePieces} pieces / ${CABINET_PRODUCTION_RATES.HARDWARE_PER_HOUR} = ${hardwareHours} hours` : 'Hardware: Not included',
+    `Setup/cleanup: ${setupCleanupHours} hours`,
+    `Total hours: ${totalHours}`,
+    '',
+    `Paint: ${paintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`,
+    `Labor: ${totalHours} hours × $${RATES.LABOR_RATE} = $${laborCost}`,
+    `Supplies: ${totalHours} hours × $${RATES.SUPPLIES_RATE} = $${suppliesCost}`,
+    `Other fees (prep & travel): $${otherFees}`
+  ];
+  
+  return {
+    laborHours: roundedLaborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
+// Calculate bathroom vanity cabinet painting
+export function calculateBathroomVanityCabinet(params: {
+  width: number;
+  height: number;
+  depth: number;
+  doors: number;
+  drawers: number;
+  includeHardware?: boolean;
+}): EstimateBreakdown {
+  const { width, height, depth, doors, drawers, includeHardware = false } = params;
+  
+  // Bathroom vanity cabinets are simpler than kitchen cabinets
+  const VANITY_PRODUCTION_RATES = {
+    DOORS_PER_HOUR: 3, // 3 doors per hour (prep + prime + 2 coats + hardware)
+    DRAWERS_PER_HOUR: 5, // 5 drawer fronts per hour
+    HARDWARE_PER_HOUR: 8, // 8 pieces of hardware per hour
+  };
+  
+  // Calculate surface area (simplified calculation)
+  const frontArea = (doors + drawers) * (height * width / 144); // Convert to sq ft
+  const sideArea = 2 * (height * depth / 144); // Two sides
+  const topArea = width * depth / 144; // Top surface
+  
+  const totalArea = frontArea + sideArea + topArea;
+  
+  // Calculate labor hours
+  const doorHours = Math.ceil(doors / VANITY_PRODUCTION_RATES.DOORS_PER_HOUR);
+  const drawerHours = Math.ceil(drawers / VANITY_PRODUCTION_RATES.DRAWERS_PER_HOUR);
+  const hardwareHours = includeHardware ? Math.ceil((doors + drawers) / VANITY_PRODUCTION_RATES.HARDWARE_PER_HOUR) : 0;
+  
+  const rawLaborHours = doorHours + drawerHours + hardwareHours;
+  const roundedLaborHours = Math.ceil(rawLaborHours);
+  
+  // Setup/cleanup for cabinet work
+  const setupCleanupHours = Math.ceil(roundedLaborHours / RATES.SETUP_CLEANUP_DIVISOR);
+  const totalHours = roundedLaborHours + setupCleanupHours;
+  
+  // Paint calculation (cabinet-grade paint)
+  const paintGallons = Math.ceil(totalArea / 300); // Cabinet paint covers ~300 sq ft per gallon
+  const paintCost = paintGallons * RATES.PAINT_RATE;
+  
+  // Calculate costs
+  const laborCost = totalHours * RATES.LABOR_RATE;
+  const suppliesCost = totalHours * RATES.SUPPLIES_RATE;
+  const prepFee = Math.ceil(laborCost * RATES.PREP_FEE_PERCENTAGE);
+  const travelFee = RATES.TRAVEL_FEE;
+  
+  const subtotal = laborCost + paintCost + suppliesCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  const breakdown: string[] = [
+    `Vanity dimensions: ${width}" × ${height}" × ${depth}"`,
+    `Total area: ${totalArea.toFixed(1)} sq ft`,
+    `Doors: ${doors} doors`,
+    `Drawers: ${drawers} drawers`,
+    '',
+    `Door labor: ${doors} doors / ${VANITY_PRODUCTION_RATES.DOORS_PER_HOUR} = ${doorHours} hours`,
+    `Drawer labor: ${drawers} drawers / ${VANITY_PRODUCTION_RATES.DRAWERS_PER_HOUR} = ${drawerHours} hours`,
+    includeHardware ? `Hardware labor: ${doors + drawers} pieces / ${VANITY_PRODUCTION_RATES.HARDWARE_PER_HOUR} = ${hardwareHours} hours` : 'Hardware: Not included',
     `Setup/cleanup: ${setupCleanupHours} hours`,
     `Total hours: ${totalHours}`,
     '',

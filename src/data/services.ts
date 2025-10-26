@@ -72,7 +72,7 @@ export const allServices: Service[] = [
   },
   {
     id: 'kitchen-walls',
-    name: 'Kitchen Wall Painting',
+    name: 'Kitchen Painting',
     type: 'calculated',
     icon: '',
     category: 'interior',
@@ -90,7 +90,7 @@ export const allServices: Service[] = [
   },
   {
     id: 'bathroom-vanity-cabinet',
-    name: 'Cabinet Painting',
+    name: 'Bathroom Vanity Painting',
     type: 'calculated',
     icon: '',
     category: 'interior',

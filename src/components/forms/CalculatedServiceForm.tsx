@@ -10,6 +10,8 @@ import {
   calculateMultipleBedrooms,
   calculateKitchenCabinets,
   calculateGarageDoor,
+  calculatePopcornCeilingRemoval,
+  calculateBathroomVanityCabinet,
   RATES,
   PRODUCTION_RATES,
   type EstimateBreakdown
@@ -20,7 +22,7 @@ interface CalculatedServiceFormProps {
   service: Service;
   initialFormData?: any;
   initialEstimate?: EstimateBreakdown | null;
-  onEstimateCalculated: (estimate: EstimateBreakdown, formData: any) => void;
+  onEstimateCalculated: (estimate: EstimateBreakdown | null, formData: any) => void;
   onFormDataChange?: (formData: any) => void; // NEW: Callback for every form change
 }
 
@@ -61,8 +63,79 @@ const CalculatedServiceForm = ({
     }
   };
 
+  // Validation function to check if all required fields are filled
+  const isFormComplete = (data: any) => {
+    switch (service.id) {
+      case 'accent-wall':
+        return data.length && data.height && parseFloat(data.length) > 0 && parseFloat(data.height) > 0;
+      
+      case 'ceiling':
+        return data.length && data.width && parseFloat(data.length) > 0 && parseFloat(data.width) > 0;
+      
+      case 'small-bathroom':
+        return data.length && data.width && data.height && 
+               parseFloat(data.length) > 0 && parseFloat(data.width) > 0 && parseFloat(data.height) > 0;
+      
+      case 'basement-painting':
+        return data.length && data.width && data.height && 
+               parseFloat(data.length) > 0 && parseFloat(data.width) > 0 && parseFloat(data.height) > 0;
+      
+      case 'kitchen-walls':
+        return data.length && data.width && data.height && 
+               parseFloat(data.length) > 0 && parseFloat(data.width) > 0 && parseFloat(data.height) > 0;
+      
+      case 'trimming-baseboards':
+        return data.linearFeet && data.profile && parseFloat(data.linearFeet) > 0;
+      
+      case 'bedroom-painting':
+        return data.bedrooms && Array.isArray(data.bedrooms) && data.bedrooms.length > 0 &&
+               data.bedrooms.every((bedroom: any) => 
+                 bedroom.length && bedroom.width && bedroom.height &&
+                 parseFloat(bedroom.length) > 0 && parseFloat(bedroom.width) > 0 && parseFloat(bedroom.height) > 0
+               );
+      
+      case 'staircase-painting':
+        return data.steps && parseFloat(data.steps) > 0;
+      
+      case 'fence-painting':
+        return data.length && data.height && 
+               parseFloat(data.length) > 0 && parseFloat(data.height) > 0;
+      
+      case 'kitchen-cabinet-painting':
+        return data.cabinetSections && Array.isArray(data.cabinetSections) && data.cabinetSections.length > 0 &&
+               data.cabinetSections.every((section: any) => 
+                 section.width && section.height && section.depth &&
+                 parseFloat(section.width) > 0 && parseFloat(section.height) > 0 && parseFloat(section.depth) > 0
+               );
+      
+      case 'garage-door':
+        return data.width && data.height && 
+               parseFloat(data.width) > 0 && parseFloat(data.height) > 0;
+      
+      case 'exterior-railings':
+        return data.length && parseFloat(data.length) > 0;
+      
+      case 'stucco-ceiling-removal':
+        return data.length && data.width && parseFloat(data.length) > 0 && parseFloat(data.width) > 0;
+      
+      case 'bathroom-vanity-cabinet':
+        return data.width && data.height && data.depth && 
+               parseFloat(data.width) > 0 && parseFloat(data.height) > 0 && parseFloat(data.depth) > 0;
+      
+      default:
+        return false;
+    }
+  };
+
   const calculateEstimate = (data: any) => {
     let newEstimate: EstimateBreakdown | null = null;
+
+    // Only calculate estimate if all required fields are filled
+    if (!isFormComplete(data)) {
+      setEstimate(null);
+      onEstimateCalculated(null, data);
+      return;
+    }
 
     try {
       switch (service.id) {
@@ -247,6 +320,30 @@ const CalculatedServiceForm = ({
           }
           break;
 
+        case 'stucco-ceiling-removal':
+          if (data.length && data.width) {
+            const sqFt = parseFloat(data.length) * parseFloat(data.width);
+            newEstimate = calculatePopcornCeilingRemoval(
+              sqFt, 
+              data.includeSkimCoat || false, 
+              data.includePainting || false
+            );
+          }
+          break;
+
+        case 'bathroom-vanity-cabinet':
+          if (data.width && data.height && data.depth) {
+            newEstimate = calculateBathroomVanityCabinet({
+              width: parseFloat(data.width),
+              height: parseFloat(data.height),
+              depth: parseFloat(data.depth),
+              doors: parseInt(data.doors) || 0,
+              drawers: parseInt(data.drawers) || 0,
+              includeHardware: data.includeHardware || false
+            });
+          }
+          break;
+
         default:
           break;
       }
@@ -265,13 +362,15 @@ const CalculatedServiceForm = ({
 
 
   const renderAccentWallForm = () => (
-    <div className="form-group-container">
-      <h3>Wall Measurements</h3>
-      <p className="form-help">Measure the wall you want to paint as an accent</p>
+    <div className="form-group-container accent-wall-form">
+      <div className="form-header">
+        <h3>Accent Wall Dimensions</h3>
+        <p>Enter the length and height of your accent wall to receive an <b>estimate</b></p>
+      </div>
       
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="length">Wall Length (feet) *</label>
+          <label htmlFor="length">Length (ft) *</label>
           <input
             type="number"
             id="length"
@@ -284,7 +383,7 @@ const CalculatedServiceForm = ({
           />
         </div>
         <div className="form-group">
-          <label htmlFor="height">Wall Height (feet) *</label>
+          <label htmlFor="height">Height (ft) *</label>
           <input
             type="number"
             id="height"
@@ -301,13 +400,15 @@ const CalculatedServiceForm = ({
   );
 
   const renderCeilingForm = () => (
-    <div className="form-group-container">
-      <h3>Ceiling Measurements</h3>
-      <p className="form-help">Measure the room's ceiling dimensions</p>
+    <div className="form-group-container ceiling-form">
+      <div className="form-header">
+        <h3>Ceiling Dimensions</h3>
+        <p>Enter the length and width of your room to receive an <b>estimate</b></p>
+      </div>
       
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="length">Room Length (feet) *</label>
+          <label htmlFor="length">Room Length (ft) *</label>
           <input
             type="number"
             id="length"
@@ -320,7 +421,7 @@ const CalculatedServiceForm = ({
           />
         </div>
         <div className="form-group">
-          <label htmlFor="width">Room Width (feet) *</label>
+          <label htmlFor="width">Room Width (ft) *</label>
           <input
             type="number"
             id="width"
@@ -337,13 +438,15 @@ const CalculatedServiceForm = ({
   );
 
   const renderBathroomForm = () => (
-    <div className="form-group-container">
-      <h3>Bathroom Measurements</h3>
-      <p className="form-help">Provide your bathroom dimensions for accurate estimate</p>
+    <div className="form-group-container bathroom-form">
+      <div className="form-header">
+        <h3>Bathroom Dimensions</h3>
+        <p>Enter your bathroom measurements to receive an <b>estimate</b></p>
+      </div>
       
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="length">Length (feet) *</label>
+          <label htmlFor="length">Length (ft) *</label>
           <input
             type="number"
             id="length"
@@ -356,7 +459,7 @@ const CalculatedServiceForm = ({
           />
         </div>
         <div className="form-group">
-          <label htmlFor="width">Width (feet) *</label>
+          <label htmlFor="width">Width (ft) *</label>
           <input
             type="number"
             id="width"
@@ -368,8 +471,11 @@ const CalculatedServiceForm = ({
             required
           />
         </div>
+      </div>
+
+      <div className="form-row">
         <div className="form-group">
-          <label htmlFor="height">Height (feet) *</label>
+          <label htmlFor="height">Height (ft) *</label>
           <input
             type="number"
             id="height"
@@ -381,47 +487,8 @@ const CalculatedServiceForm = ({
             required
           />
         </div>
-      </div>
-
-      <div className="form-options">
-        <h4>Additional Services</h4>
-        <div className="checkbox-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={formData.includeCeiling || false}
-              onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
-            />
-            <span>Include Ceiling</span>
-          </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={formData.includeBaseboards || false}
-              onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
-            />
-            <span>Include Baseboards</span>
-          </label>
-        </div>
-
-        {formData.includeBaseboards && (
-          <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-            <label htmlFor="baseboardProfile">Baseboard Profile</label>
-            <select
-              id="baseboardProfile"
-              value={formData.baseboardProfile || 'low'}
-              onChange={(e) => updateFormData('baseboardProfile', e.target.value)}
-            >
-              <option value="low">Low Profile (4")</option>
-              <option value="high">High Profile (5")</option>
-            </select>
-          </div>
-        )}
-      </div>
-
-      <div className="form-row">
         <div className="form-group">
-          <label htmlFor="doors">Number of Doors</label>
+          <label htmlFor="doors">Doors</label>
           <input
             type="number"
             id="doors"
@@ -431,8 +498,11 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
         </div>
+      </div>
+
+      <div className="form-row">
         <div className="form-group">
-          <label htmlFor="windows">Number of Windows</label>
+          <label htmlFor="windows">Windows</label>
           <input
             type="number"
             id="windows"
@@ -442,14 +512,38 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('windows', e.target.value)}
           />
         </div>
+        <div className="form-group">
+          <label>Additional Services</label>
+          <div className="checkbox-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={formData.includeCeiling || false}
+                onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
+              />
+              <span>Include Ceiling</span>
+            </label>
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={formData.includeBaseboards || false}
+                onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+              />
+              <span>Include Baseboards</span>
+            </label>
+          </div>
+        </div>
       </div>
+
     </div>
   );
 
   const renderBaseboardForm = () => (
-    <div className="form-group-container">
-      <h3>Baseboard/Trim Measurements</h3>
-      <p className="form-help">Measure the total length of baseboards or trim</p>
+    <div className="form-group-container baseboard-form">
+      <div className="form-header">
+        <h3>Baseboard Dimensions</h3>
+        <p>Enter your baseboard measurements to receive an <b>estimate</b></p>
+      </div>
       
       <div className="form-row">
         <div className="form-group">
@@ -464,7 +558,6 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('linearFeet', e.target.value)}
             required
           />
-          <small>Add up all the wall lengths with baseboards/trim</small>
         </div>
         <div className="form-group">
           <label htmlFor="profile">Profile Size *</label>
@@ -479,19 +572,6 @@ const CalculatedServiceForm = ({
             <option value="high">High Profile (&gt;5")</option>
           </select>
         </div>
-      </div>
-      <div className="info-box" style={{
-        background: 'var(--color-bone)',
-        padding: '1.5rem',
-        borderRadius: '12px',
-        marginTop: '1.5rem',
-        fontSize: '0.95rem',
-        color: 'var(--color-steel-blue)',
-        border: '2px solid var(--color-calm-blue-gray)',
-        boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
-        fontWeight: '500'
-      }}>
-        <strong>Note:</strong> Small bathrooms use moisture-resistant paint and require careful cutting around fixtures.
       </div>
     </div>
   );
@@ -617,14 +697,14 @@ const CalculatedServiceForm = ({
 
   const renderBedroomForm = () => {
     const bedrooms = formData.bedrooms || [
-      { id: 1, name: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
+      { id: 1, type: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
     ];
 
     const addBedroom = () => {
       const newId = Math.max(...bedrooms.map((b: any) => b.id), 0) + 1;
       updateFormData('bedrooms', [
         ...bedrooms,
-        { id: newId, name: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
+        { id: newId, type: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
       ]);
     };
 
@@ -642,58 +722,47 @@ const CalculatedServiceForm = ({
     };
 
     return (
-      <div className="form-group-container">
-        <h3>Bedroom(s) Measurements</h3>
-        <p className="form-help">Add one or more bedrooms to calculate your total estimate</p>
+      <div className="form-group-container bedroom-form">
+        <div className="form-header">
+          <h3>Bedroom Dimensions</h3>
+          <p>Add one or more bedrooms to receive an <b>estimate</b></p>
+        </div>
 
         {bedrooms.map((bedroom: any, index: number) => (
-          <div key={bedroom.id} className="multi-room-item" style={{
-            border: '2px solid var(--color-calm-blue-gray)',
-            borderRadius: '12px',
-            padding: '1.5rem',
-            marginBottom: '1.5rem',
-            background: 'var(--color-bone)',
-            boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h4 style={{ margin: 0, color: 'var(--color-steel-blue)', fontWeight: '700' }}>Bedroom {index + 1}</h4>
+          <div key={bedroom.id} className="bedroom-item">
+            <div className="bedroom-header">
+              <h4>Bedroom {index + 1}</h4>
               {bedrooms.length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeBedroom(bedroom.id)}
-                  className="btn-remove-room"
-                  style={{
-                    background: 'var(--color-golden-beige)',
-                    color: 'var(--color-soft-charcoal)',
-                    border: '2px solid var(--color-soft-charcoal)',
-                    padding: '0.5rem 1rem',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontSize: '0.9rem',
-                    fontWeight: '700',
-                    boxShadow: '0 4px 12px rgba(217, 182, 101, 0.3)',
-                    transition: 'all 0.3s ease'
-                  }}
+                  className="btn-remove-bedroom"
                 >
                   Remove
                 </button>
               )}
             </div>
 
-            <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-              <label htmlFor={`bedroom-${bedroom.id}-name`}>Bedroom Name (optional)</label>
-              <input
-                type="text"
-                id={`bedroom-${bedroom.id}-name`}
-                placeholder="e.g. Master Bedroom, Guest Room"
-                value={bedroom.name}
-                onChange={(e) => updateBedroom(bedroom.id, 'name', e.target.value)}
-              />
+            <div className="form-group">
+              <label htmlFor={`bedroom-${bedroom.id}-type`}>Bedroom Type</label>
+              <select
+                id={`bedroom-${bedroom.id}-type`}
+                value={bedroom.type || ''}
+                onChange={(e) => updateBedroom(bedroom.id, 'type', e.target.value)}
+              >
+                <option value="">Select bedroom type</option>
+                <option value="master">Master Bedroom</option>
+                <option value="guest">Guest Bedroom</option>
+                <option value="kids">Kids Bedroom</option>
+                <option value="nursery">Nursery</option>
+                <option value="office">Bedroom/Office</option>
+                <option value="other">Other</option>
+              </select>
             </div>
 
-            <div className="form-row" style={{ marginBottom: '1.5rem' }}>
+            <div className="form-row">
               <div className="form-group">
-                <label htmlFor={`bedroom-${bedroom.id}-length`}>Length (feet) *</label>
+                <label htmlFor={`bedroom-${bedroom.id}-length`}>Length (ft) *</label>
                 <input
                   type="number"
                   id={`bedroom-${bedroom.id}-length`}
@@ -706,7 +775,7 @@ const CalculatedServiceForm = ({
                 />
               </div>
               <div className="form-group">
-                <label htmlFor={`bedroom-${bedroom.id}-width`}>Width (feet) *</label>
+                <label htmlFor={`bedroom-${bedroom.id}-width`}>Width (ft) *</label>
                 <input
                   type="number"
                   id={`bedroom-${bedroom.id}-width`}
@@ -718,8 +787,11 @@ const CalculatedServiceForm = ({
                   required
                 />
               </div>
+            </div>
+
+            <div className="form-row">
               <div className="form-group">
-                <label htmlFor={`bedroom-${bedroom.id}-height`}>Height (feet) *</label>
+                <label htmlFor={`bedroom-${bedroom.id}-height`}>Height (ft) *</label>
                 <input
                   type="number"
                   id={`bedroom-${bedroom.id}-height`}
@@ -731,28 +803,30 @@ const CalculatedServiceForm = ({
                   required
                 />
               </div>
+              <div className="form-group">
+                <label>Additional Services</label>
+                <div className="checkbox-group">
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={bedroom.includeCeiling !== false}
+                      onChange={(e) => updateBedroom(bedroom.id, 'includeCeiling', e.target.checked)}
+                    />
+                    <span>Include Ceiling</span>
+                  </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={bedroom.includeBaseboards !== false}
+                      onChange={(e) => updateBedroom(bedroom.id, 'includeBaseboards', e.target.checked)}
+                    />
+                    <span>Include Baseboards</span>
+                  </label>
+                </div>
+              </div>
             </div>
 
-            <div className="checkbox-group" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={bedroom.includeCeiling !== false}
-                  onChange={(e) => updateBedroom(bedroom.id, 'includeCeiling', e.target.checked)}
-                />
-                <span>Include Ceiling</span>
-              </label>
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={bedroom.includeBaseboards !== false}
-                  onChange={(e) => updateBedroom(bedroom.id, 'includeBaseboards', e.target.checked)}
-                />
-                <span>Include Baseboards</span>
-              </label>
-            </div>
-
-            <div className="form-row" style={{ marginBottom: '0' }}>
+            <div className="form-row">
               <div className="form-group">
                 <label htmlFor={`bedroom-${bedroom.id}-doors`}>Doors</label>
                 <input
@@ -782,20 +856,7 @@ const CalculatedServiceForm = ({
         <button
           type="button"
           onClick={addBedroom}
-          className="btn-add-room"
-          style={{
-            background: 'var(--color-steel-blue)',
-            color: 'white',
-            padding: '1rem 1.5rem',
-            borderRadius: '12px',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            fontWeight: '700',
-            width: '100%',
-            marginTop: '1rem',
-            boxShadow: '0 8px 24px rgba(44, 61, 75, 0.2)',
-            transition: 'all 0.3s ease'
-          }}
+          className="btn-add-bedroom"
         >
           + Add Another Bedroom
         </button>
@@ -804,13 +865,15 @@ const CalculatedServiceForm = ({
   };
 
   const renderKitchenWallsForm = () => (
-    <div className="form-group-container">
-      <h3>Kitchen Measurements</h3>
-      <p className="form-help">Measure your kitchen walls for high-traffic, scrubbable paint</p>
+    <div className="form-group-container kitchen-walls-form">
+      <div className="form-header">
+        <h3>Kitchen Dimensions</h3>
+        <p>Enter your kitchen measurements to receive an <b>estimate</b></p>
+      </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="length">Kitchen Length (feet) *</label>
+          <label htmlFor="length">Length (ft) *</label>
           <input
             type="number"
             id="length"
@@ -822,9 +885,8 @@ const CalculatedServiceForm = ({
             required
           />
         </div>
-
         <div className="form-group">
-          <label htmlFor="width">Kitchen Width (feet) *</label>
+          <label htmlFor="width">Width (ft) *</label>
           <input
             type="number"
             id="width"
@@ -838,36 +900,38 @@ const CalculatedServiceForm = ({
         </div>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="height">Wall Height (feet) *</label>
-        <input
-          type="number"
-          id="height"
-          min="1"
-          step="0.5"
-          placeholder="e.g. 8"
-          value={formData.height || ''}
-          onChange={(e) => updateFormData('height', e.target.value)}
-          required
-        />
-        <small>Typically 8 feet for standard kitchens</small>
-      </div>
-
-      <h4>What's Included?</h4>
-      <div className="checkbox-group">
-        <label className="checkbox-label">
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="height">Height (ft) *</label>
           <input
-            type="checkbox"
-            checked={formData.includeBaseboards || false}
-            onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+            type="number"
+            id="height"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 8"
+            value={formData.height || ''}
+            onChange={(e) => updateFormData('height', e.target.value)}
+            required
           />
-          <span>Paint Baseboards</span>
-        </label>
+        </div>
+        <div className="form-group">
+          <label>Additional Services</label>
+          <div className="checkbox-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={formData.includeBaseboards || false}
+                onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+              />
+              <span>Paint Baseboards</span>
+            </label>
+          </div>
+        </div>
       </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="doors">Number of Doors</label>
+          <label htmlFor="doors">Doors</label>
           <input
             type="number"
             id="doors"
@@ -877,9 +941,8 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
         </div>
-
         <div className="form-group">
-          <label htmlFor="windows">Number of Windows</label>
+          <label htmlFor="windows">Windows</label>
           <input
             type="number"
             id="windows"
@@ -889,20 +952,6 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('windows', e.target.value)}
           />
         </div>
-      </div>
-
-      <div className="info-box" style={{
-        background: 'var(--color-bone)',
-        padding: '1.5rem',
-        borderRadius: '12px',
-        marginTop: '1.5rem',
-        fontSize: '0.95rem',
-        color: 'var(--color-steel-blue)',
-        border: '2px solid var(--color-calm-blue-gray)',
-        boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
-        fontWeight: '500'
-      }}>
-        <strong>Note:</strong> Kitchen walls use durable, scrubbable paint perfect for high-traffic cooking areas. Ceiling not typically included.
       </div>
     </div>
   );
@@ -1603,6 +1652,156 @@ const CalculatedServiceForm = ({
     </div>
   );
 
+  const renderPopcornCeilingRemovalForm = () => (
+    <div className="form-group-container popcorn-ceiling-form">
+      <div className="form-header">
+        <h3>Ceiling Removal Details</h3>
+        <p>Enter your ceiling measurements and additional services to receive an <b>estimate</b></p>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="length">Length (ft) *</label>
+          <input
+            type="number"
+            id="length"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 12"
+            value={formData.length || ''}
+            onChange={(e) => updateFormData('length', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="width">Width (ft) *</label>
+          <input
+            type="number"
+            id="width"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 10"
+            value={formData.width || ''}
+            onChange={(e) => updateFormData('width', e.target.value)}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Additional Services</label>
+        <div className="checkbox-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.includeSkimCoat || false}
+              onChange={(e) => updateFormData('includeSkimCoat', e.target.checked)}
+            />
+            <span>Skim Coat (Smooth Finish)</span>
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.includePainting || false}
+              onChange={(e) => updateFormData('includePainting', e.target.checked)}
+            />
+            <span>Paint Ceiling</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderBathroomVanityCabinetForm = () => (
+    <div className="form-group-container bathroom-vanity-form">
+      <div className="form-header">
+        <h3>Vanity Dimensions</h3>
+        <p>Enter your bathroom vanity measurements to receive an <b>estimate</b></p>
+      </div>
+
+      <div className="form-row dimensions-row">
+        <div className="form-group">
+          <label htmlFor="width">Width (in) *</label>
+          <input
+            type="number"
+            id="width"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 30"
+            value={formData.width || ''}
+            onChange={(e) => updateFormData('width', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="height">Height (in) *</label>
+          <input
+            type="number"
+            id="height"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 34"
+            value={formData.height || ''}
+            onChange={(e) => updateFormData('height', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="depth">Depth (in) *</label>
+          <input
+            type="number"
+            id="depth"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 21"
+            value={formData.depth || ''}
+            onChange={(e) => updateFormData('depth', e.target.value)}
+            required
+          />
+        </div>
+      </div>
+
+      <div className="form-row counts-row">
+        <div className="form-group">
+          <label htmlFor="doors">Number of Doors</label>
+          <input
+            type="number"
+            id="doors"
+            min="0"
+            placeholder="0"
+            value={formData.doors || ''}
+            onChange={(e) => updateFormData('doors', e.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="drawers">Number of Drawers</label>
+          <input
+            type="number"
+            id="drawers"
+            min="0"
+            placeholder="0"
+            value={formData.drawers || ''}
+            onChange={(e) => updateFormData('drawers', e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Additional Services</label>
+        <div className="checkbox-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.includeHardware || false}
+              onChange={(e) => updateFormData('includeHardware', e.target.checked)}
+            />
+            <span>Include Hardware Removal/Replacement</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderForm = () => {
     switch (service.id) {
       case 'accent-wall':
@@ -1629,6 +1828,10 @@ const CalculatedServiceForm = ({
         return renderFenceForm();
       case 'exterior-railings':
         return renderExteriorRailingsForm();
+      case 'stucco-ceiling-removal':
+        return renderPopcornCeilingRemovalForm();
+      case 'bathroom-vanity-cabinet':
+        return renderBathroomVanityCabinetForm();
       default:
         return <p>Form not implemented for this service</p>;
     }

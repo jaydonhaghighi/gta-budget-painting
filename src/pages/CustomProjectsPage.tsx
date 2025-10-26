@@ -28,7 +28,7 @@ const CustomProjectsPage = () => {
   const handlePostalVerificationSuccess = () => {
     setShowPostalVerification(false);
     if (pendingServiceId) {
-      navigate(`/services/custom/${pendingServiceId}`);
+      navigate(`/services/custom-painting/${pendingServiceId}`);
     }
     setPendingServiceId(null);
   };

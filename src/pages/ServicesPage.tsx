@@ -62,10 +62,10 @@ const ServicesPage = () => {
               <div className="category-count">{exteriorServices.length} Services</div>
             </div>
 
-            <div className="category-card" onClick={() => navigate('/services/custom')}>
+            <div className="category-card" onClick={() => navigate('/services/custom-painting')}>
               <div className="category-icon">
               </div>
-              <h4>Custom Projects</h4>
+              <h4>Custom Project</h4>
               <p>Need something specific? We offer custom painting solutions tailored to your unique requirements</p>
               <div className="category-count">{customServices.length} Services</div>
             </div>

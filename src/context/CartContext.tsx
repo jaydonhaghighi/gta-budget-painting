@@ -18,7 +18,7 @@ export type CartItem = {
     otherFees: number // includes travel (hidden)
     subtotal: number
   }
-  customProjectDetails?: any // optional for custom projects
+  customProjectDetails?: any // optional for Custom Project
   createdAt: number
 }
 
@@ -32,6 +32,8 @@ type CartContextValue = {
   removeItem: (id: string) => void
   updateItem: (id: string, updates: Partial<Omit<CartItem, 'id' | 'createdAt'>>) => void
   clear: () => void
+  canCheckout: boolean
+  checkoutValidationMessage: string
   // totals
   totals: {
     itemsSubtotal: number // sum of item estimate.totalCost before discounts
@@ -126,7 +128,44 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return { itemsSubtotal, discount, travelFeeMode, travelFeeAdjustment, grandTotal }
   }, [cart.items])
 
-  const value: CartContextValue = { cart, addItem, removeItem, updateItem, clear, totals }
+  // Checkout validation for interior doors
+  const checkoutValidation = useMemo(() => {
+    const hasInteriorDoors = cart.items.some(item => item.serviceId === 'interior-door');
+    
+    if (hasInteriorDoors) {
+      const hasOtherInteriorServices = cart.items.some(item => {
+        const interiorServices = [
+          'accent-wall', 'ceiling', 'small-bathroom', 'kitchen-walls', 
+          'kitchen-cabinet-painting', 'basement-painting', 'trimming-baseboards',
+          'bedroom-painting', 'staircase-painting', 'bathroom-vanity-cabinet'
+        ];
+        return interiorServices.includes(item.serviceId);
+      });
+
+      if (!hasOtherInteriorServices) {
+        return {
+          canCheckout: false,
+          message: 'Interior door painting must be combined with other interior services. Please add another interior service to proceed with checkout.'
+        };
+      }
+    }
+
+    return {
+      canCheckout: true,
+      message: ''
+    };
+  }, [cart.items]);
+
+  const value: CartContextValue = { 
+    cart, 
+    addItem, 
+    removeItem, 
+    updateItem, 
+    clear, 
+    canCheckout: checkoutValidation.canCheckout,
+    checkoutValidationMessage: checkoutValidation.message,
+    totals 
+  }
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
 }
 

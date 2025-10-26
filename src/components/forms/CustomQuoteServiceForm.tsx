@@ -48,91 +48,99 @@ const CustomQuoteServiceForm = ({ service, onSubmit }: CustomQuoteServiceFormPro
   };
 
   return (
-    <div className="custom-quote-service-form">
-      <div className="custom-quote-card">
-        <div className="quote-info">
-          <h3>Get a Custom Quote</h3>
-          <p>Help us understand your project by providing details and photos. Our team will review and send you a detailed quote within 24 hours.</p>
+    <div className="simple-custom-form">
+      <div className="form-container">
+        <div className="form-header">
         </div>
 
-        <div className="form-group">
-          <label htmlFor="description">Project Description *</label>
-          <textarea
-            id="description"
-            rows={6}
-            placeholder="Please describe the work you need done. Include details such as:
-                            • Current condition
-                            • What needs to be painted
-                            • Any damage or repairs needed
-                            • Color preferences
-                            • Special requirements or concerns"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <small>{description.length} / 1000 characters</small>
-        </div>
-
-        <div className="image-upload-section">
-          <label>Upload Photos (Optional, but recommended)</label>
-          <p className="upload-help">Photos help us provide more accurate quotes. Upload up to 5 images.</p>
-          
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageSelect}
-            style={{ display: 'none' }}
-          />
-
-          <button
-            type="button"
-            className="btn-upload"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={images.length >= 5}
-          >
-            📷 {images.length > 0 ? 'Add More Photos' : 'Upload Photos'}
-          </button>
-
-          {images.length > 0 && (
-            <div className="image-previews">
-              {imagePreviews.map((preview, index) => (
-                <div key={index} className="image-preview">
-                  <img src={preview} alt={`Preview ${index + 1}`} />
-                  <button
-                    type="button"
-                    className="btn-remove-image"
-                    onClick={() => removeImage(index)}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
+        <div className="form-content">
+          {/* Project Description */}
+          <div className="form-section">
+            <label htmlFor="description">
+              Describe Your Project <span className="required">*</span>
+            </label>
+            <textarea
+              id="description"
+              rows={5}
+              placeholder="Please describe the work you need done. Include details such as:
+• Current condition of the area
+• What needs to be painted
+• Any damage or repairs needed
+• Color preferences
+• Special requirements or concerns"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+              className={description.length > 800 ? 'warning' : ''}
+            />
+            <div className="character-count">
+              <span className={description.length > 800 ? 'warning' : ''}>
+                {description.length} / 1000 characters
+              </span>
             </div>
-          )}
+          </div>
 
-          <small className="upload-note">
-            {images.length}/5 images uploaded
-            {images.length >= 5 && ' (Maximum reached)'}
-          </small>
-        </div>
+          {/* Photo Upload */}
+          <div className="form-section">
+            <label>Project Photos <span className="optional">(Optional)</span></label>
+            
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageSelect}
+              style={{ display: 'none' }}
+            />
 
-        <button
-          className="btn-proceed"
-          onClick={handleSubmit}
-          disabled={!description.trim()}
-        >
-          Submit for Quote →
-        </button>
+            <div 
+              className={`upload-area ${images.length >= 5 ? 'disabled' : ''}`}
+              onClick={() => images.length < 5 && fileInputRef.current?.click()}
+            >
+              <div className="upload-content">
+                <div className="upload-icon">📷</div>
+                <h4>
+                  {images.length > 0 ? 'Add More Photos' : 'Upload Photos'}
+                </h4>
+                <p>Click to browse or drag & drop images here</p>
+                <span className="upload-limit">Up to 5 images • JPG, PNG, GIF</span>
+              </div>
+            </div>
 
-        <div className="custom-quote-disclaimer">
-          <strong>What happens next:</strong>
-          <ol>
-            <li>Our professionals review your request and photos</li>
-            <li>We'll send you a detailed quote within 24 hours</li>
-            <li>Once you approve, you can schedule and pay</li>
-          </ol>
+            {images.length > 0 && (
+              <div className="photo-gallery">
+                <div className="gallery-header">
+                  <span>Uploaded Photos ({images.length}/5)</span>
+                </div>
+                <div className="photo-grid">
+                  {imagePreviews.map((preview, index) => (
+                    <div key={index} className="photo-item">
+                      <img src={preview} alt={`Project photo ${index + 1}`} />
+                      <button
+                        type="button"
+                        className="remove-photo"
+                        onClick={() => removeImage(index)}
+                        aria-label="Remove photo"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <div className="submit-section">
+            <button
+              className="submit-button"
+              onClick={handleSubmit}
+              disabled={!description.trim()}
+            >
+              Submit for Quote
+            </button>
+          </div>
         </div>
       </div>
     </div>

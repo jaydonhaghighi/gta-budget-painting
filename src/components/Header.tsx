@@ -133,7 +133,7 @@ const Header = () => {
                 <Link to="/services" className="dropdown-link">All Services</Link>
                 <Link to="/services/interior-painting" className="dropdown-link">Interior Painting</Link>
                 <Link to="/services/exterior-painting" className="dropdown-link">Exterior Painting</Link>
-                <Link to="/services/custom" className="dropdown-link">Custom Projects</Link>
+                <Link to="/services/custom-painting" className="dropdown-link">Custom Project</Link>
               </div>
             </div>
             
@@ -182,7 +182,7 @@ const Header = () => {
                   <Link to="/services" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>All Services</Link>
                   <Link to="/services/interior-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Interior Painting</Link>
                   <Link to="/services/exterior-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Exterior Painting</Link>
-                  <Link to="/services/custom" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Custom Projects</Link>
+                  <Link to="/services/custom-paitning" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Custom Project</Link>
                 </div>
               </div>
               

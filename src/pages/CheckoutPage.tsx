@@ -268,7 +268,7 @@ const CheckoutPage = () => {
             <div className="empty-state">
               <h3>No items in cart</h3>
               <p>Add some services to your cart before checking out.</p>
-              <button className="btn-primary" onClick={() => navigate('/')}>
+              <button className="btn-primary" onClick={() => navigate('/services')}>
                 Browse Services
               </button>
             </div>

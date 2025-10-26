@@ -748,7 +748,6 @@
   border: 1px solid var(--color-grey-100);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   position: relative;
-  max-width: 1000px;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -813,7 +812,6 @@
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   position: relative;
-  max-width: 1000px;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -938,7 +936,7 @@
   }
   
   .areas-text {
-    padding: 2rem;
+    padding: 3rem;
     max-width: 100%;
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -1024,7 +1022,7 @@
   }
   
   .areas-text {
-    padding: 1rem;
+    padding: 2rem;
     max-width: 100%;
     grid-template-columns: 1fr;
     gap: 1rem;

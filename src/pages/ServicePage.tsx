@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getServiceById } from '../data/services';
 import { type EstimateBreakdown } from '../utils/estimationCalculator';
 import CalculatedServiceForm from '../components/forms/CalculatedServiceForm';
-import FlatRateServiceForm from '../components/forms/FlatRateServiceForm';
+import InteriorDoorForm from '../components/forms/InteriorDoorForm';
 import CustomQuoteServiceForm from '../components/forms/CustomQuoteServiceForm';
 import { submitServiceRequest } from '../services/firestoreService';
 import type { ServiceRequestSubmission } from '../types/ServiceRequest';
@@ -39,17 +39,153 @@ const ServicePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
+  // Check if we're in editing mode
+  const urlParams = new URLSearchParams(location.search);
+  const editId = urlParams.get('editId');
+  const isEditing = !!editId;
+  
   // Get category from URL path
   const getCategoryFromPath = () => {
     const pathSegments = location.pathname.split('/');
     const categoryIndex = pathSegments.indexOf('services') + 1;
-    return pathSegments[categoryIndex] || '';
+    const category = pathSegments[categoryIndex] || '';
+    
+    // Handle custom-painting as a special case
+    if (category === 'custom-painting') {
+      return 'custom';
+    }
+    
+    return category;
   };
   
   const category = getCategoryFromPath();
   
-  const service = serviceId ? getServiceById(serviceId) : null;
-  
+  const service = serviceId ? getServiceById(serviceId) : (category === 'custom' ? getServiceById('custom-project') : null);
+
+  // Service-specific description functions
+  const getServiceDescriptionTitle = (serviceId: string) => {
+    switch (serviceId) {
+      case 'accent-wall':
+        return 'Transform Your Space with Accent Walls';
+      case 'ceiling':
+        return 'Refresh Your Ceiling Painting';
+      case 'small-bathroom':
+        return 'Complete Bathroom Makeover';
+      case 'basement-painting':
+        return 'Transform Your Basement';
+      case 'kitchen-walls':
+        return 'Kitchen Wall Transformation';
+      case 'trimming-baseboards':
+        return 'Professional Baseboard Painting';
+      case 'bedroom-painting':
+        return 'Create Your Perfect Bedroom';
+      case 'staircase-painting':
+        return 'Elevate Your Staircase';
+      case 'fence-painting':
+        return 'Protect & Beautify Your Fence';
+      case 'kitchen-cabinet-painting':
+        return 'Kitchen Cabinet Makeover';
+      case 'garage-door':
+        return 'Garage Door Refresh';
+      case 'exterior-railings':
+        return 'Exterior Railing Restoration';
+      case 'stucco-ceiling-removal':
+        return 'Remove Popcorn Ceiling for Modern Look';
+      case 'interior-door':
+        return 'Interior Door Painting & Restoration';
+      case 'front-door':
+        return 'Front Door Painting & Curb Appeal';
+      case 'bathroom-vanity-cabinet':
+        return 'Bathroom Vanity Painting';
+      case 'custom-project':
+        return 'Custom Painting Projects';
+      default:
+        return 'Professional Painting Services';
+    }
+  };
+
+  const getServiceDescriptionText = (serviceId: string) => {
+    switch (serviceId) {
+      case 'accent-wall':
+        return 'An accent wall is the perfect way to add personality and visual interest to any room. Our professional painters will help you choose the right color and finish to create a stunning focal point that transforms your space.';
+      case 'ceiling':
+        return 'A fresh ceiling paint job can dramatically brighten and modernize any room. Our experts use premium paints and techniques to ensure smooth, even coverage that enhances your home\'s overall appearance.';
+      case 'small-bathroom':
+        return 'Small bathrooms deserve big impact! Our bathroom painting specialists understand the unique challenges of humid environments and will use moisture-resistant paints to create a beautiful, long-lasting finish.';
+      case 'basement-painting':
+        return 'Transform your basement from a storage area into a beautiful living space. Our basement painting experts use specialized techniques and paints designed for below-grade environments to create a fresh, inviting atmosphere.';
+      case 'kitchen-walls':
+        return 'The kitchen is the heart of your home, and fresh paint can make it shine. Our kitchen specialists use durable, washable paints that stand up to cooking splatters and daily wear while maintaining their beauty.';
+      case 'trimming-baseboards':
+        return 'Crisp, clean baseboards frame your rooms beautifully. Our precision painters will give your baseboards a professional finish that complements your walls and adds that polished, finished look to your home.';
+      case 'bedroom-painting':
+        return 'Create your personal sanctuary with bedroom painting that reflects your style. Whether you want calming neutrals or bold statements, our bedroom specialists will help you achieve the perfect atmosphere for rest and relaxation.';
+      case 'staircase-painting':
+        return 'Your staircase is often the first thing guests see. Our staircase painting experts will transform this high-traffic area with durable, beautiful finishes that make a lasting impression and protect against daily wear.';
+      case 'fence-painting':
+        return 'Protect your investment and boost curb appeal with professional fence painting. Our exterior specialists use weather-resistant paints and proper preparation techniques to ensure your fence looks great and lasts for years.';
+      case 'kitchen-cabinet-painting':
+        return 'Give your kitchen a complete makeover without the cost of replacement. Our cabinet painting experts will transform your existing cabinets with premium finishes that look like new, saving you thousands while dramatically updating your space.';
+      case 'garage-door':
+        return 'Your garage door is a major part of your home\'s exterior. Our garage door specialists will refresh it with durable exterior paints that enhance curb appeal and protect against weather damage.';
+      case 'exterior-railings':
+        return 'Safety meets style with professional railing painting. Our exterior experts will restore your railings with weather-resistant finishes that protect against rust and wear while enhancing your home\'s architectural beauty.';
+      case 'stucco-ceiling-removal':
+        return 'Transform your home with professional popcorn ceiling removal. Outdated textured ceilings can make rooms feel smaller and dated. Our specialists safely remove popcorn ceilings and create smooth, modern surfaces that brighten your space and increase your home\'s value.';
+      case 'interior-door':
+        return 'Refresh your interior doors with professional painting that enhances your home\'s flow and style. Interior doors see constant use and benefit from durable, smooth finishes. Our door specialists ensure perfect coverage and smooth operation while matching your interior design.';
+      case 'front-door':
+        return 'Make a stunning first impression with professional front door painting. Your front door is the focal point of your home\'s exterior and deserves special attention. We use premium exterior paints and techniques to create a beautiful, weather-resistant finish that welcomes guests and protects your investment.';
+      case 'bathroom-vanity-cabinet':
+        return 'Professional bathroom vanity cabinet painting services that refresh and modernize your bathroom storage with expert techniques and quality finishes.';
+      case 'custom-project':
+        return 'Every home is unique, and so are your painting needs. Our custom painting services are tailored to your specific vision and requirements. Whether you need a special color match, intricate designs, or work on unusual surfaces, our experienced team will bring your ideas to life with professional quality and attention to detail.';
+      default:
+        return 'Get accurate estimates for your painting project with our professional calculation tools. Our experienced team provides detailed quotes based on your specific requirements, ensuring transparency and fair pricing for every project.';
+    }
+  };
+
+  const getServiceDescriptionImage = (serviceId: string) => {
+    switch (serviceId) {
+      case 'accent-wall':
+        return '/services/accent-wall/0e12ab43ba833f8eb4a8e8f6919cc4d3.jpg';
+      case 'ceiling':
+        return '/services/ceiling/d9b8cceca38623dd777f98c279a07ff7.jpg';
+      case 'small-bathroom':
+        return '/services/bathroom/2031918adaa8a45c68f9dcaf26a85e54.jpg';
+      case 'basement-painting':
+        return '/services/basement/ede4060fc66d608019efd65027cfa170.jpg';
+      case 'kitchen-walls':
+        return '/services/kitchen-walls/18e71280752e388d198b783ef57e1a1a.jpg';
+      case 'trimming-baseboards':
+        return '/services/trimming/2169f21924b68c9e2503f9c2788d794d.jpg';
+      case 'bedroom-painting':
+        return '/services/bedroom/5d4fb4cdf08b0ec987e44298b53c5a41.jpg';
+      case 'staircase-painting':
+        return '/services/staircase/5db3f964bfa951122f3c9defc12d3bfb.jpg';
+      case 'fence-painting':
+        return '/services/fence/2d09e8bfd742f8617ccba90e8f9312e3.jpg';
+      case 'kitchen-cabinet-painting':
+        return '/services/kitchen-cabinets/1d5d1205901c93bfef8674023d3ed719.jpg';
+      case 'garage-door':
+        return '/services/garage/51af29468889910e0ff032eb12e29d79.jpg';
+      case 'exterior-railings':
+        return '/services/railings/7e0e0eca999d1b8d42b34d1d4d3b5acb.jpg';
+      case 'stucco-ceiling-removal':
+        return '/services/stucco-ceiling-removal/8039a71027ffccfbcfac6eab26f3167c.jpg';
+      case 'interior-door':
+        return '/services/interior-door/663b0736b9625a124d64f7f2338b3b9b.jpg';
+      case 'front-door':
+        return '/services/front-door/1ce69539f7e825bbfe8c82868b607f34.jpg';
+      case 'bathroom-vanity-cabinet':
+        return '/services/bathroom-vanity/3daac1d98424946cbc1dbff549cdd7b7.jpg';
+      case 'custom-project':
+        return '/1e2f492454c426dc5dc061d9f3cd5565.jpg';
+      default:
+        return '/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg';
+    }
+  };
+   
   const [step, setStep] = useState<ServiceStep>('service-form');
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(null);
   const [formData, setFormData] = useState<any>({}); // Store form field values
@@ -71,12 +207,12 @@ const ServicePage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Redirect if service not found
+  // Redirect if service not found (but allow custom-painting route)
   useEffect(() => {
-    if (!service) {
+    if (!service && category !== 'custom') {
       navigate('/');
     }
-  }, [service, navigate]);
+  }, [service, category, navigate]);
 
   // Restore saved booking state on mount
   useEffect(() => {
@@ -106,6 +242,9 @@ const ServicePage = () => {
         localStorage.removeItem(`booking-${serviceId}`);
       }
       setIsRestoringState(false);
+    } else if (!serviceId) {
+      // No serviceId (like custom-painting route), don't restore state
+      setIsRestoringState(false);
     }
   }, [serviceId, isRestoringState]);
 
@@ -129,7 +268,7 @@ const ServicePage = () => {
   }, [serviceId, step, estimate, formData, customerInfo, preferredDate, isRestoringState]);
 
 
-  if (!service) {
+  if (!service && category !== 'custom') {
     return null;
   }
 
@@ -253,11 +392,16 @@ const ServicePage = () => {
   const handleBackToServices = () => {
     if (serviceId && step !== 'confirmation') {
       localStorage.removeItem(`booking-${serviceId}`);
-      navigate(`/services/${category}`);
+    }
+    
+    // Navigate to services page for Custom Project, otherwise to category page
+    if (category === 'custom') {
+      navigate('/services');
     } else {
       navigate(`/services/${category}`);
     }
   };
+
 
   return (
     <div className="service-page">
@@ -265,20 +409,25 @@ const ServicePage = () => {
       <div className="service-page-header">
         <div className="container">
           <button className="btn-back" onClick={handleBack}>
-            ← {step === 'service-form' ? `Back to ${category === 'interior-painting' ? 'Interior Painting' : category === 'exterior-painting' ? 'Exterior Painting' : category === 'custom' ? 'Custom Projects' : 'Services'}` : 'Back'}
+            ← {step === 'service-form' ? `Back to ${category === 'interior-painting' ? 'Interior Painting' : category === 'exterior-painting' ? 'Exterior Painting' : category === 'custom' ? 'Services' : 'Services'}` : 'Back'}
           </button>
           
           {/* Breadcrumb Navigation */}
           <nav className="breadcrumb">
             <a href="/services" className="breadcrumb-link">Services</a>
             <span className="breadcrumb-separator">›</span>
-            <a href={`/services/${category}`} className="breadcrumb-link">
-              {category === 'interior-painting' ? 'Interior Painting' : 
-               category === 'exterior-painting' ? 'Exterior Painting' : 
-               category === 'custom' ? 'Custom Projects' : category}
-            </a>
-            <span className="breadcrumb-separator">›</span>
-            <span className="breadcrumb-current">{service?.name}</span>
+            {category === 'custom' ? (
+              <span className="breadcrumb-current">Custom Painting</span>
+            ) : (
+              <>
+                <a href={`/services/${category}`} className="breadcrumb-link">
+                  {category === 'interior-painting' ? 'Interior Painting' : 
+                   category === 'exterior-painting' ? 'Exterior Painting' : category}
+                </a>
+                <span className="breadcrumb-separator">›</span>
+                <span className="breadcrumb-current">{service?.name}</span>
+              </>
+            )}
           </nav>
         </div>
       </div>
@@ -288,20 +437,40 @@ const ServicePage = () => {
         <section className="service-form-section">
           <div className="container">
             <div className="service-form-header">
-              <span className="service-icon-large">{service.icon}</span>
               <div>
-                <h1>{service.name}</h1>
-                <p className="service-description">{service.description}</p>
+                <h1>{service?.name}</h1>
+                <p className="service-description">{service?.description}</p>
               </div>
             </div>
 
+             {/* Service Description Section - Only show when not editing */}
+             {!isEditing && (
+               <div className="service-description-content">
+                   <div className="service-description-text">
+                     <div className="service-description-text-content">
+                       <h2>{getServiceDescriptionTitle(service?.id || '')}</h2>
+                       <p className="service-description-description">
+                         {getServiceDescriptionText(service?.id || '')}
+                       </p>
+                     </div>
+                     <div className="service-description-image">
+                       <img 
+                         src={getServiceDescriptionImage(service?.id || '')} 
+                         alt={service?.name || 'Professional painting service'} 
+                         className="service-description-photo"
+                       />
+                     </div>
+                   </div>
+               </div>
+             )}
+
             <div className="service-form-content">
-              {service.type === 'calculated' && (
+              {service?.type === 'calculated' && (
                 <CalculatedServiceForm
                   service={service}
                   initialFormData={formData}
                   initialEstimate={estimate}
-                  onEstimateCalculated={(est: EstimateBreakdown, data: any) => {
+                  onEstimateCalculated={(est: EstimateBreakdown | null, data: any) => {
                     setEstimate(est);
                     setFormData(data);
                   }}
@@ -311,16 +480,22 @@ const ServicePage = () => {
                 />
               )}
 
-              {service.type === 'flat-rate' && (
-                <FlatRateServiceForm
+              {service?.type === 'flat-rate' && service?.id === 'interior-door' && (
+                <InteriorDoorForm
                   service={service}
-                  onProceed={() => {
-                    setStep('customer-info');
-                  }}
+                  onProceed={() => {}}
+                  initialFormData={formData}
                 />
               )}
 
-              {service.type === 'custom-quote' && (
+              {service?.type === 'flat-rate' && service?.id !== 'interior-door' && (
+                <div className="service-not-available">
+                  <h3>Service Not Available</h3>
+                  <p>This service is currently not available for online booking. Please contact us directly for more information.</p>
+                </div>
+              )}
+
+              {service?.type === 'custom-quote' && (
                 <CustomQuoteServiceForm
                   service={service}
                   onSubmit={() => {
@@ -474,7 +649,7 @@ const ServicePage = () => {
                   <h3>Booking Summary</h3>
                   <div className="summary-item">
                     <span>Service:</span>
-                    <span>{service.name}</span>
+                    <span>{service?.name}</span>
                   </div>
                   {estimate && (
                     <div className="summary-item">
@@ -482,7 +657,7 @@ const ServicePage = () => {
                       <span className="price-highlight">${estimate.totalCost.toFixed(2)}</span>
                     </div>
                   )}
-                  {service.type === 'flat-rate' && service.flatRate && (
+                  {service?.type === 'flat-rate' && service?.flatRate && (
                     <div className="summary-item">
                       <span>Fixed Price:</span>
                       <span className="price-highlight">${service.flatRate}</span>
@@ -545,8 +720,8 @@ const ServicePage = () => {
         </section>
       )}
 
-      {/* Sticky Bottom Bar - Show estimate total when available */}
-      {estimate && step === 'service-form' && (
+      {/* Sticky Bottom Bar - Show estimate total when available, but not when editing */}
+      {estimate && step === 'service-form' && !isEditing && (
         <div className="sticky-bottom-bar">
           <div className="sticky-bar-content">
             <div className="sticky-bar-total">
@@ -572,6 +747,7 @@ const ServicePage = () => {
                   navigate('/cart');
                 }
               }}
+              disabled={!estimate}
             >
               Add to Cart
             </button>
@@ -579,6 +755,7 @@ const ServicePage = () => {
               className="sticky-bar-btn sticky-bar-btn-secondary"
               onClick={() => {
                 if (estimate) {
+                  // Add this service to cart and go to checkout
                   addItem({
                     serviceId: serviceId!,
                     serviceName: service!.name,
@@ -592,11 +769,13 @@ const ServicePage = () => {
                   navigate('/checkout', { 
                     state: { 
                       serviceId: serviceId,
-                      category: category 
+                      category: category,
+                      isRequestNow: true // Flag to indicate this was a "Request Now" action
                     } 
                   });
                 }
               }}
+              disabled={!estimate}
             >
               Request Now
             </button>

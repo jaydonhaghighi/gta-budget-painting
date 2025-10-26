@@ -318,7 +318,7 @@ const getServiceType = (serviceId: string): 'flat-rate' | 'calculated' | 'custom
 const determinePriority = (submission: ServiceRequestSubmission): 'low' | 'medium' | 'high' => {
   // Determine priority based on service type and estimate
   if (submission.serviceId === 'custom-project') {
-    return 'high'; // Custom projects are typically high priority
+    return 'high'; // Custom Project are typically high priority
   }
   
   if (submission.estimate && submission.estimate.totalCost > 2000) {
