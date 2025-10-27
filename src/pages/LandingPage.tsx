@@ -107,11 +107,11 @@ const LandingPage = () => {
               <div className="company-text-content">
                 <h2>About GTA Budget Painting</h2>
                 <p className="company-description">
-                GTA Budget Painting is a specialized division of GTA Home Painting, designed to serve homeowners who need smaller, more affordable painting projects. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.
+                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, designed to serve homeowners who need smaller, more affordable painting projects. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.</span>
                 </p>
               </div>
               <div className="company-image">
-                <img src="/f16f1bd449899777bf18714eb6cb3df3.jpg" alt="Professional painting team at work" className="company-photo" />
+                <img src="/partnership.png" alt="Professional painting team at work" className="company-photo" />
               </div>
             </div>
           </div>
@@ -162,7 +162,7 @@ const LandingPage = () => {
                 </div>
               </div>
               <div className="areas-image">
-                <img src="/9fb7ab8c0a24c06c0cc6648555a63ff9.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
+                <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
               </div>
             </div>
           </div>
