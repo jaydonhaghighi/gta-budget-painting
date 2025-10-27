@@ -4,6 +4,7 @@ import { getServiceById } from '../data/services';
 import { type EstimateBreakdown } from '../utils/estimationCalculator';
 import CalculatedServiceForm from '../components/forms/CalculatedServiceForm';
 import InteriorDoorForm from '../components/forms/InteriorDoorForm';
+import FrontDoorForm from '../components/forms/FrontDoorForm';
 import CustomQuoteServiceForm from '../components/forms/CustomQuoteServiceForm';
 import { submitServiceRequest } from '../services/firestoreService';
 import type { ServiceRequestSubmission } from '../types/ServiceRequest';
@@ -488,7 +489,15 @@ const ServicePage = () => {
                 />
               )}
 
-              {service?.type === 'flat-rate' && service?.id !== 'interior-door' && (
+              {service?.type === 'flat-rate' && service?.id === 'front-door' && (
+                <FrontDoorForm
+                  service={service}
+                  onProceed={() => {}}
+                  initialFormData={formData}
+                />
+              )}
+
+              {service?.type === 'flat-rate' && service?.id !== 'interior-door' && service?.id !== 'front-door' && (
                 <div className="service-not-available">
                   <h3>Service Not Available</h3>
                   <p>This service is currently not available for online booking. Please contact us directly for more information.</p>

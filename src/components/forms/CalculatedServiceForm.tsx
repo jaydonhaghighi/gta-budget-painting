@@ -89,7 +89,7 @@ const CalculatedServiceForm = ({
       
       case 'bedroom-painting':
         return data.bedrooms && Array.isArray(data.bedrooms) && data.bedrooms.length > 0 &&
-               data.bedrooms.every((bedroom: any) => 
+               data.bedrooms.some((bedroom: any) => 
                  bedroom.length && bedroom.width && bedroom.height &&
                  parseFloat(bedroom.length) > 0 && parseFloat(bedroom.width) > 0 && parseFloat(bedroom.height) > 0
                );
@@ -208,11 +208,11 @@ const CalculatedServiceForm = ({
                 length: parseFloat(bedroom.length),
                 width: parseFloat(bedroom.width),
                 height: parseFloat(bedroom.height),
-                includeCeiling: bedroom.includeCeiling !== false,
-                includeBaseboards: bedroom.includeBaseboards !== false,
+                includeCeiling: bedroom.includeCeiling === true,
+                includeBaseboards: bedroom.includeBaseboards === true,
                 baseboardProfile: bedroom.baseboardProfile || 'low',
-                doors: parseInt(bedroom.doors) || 1,
-                windows: parseInt(bedroom.windows) || 1
+                doors: parseInt(bedroom.doors) || 0,
+                windows: parseInt(bedroom.windows) || 0
               })));
             }
           }
@@ -697,14 +697,14 @@ const CalculatedServiceForm = ({
 
   const renderBedroomForm = () => {
     const bedrooms = formData.bedrooms || [
-      { id: 1, type: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
+      { id: 1, type: '', length: '', width: '', height: '', includeCeiling: false, includeBaseboards: false, baseboardProfile: 'low', doors: '', windows: '' }
     ];
 
     const addBedroom = () => {
       const newId = Math.max(...bedrooms.map((b: any) => b.id), 0) + 1;
       updateFormData('bedrooms', [
         ...bedrooms,
-        { id: newId, type: '', length: '', width: '', height: '', includeCeiling: true, includeBaseboards: true, baseboardProfile: 'low', doors: '1', windows: '1' }
+        { id: newId, type: '', length: '', width: '', height: '', includeCeiling: false, includeBaseboards: false, baseboardProfile: 'low', doors: '', windows: '' }
       ]);
     };
 
