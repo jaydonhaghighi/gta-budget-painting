@@ -60,8 +60,7 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
         doorCount,
         includeDoorFrames,
         includeHardware,
-        totalPrice,
-        breakdown: estimate.breakdown
+        totalPrice
       }
     };
 
