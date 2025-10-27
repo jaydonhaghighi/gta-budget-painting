@@ -5,11 +5,10 @@
 
 /* Override booking hero with kitchen image for Contact Us page only */
 .contact-page .booking-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/b61baea7d9a59a2dfcaa0808d120ecc0.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  min-height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +21,7 @@
 
 /* Basic Contact Page Styles */
 .contact-hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/b61baea7d9a59a2dfcaa0808d120ecc0.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

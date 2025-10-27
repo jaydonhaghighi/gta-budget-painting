@@ -263,6 +263,15 @@ const CheckoutPage = () => {
           <p className="checkout-subtitle">Please provide your information to finalize your painting service request</p>
         </div>
 
+        {/* Prefer to Call Section */}
+        <div className="prefer-call-section">
+          <p className="prefer-call-text">Want a Free Estimate?</p>
+          <button className="call-button" onClick={() => window.location.href = 'tel:+16473907181'}>
+            <img src="/telephone.png" alt="Phone" className="call-icon" />
+            Call us (647) 390-7181
+          </button>
+        </div>
+
         {displayItems.length === 0 ? (
           <div className="checkout-empty">
             <div className="empty-state">
@@ -587,5 +596,6 @@ const CheckoutPage = () => {
 }
 
 export default CheckoutPage
+
 
 

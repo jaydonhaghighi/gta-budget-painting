@@ -76,7 +76,7 @@ const ExteriorPaintingPage = () => {
   return (
     <div className="exterior-painting-page">
       {/* Hero Section */}
-      <section className="services-hero">
+      <section className="exterior-painting-hero">
         <div className="container">
           <h1>Exterior Painting Services</h1>
           <p className="hero-subtitle">Protect and beautify your home's exterior with our expert exterior painting services. Get free instant quotes from our estimator calculators.</p>

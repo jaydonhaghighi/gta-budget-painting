@@ -76,7 +76,7 @@ const InteriorPaintingPage = () => {
   return (
     <div className="interior-painting-page">
       {/* Hero Section */}
-      <section className="services-hero">
+      <section className="interior-painting-hero">
         <div className="container">
           <h1>Interior Painting Services</h1>
           <p className="hero-subtitle">Transform your indoor spaces with professional interior painting services. Get free instant quotes from our estimator calculators.</p>

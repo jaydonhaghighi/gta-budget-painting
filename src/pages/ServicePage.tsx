@@ -180,7 +180,7 @@ const ServicePage = () => {
       case 'bathroom-vanity-cabinet':
         return '/services/bathroom-vanity/3daac1d98424946cbc1dbff549cdd7b7.jpg';
       case 'custom-project':
-        return '/1e2f492454c426dc5dc061d9f3cd5565.jpg';
+        return '/2b0cfa6e362fbb3aa1094b290832dbe0.jpg';
       default:
         return '/services/kitchen-walls/ff79fd3533a771d876cb26226b7009e4.jpg';
     }

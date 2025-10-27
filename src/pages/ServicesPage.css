@@ -15,8 +15,8 @@
 }
 
 /* Services Hero Section */
-.services-hero {
-  background: linear-gradient(135deg, rgba(44, 61, 75, 0.5) 0%, rgba(67, 84, 99, 0.5) 100%), url('/public/bdaa6c1110ec0c354821c7e42fb4ddc9.jpg');
+.all-services-hero {
+  background: linear-gradient(135deg, rgba(44, 61, 75, 0.5) 0%, rgba(67, 84, 99, 0.5) 100%), url('/71f9ff790e075065f0da433704b34faa.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -26,14 +26,14 @@
   position: relative;
 }
 
-.services-hero h1 {
+.all-services-hero h1 {
   font-size: 2.25rem !important; /* 36px */
   font-weight: 700;
   margin-bottom: 0.5rem !important;
   color: white;
 }
 
-.services-hero .hero-subtitle {
+.all-services-hero .hero-subtitle {
   font-size: 1.1rem !important;
   line-height: 1.6;
   max-width: 800px;
