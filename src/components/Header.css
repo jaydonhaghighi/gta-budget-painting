@@ -803,7 +803,7 @@ body.sticky-bar-present .floating-cart-btn {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 985px) {
   .desktop-nav {
     display: none;
   }

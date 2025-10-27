@@ -20,25 +20,74 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  padding: 6rem 0 4rem;
+  padding: 4rem 0;
   text-align: center;
   color: white;
   position: relative;
 }
 
+@media screen and (max-width: 768px) {
+  .interior-painting-hero {
+    padding: 3rem 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .interior-painting-hero {
+    padding: 2rem 0;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .interior-painting-hero {
+    padding: 2rem 0;
+  }
+}
+
 .interior-painting-hero h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
   color: white;
 }
 
 .interior-painting-hero .hero-subtitle {
   font-size: 1.2rem;
-  line-height: 1.6;
+  font-weight: 500;
+  line-height: 1.4;
   max-width: 800px;
   margin: 0 auto;
   color: white;
+}
+
+@media screen and (max-width: 768px) {
+  .interior-painting-hero h1 {
+    font-size: 2.1rem;
+  }
+  
+  .interior-painting-hero .hero-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .interior-painting-hero h1 {
+    font-size: 30px;
+  }
+  
+  .interior-painting-hero .hero-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .interior-painting-hero h1 {
+    font-size: 30px;
+    margin-bottom: 1rem;
+  }
+  
+  .interior-painting-hero .hero-subtitle {
+    font-size: 1rem;
+  }
 }
 
 /* Featured Services Section */
