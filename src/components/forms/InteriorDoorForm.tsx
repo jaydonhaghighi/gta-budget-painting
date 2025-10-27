@@ -10,7 +10,7 @@ interface InteriorDoorFormProps {
   initialFormData?: any;
 }
 
-const InteriorDoorForm = ({ service, onProceed, initialFormData }: InteriorDoorFormProps) => {
+const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) => {
   const [doorCount, setDoorCount] = useState<number>(initialFormData?.doorCount || 1);
   const [includeDoorFrames, setIncludeDoorFrames] = useState<boolean>(initialFormData?.includeDoorFrames || false);
   const [includeHardware, setIncludeHardware] = useState<boolean>(initialFormData?.includeHardware || false);
@@ -39,22 +39,16 @@ const InteriorDoorForm = ({ service, onProceed, initialFormData }: InteriorDoorF
     
     // Create estimate breakdown for cart
     const estimate = {
-      totalCost: totalPrice,
-      laborCost: totalPrice * 0.7, // 70% labor
-      suppliesCost: totalPrice * 0.3, // 30% supplies
       laborHours: Math.ceil(doorCount * 1.5), // 1.5 hours per door
+      setupCleanupHours: 1,
+      totalHours: Math.ceil(doorCount * 1.5) + 1,
+      laborCost: totalPrice * 0.7, // 70% labor
       paintGallons: Math.ceil(doorCount * 0.25), // 0.25 gallons per door
       paintCost: Math.ceil(doorCount * 0.25) * 45, // $45 per gallon
-      prepFee: 0,
-      travelFee: 0,
+      suppliesCost: totalPrice * 0.3, // 30% supplies
       otherFees: 0,
-      breakdown: [
-        `Interior doors: ${doorCount} doors × $${basePrice} = $${doorCount * basePrice}`,
-        ...(includeDoorFrames ? [`Door frames: ${doorCount} doors × $${framePrice} = $${doorCount * framePrice}`] : []),
-        ...(includeHardware ? [`Hardware removal/replacement: ${doorCount} doors × $${hardwarePrice} = $${doorCount * hardwarePrice}`] : []),
-        `Labor: ${Math.ceil(doorCount * 1.5)} hours × $45 = $${Math.ceil(doorCount * 1.5) * 45}`,
-        `Paint: ${Math.ceil(doorCount * 0.25)} gallons × $45 = $${Math.ceil(doorCount * 0.25) * 45}`
-      ]
+      subtotal: totalPrice,
+      totalCost: totalPrice
     };
 
     const cartItem = {

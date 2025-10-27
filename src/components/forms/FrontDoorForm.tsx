@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { type Service } from '../../data/services';
@@ -9,7 +9,7 @@ interface FrontDoorFormProps {
   initialFormData?: any;
 }
 
-const FrontDoorForm = ({ service, onProceed, initialFormData }: FrontDoorFormProps) => {
+const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
   const [doorCount, setDoorCount] = useState<number>(initialFormData?.doorCount || 1);
   const [includeDoorFrames, setIncludeDoorFrames] = useState<boolean>(initialFormData?.includeDoorFrames || false);
   const [includeHardware, setIncludeHardware] = useState<boolean>(initialFormData?.includeHardware || false);
@@ -62,13 +62,7 @@ const FrontDoorForm = ({ service, onProceed, initialFormData }: FrontDoorFormPro
           suppliesCost: totalPrice * 0.1, // 10% supplies
           otherFees: totalPrice * 0.05, // 5% prep fee
           subtotal: totalPrice,
-          totalCost: totalPrice,
-          breakdown: [
-            `Front door painting: ${doorCount} door${doorCount > 1 ? 's' : ''}`,
-            includeDoorFrames ? `Door frames/trim: ${doorCount} door${doorCount > 1 ? 's' : ''}` : '',
-            includeHardware ? `Hardware removal/replacement: ${doorCount} door${doorCount > 1 ? 's' : ''}` : '',
-            includeWeatherproofing ? `Weatherproofing: ${doorCount} door${doorCount > 1 ? 's' : ''}` : ''
-          ].filter(Boolean)
+          totalCost: totalPrice
         },
         formData: formData
       });
@@ -88,13 +82,7 @@ const FrontDoorForm = ({ service, onProceed, initialFormData }: FrontDoorFormPro
           suppliesCost: totalPrice * 0.1,
           otherFees: totalPrice * 0.05,
           subtotal: totalPrice,
-          totalCost: totalPrice,
-          breakdown: [
-            `Front door painting: ${doorCount} door${doorCount > 1 ? 's' : ''}`,
-            includeDoorFrames ? `Door frames/trim: ${doorCount} door${doorCount > 1 ? 's' : ''}` : '',
-            includeHardware ? `Hardware removal/replacement: ${doorCount} door${doorCount > 1 ? 's' : ''}` : '',
-            includeWeatherproofing ? `Weatherproofing: ${doorCount} door${doorCount > 1 ? 's' : ''}` : ''
-          ].filter(Boolean)
+          totalCost: totalPrice
         },
         formData: formData
       });
