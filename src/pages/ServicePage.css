@@ -1,10 +1,88 @@
 /* Import shared styles */
 @import './BookingPage.css';
 
+/* Service Not Available */
+.service-not-available {
+  text-align: center;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.service-not-available h3 {
+  color: var(--color-steel-blue);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.service-not-available p {
+  color: var(--color-soft-charcoal);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 .service-page {
-  min-height: 100vh;
   background: #f5f7fa;
   padding-bottom: 2rem;
+}
+
+/* Service Description Section */
+.service-description-content {
+  padding: 1rem 0;
+}
+
+.service-description-text {
+  background: white;
+  padding: 3rem;
+  gap: 3rem;
+  border-radius: 16px;
+  border: 1px solid var(--color-grey-100);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.service-description-text h2 {
+  color: var(--color-steel-blue);
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+  position: relative;
+}
+
+.service-description-text h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--color-steel-blue);
+  border-radius: 2px;
+}
+
+.service-description-text-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-description-description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text-medium);
+}
+
+.service-description-photo {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  position: relative;
 }
 
 /* Add padding when sticky bar is present */
@@ -69,11 +147,17 @@
   animation: fadeSlideUp 0.5s ease-out 0.1s backwards;
 }
 
+.service-form-content p {
+  font-size: 2rem;
+  color: #718096;
+  margin: 0;
+  line-height: 1.4;
+}
+
 .service-form-header {
   display: flex;
   gap: 1rem;
   align-items: flex-start;
-  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -84,7 +168,7 @@
 
 .service-form-header h1 {
   margin: 0 0 0.25rem 0;
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   color: #1a202c;
 }
 
@@ -230,9 +314,41 @@
 }
 
 @media (max-width: 768px) {
+  /* Service Description Section Mobile */
+  .service-description-content {
+    padding: 1rem 0;
+  }
+
+  .service-description-text {
+    padding: rem;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .service-description-text h2 {
+    font-size: 20px;
+  }
+
+  .service-description-text h2::after {
+    width: 40px;
+    height: 2px;
+  }
+
+  .service-description-description {
+    font-size: 14px;
+  }
+
+  .service-description-photo {
+    height: 250px;
+  }
+
   .service-form-header {
     flex-direction: column;
     text-align: center;
+  }
+  .service-form-header h1 {
+    font-size: 1.5rem;
   }
 
   /* Faster animations on mobile */
@@ -397,6 +513,7 @@
   .sticky-bar-btn {
     flex: 1;
     min-width: auto;
+    font-size: 14px;
   }
 }
 
@@ -554,6 +671,31 @@
 }
 
 @media (max-width: 480px) {
+  /* Service Description Section Small Mobile */
+  .service-description-text {
+    padding: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .service-description-text h2 {
+    font-size: 18px;
+  }
+
+  .service-description-text h2::after {
+    width: 30px;
+    height: 2px;
+  }
+
+  .service-description-description {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .service-description-photo {
+    height: 200px;
+  }
+
   .service-gallery {
     grid-template-columns: 1fr;
   }

@@ -32,7 +32,7 @@ const ServicesPage = () => {
   return (
     <div className="services-page">
       {/* Hero Section */}
-      <section className="services-hero">
+      <section className="all-services-hero">
         <div className="container">
           <h1>Our Painting Services</h1>
           <p className="hero-subtitle">Professional painting services that won't break the bank. Get free instant quotes from our estimator calculators or from our licensed & insured contractors across the GTA.</p>
@@ -62,10 +62,10 @@ const ServicesPage = () => {
               <div className="category-count">{exteriorServices.length} Services</div>
             </div>
 
-            <div className="category-card" onClick={() => navigate('/services/custom')}>
+            <div className="category-card" onClick={() => navigate('/services/custom-painting')}>
               <div className="category-icon">
               </div>
-              <h4>Custom Projects</h4>
+              <h4>Custom Project</h4>
               <p>Need something specific? We offer custom painting solutions tailored to your unique requirements</p>
               <div className="category-count">{customServices.length} Services</div>
             </div>

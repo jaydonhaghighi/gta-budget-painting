@@ -4,7 +4,6 @@
 @import './BookingPage.css';
 
 .interior-painting-page {
-  min-height: 100vh;
   background: var(--color-bone);
   width: 100%;
 }
@@ -16,8 +15,8 @@
 }
 
 /* Services Hero Section */
-.services-hero {
-  background: linear-gradient(135deg, rgba(44, 61, 75, 0.5) 0%, rgba(67, 84, 99, 0.5) 100%), url('/public/bdaa6c1110ec0c354821c7e42fb4ddc9.jpg');
+.interior-painting-hero {
+  background: linear-gradient(135deg, rgba(44, 61, 75, 0.5) 0%, rgba(67, 84, 99, 0.5) 100%), url('/3b2045dbed63c07cebaeda49f3b1ccab.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -27,14 +26,14 @@
   position: relative;
 }
 
-.services-hero h1 {
+.interior-painting-hero h1 {
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
   color: white;
 }
 
-.services-hero .hero-subtitle {
+.interior-painting-hero .hero-subtitle {
   font-size: 1.2rem;
   line-height: 1.6;
   max-width: 800px;

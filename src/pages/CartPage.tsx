@@ -3,7 +3,7 @@ import { useCart } from '../context/CartContext'
 import './CartPage.css'
 
 const CartPage = () => {
-  const { cart, totals, removeItem } = useCart()
+  const { cart, totals, removeItem, canCheckout, checkoutValidationMessage } = useCart()
   const navigate = useNavigate()
   const count = cart.items.length
   return (
@@ -19,7 +19,7 @@ const CartPage = () => {
         {count === 0 ? (
           <div className="cart-empty">
             <p>Your cart is empty.</p>
-            <Link to="/" className="btn-primary">Browse Services</Link>
+            <Link to="/services" className="btn-primary">Browse Services</Link>
           </div>
         ) : (
           <div className="cart-layout">
@@ -47,7 +47,15 @@ const CartPage = () => {
                         }
                         localStorage.setItem(stateKey, JSON.stringify(saved))
                       } catch {}
-                      navigate(`/services/${it.serviceId}?editId=${encodeURIComponent(it.id)}`)
+                      
+                      // Handle different service routing
+                      if (it.serviceId === 'interior-door') {
+                        navigate(`/services/interior-painting/interior-door?editId=${encodeURIComponent(it.id)}`)
+                      } else if (it.serviceId === 'front-door') {
+                        navigate(`/services/exterior-painting/front-door?editId=${encodeURIComponent(it.id)}`)
+                      } else {
+                        navigate(`/services/${it.serviceId}?editId=${encodeURIComponent(it.id)}`)
+                      }
                     }}
                     aria-label="Edit"
                   >
@@ -71,8 +79,24 @@ const CartPage = () => {
                 <div className="row total"><span>Total</span><span>${totals.grandTotal.toFixed(2)}</span></div>
               </div>
               <div className="cart-summary-actions">
-                <Link to="/checkout" className="btn-primary">Checkout</Link>
-                <Link to="/" className="btn-secondary">Continue Shopping</Link>
+                {!canCheckout && checkoutValidationMessage && (
+                  <div className="checkout-validation-message">
+                    <div className="validation-icon">⚠️</div>
+                    <div className="validation-text">{checkoutValidationMessage}</div>
+                  </div>
+                )}
+                <Link 
+                  to="/checkout" 
+                  className={`btn-primary ${!canCheckout ? 'disabled' : ''}`}
+                  onClick={(e) => {
+                    if (!canCheckout) {
+                      e.preventDefault();
+                    }
+                  }}
+                >
+                  Checkout
+                </Link>
+                <Link to="/services" className="btn-secondary">Continue Shopping</Link>
               </div>
             </aside>
           </div>
