@@ -86,8 +86,6 @@ const InteriorPaintingPage = () => {
       {/* Interior Services Section */}
       <section className="featured-services-section">
         <div className="container">
-          <h3>Interior Painting Services</h3>
-          <p className="section-subtitle">Professional interior painting services to transform your home's indoor spaces</p>
           
           <div className="services-grid featured-grid">
             {interiorServices.map((service) => renderServiceCard(service, service.featured))}

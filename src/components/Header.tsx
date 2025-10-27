@@ -182,7 +182,7 @@ const Header = () => {
                   <Link to="/services" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>All Services</Link>
                   <Link to="/services/interior-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Interior Painting</Link>
                   <Link to="/services/exterior-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Exterior Painting</Link>
-                  <Link to="/services/custom-paitning" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Custom Project</Link>
+                  <Link to="/services/custom-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Custom Project</Link>
                 </div>
               </div>
               
@@ -196,7 +196,10 @@ const Header = () => {
       {/* Floating Cart Button */}
       <button 
         className="floating-cart-btn" 
-        onClick={() => setIsCartOpen(true)}
+        onClick={() => {
+          setIsCartOpen(true);
+          setIsMobileMenuOpen(false);
+        }}
         aria-label="Open Cart"
       >
         <CartIcon count={cart.items.length} />

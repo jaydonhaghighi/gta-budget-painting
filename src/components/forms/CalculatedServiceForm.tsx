@@ -98,8 +98,8 @@ const CalculatedServiceForm = ({
         return data.steps && parseFloat(data.steps) > 0;
       
       case 'fence-painting':
-        return data.length && data.height && 
-               parseFloat(data.length) > 0 && parseFloat(data.height) > 0;
+        return data.linearFeet && data.height && data.finishType &&
+               parseFloat(data.linearFeet) > 0 && parseFloat(data.height) > 0;
       
       case 'kitchen-cabinet-painting':
         return data.cabinetSections && Array.isArray(data.cabinetSections) && data.cabinetSections.length > 0 &&
@@ -273,13 +273,14 @@ const CalculatedServiceForm = ({
           break;
 
         case 'fence-painting':
-          if (data.linearFeet && data.height) {
+          if (data.linearFeet && data.height && data.finishType) {
             const sides = parseInt(data.sides) || 1;
+            const includeStaining = data.finishType && data.finishType !== 'paint';
             newEstimate = calculateFence({
               linearFeet: parseFloat(data.linearFeet),
               height: parseFloat(data.height),
               sides: (sides === 2 ? 2 : 1) as 1 | 2,
-              includeStaining: data.includeStaining || false
+              includeStaining: includeStaining
             });
           }
           break;
@@ -1141,7 +1142,7 @@ const CalculatedServiceForm = ({
             gap: '0.5rem',
             marginBottom: '1rem'
           }}>
-            <img src="/camera.svg" alt="Camera" style={{ width: '24px', height: '24px', filter: 'brightness(0) saturate(100%) invert(20%) sepia(8%) saturate(2000%) hue-rotate(180deg) brightness(95%) contrast(90%)' }} />
+            <img src="/camera.svg" alt="Camera" style={{ width: '20px', height: '20px' }} />
             Upload Cabinet Photos (Optional)
           </label>
           <p className="upload-help" style={{
@@ -1296,13 +1297,15 @@ const CalculatedServiceForm = ({
   };
 
   const renderFenceForm = () => (
-    <div className="form-group-container">
-      <h3>Fence Measurements</h3>
-      <p className="form-help">Tell us about your fence so we can provide an accurate estimate</p>
+    <div className="form-group-container fence-form">
+      <div className="form-header">
+        <h3>Fence Measurements</h3>
+        <p>Tell us about your fence so we can provide an accurate estimate</p>
+      </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="linearFeet">Fence Length (linear feet) *</label>
+          <label htmlFor="linearFeet">Length (linear feet) *</label>
           <input
             type="number"
             id="linearFeet"
@@ -1317,7 +1320,7 @@ const CalculatedServiceForm = ({
         </div>
 
         <div className="form-group">
-          <label htmlFor="height">Fence Height (feet) *</label>
+          <label htmlFor="height">Height (feet) *</label>
           <input
             type="number"
             id="height"
@@ -1345,32 +1348,29 @@ const CalculatedServiceForm = ({
         </select>
       </div>
 
-      <div className="checkbox-group">
-        <label className="checkbox-label">
-          <input
-            type="checkbox"
-            checked={formData.includeStaining || false}
-            onChange={(e) => updateFormData('includeStaining', e.target.checked)}
-          />
-          <span>Staining (instead of painting)</span>
-        </label>
+      <div className="form-group">
+        <label htmlFor="finishType">Finish Type *</label>
+        <select
+          id="finishType"
+          value={formData.finishType || 'paint'}
+          onChange={(e) => updateFormData('finishType', e.target.value)}
+          required
+        >
+          <option value="paint">Paint (2 coats)</option>
+          <option value="stain-transparent">Stain - Transparent</option>
+          <option value="stain-semi-transparent">Stain - Semi-Transparent</option>
+          <option value="stain-solid">Stain - Solid Color</option>
+        </select>
+        <small>Choose your preferred finish type</small>
       </div>
 
-      <div className="info-box" style={{
-        background: 'var(--color-golden-beige)',
-        padding: '1.5rem',
-        borderRadius: '12px',
-        marginTop: '1.5rem',
-        fontSize: '0.95rem',
-        color: 'var(--color-soft-charcoal)',
-        border: '2px solid var(--color-soft-charcoal)',
-        boxShadow: '0 4px 12px rgba(217, 182, 101, 0.3)',
-        fontWeight: '500'
-      }}>
-        <strong>Painting vs Staining:</strong>
-        <ul style={{ marginTop: '0.75rem', paddingLeft: '1.5rem', marginBottom: 0, fontWeight: '500' }}>
-          <li><strong>Paint:</strong> Solid color, more durable, hides imperfections (2 coats)</li>
-          <li><strong>Stain:</strong> Shows wood grain, natural look, faster application (1 coat)</li>
+      <div className="info-box">
+        <strong>Finish Type Guide:</strong>
+        <ul>
+          <li><strong>Paint:</strong> Solid color, most durable, hides imperfections (2 coats)</li>
+          <li><strong>Transparent Stain:</strong> Shows natural wood grain, minimal color (1 coat)</li>
+          <li><strong>Semi-Transparent Stain:</strong> Some wood grain visible, moderate color (1 coat)</li>
+          <li><strong>Solid Color Stain:</strong> Hides wood grain, opaque color, more durable (1 coat)</li>
         </ul>
       </div>
     </div>
@@ -1530,16 +1530,15 @@ const CalculatedServiceForm = ({
   );
 
   const renderGarageDoorForm = () => (
-    <div className="form-group-container">
-      <h3>Garage Door Details</h3>
-      <p className="form-help">
-        Provide details about your garage door for an accurate exterior painting estimate. 
-        Weather-resistant finishes ensure long-lasting protection.
-      </p>
+    <div className="form-group-container garage-door-form">
+      <div className="form-header">
+        <h3>Garage Door Details</h3>
+        <p>Tell us about your garage door so we can provide an accurate estimate</p>
+      </div>
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="width">Door Width (feet) *</label>
+          <label htmlFor="width">Width (ft) *</label>
           <input
             type="number"
             id="width"
@@ -1551,11 +1550,10 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('width', e.target.value)}
             required
           />
-          <small>Standard garage doors are 8-18 feet wide</small>
         </div>
 
         <div className="form-group">
-          <label htmlFor="height">Door Height (feet) *</label>
+          <label htmlFor="height">Height (ft) *</label>
           <input
             type="number"
             id="height"
@@ -1567,7 +1565,6 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('height', e.target.value)}
             required
           />
-          <small>Standard garage doors are 7-8 feet tall</small>
         </div>
       </div>
 
@@ -1583,7 +1580,6 @@ const CalculatedServiceForm = ({
             value={formData.doors || ''}
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
-          <small>Count the number of garage door sections</small>
         </div>
 
         <div className="form-group">
@@ -1600,55 +1596,35 @@ const CalculatedServiceForm = ({
             <option value="aluminum">Aluminum</option>
             <option value="fiberglass">Fiberglass</option>
           </select>
-          <small>Different materials require different prep work</small>
         </div>
       </div>
 
-      <div className="form-row">
-        <div className="form-group">
-          <label htmlFor="condition">Current Condition *</label>
-          <select
-            id="condition"
-            value={formData.condition || ''}
-            onChange={(e) => updateFormData('condition', e.target.value)}
-            required
-          >
-            <option value="">Select condition</option>
-            <option value="good">Good - Minimal prep needed</option>
-            <option value="fair">Fair - Some prep required</option>
-            <option value="poor">Poor - Extensive prep needed</option>
-          </select>
-          <small>Condition affects prep time and cost</small>
-        </div>
-
-        <div className="form-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={formData.includeHardware || false}
-              onChange={(e) => updateFormData('includeHardware', e.target.checked)}
-            />
-            <span>Include hardware removal and replacement</span>
-          </label>
-          <small>Remove and reinstall handles, hinges, and hardware</small>
-        </div>
+      <div className="form-group">
+        <label htmlFor="condition">Current Condition *</label>
+        <select
+          id="condition"
+          value={formData.condition || ''}
+          onChange={(e) => updateFormData('condition', e.target.value)}
+          required
+        >
+          <option value="">Select condition</option>
+          <option value="good">Good - Minimal prep needed</option>
+          <option value="fair">Fair - Some prep required</option>
+          <option value="poor">Poor - Extensive prep needed</option>
+        </select>
       </div>
 
-      <div className="info-box" style={{
-        background: 'var(--color-bone)',
-        padding: '1.5rem',
-        borderRadius: '12px',
-        marginTop: '1.5rem',
-        fontSize: '0.95rem',
-        color: 'var(--color-steel-blue)',
-        border: '2px solid var(--color-calm-blue-gray)',
-        boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
-        fontWeight: '500'
-      }}>
-        <strong>Note:</strong> Garage door painting includes weather-resistant exterior paint, 
-        proper surface preparation, and protection of surrounding areas. Different materials 
-        and conditions affect prep time and final cost.
+      <div className="form-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeHardware || false}
+            onChange={(e) => updateFormData('includeHardware', e.target.checked)}
+          />
+          <span>Include hardware removal and replacement</span>
+        </label>
       </div>
+
     </div>
   );
 

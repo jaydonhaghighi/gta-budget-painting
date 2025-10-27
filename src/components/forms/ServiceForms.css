@@ -2122,3 +2122,759 @@
     font-size: 0.75rem;
   }
 }
+
+/* Fence Form Styles */
+.fence-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.fence-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.fence-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.fence-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.fence-form .form-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto 1rem auto;
+}
+
+.fence-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.fence-form .form-group:not(.form-row .form-group) {
+  margin-bottom: 1rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fence-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.fence-form .form-group input,
+.fence-form .form-group select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: white;
+  color: var(--color-soft-charcoal);
+  width: 100%;
+}
+
+.fence-form .form-group input:focus,
+.fence-form .form-group select:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+  transform: translateY(-1px);
+}
+
+.fence-form .form-group small {
+  font-size: 0.8rem;
+  color: var(--color-soft-charcoal);
+  margin-top: 0.25rem;
+  opacity: 0.7;
+}
+
+.fence-form .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.fence-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-soft-charcoal);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.fence-form .checkbox-label:hover {
+  background-color: rgba(44, 61, 75, 0.05);
+}
+
+.fence-form .checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: none;
+}
+
+.fence-form .checkbox-label input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px rgba(44, 61, 75, 0.1);
+}
+
+.fence-form .info-box {
+  background: var(--color-bone);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--color-steel-blue);
+  border: 2px solid var(--color-calm-blue-gray);
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fence-form .info-box ul {
+  margin-top: 0.75rem;
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.fence-form .info-box li {
+  margin-bottom: 0.5rem;
+}
+
+.fence-form .info-box li:last-child {
+  margin-bottom: 0;
+}
+
+/* Fence Form Mobile Responsive */
+@media (max-width: 768px) {
+  .fence-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem;
+    max-width: 400px;
+  }
+  
+  .fence-form .form-group input,
+  .fence-form .form-group select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .fence-form .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .fence-form .form-group small {
+    font-size: 0.75rem;
+  }
+
+  .fence-form .checkbox-group {
+    gap: 0.5rem;
+  }
+  
+  .fence-form .checkbox-label {
+    font-size: 0.85rem;
+    padding: 0.4rem;
+  }
+
+  .fence-form .info-box {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .fence-form .form-row {
+    gap: 0.5rem;
+    max-width: 320px;
+  }
+  
+  .fence-form .form-group input,
+  .fence-form .form-group select {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .fence-form .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .fence-form .form-group small {
+    font-size: 0.7rem;
+  }
+
+  .fence-form .form-header h3 {
+    font-size: 18px;
+  }
+  
+  .fence-form .form-header p {
+    font-size: 13px;
+  }
+
+  .fence-form .checkbox-group {
+    gap: 0.4rem;
+  }
+  
+  .fence-form .checkbox-label {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+
+  .fence-form .info-box {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .fence-form .info-box ul {
+    padding-left: 1rem;
+  }
+}
+
+/* Garage Door Form Styles */
+.garage-door-form .form-group-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(44, 61, 75, 0.1);
+  border: 2px solid var(--color-calm-blue-gray);
+}
+
+.garage-door-form .form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.garage-door-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.garage-door-form .form-header p {
+  color: var(--color-steel-blue);
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.garage-door-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.garage-door-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.garage-door-form .form-group label {
+  color: var(--color-steel-blue);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.garage-door-form .form-group input,
+.garage-door-form .form-group select {
+  padding: 0.6rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--color-steel-blue);
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.garage-door-form .form-group input:focus,
+.garage-door-form .form-group select:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+}
+
+.garage-door-form .form-group small {
+  color: var(--color-steel-blue);
+  font-size: 0.75rem;
+  margin-top: 0.15rem;
+  opacity: 0.7;
+}
+
+.garage-door-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-steel-blue);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.garage-door-form .checkbox-label:hover {
+  background-color: rgba(44, 61, 75, 0.05);
+}
+
+.garage-door-form .checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-steel-blue);
+}
+
+.garage-door-form .info-box {
+  background: var(--color-bone);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: var(--color-steel-blue);
+  border: 2px solid var(--color-calm-blue-gray);
+  box-shadow: 0 4px 12px rgba(44, 61, 75, 0.08);
+  font-weight: 500;
+}
+
+.garage-door-form .info-box strong {
+  color: var(--color-steel-blue);
+  font-weight: 700;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .garage-door-form .form-group-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .garage-door-form .form-header h3 {
+    font-size: 1.5rem;
+  }
+  
+  .garage-door-form .form-header p {
+    font-size: 0.9rem;
+  }
+  
+  .garage-door-form .form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  
+  .garage-door-form .form-group input,
+  .garage-door-form .form-group select {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .garage-door-form .form-group label {
+    font-size: 0.85rem;
+  }
+  
+  .garage-door-form .form-group small {
+    font-size: 0.7rem;
+  }
+  
+  .garage-door-form .info-box {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .garage-door-form .form-group-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .garage-door-form .form-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .garage-door-form .form-header p {
+    font-size: 0.85rem;
+  }
+  
+  .garage-door-form .form-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .garage-door-form .form-group input,
+  .garage-door-form .form-group select {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+  }
+  
+  .garage-door-form .form-group label {
+    font-size: 0.8rem;
+  }
+  
+  .garage-door-form .form-group small {
+    font-size: 0.65rem;
+  }
+  
+  .garage-door-form .checkbox-label {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+  
+  .garage-door-form .info-box {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Custom Quote Form Styles */
+.custom-quote-form .form-group-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(44, 61, 75, 0.1);
+  border: 2px solid var(--color-calm-blue-gray);
+}
+
+.custom-quote-form .form-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.custom-quote-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.custom-quote-form .form-header p {
+  color: var(--color-steel-blue);
+  font-size: 1rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.custom-quote-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.custom-quote-form .form-group label {
+  color: var(--color-steel-blue);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.custom-quote-form .form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--color-steel-blue);
+  background: white;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 150px;
+}
+
+.custom-quote-form .form-group textarea:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+}
+
+.custom-quote-form .form-group textarea.warning {
+  border-color: #e74c3c;
+}
+
+.custom-quote-form .character-count {
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+.custom-quote-form .character-count span {
+  font-size: 0.8rem;
+  color: var(--color-steel-blue);
+  opacity: 0.7;
+}
+
+.custom-quote-form .character-count span.warning {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.custom-quote-form .required {
+  color: #e74c3c;
+  font-weight: 600;
+}
+
+.custom-quote-form .optional {
+  color: var(--color-steel-blue);
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+.custom-quote-form .upload-area {
+  border: 2px dashed var(--color-calm-blue-gray);
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--color-bone);
+}
+
+.custom-quote-form .upload-area:hover:not(.disabled) {
+  border-color: var(--color-steel-blue);
+  background: rgba(44, 61, 75, 0.05);
+}
+
+.custom-quote-form .upload-area.drag-over {
+  border-color: var(--color-steel-blue);
+  background: rgba(44, 61, 75, 0.1);
+  border-style: solid;
+  transform: scale(1.02);
+}
+
+.custom-quote-form .upload-area.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.custom-quote-form .upload-content h4 {
+  color: var(--color-steel-blue);
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+.custom-quote-form .upload-content p {
+  color: var(--color-steel-blue);
+  font-size: 0.9rem;
+  margin: 0.25rem 0;
+  opacity: 0.8;
+}
+
+.custom-quote-form .upload-limit {
+  color: var(--color-steel-blue);
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.custom-quote-form .upload-icon {
+  width: 28px;
+  height: 28px;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-quote-form .upload-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.custom-quote-form .photo-gallery {
+  margin-top: 1rem;
+}
+
+.custom-quote-form .gallery-header {
+  margin-bottom: 1rem;
+}
+
+.custom-quote-form .gallery-header span {
+  color: var(--color-steel-blue);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.custom-quote-form .photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.custom-quote-form .photo-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-quote-form .photo-item img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.custom-quote-form .remove-photo {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  background: rgba(231, 76, 60, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.custom-quote-form .remove-photo:hover {
+  background: #e74c3c;
+}
+
+.custom-quote-form .submit-button {
+  background: var(--color-steel-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.custom-quote-form .submit-button:hover:not(:disabled) {
+  background: #2c3e50;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(44, 61, 75, 0.3);
+}
+
+.custom-quote-form .submit-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .custom-quote-form .form-group-container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .custom-quote-form .form-header h3 {
+    font-size: 1.5rem;
+  }
+  
+  .custom-quote-form .form-header p {
+    font-size: 0.9rem;
+  }
+  
+  .custom-quote-form .form-group textarea {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+  
+  .custom-quote-form .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .custom-quote-form .upload-area {
+    padding: 1.5rem;
+  }
+  
+  .custom-quote-form .upload-content h4 {
+    font-size: 1rem;
+  }
+  
+  .custom-quote-form .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .custom-quote-form .photo-item img {
+    height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-quote-form .form-group-container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .custom-quote-form .form-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .custom-quote-form .form-header p {
+    font-size: 0.85rem;
+  }
+  
+  .custom-quote-form .form-group textarea {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .custom-quote-form .form-group label {
+    font-size: 0.85rem;
+  }
+  
+  .custom-quote-form .upload-area {
+    padding: 1rem;
+  }
+  
+  .custom-quote-form .upload-content h4 {
+    font-size: 0.9rem;
+  }
+  
+  .custom-quote-form .upload-content p {
+    font-size: 0.8rem;
+  }
+  
+  .custom-quote-form .photo-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+  
+  .custom-quote-form .photo-item img {
+    height: 80px;
+  }
+  
+  .custom-quote-form .submit-button {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
