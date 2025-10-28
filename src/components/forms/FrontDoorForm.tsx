@@ -179,7 +179,7 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
         <div className="front-door-disclaimer">
           <div className="front-door-disclaimer-icon">⚠️</div>
           <div className="front-door-disclaimer-content">
-            <strong>Important:</strong> Front door painting must be combined with other interior or exterior services. Our professionals will confirm all details before the scheduled date.
+            <strong>Important:</strong> Front door painting must be combined with another service. Our professionals will confirm all details before the scheduled date.
           </div>
         </div>
       </div>

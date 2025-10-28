@@ -74,16 +74,77 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [cart])
 
   const addItem: CartContextValue['addItem'] = (item) => {
-    setCart((prev) => ({
-      items: [
-        ...prev.items,
-        {
-          ...item,
-          id: generateId('line'),
-          createdAt: Date.now(),
-        },
-      ],
-    }))
+    setCart((prev) => {
+      // For door services, check if we can combine with existing items
+      if (item.serviceId === 'interior-door' || item.serviceId === 'front-door') {
+        const existingDoorItem = prev.items.find(existingItem => 
+          existingItem.serviceId === item.serviceId &&
+          existingItem.formData?.includeDoorFrames === item.formData?.includeDoorFrames &&
+          existingItem.formData?.includeHardware === item.formData?.includeHardware &&
+          existingItem.formData?.includeWeatherproofing === item.formData?.includeWeatherproofing
+        );
+
+        if (existingDoorItem) {
+          // Combine with existing door item
+          const combinedDoorCount = (existingDoorItem.formData?.doorCount || 1) + (item.formData?.doorCount || 1);
+          const combinedFormData = {
+            ...existingDoorItem.formData,
+            doorCount: combinedDoorCount,
+            totalPrice: item.formData?.totalPrice + (existingDoorItem.formData?.totalPrice || 0)
+          };
+
+          // Recalculate estimate for combined doors
+          const basePrice = item.serviceId === 'interior-door' ? 75 : 150;
+          const framePrice = 25;
+          const hardwarePrice = item.serviceId === 'interior-door' ? 15 : 20;
+          const weatherproofingPrice = 25;
+
+          let totalPrice = combinedDoorCount * basePrice;
+          if (combinedFormData.includeDoorFrames) totalPrice += combinedDoorCount * framePrice;
+          if (combinedFormData.includeHardware) totalPrice += combinedDoorCount * hardwarePrice;
+          if (combinedFormData.includeWeatherproofing) totalPrice += combinedDoorCount * weatherproofingPrice;
+
+          const combinedEstimate = {
+            laborHours: Math.ceil(combinedDoorCount * (item.serviceId === 'interior-door' ? 1.5 : 2)),
+            setupCleanupHours: 1,
+            totalHours: Math.ceil(combinedDoorCount * (item.serviceId === 'interior-door' ? 1.5 : 2)) + 1,
+            laborCost: totalPrice * (item.serviceId === 'interior-door' ? 0.7 : 0.6),
+            paintGallons: Math.ceil(combinedDoorCount * (item.serviceId === 'interior-door' ? 0.25 : 0.5)),
+            paintCost: item.serviceId === 'interior-door' ? 
+              Math.ceil(combinedDoorCount * 0.25) * 45 : 
+              totalPrice * 0.25,
+            suppliesCost: totalPrice * (item.serviceId === 'interior-door' ? 0.3 : 0.1),
+            otherFees: totalPrice * (item.serviceId === 'interior-door' ? 0 : 0.05),
+            subtotal: totalPrice,
+            totalCost: totalPrice
+          };
+
+          return {
+            items: prev.items.map(existingItem => 
+              existingItem.id === existingDoorItem.id 
+                ? {
+                    ...existingItem,
+                    formData: combinedFormData,
+                    estimate: combinedEstimate
+                  }
+                : existingItem
+            )
+          };
+        }
+      }
+
+      // If no existing item to combine with, add as new item
+      return {
+        items: [
+          ...prev.items,
+          {
+            ...item,
+            id: generateId('line'),
+            createdAt: Date.now(),
+          },
+        ]
+      };
+    })
   }
 
   const removeItem = (id: string) => {
@@ -133,39 +194,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const hasInteriorDoors = cart.items.some(item => item.serviceId === 'interior-door');
     const hasFrontDoors = cart.items.some(item => item.serviceId === 'front-door');
     
+    // Count actual number of interior doors from form data
+    const totalInteriorDoors = cart.items
+      .filter(item => item.serviceId === 'interior-door')
+      .reduce((sum, item) => sum + (item.formData?.doorCount || 1), 0);
+    
     if (hasInteriorDoors) {
-      const hasOtherInteriorServices = cart.items.some(item => {
-        const interiorServices = [
-          'accent-wall', 'ceiling', 'small-bathroom', 'kitchen-walls', 
-          'kitchen-cabinet-painting', 'basement-painting', 'trimming-baseboards',
-          'bedroom-painting', 'staircase-painting', 'bathroom-vanity-cabinet'
-        ];
-        return interiorServices.includes(item.serviceId);
-      });
-
-      if (!hasOtherInteriorServices) {
+      // Check if there are any non-door services
+      const hasOtherServices = cart.items.some(item => 
+        item.serviceId !== 'interior-door' && item.serviceId !== 'front-door'
+      );
+      
+      // Allow checkout if 3+ interior doors OR paired with another service
+      if (totalInteriorDoors < 3 && !hasOtherServices) {
         return {
           canCheckout: false,
-          message: 'Interior door painting must be combined with other interior services. Please add another interior service to proceed with checkout.'
+          message: 'Interior door painting must be combined with another service, or you need at least 3 interior doors. Please add another service or more doors to proceed with checkout.'
         };
       }
     }
 
     if (hasFrontDoors) {
-      const hasOtherServices = cart.items.some(item => {
-        const allServices = [
-          'accent-wall', 'ceiling', 'small-bathroom', 'kitchen-walls', 
-          'kitchen-cabinet-painting', 'basement-painting', 'trimming-baseboards',
-          'bedroom-painting', 'staircase-painting', 'bathroom-vanity-cabinet',
-          'fence-painting', 'exterior-railings', 'garage-door', 'stucco-ceiling-removal'
-        ];
-        return allServices.includes(item.serviceId);
-      });
-
+      // Check if there are any non-door services
+      const hasOtherServices = cart.items.some(item => 
+        item.serviceId !== 'interior-door' && item.serviceId !== 'front-door'
+      );
+      
       if (!hasOtherServices) {
         return {
           canCheckout: false,
-          message: 'Front door painting must be combined with other interior or exterior services. Please add another service to proceed with checkout.'
+          message: 'Front door painting must be combined with another service. Please add another service to proceed with checkout.'
         };
       }
     }

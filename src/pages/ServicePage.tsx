@@ -215,9 +215,12 @@ const ServicePage = () => {
     }
   }, [service, category, navigate]);
 
-  // Restore saved booking state on mount
+  // Restore saved booking state on mount (only for custom painting or when editing)
   useEffect(() => {
-    if (serviceId && isRestoringState) {
+    const urlParams = new URLSearchParams(location.search);
+    const editId = urlParams.get('editId');
+    
+    if (serviceId && isRestoringState && (serviceId === 'custom-painting' || editId)) {
       try {
         const savedData = localStorage.getItem(`booking-${serviceId}`);
         if (savedData) {
@@ -243,15 +246,18 @@ const ServicePage = () => {
         localStorage.removeItem(`booking-${serviceId}`);
       }
       setIsRestoringState(false);
-    } else if (!serviceId) {
-      // No serviceId (like custom-painting route), don't restore state
+    } else if (!serviceId || (serviceId !== 'custom-painting' && !editId)) {
+      // No serviceId or not custom painting/editing, don't restore state
       setIsRestoringState(false);
     }
-  }, [serviceId, isRestoringState]);
+  }, [serviceId, isRestoringState, location.search]);
 
-  // Save booking state to localStorage whenever it changes
+  // Save booking state to localStorage whenever it changes (only for custom painting or when editing)
   useEffect(() => {
-    if (serviceId && !isRestoringState && step !== 'confirmation') {
+    const urlParams = new URLSearchParams(location.search);
+    const editId = urlParams.get('editId');
+    
+    if (serviceId && !isRestoringState && step !== 'confirmation' && (serviceId === 'custom-painting' || editId)) {
       try {
         const dataToSave: SavedBookingState = {
           step,
@@ -266,7 +272,7 @@ const ServicePage = () => {
         console.error('Error saving booking state:', error);
       }
     }
-  }, [serviceId, step, estimate, formData, customerInfo, preferredDate, isRestoringState]);
+  }, [serviceId, step, estimate, formData, customerInfo, preferredDate, isRestoringState, location.search]);
 
 
   if (!service && category !== 'custom') {
@@ -374,8 +380,8 @@ const ServicePage = () => {
         // Don't fail the entire submission if emails fail
       }
       
-      // Clear saved booking progress on successful submission
-      if (serviceId) {
+      // Clear saved booking progress on successful submission (only for custom painting)
+      if (serviceId && serviceId === 'custom-painting') {
         localStorage.removeItem(`booking-${serviceId}`);
         console.log('Booking submitted, cleared saved progress');
       }
@@ -391,7 +397,13 @@ const ServicePage = () => {
 
   // Clear saved data when user navigates back to services
   const handleBackToServices = () => {
-    if (serviceId && step !== 'confirmation') {
+    const urlParams = new URLSearchParams(location.search);
+    const editId = urlParams.get('editId');
+    
+    // Always clear localStorage for non-custom services when not editing
+    if (serviceId && serviceId !== 'custom-painting' && !editId) {
+      localStorage.removeItem(`booking-${serviceId}`);
+    } else if (serviceId && serviceId === 'custom-painting' && step !== 'confirmation' && !editId) {
       localStorage.removeItem(`booking-${serviceId}`);
     }
     

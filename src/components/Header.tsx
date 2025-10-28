@@ -33,6 +33,14 @@ function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 <li key={it.id} className="cart-item">
                   <div className="cart-item-main">
                     <div className="cart-item-title">{it.serviceName}</div>
+                    {(it.serviceId === 'interior-door' || it.serviceId === 'front-door') && it.formData?.doorCount && (
+                      <div className="cart-item-meta">
+                        {it.formData.doorCount} {it.formData.doorCount === 1 ? 'door' : 'doors'}
+                        {it.formData.includeDoorFrames && ' • Frames'}
+                        {it.formData.includeHardware && ' • Hardware'}
+                        {it.formData.includeWeatherproofing && ' • Weatherproofing'}
+                      </div>
+                    )}
                   </div>
                   <div className="cart-item-price">${it.estimate.totalCost.toFixed(2)}</div>
                   <button className="icon-btn" aria-label="Edit" onClick={() => {

@@ -28,6 +28,14 @@ const CartPage = () => {
                 <article key={it.id} className="cart-item">
                   <div className="cart-item-main">
                     <div className="cart-item-title">{it.serviceName}</div>
+                    {(it.serviceId === 'interior-door' || it.serviceId === 'front-door') && it.formData?.doorCount && (
+                      <div className="cart-item-meta">
+                        {it.formData.doorCount} {it.formData.doorCount === 1 ? 'door' : 'doors'}
+                        {it.formData.includeDoorFrames && ' • Frames included'}
+                        {it.formData.includeHardware && ' • Hardware included'}
+                        {it.formData.includeWeatherproofing && ' • Weatherproofing included'}
+                      </div>
+                    )}
                   </div>
                   <div className="cart-item-price">${it.estimate.totalCost.toFixed(2)}</div>
                   <button

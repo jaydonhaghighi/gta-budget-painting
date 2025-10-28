@@ -155,7 +155,7 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
         <div className="interior-door-disclaimer">
           <div className="interior-door-disclaimer-icon">⚠️</div>
           <div className="interior-door-disclaimer-content">
-            <strong>Important:</strong> Interior door painting must be combined with other interior services. Our professionals will confirm all details before the scheduled date.
+            <strong>Important:</strong> Interior door painting must be combined with another service, or you need at least 3 interior doors. Our professionals will confirm all details before the scheduled date.
           </div>
         </div>
       </div>
