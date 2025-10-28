@@ -1,0 +1,20 @@
+{
+  "name": "GTA Budget Painting",
+  "short_name": "GTA Painting",
+  "description": "Fast & Affordable painting services in the Greater Toronto Area",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/logo-tab.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "en-CA",
+  "orientation": "portrait-primary"
+}
