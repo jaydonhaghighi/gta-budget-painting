@@ -76,14 +76,18 @@ const Footer = () => {
                 Our Services
               </h4>
               <ul className="footer-list">
-                <li><a href="/services/accent-wall">Accent Wall Painting</a></li>
-                <li><a href="/services/ceiling">Ceiling Painting</a></li>
-                <li><a href="/services/small-bathroom">Bathroom Painting</a></li>
-                <li><a href="/services/bedroom-painting">Bedroom Painting</a></li>
-                <li><a href="/services/kitchen-walls">Kitchen Painting</a></li>
-                <li><a href="/services/trimming-baseboards">Trimming & Baseboards</a></li>
-                <li><a href="/services/front-door">Front Door Painting</a></li>
-                <li><a href="/services/fence-painting">Fence Painting</a></li>
+                <li><a href="/services/interior-painting/accent-wall">Accent Wall Painting</a></li>
+                <li><a href="/services/interior-painting/ceiling">Ceiling Painting</a></li>
+                <li><a href="/services/interior-painting/bathroom-vanity-cabinet">Bathroom Vanity Painting</a></li>
+                <li><a href="/services/interior-painting/interior-door">Interior Door Painting</a></li>
+                <li><a href="/services/interior-painting/trimming-baseboards">Trimming & Baseboards</a></li>
+                <li><a href="/services/interior-painting/small-bathroom">Bathroom Painting</a></li>
+                <li><a href="/services/interior-painting/bedroom-painting">Bedroom Painting</a></li>
+                <li><a href="/services/interior-painting/kitchen">Kitchen Painting</a></li>
+                <li><a href="/services/interior-painting/trimming-baseboards">Trimming & Baseboards</a></li>
+                <li><a href="/services/exterior-painting/front-door">Front Door Painting</a></li>
+                <li><a href="/services/exterior-painting/fence-painting">Fence Painting</a></li>
+                <li><a href="/services/exterior-painting/garage-door">Garage Door Painting</a></li>
               </ul>
             </div>
 

@@ -16,6 +16,7 @@ import ServicePage from './pages/ServicePage.tsx'
 import CartPage from './pages/CartPage.tsx'
 import CheckoutPage from './pages/CheckoutPage.tsx'
 import ContactUsPage from './pages/ContactUsPage.tsx'
+import GalleryPage from './pages/GalleryPage.tsx'
 import AdminPanel from './pages/AdminPanel.tsx'
 
 // Component to handle input scroll prevention
@@ -59,6 +60,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/contact" element={<ContactUsPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
           <Footer />
