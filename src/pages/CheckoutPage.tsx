@@ -79,13 +79,20 @@ const CheckoutPage = () => {
       setServiceAddedToCart(true);
       
       // Add the single service to cart when user leaves without completing purchase
-      addItem({
+      const cartItem: any = {
         serviceId: singleService.serviceId,
         serviceName: singleService.serviceName,
         serviceType: singleService.serviceType,
         estimate: singleService.estimate,
         formData: singleService.formData
-      });
+      };
+      
+      // Add custom project details if they exist
+      if (singleService.customProjectDetails) {
+        cartItem.customProjectDetails = singleService.customProjectDetails;
+      }
+      
+      addItem(cartItem);
     }
   };
 

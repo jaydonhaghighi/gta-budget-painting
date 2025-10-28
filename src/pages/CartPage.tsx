@@ -102,7 +102,7 @@ const CartPage = () => {
                     }
                   }}
                 >
-                  Checkout
+                  Submit Request
                 </Link>
                 <Link to="/services" className="btn-secondary">Continue Shopping</Link>
               </div>

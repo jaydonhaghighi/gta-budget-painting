@@ -519,9 +519,6 @@ const ServicePage = () => {
               {service?.type === 'custom-quote' && (
                 <CustomQuoteServiceForm
                   service={service}
-                  onSubmit={() => {
-                    setStep('customer-info');
-                  }}
                 />
               )}
             </div>

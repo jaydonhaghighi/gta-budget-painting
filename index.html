@@ -37,14 +37,7 @@
     <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href="https://gtabudgetpainting.com" />
     
-    <!-- Security Headers -->
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-Frame-Options" content="DENY">
-    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
-    <meta name="referrer" content="strict-origin-when-cross-origin">
-    
-    <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';">
+    <!-- Security Headers are now set via HTTP headers in _headers file -->
     
     <!-- Structured Data for Local Business -->
     <script type="application/ld+json">
@@ -120,8 +113,7 @@
     </script>
     
     <!-- Performance Optimizations -->
-    <link rel="preload" href="/logo-tab.png" as="image" type="image/png">
-    <link rel="preload" href="/src/home.tsx" as="script" crossorigin>
+    <link rel="preload" href="/logo.png" as="image" type="image/png">
     
     <!-- DNS Prefetch for external resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">

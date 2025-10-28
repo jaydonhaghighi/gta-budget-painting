@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { type Service } from '../../data/services';
 import './ServiceForms.css';
 
 interface CustomQuoteServiceFormProps {
   service: Service;
-  onSubmit: (formData: any, images: File[]) => void;
+  onSubmit?: (formData: any, images: File[]) => void;
 }
 
 const CustomQuoteServiceForm = ({ service, onSubmit }: CustomQuoteServiceFormProps) => {
@@ -13,6 +14,7 @@ const CustomQuoteServiceForm = ({ service, onSubmit }: CustomQuoteServiceFormPro
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
@@ -76,12 +78,45 @@ const CustomQuoteServiceForm = ({ service, onSubmit }: CustomQuoteServiceFormPro
       return;
     }
 
-    onSubmit({
+    // Create a temporary cart item for direct checkout
+    const customProjectItem = {
       serviceId: service.id,
       serviceName: service.name,
-      description,
-      imageCount: images.length
-    }, images);
+      serviceType: 'custom-quote' as const,
+      formData: {
+        description,
+        imageCount: images.length
+      },
+      estimate: {
+        totalCost: 0, // Custom projects don't have fixed pricing
+        laborHours: 0,
+        totalHours: 0,
+        setupCleanupHours: 0,
+        paintGallons: 0,
+        paintCost: 0,
+        laborCost: 0,
+        suppliesCost: 0,
+        otherFees: 0,
+        subtotal: 0
+      },
+      customProjectDetails: {
+        description,
+        images: images.map(img => ({
+          name: img.name,
+          size: img.size,
+          type: img.type
+        }))
+      }
+    };
+
+    // Navigate directly to checkout with the custom project
+    navigate('/checkout', {
+      state: {
+        isSingleService: true,
+        singleService: customProjectItem,
+        customImages: images
+      }
+    });
   };
 
   return (
@@ -180,7 +215,7 @@ const CustomQuoteServiceForm = ({ service, onSubmit }: CustomQuoteServiceFormPro
           onClick={handleSubmit}
           disabled={!description.trim() || images.length === 0}
         >
-          Submit for Quote
+          Proceed to Submit Request
         </button>
       </div>
     </div>
