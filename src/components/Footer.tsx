@@ -65,7 +65,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Services and Service Areas Container */}
+          {/* Services Container */}
           <div className="services-container">
             {/* Services */}
             <div className={`footer-section ${activeDropdown === 'services' ? 'active' : ''}`}>
@@ -88,25 +88,6 @@ const Footer = () => {
                 <li><a href="/services/exterior-painting/front-door">Front Door Painting</a></li>
                 <li><a href="/services/exterior-painting/fence-painting">Fence Painting</a></li>
                 <li><a href="/services/exterior-painting/garage-door">Garage Door Painting</a></li>
-              </ul>
-            </div>
-
-            {/* Service Areas */}
-            <div className={`footer-section ${activeDropdown === 'areas' ? 'active' : ''}`}>
-              <h4 
-                onClick={() => toggleDropdown('areas')}
-                className={activeDropdown === 'areas' ? 'active' : ''}
-              >
-                Service Areas
-              </h4>
-              <ul className="footer-list">
-                <li>Vaughan</li>
-                <li>Toronto</li>
-                <li>Mississauga</li>
-                <li>Brampton</li>
-                <li>Markham</li>
-                <li>Richmond Hill</li>
-                <li>Thornhill</li>
               </ul>
             </div>
           </div>
