@@ -5,10 +5,9 @@ import './ServiceForms.css';
 
 interface CustomQuoteServiceFormProps {
   service: Service;
-  onSubmit?: (formData: any, images: File[]) => void;
 }
 
-const CustomQuoteServiceForm = ({ service, onSubmit }: CustomQuoteServiceFormProps) => {
+const CustomQuoteServiceForm = ({ service }: CustomQuoteServiceFormProps) => {
   const [description, setDescription] = useState('');
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
