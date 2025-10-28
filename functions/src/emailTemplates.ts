@@ -54,7 +54,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: #a6b2b5; padding: 40px 30px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 100px; width: auto; margin-bottom: 0;" />
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 100px; width: auto; margin-bottom: 0;" />
                   </td>
                 </tr>
 
@@ -257,7 +257,7 @@ export const generateCartCustomerEmail = (data: any): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: #2b2b2b; padding: 24px 32px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 0;" />
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 0;" />
                   </td>
                 </tr>
 
@@ -406,8 +406,8 @@ export const generateCartAdminEmail = (data: any): string => {
                 <!-- Alert Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 20px 32px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 8px; filter: brightness(0) invert(1);" />
-                    <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">🚨 NEW CART ORDER</h1>
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 8px; filter: brightness(0) invert(1);" />
+                    <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">New Cart Order</h1>
                     <p style="margin: 4px 0 0; color: #ffffff; font-size: 14px; opacity: 0.9;">${lineItems.length} service${lineItems.length > 1 ? 's' : ''} • $${totals.grandTotal.toFixed(2)}</p>
                   </td>
                 </tr>
@@ -416,7 +416,7 @@ export const generateCartAdminEmail = (data: any): string => {
                 <tr>
                   <td style="background-color: #fef3c7; padding: 16px 32px; border-left: 4px solid #f59e0b;">
                     <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                      ⚡ URGENT: Review and respond within 24 hours
+                      Please review and respond within 24 hours
                     </p>
                   </td>
                 </tr>
@@ -539,7 +539,7 @@ export const generateCartAdminEmail = (data: any): string => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center">
-                          <a href="https://console.firebase.google.com/project/gta-budget-painting/firestore" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">View in Firestore</a>
+                          <a href="https://gtabudgetpainting.ca/admin" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">View in Admin Page</a>
                           <a href="tel:${customerInfo.phone}" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">Call Customer</a>
                         </td>
                       </tr>
@@ -590,7 +590,7 @@ export const generateInvoiceEmail = (invoiceData: any): string => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="width: 60%; vertical-align: top;">
-                          <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 15px;" />
+                          <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 15px;" />
                           <div>
                             <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px; font-weight: 700;">GTA Budget Painting</p>
                             <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px;">48 Fancamp Drive</p>
@@ -720,8 +720,8 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 30px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1);" />
-                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 700;">🔔 New Service Request</h1>
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1);" />
+                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 700;">New Service Request</h1>
                     <p style="margin: 10px 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">${serviceName}</p>
                   </td>
                 </tr>
@@ -730,7 +730,7 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                 <tr>
                   <td style="background-color: #fef3c7; padding: 20px; border-left: 4px solid #f59e0b;">
                     <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                      ⚡ Action Required: Review and respond within 24 hours
+                      Action Required: Review and respond within 24 hours
                     </p>
                   </td>
                 </tr>
@@ -842,7 +842,7 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 30px;">
                       <tr>
                         <td align="center">
-                          <a href="https://console.firebase.google.com/project/gta-budget-painting/firestore" style="display: inline-block; padding: 14px 32px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">View in Firestore</a>
+                          <a href="https://gtabudgetpainting.ca/admin" style="display: inline-block; padding: 14px 32px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">View in Admin Page</a>
                           <a href="tel:${customerInfo.phone}" style="display: inline-block; padding: 14px 32px; background-color: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">Call Customer</a>
                         </td>
                       </tr>

@@ -60,9 +60,9 @@ export const sendServiceRequestEmails = onRequest(
         });
 
         adminEmail = await resend.emails.send({
-          from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
+          from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
           to: "info@gtabudgetpainting.ca",
-          subject: `🛒 New Cart Order #${serviceRequestData.requestId} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
+          subject: `New Cart Order #${serviceRequestData.requestId} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
           html: generateCartAdminEmail(serviceRequestData),
         });
       } else {
@@ -75,9 +75,9 @@ export const sendServiceRequestEmails = onRequest(
         });
 
         adminEmail = await resend.emails.send({
-          from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
+          from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
           to: "info@gtabudgetpainting.ca",
-          subject: `🔔 New Service Request #${serviceRequestData.requestId} - ${serviceRequestData.serviceName}`,
+          subject: `New Service Request #${serviceRequestData.requestId} - ${serviceRequestData.serviceName}`,
           html: generateAdminEmail(serviceRequestData),
         });
       }
@@ -147,9 +147,9 @@ export const sendInvoiceEmail = onRequest(
       // Send notification to admin
       logger.info("Attempting to send admin notification to", {email: "info@gtabudgetpainting.ca"});
       const adminEmail = await resend.emails.send({
-        from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
+        from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
         to: "info@gtabudgetpainting.ca",
-        subject: `📄 Invoice #${invoiceData.invoiceNumber} Sent to ${invoiceData.clientInfo.name}`,
+        subject: `Invoice #${invoiceData.invoiceNumber} Sent to ${invoiceData.clientInfo.name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #2C3D4B;">Invoice Sent</h2>
