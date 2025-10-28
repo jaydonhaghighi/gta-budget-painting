@@ -12,7 +12,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  margin-bottom: 2rem;
   justify-content: center;
 }
 
@@ -23,11 +22,10 @@
 .footer-about p {
   text-align: left;
   line-height: 1.6;
-  margin-bottom: 1.5rem;
 }
 
 /* Footer Contact Item Styles */
-.footer-section .contact-item {
+.footer-section .footer-contact-item {
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
@@ -36,7 +34,6 @@
   border-bottom: none !important;
   text-align: left !important;
   font-weight: 500;
-  margin-bottom: 0.5rem !important;
 }
 
 .footer-section .contact-icon {
@@ -51,7 +48,7 @@
   font-size: inherit !important;
 }
 
-.footer-section .contact-item a {
+.footer-section .footer-contact-item a {
   color: var(--color-steel-blue);
   text-decoration: none;
   font-size: 0.9rem;
@@ -64,7 +61,6 @@
 
 .footer-section h3 {
   font-family: var(--font-heading);
-  margin-bottom: 1rem;
   color: var(--color-steel-blue);
   font-weight: 600;
   font-size: 1.4rem;
@@ -72,7 +68,6 @@
 
 .footer-section h4 {
   font-family: var(--font-heading);
-  margin-bottom: 1.25rem;
   color: var(--color-steel-blue);
   font-weight: 600;
   font-size: 1.1rem;
@@ -83,21 +78,17 @@
   color: var(--color-steel-blue);
   line-height: 1.6;
   font-size: 0.95rem;
-  margin-bottom: 1rem;
   opacity: 0.8;
 }
 
 /* Footer Lists */
 .footer-list {
   list-style: none;
-  padding: 0;
-  margin: 0;
 }
 
 .footer-list li {
   font-family: var(--font-body);
   color: var(--color-steel-blue);
-  margin-bottom: 0.75rem;
   font-size: 0.9rem;
   opacity: 0.8;
 }
@@ -146,7 +137,6 @@
 }
 
 .services-container .footer-section h4 {
-  margin-bottom: 1rem;
   font-size: 1.1rem;
   font-weight: 600;
   color: var(--color-steel-blue);
@@ -176,47 +166,30 @@
   justify-content: flex-start;
 }
 
-/* Contact and Social sections within footer-about */
-.contact-info-section,
-.social-section {
-  margin-top: 1.5rem;
-}
-
 .contact-info-section h4,
 .social-section h4 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--color-steel-blue);
-  margin-bottom: 0.75rem;
 }
 
 /* Contact and Social Container - Side by Side */
 .contact-social-container {
   display: flex;
   gap: 2rem;
-  margin-top: 1.5rem;
 }
 
 .contact-social-container .contact-info-section,
 .contact-social-container .social-section {
   flex: 1;
-  margin-top: 0;
 }
 
 /* Footer social links alignment */
 .footer-section .social-links {
   display: flex !important;
   flex-direction: column !important;
-  margin-top: 0.5rem;
-  margin-bottom: 0;
   align-items: flex-start;
   justify-content: flex-start;
-}
-
-/* Align Follow Us header with social links */
-.footer-section h5 {
-  margin-bottom: 0.5rem;
-  margin-top: 1rem;
 }
 
 /* Footer lists - left aligned */
@@ -262,7 +235,6 @@
 }
 
 .footer-larger-jobs-link {
-  margin-top: 0.5rem;
   background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
   color: white;
   text-decoration: none;
@@ -307,7 +279,6 @@
 .footer-bottom p {
   font-family: var(--font-body);
   color: var(--color-bone);
-  margin: 0;
   font-size: 0.9rem;
 }
 
@@ -321,13 +292,11 @@
 .footer-keywords span {
   display: block;
   max-width: 800px;
-  margin: 0 auto;
 }
 
 .business-hours h5 {
   font-family: var(--font-heading);
   color: var(--color-steel-blue);
-  margin: 1rem 0 0.5rem 0;
   font-size: 1rem;
   font-weight: 600;
   text-align: left;
@@ -335,14 +304,12 @@
 
 .business-hours p {
   font-size: 0.85rem;
-  margin: 0 0 1rem 0;
   line-height: 1.4;
 }
 
 .footer-section h4 {
   font-family: var(--font-heading);
   color: var(--color-steel-blue);
-  margin: 1rem 0 0.7rem 0;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -350,7 +317,6 @@
 .footer-section h5 {
   font-family: var(--font-heading);
   color: var(--color-steel-blue);
-  margin: 1rem 0 0.5rem 0;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -413,7 +379,6 @@
   
   .footer-content {
     gap: 1.5rem;
-    margin-bottom: 1rem;
     grid-template-columns: 1fr;
   }
   
@@ -450,7 +415,7 @@
     height: 16px !important;
   }
   
-  .footer-section .contact-item a {
+  .footer-section .footer-contact-item a {
     font-size: 0.8rem;
   }
   
@@ -493,7 +458,6 @@
     background: var(--color-steel-blue);
     color: white;
     padding: 0.75rem 1rem;
-    margin: 0;
     cursor: pointer;
     position: relative;
     user-select: none;

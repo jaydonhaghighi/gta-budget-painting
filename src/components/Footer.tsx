@@ -26,11 +26,11 @@ const Footer = () => {
               {/* Contact Info */}
               <div className="contact-info-section">
                 <h4>Contact Us</h4>
-                <div className="contact-item">
+                <div className="footer-contact-item">
                   <img src="/telephone.png" alt="Phone" className="contact-icon" />
                   <a href="tel:6473907181">(647) 390-7181</a>
                 </div>
-                <div className="contact-item">
+                <div className="footer-contact-item">
                   <img src="/mail.png" alt="Email" className="contact-icon" />
                   <a href="mailto:info@gtabudgetpainting.ca">info@gtabudgetpainting.ca</a>
                 </div>

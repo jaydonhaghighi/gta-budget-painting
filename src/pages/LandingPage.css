@@ -742,7 +742,7 @@
 
 .company-text {
   background: var(--color-background);
-  padding: 3rem;
+  padding: 2rem;
   gap: 3rem;
   border-radius: 16px;
   border: 1px solid var(--color-grey-100);
@@ -804,7 +804,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 40vh;
 }
 
 .areas-text {
@@ -937,7 +936,7 @@
   }
   
   .areas-text {
-    padding: 3rem;
+    padding: 2rem;
     max-width: 100%;
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -1019,11 +1018,10 @@
   
   .areas-content {
     min-height: auto;
-    padding: 0.5rem;
   }
   
   .areas-text {
-    padding: 2rem;
+    padding: 1.5rem;
     max-width: 100%;
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -1143,8 +1141,7 @@
   }
 
   .company-description {
-    font-size: 13px;
-    line-height: 1.4;
+    line-height: 1.7;
   }
 
   .company-image {
@@ -1188,5 +1185,10 @@
     max-width: 100%;
     grid-template-columns: 1fr;
     gap: 0.5rem;
+  }
+
+  .company-description {
+    font-size: 13px;
+    line-height: 1.4;
   }
 }
