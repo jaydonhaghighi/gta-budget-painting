@@ -12,10 +12,14 @@ import {
   calculateGarageDoor,
   calculatePopcornCeilingRemoval,
   calculateBathroomVanityCabinet,
+  calculateStairway,
+  calculateHallway,
+  calculateDrywallRepair,
   RATES,
   PRODUCTION_RATES,
   type EstimateBreakdown
 } from '../../utils/estimationCalculator';
+import ImageUpload from './ImageUpload';
 import './ServiceForms.css';
 
 interface CalculatedServiceFormProps {
@@ -35,11 +39,20 @@ const CalculatedServiceForm = ({
 }: CalculatedServiceFormProps) => {
   const [formData, setFormData] = useState<any>(initialFormData);
   const [, setEstimate] = useState<EstimateBreakdown | null>(initialEstimate);
+  const [images, setImages] = useState<File[]>(initialFormData.images || []);
+  const [imagePreviews, setImagePreviews] = useState<string[]>(initialFormData.imagePreviews || []);
+  const [isFinishTypeGuideOpen, setIsFinishTypeGuideOpen] = useState<boolean>(false);
 
   // Update form data when initial props change (e.g., when navigating back or restored from localStorage)
   useEffect(() => {
     if (initialFormData && Object.keys(initialFormData).length > 0) {
       setFormData(initialFormData);
+      if (initialFormData.images) {
+        setImages(initialFormData.images);
+      }
+      if (initialFormData.imagePreviews) {
+        setImagePreviews(initialFormData.imagePreviews);
+      }
       // Recalculate estimate with restored data
       calculateEstimate(initialFormData);
     }
@@ -56,6 +69,18 @@ const CalculatedServiceForm = ({
     const newData = { ...formData, [field]: value };
     setFormData(newData);
     calculateEstimate(newData);
+    
+    // Notify parent component of the change
+    if (onFormDataChange) {
+      onFormDataChange(newData);
+    }
+  };
+
+  const handleImagesChange = (newImages: File[], newPreviews: string[]) => {
+    setImages(newImages);
+    setImagePreviews(newPreviews);
+    const newData = { ...formData, images: newImages, imagePreviews: newPreviews };
+    setFormData(newData);
     
     // Notify parent component of the change
     if (onFormDataChange) {
@@ -121,6 +146,28 @@ const CalculatedServiceForm = ({
       case 'bathroom-vanity-cabinet':
         return data.width && data.height && data.depth && 
                parseFloat(data.width) > 0 && parseFloat(data.height) > 0 && parseFloat(data.depth) > 0;
+      
+      case 'stairway-painting':
+        const stairwayBaseValid = data.stairLength && data.stairHeight &&
+               parseFloat(data.stairLength) > 0 && parseFloat(data.stairHeight) > 0;
+        if (!stairwayBaseValid) return false;
+        // If ceiling is included, length and width are required
+        if (data.includeCeiling) {
+          return data.ceilingLength && data.ceilingWidth &&
+                 parseFloat(data.ceilingLength) > 0 && parseFloat(data.ceilingWidth) > 0;
+        }
+        return true;
+      
+      case 'hallway-painting':
+        return data.hallwayLength && data.hallwayHeight && data.hallwayWidth &&
+               parseFloat(data.hallwayLength) > 0 && parseFloat(data.hallwayHeight) > 0 && parseFloat(data.hallwayWidth) > 0;
+      
+      case 'drywall-repair':
+        // Accept either room dimensions OR wall area
+        const hasRoomDimensions = data.roomLength && data.roomWidth && 
+                                  parseFloat(data.roomLength) > 0 && parseFloat(data.roomWidth) > 0;
+        const hasWallArea = data.wallArea && parseFloat(data.wallArea) > 0;
+        return (hasRoomDimensions || hasWallArea) && data.wallCondition;
       
       default:
         return false;
@@ -212,7 +259,8 @@ const CalculatedServiceForm = ({
                 includeBaseboards: bedroom.includeBaseboards === true,
                 baseboardProfile: bedroom.baseboardProfile || 'low',
                 doors: parseInt(bedroom.doors) || 0,
-                windows: parseInt(bedroom.windows) || 0
+                windows: parseInt(bedroom.windows) || 0,
+                includeCloset: bedroom.includeCloset === true
               })));
             }
           }
@@ -345,6 +393,68 @@ const CalculatedServiceForm = ({
           }
           break;
 
+        case 'stairway-painting':
+          if (data.stairLength && data.stairHeight) {
+            const wallArea = 2 * (parseFloat(data.stairLength) || 0) * (parseFloat(data.stairHeight) || 0);
+            const ceilingArea = data.includeCeiling && data.ceilingLength && data.ceilingWidth
+              ? (parseFloat(data.ceilingLength) || 0) * (parseFloat(data.ceilingWidth) || 0)
+              : 0;
+            newEstimate = calculateStairway({
+              wallArea,
+              numberOfStairs: parseInt(data.numberOfStairs) || 0,
+              staircaseType: data.staircaseType || 'straight',
+              includeCeiling: data.includeCeiling || false,
+              ceilingArea
+            });
+          }
+          break;
+
+        case 'hallway-painting':
+          if (data.hallwayLength && data.hallwayHeight && data.hallwayWidth) {
+            const hallwayLength = parseFloat(data.hallwayLength) || 0;
+            const hallwayHeight = parseFloat(data.hallwayHeight) || 0;
+            const hallwayWidth = parseFloat(data.hallwayWidth) || 0;
+            const wallArea = 2 * hallwayLength * hallwayHeight;
+            // Auto-calculate ceiling area from hallway dimensions
+            const ceilingArea = data.includeCeiling ? hallwayLength * hallwayWidth : 0;
+            // Auto-calculate baseboard linear feet (both sides of hallway)
+            const baseboardLinearFeet = data.includeBaseboards ? hallwayLength * 2 : 0;
+            newEstimate = calculateHallway({
+              wallArea,
+              includeCeiling: data.includeCeiling || false,
+              ceilingArea,
+              includeBaseboards: data.includeBaseboards || false,
+              baseboardLinearFeet
+            });
+          }
+          break;
+
+        case 'drywall-repair':
+          if (data.wallCondition) {
+            // Calculate wall area from room dimensions if provided, otherwise use direct wallArea
+            let wallArea = parseFloat(data.wallArea) || 0;
+            if (!wallArea && data.roomLength && data.roomWidth && data.roomHeight) {
+              const length = parseFloat(data.roomLength) || 0;
+              const width = parseFloat(data.roomWidth) || 0;
+              const height = parseFloat(data.roomHeight) || 9;
+              wallArea = 2 * (length * height + width * height);
+            }
+            
+            if (wallArea > 0) {
+              newEstimate = calculateDrywallRepair({
+                wallArea: wallArea,
+                wallCondition: data.wallCondition,
+                hasHoles: data.hasHoles || false,
+                hasCracks: data.hasCracks || false,
+                hasDents: data.hasDents || false,
+                hasWaterDamage: data.hasWaterDamage || false,
+                includePriming: data.includePriming !== false,
+                includePainting: data.includePainting || false
+              });
+            }
+          }
+          break;
+
         default:
           break;
       }
@@ -397,6 +507,14 @@ const CalculatedServiceForm = ({
           />
         </div>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -435,6 +553,14 @@ const CalculatedServiceForm = ({
           />
         </div>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -536,6 +662,13 @@ const CalculatedServiceForm = ({
         </div>
       </div>
 
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -574,6 +707,14 @@ const CalculatedServiceForm = ({
           </select>
         </div>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -693,19 +834,27 @@ const CalculatedServiceForm = ({
           <li>Large open basements are perfect for budget transformation</li>
         </ul>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
   const renderBedroomForm = () => {
     const bedrooms = formData.bedrooms || [
-      { id: 1, type: '', length: '', width: '', height: '', includeCeiling: false, includeBaseboards: false, baseboardProfile: 'low', doors: '', windows: '' }
+      { id: 1, type: '', length: '', width: '', height: '', includeCeiling: false, includeBaseboards: false, baseboardProfile: 'low', doors: '', windows: '', includeCloset: false }
     ];
 
     const addBedroom = () => {
       const newId = Math.max(...bedrooms.map((b: any) => b.id), 0) + 1;
       updateFormData('bedrooms', [
         ...bedrooms,
-        { id: newId, type: '', length: '', width: '', height: '', includeCeiling: false, includeBaseboards: false, baseboardProfile: 'low', doors: '', windows: '' }
+        { id: newId, type: '', length: '', width: '', height: '', includeCeiling: false, includeBaseboards: false, baseboardProfile: 'low', doors: '', windows: '', includeCloset: false }
       ]);
     };
 
@@ -823,6 +972,14 @@ const CalculatedServiceForm = ({
                     />
                     <span>Include Baseboards</span>
                   </label>
+                  <label className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={bedroom.includeCloset || false}
+                      onChange={(e) => updateBedroom(bedroom.id, 'includeCloset', e.target.checked)}
+                    />
+                    <span>Include Closet</span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -861,6 +1018,14 @@ const CalculatedServiceForm = ({
         >
           + Add Another Bedroom
         </button>
+
+        <ImageUpload
+          images={images}
+          imagePreviews={imagePreviews}
+          onImagesChange={handleImagesChange}
+          maxImages={5}
+          required={false}
+        />
       </div>
     );
   };
@@ -954,6 +1119,14 @@ const CalculatedServiceForm = ({
           />
         </div>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -1292,6 +1465,14 @@ const CalculatedServiceForm = ({
         }}>
           <strong>Note:</strong> Cabinet painting requires detailed preparation, multiple coats, and careful attention to hardware. Each section can have different dimensions and hardware requirements.
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
   };
@@ -1316,7 +1497,6 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('linearFeet', e.target.value)}
             required
           />
-          <small>Total length of fence to be painted/stained</small>
         </div>
 
         <div className="form-group">
@@ -1331,7 +1511,6 @@ const CalculatedServiceForm = ({
             onChange={(e) => updateFormData('height', e.target.value)}
             required
           />
-          <small>Typical residential fence: 4-6 feet</small>
         </div>
       </div>
 
@@ -1361,18 +1540,37 @@ const CalculatedServiceForm = ({
           <option value="stain-semi-transparent">Stain - Semi-Transparent</option>
           <option value="stain-solid">Stain - Solid Color</option>
         </select>
-        <small>Choose your preferred finish type</small>
       </div>
 
-      <div className="info-box">
-        <strong>Finish Type Guide:</strong>
-        <ul>
-          <li><strong>Paint:</strong> Solid color, most durable, hides imperfections (2 coats)</li>
-          <li><strong>Transparent Stain:</strong> Shows natural wood grain, minimal color (1 coat)</li>
-          <li><strong>Semi-Transparent Stain:</strong> Some wood grain visible, moderate color (1 coat)</li>
-          <li><strong>Solid Color Stain:</strong> Hides wood grain, opaque color, more durable (1 coat)</li>
-        </ul>
+      <div className="info-box collapsible">
+        <button
+          type="button"
+          className="collapsible-header"
+          onClick={() => setIsFinishTypeGuideOpen(!isFinishTypeGuideOpen)}
+          aria-expanded={isFinishTypeGuideOpen}
+        >
+          <strong>Finish Type Guide</strong>
+          <span className="collapsible-icon">{isFinishTypeGuideOpen ? '▼' : '▶'}</span>
+        </button>
+        {isFinishTypeGuideOpen && (
+          <div className="collapsible-content">
+            <ul>
+              <li><strong>Paint:</strong> Solid color, most durable, hides imperfections (2 coats)</li>
+              <li><strong>Transparent Stain:</strong> Shows natural wood grain, minimal color (1 coat)</li>
+              <li><strong>Semi-Transparent Stain:</strong> Some wood grain visible, moderate color (1 coat)</li>
+              <li><strong>Solid Color Stain:</strong> Hides wood grain, opaque color, more durable (1 coat)</li>
+            </ul>
+          </div>
+        )}
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -1443,6 +1641,14 @@ const CalculatedServiceForm = ({
           <li>UV protection for lasting durability</li>
         </ul>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -1526,6 +1732,14 @@ const CalculatedServiceForm = ({
           <li>Overhead work on angles</li>
         </ul>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -1625,6 +1839,13 @@ const CalculatedServiceForm = ({
         </label>
       </div>
 
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -1685,6 +1906,14 @@ const CalculatedServiceForm = ({
           </label>
         </div>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
 
@@ -1775,8 +2004,423 @@ const CalculatedServiceForm = ({
           </label>
         </div>
       </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
     </div>
   );
+
+  const renderStairwayForm = () => (
+    <div className="form-group-container stairway-form">
+      <div className="form-header">
+        <h3>Stairway Measurements</h3>
+        <p>Enter your stairway measurements to receive an <b>estimate</b></p>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="stairLength">Stairway Length (ft) *</label>
+          <input
+            type="number"
+            id="stairLength"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 15"
+            value={formData.stairLength || ''}
+            onChange={(e) => updateFormData('stairLength', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="stairHeight">Wall Height (ft) *</label>
+          <input
+            type="number"
+            id="stairHeight"
+            min="7"
+            step="0.5"
+            placeholder="e.g. 9"
+            value={formData.stairHeight || ''}
+            onChange={(e) => updateFormData('stairHeight', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="numberOfStairs">Number of Stairs</label>
+          <input
+            type="number"
+            id="numberOfStairs"
+            min="0"
+            placeholder="e.g. 12"
+            value={formData.numberOfStairs || ''}
+            onChange={(e) => updateFormData('numberOfStairs', e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="staircaseType">Staircase Type</label>
+        <select
+          id="staircaseType"
+          value={formData.staircaseType || ''}
+          onChange={(e) => updateFormData('staircaseType', e.target.value)}
+        >
+          <option value="">Select type</option>
+          <option value="straight">Straight Staircase</option>
+          <option value="l-shaped">L-Shaped Staircase</option>
+          <option value="u-shaped">U-Shaped Staircase</option>
+          <option value="spiral">Spiral Staircase</option>
+          <option value="curved">Curved Staircase</option>
+        </select>
+      </div>
+
+      <h4>Additional Services</h4>
+      <div className="checkbox-group">
+        <label style={{ marginBottom: '0.25rem' }} className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeCeiling || false}
+            onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
+          />
+          <span>Include Ceiling</span>
+        </label>
+      </div>
+
+      {formData.includeCeiling && (
+        <div>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="ceilingLength">Ceiling Length (ft) *</label>
+              <input
+                type="number"
+                id="ceilingLength"
+                min="1"
+                step="0.5"
+                placeholder="e.g. 15"
+                value={formData.ceilingLength || ''}
+                onChange={(e) => updateFormData('ceilingLength', e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="ceilingWidth">Ceiling Width (ft) *</label>
+              <input
+                type="number"
+                id="ceilingWidth"
+                min="1"
+                step="0.5"
+                placeholder="e.g. 3.5"
+                value={formData.ceilingWidth || ''}
+                onChange={(e) => updateFormData('ceilingWidth', e.target.value)}
+                required
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
+    </div>
+  );
+
+  const renderHallwayForm = () => (
+    <div className="form-group-container hallway-form">
+      <div className="form-header">
+        <h3>Hallway Measurements</h3>
+        <p>Enter your hallway measurements to receive an <b>estimate</b></p>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="hallwayLength">Hallway Length (ft) *</label>
+          <input
+            type="number"
+            id="hallwayLength"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 20"
+            value={formData.hallwayLength || ''}
+            onChange={(e) => updateFormData('hallwayLength', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="hallwayHeight">Wall Height (ft) *</label>
+          <input
+            type="number"
+            id="hallwayHeight"
+            min="7"
+            step="0.5"
+            placeholder="e.g. 8"
+            value={formData.hallwayHeight || ''}
+            onChange={(e) => updateFormData('hallwayHeight', e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="hallwayWidth">Hallway Width (ft) *</label>
+          <input
+            type="number"
+            id="hallwayWidth"
+            min="1"
+            step="0.5"
+            placeholder="e.g. 4"
+            value={formData.hallwayWidth || ''}
+            onChange={(e) => updateFormData('hallwayWidth', e.target.value)}
+            required
+          />
+        </div>
+      </div>
+
+      <h4>Additional Services</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeCeiling || false}
+            onChange={(e) => updateFormData('includeCeiling', e.target.checked)}
+          />
+          <span>Include Ceiling</span>
+        </label>
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeBaseboards || false}
+            onChange={(e) => updateFormData('includeBaseboards', e.target.checked)}
+          />
+          <span>Include Baseboards</span>
+        </label>
+      </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
+    </div>
+  );
+
+  const renderDrywallRepairForm = () => {
+    // Calculate wall area from room dimensions if provided
+    const calculateWallArea = (length: number, width: number, height: number) => {
+      if (length && width && height) {
+        // Calculate all 4 walls: 2 × (length × height) + 2 × (width × height)
+        return 2 * (length * height + width * height);
+      }
+      return null;
+    };
+
+    // Auto-calculate wall area when dimensions change
+    const roomLength = parseFloat(formData.roomLength) || 0;
+    const roomWidth = parseFloat(formData.roomWidth) || 0;
+    const roomHeight = parseFloat(formData.roomHeight) || 9; // Default to 9ft
+    const calculatedArea = calculateWallArea(roomLength, roomWidth, roomHeight);
+
+    // Auto-infer damage types based on condition to simplify form
+    const handleConditionChange = (condition: string) => {
+      const newData = { ...formData, wallCondition: condition };
+      
+      // Auto-set common damage types based on condition
+      if (condition === 'minor') {
+        newData.hasHoles = true;
+        newData.hasDents = true;
+        newData.hasCracks = false;
+        newData.hasWaterDamage = false;
+      } else if (condition === 'moderate') {
+        newData.hasHoles = true;
+        newData.hasCracks = true;
+        newData.hasDents = true;
+        newData.hasWaterDamage = false;
+      } else if (condition === 'extensive') {
+        newData.hasHoles = true;
+        newData.hasCracks = true;
+        newData.hasDents = true;
+        // Water damage is optional even for extensive - preserve existing value
+        newData.hasWaterDamage = newData.hasWaterDamage || false;
+      }
+      
+      setFormData(newData);
+      calculateEstimate(newData);
+      if (onFormDataChange) {
+        onFormDataChange(newData);
+      }
+    };
+
+    // Update wall area when dimensions change
+    const handleDimensionChange = (field: string, value: string) => {
+      const newData = { ...formData, [field]: value };
+      
+      // If changing room dimensions, clear preset wallArea and recalculate
+      if (field === 'roomLength' || field === 'roomWidth' || field === 'roomHeight') {
+        const newLength = field === 'roomLength' ? parseFloat(value) || 0 : roomLength;
+        const newWidth = field === 'roomWidth' ? parseFloat(value) || 0 : roomWidth;
+        const newHeight = field === 'roomHeight' ? parseFloat(value) || 9 : roomHeight;
+        const newArea = calculateWallArea(newLength, newWidth, newHeight);
+        
+        // If we have a calculated area, use it; otherwise clear wallArea
+        if (newArea && newLength > 0 && newWidth > 0) {
+          newData.wallArea = newArea.toFixed(0);
+        } else if (newLength === 0 || newWidth === 0) {
+          // Clear wallArea if dimensions are incomplete
+          newData.wallArea = '';
+        }
+      }
+      
+      setFormData(newData);
+      calculateEstimate(newData);
+      if (onFormDataChange) {
+        onFormDataChange(newData);
+      }
+    };
+
+    return (
+      <div className="form-group-container drywall-repair-form">
+        <div className="form-header">
+          <h3>Drywall Repair Assessment</h3>
+          <p>Enter your repair details to receive an <b>estimate</b></p>
+        </div>
+
+        {/* Area Input */}
+        <div className="form-group">
+          <label htmlFor="wallArea">Wall Area Needing Repair (sq ft) *</label>
+          <input
+            type="number"
+            id="wallArea"
+            min="0"
+            step="1"
+            placeholder="e.g. 150"
+            value={calculatedArea ? calculatedArea.toFixed(0) : (formData.wallArea || '')}
+            onChange={(e) => {
+              const value = e.target.value;
+              const newData = {
+                ...formData,
+                wallArea: value,
+                // Clear room dimensions when manually entering
+                roomLength: value ? '' : formData.roomLength,
+                roomWidth: value ? '' : formData.roomWidth
+              };
+              setFormData(newData);
+              calculateEstimate(newData);
+              if (onFormDataChange) {
+                onFormDataChange(newData);
+              }
+            }}
+            required
+          />
+        </div>
+
+        {/* Room Dimensions Option */}
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="roomLength">Room Length (ft)</label>
+            <input
+              type="number"
+              id="roomLength"
+              min="1"
+              step="0.5"
+              placeholder="e.g. 12"
+              value={formData.roomLength || ''}
+              onChange={(e) => handleDimensionChange('roomLength', e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="roomWidth">Room Width (ft)</label>
+            <input
+              type="number"
+              id="roomWidth"
+              min="1"
+              step="0.5"
+              placeholder="e.g. 10"
+              value={formData.roomWidth || ''}
+              onChange={(e) => handleDimensionChange('roomWidth', e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="roomHeight">Wall Height (ft)</label>
+            <input
+              type="number"
+              id="roomHeight"
+              min="7"
+              step="0.5"
+              placeholder="9"
+              value={formData.roomHeight || '9'}
+              onChange={(e) => handleDimensionChange('roomHeight', e.target.value)}
+            />
+          </div>
+        </div>
+
+        {calculatedArea && (
+          <div className="form-group">
+            <small style={{ color: '#28a745', fontWeight: '500' }}>
+              Calculated wall area: {calculatedArea.toFixed(0)} sq ft
+            </small>
+          </div>
+        )}
+
+        {/* Damage Level */}
+        <div className="form-group">
+          <label htmlFor="wallCondition">Damage Level *</label>
+          <select
+            id="wallCondition"
+            value={formData.wallCondition || ''}
+            onChange={(e) => handleConditionChange(e.target.value)}
+            required
+          >
+            <option value="">Select damage level</option>
+            <option value="minor">Minor - A few small holes, light scratches, minor dings</option>
+            <option value="moderate">Moderate - Multiple holes, some cracks, noticeable dents</option>
+            <option value="extensive">Extensive - Many holes, large cracks, significant damage</option>
+          </select>
+        </div>
+
+        {/* Water damage checkbox - only shown for moderate/extensive */}
+        {(formData.wallCondition === 'moderate' || formData.wallCondition === 'extensive') && (
+          <div className="form-group">
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={formData.hasWaterDamage || false}
+                onChange={(e) => updateFormData('hasWaterDamage', e.target.checked)}
+              />
+              <span>Also includes water damage or stains</span>
+            </label>
+          </div>
+        )}
+
+        {/* Additional Services */}
+        <h4>Additional Services</h4>
+        <div className="checkbox-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={formData.includePainting || false}
+              onChange={(e) => updateFormData('includePainting', e.target.checked)}
+            />
+            <span>Include painting after repair (priming included automatically)</span>
+          </label>
+        </div>
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
+      </div>
+    );
+  };
 
   const renderForm = () => {
     switch (service.id) {
@@ -1808,6 +2452,12 @@ const CalculatedServiceForm = ({
         return renderPopcornCeilingRemovalForm();
       case 'bathroom-vanity-cabinet':
         return renderBathroomVanityCabinetForm();
+      case 'stairway-painting':
+        return renderStairwayForm();
+      case 'hallway-painting':
+        return renderHallwayForm();
+      case 'drywall-repair':
+        return renderDrywallRepairForm();
       default:
         return <p>Form not implemented for this service</p>;
     }

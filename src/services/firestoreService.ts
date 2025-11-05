@@ -292,6 +292,9 @@ const getServiceName = (serviceId: string): string => {
     'staircase-painting': 'Staircase Painting',
     'fence-painting': 'Fence Painting',
     'exterior-railings': 'Exterior Railings',
+    'stairway-painting': 'Stairway Painting',
+    'hallway-painting': 'Hallway Painting',
+    'drywall-repair': 'Drywall Repair',
     'custom-project': 'Custom Project',
   };
   return serviceNames[serviceId] || 'Unknown Service';
@@ -310,6 +313,9 @@ const getServiceType = (serviceId: string): 'flat-rate' | 'calculated' | 'custom
     'staircase-painting': 'calculated',
     'fence-painting': 'calculated',
     'exterior-railings': 'calculated',
+    'stairway-painting': 'calculated',
+    'hallway-painting': 'calculated',
+    'drywall-repair': 'calculated',
     'custom-project': 'custom-quote',
   };
   return serviceTypes[serviceId] || 'custom-quote';

@@ -147,7 +147,7 @@ const Header = () => {
             
             <Link to="/#areas-served-section" className="nav-link" onClick={() => handleSectionClick('#areas-served-section')}>Areas Served</Link>
             <Link to="/gallery" className="nav-link">Gallery</Link>
-            <Link to="/contact" className="nav-link">Contact Us</Link>
+            <Link to="/contact-us" className="nav-link">Contact Us</Link>
           </nav>
 
           {/* Phone Number */}
@@ -196,7 +196,7 @@ const Header = () => {
               
               <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
               <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
-              <Link to="/contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
+              <Link to="/contact-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
             </div>
           </nav>
         </header>

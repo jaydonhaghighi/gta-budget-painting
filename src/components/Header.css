@@ -41,7 +41,7 @@
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.2s ease;
-  z-index: 1000;
+  z-index: 1002;
   margin-top: 0.5rem;
 }
 
@@ -134,7 +134,7 @@
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  z-index: 1002;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,9 +337,15 @@ body.sticky-bar-present .floating-cart-btn {
 /* Header */
 .header {
   background: linear-gradient(180deg, #e8ecf0 0%, #d8dce0 100%);
-  position: static;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border-bottom: 8px solid var(--color-steel-blue);
+  width: 100%;
+  contain: layout style;
 }
 
 .header .container {
@@ -429,7 +435,7 @@ body.sticky-bar-present .floating-cart-btn {
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 .dropdown-menu.open {
@@ -535,7 +541,7 @@ body.sticky-bar-present .floating-cart-btn {
   border-radius: 16px;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
   transition: right 0.3s ease;
-  z-index: 1000;
+  z-index: 1002;
   flex-direction: column;
 }
 
@@ -689,7 +695,7 @@ body.sticky-bar-present .floating-cart-btn {
   justify-content: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 1002;
 }
 
 /* Move cart button up when sticky bar is present */

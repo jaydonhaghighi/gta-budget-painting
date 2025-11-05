@@ -1,7 +1,70 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ContactUsPage.css';
+import { db } from '../firebase';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
 
 const ContactUsPage: React.FC = () => {
+  const [inqName, setInqName] = useState('');
+  const [inqEmail, setInqEmail] = useState('');
+  const [inqPhone, setInqPhone] = useState('');
+  const [inqMessage, setInqMessage] = useState('');
+  const [inqSubmitting, setInqSubmitting] = useState(false);
+  const [inqSuccess, setInqSuccess] = useState<string | null>(null);
+  const [inqError, setInqError] = useState<string | null>(null);
+
+  const handleQuickInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setInqSubmitting(true);
+    setInqSuccess(null);
+    setInqError(null);
+
+    try {
+      if (!inqName || (!inqEmail && !inqPhone) || !inqMessage) {
+        throw new Error('Please provide your name, a contact (email or phone), and a brief message.');
+      }
+
+      const inquiryId = (await addDoc(collection(db, 'inquiries'), {
+        name: inqName,
+        email: inqEmail || null,
+        phone: inqPhone || null,
+        message: inqMessage,
+        source: 'contact-page-quick-form',
+        createdAt: Timestamp.fromDate(new Date())
+      })).id;
+
+      // Send emails via Cloud Function
+      try {
+        await fetch('https://us-central1-gta-budget-painting.cloudfunctions.net/sendInquiryEmails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: inqName,
+            email: inqEmail || undefined,
+            phone: inqPhone || undefined,
+            message: inqMessage,
+            inquiryId: inquiryId,
+            createdAt: new Date().toISOString()
+          }),
+        });
+      } catch (emailError) {
+        console.error('Failed to send email notification:', emailError);
+        // Don't fail the submission if email fails
+      }
+
+      setInqSuccess('Thanks! We received your message and will reach out shortly.');
+      setInqName('');
+      setInqEmail('');
+      setInqPhone('');
+      setInqMessage('');
+    } catch (err: any) {
+      setInqError(err?.message || 'Failed to send. Please try again.');
+    } finally {
+      setInqSubmitting(false);
+    }
+  };
+
   return (
     <div className="contact-page">
       {/* Hero Section */}
@@ -103,6 +166,62 @@ const ContactUsPage: React.FC = () => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* Quick Inquiry Card */}
+            <div className="contact-card">
+              <div className="contact-card-header">
+                <div className="contact-card-icon">
+                  <div className="contact-item-icon">
+                    <img src="/mail.png" alt="Quick Inquiry" />
+                  </div>
+                </div>
+                <h3>Quick Inquiry</h3>
+              </div>
+              <div className="contact-card-content">
+                <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit}>
+                  <div className="qi-row">
+                    <input
+                      type="text"
+                      placeholder="Your name *"
+                      value={inqName}
+                      onChange={(e) => setInqName(e.target.value)}
+                      aria-label="Your name"
+                    />
+                  </div>
+                  <div className="qi-row qi-grid-2">
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={inqEmail}
+                      onChange={(e) => setInqEmail(e.target.value)}
+                      aria-label="Email"
+                    />
+                    <input
+                      type="tel"
+                      placeholder="Phone"
+                      value={inqPhone}
+                      onChange={(e) => setInqPhone(e.target.value)}
+                      aria-label="Phone"
+                    />
+                  </div>
+                  <div className="qi-row">
+                    <textarea
+                      placeholder="How can we help? *"
+                      rows={3}
+                      value={inqMessage}
+                      onChange={(e) => setInqMessage(e.target.value)}
+                      aria-label="Message"
+                    />
+                  </div>
+                  <small className="qi-hint">Name and either Email or Phone are required.</small>
+                  {inqError && <div className="qi-alert error">{inqError}</div>}
+                  {inqSuccess && <div className="qi-alert success">{inqSuccess}</div>}
+                  <button className="btn-primary" type="submit" disabled={inqSubmitting}>
+                    {inqSubmitting ? 'Sending…' : 'Send Message'}
+                  </button>
+                </form>
               </div>
             </div>
 

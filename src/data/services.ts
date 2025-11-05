@@ -97,6 +97,36 @@ export const allServices: Service[] = [
     backgroundImage: '/services/bathroom-vanity/3daac1d98424946cbc1dbff549cdd7b7.jpg',
     description: 'Professional bathroom vanity cabinet painting services that refresh and modernize your bathroom storage with expert techniques and quality finishes.',
   },
+  {
+    id: 'stairway-painting',
+    name: 'Stairway Painting',
+    type: 'calculated',
+    icon: '',
+    category: 'interior',
+    backgroundImage: '/services/staircase/5db3f964bfa951122f3c9defc12d3bfb.jpg',
+    description: 'Professional stairway painting services that handle complex stairwells with expert techniques and safety equipment.',
+    seoDescription: 'Professional stairway painting services in Toronto and the GTA. Our expert painters specialize in stairway painting with proper safety equipment and techniques for complex stairwells. We use premium paints, careful surface preparation, and professional methods to ensure flawless results in these challenging spaces. Whether you need straight, curved, or spiral staircases painted, our licensed and insured team delivers exceptional quality. Serving residential properties across Toronto, Vaughan, Markham, and surrounding areas with competitive pricing.'
+  },
+  {
+    id: 'hallway-painting',
+    name: 'Hallway Painting',
+    type: 'calculated',
+    icon: '',
+    category: 'interior',
+    backgroundImage: '/services/hallway/329e24c429f539051a368741a0cea969.jpg',
+    description: 'Professional hallway painting services that create seamless transitions and enhance the flow of your home.',
+    seoDescription: 'Professional hallway painting services in Toronto and the GTA. Our expert painters specialize in hallway painting that creates seamless transitions and enhances the flow of your home. We use premium paints, proper surface preparation, and professional techniques to ensure flawless results in these high-traffic areas. Whether you need narrow hallways, wide corridors, or multiple hallways painted, our licensed and insured team delivers exceptional quality. Serving residential properties across Toronto, Mississauga, Brampton, and surrounding areas with competitive pricing.'
+  },
+  {
+    id: 'drywall-repair',
+    name: 'Drywall Repair',
+    type: 'calculated',
+    icon: '',
+    category: 'interior',
+    backgroundImage: '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.png',
+    description: 'Professional drywall repair services that fix holes, cracks, and damage to restore your walls to perfect condition before painting.',
+    seoDescription: 'Professional drywall repair services in Toronto and the GTA. Our expert painters specialize in drywall repair that fixes holes, cracks, and damage to restore your walls to perfect condition. We use professional techniques, quality materials, and proper finishing to ensure seamless repairs that are ready for painting. Whether you need small hole repairs, large patch work, or crack repairs, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Mississauga, Brampton, and surrounding areas with competitive pricing.'
+  },
   
   // Flat Rate Services (Interior)
   {

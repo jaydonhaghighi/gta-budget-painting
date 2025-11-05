@@ -292,6 +292,7 @@
 .footer-keywords span {
   display: block;
   max-width: 800px;
+  justify-self: center;
 }
 
 .business-hours h5 {

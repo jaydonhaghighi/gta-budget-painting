@@ -293,12 +293,17 @@
 .bathroom-form .checkbox-group {
   display: flex;
   flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .bathroom-form .checkbox-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0;
+  margin: 0;
   font-size: 0.9rem;
   color: var(--color-soft-charcoal);
   cursor: pointer;
@@ -634,14 +639,17 @@
 .bedroom-form .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .bedroom-form .checkbox-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0;
+  margin: 0;
   font-size: 0.9rem;
   color: var(--color-soft-charcoal);
   cursor: pointer;
@@ -666,7 +674,7 @@
   font-size: 1rem;
   font-weight: 700;
   width: 100%;
-  margin-top: 1rem;
+  margin: 1rem 0 2rem 0;
   box-shadow: 0 8px 24px rgba(44, 61, 75, 0.2);
   transition: all 0.3s ease;
   border: none;
@@ -837,14 +845,17 @@
 .kitchen-walls-form .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .kitchen-walls-form .checkbox-label {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0;
+  margin: 0;
   font-size: 0.9rem;
   color: var(--color-soft-charcoal);
   cursor: pointer;
@@ -1012,8 +1023,9 @@
 .popcorn-ceiling-form .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .popcorn-ceiling-form .checkbox-label {
@@ -1023,8 +1035,9 @@
   font-size: 0.9rem;
   color: var(--color-soft-charcoal);
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 6px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
   transition: background-color 0.2s ease;
 }
 
@@ -1074,12 +1087,12 @@
   }
 
   .popcorn-ceiling-form .checkbox-group {
-    gap: 0.5rem;
+    gap: 0;
   }
   
   .popcorn-ceiling-form .checkbox-label {
     font-size: 0.85rem;
-    padding: 0.4rem;
+    padding: 0;
   }
 
   .popcorn-ceiling-form .info-box {
@@ -1112,12 +1125,12 @@
   }
 
   .popcorn-ceiling-form .checkbox-group {
-    gap: 0.4rem;
+    gap: 0;
   }
   
   .popcorn-ceiling-form .checkbox-label {
     font-size: 0.8rem;
-    padding: 0.3rem;
+    padding: 0;
   }
 
   .popcorn-ceiling-form .info-box {
@@ -1279,12 +1292,11 @@
   padding: 0.75rem;
   border-radius: 8px;
   transition: background-color 0.2s ease;
-  border: 1px solid #f0f0f0;
+  border: none;
 }
 
 .interior-door-checkbox-label:hover {
   background-color: rgba(44, 61, 75, 0.05);
-  border-color: var(--color-calm-blue-gray);
 }
 
 .interior-door-checkbox-label input[type="checkbox"] {
@@ -1628,7 +1640,9 @@
 .bathroom-vanity-form .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .bathroom-vanity-form .checkbox-label {
@@ -1638,7 +1652,9 @@
   font-size: 0.9rem;
   color: var(--color-soft-charcoal);
   cursor: pointer;
-  border-radius: 6px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
   transition: background-color 0.2s ease;
 }
 
@@ -1696,11 +1712,12 @@
   }
 
   .bathroom-vanity-form .checkbox-group {
-    gap: 0.5rem;
+    gap: 0;
   }
   
   .bathroom-vanity-form .checkbox-label {
     font-size: 0.85rem;
+    padding: 0;
   }
 
   .bathroom-vanity-form .info-box {
@@ -1742,11 +1759,12 @@
   }
 
   .bathroom-vanity-form .checkbox-group {
-    gap: 0.4rem;
+    gap: 0;
   }
   
   .bathroom-vanity-form .checkbox-label {
     font-size: 0.8rem;
+    padding: 0;
   }
 
   .bathroom-vanity-form .info-box {
@@ -1894,15 +1912,14 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  border: 2px solid var(--color-calm-blue-gray);
+  border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: white;
+  background: transparent;
 }
 
 .front-door-checkbox-label:hover {
-  border-color: var(--color-steel-blue);
   background: rgba(44, 61, 75, 0.02);
 }
 
@@ -1951,7 +1968,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .front-door-btn-proceed:hover {
@@ -2210,8 +2227,9 @@
 .fence-form .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .fence-form .checkbox-label {
@@ -2221,8 +2239,9 @@
   font-size: 0.9rem;
   color: var(--color-soft-charcoal);
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 6px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
   transition: background-color 0.2s ease;
 }
 
@@ -2249,9 +2268,48 @@
   color: var(--color-steel-blue);
   border: 2px solid var(--color-calm-blue-gray);
   width: 100%;
-  max-width: 600px;
+  max-width: 400px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.fence-form .info-box.collapsible {
+  padding: 0;
+  overflow: hidden;
+}
+
+.fence-form .info-box .collapsible-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--color-steel-blue);
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.fence-form .info-box .collapsible-header:hover {
+  background-color: rgba(44, 61, 75, 0.05);
+}
+
+.fence-form .info-box .collapsible-header strong {
+  font-weight: 600;
+}
+
+.fence-form .info-box .collapsible-icon {
+  font-size: 0.8rem;
+  color: var(--color-steel-blue);
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.fence-form .info-box .collapsible-content {
+  padding: 0 1rem 0.75rem 1rem;
 }
 
 .fence-form .info-box ul {
@@ -2292,12 +2350,12 @@
   }
 
   .fence-form .checkbox-group {
-    gap: 0.5rem;
+    gap: 0;
   }
   
   .fence-form .checkbox-label {
     font-size: 0.85rem;
-    padding: 0.4rem;
+    padding: 0;
   }
 
   .fence-form .info-box {
@@ -2335,12 +2393,12 @@
   }
 
   .fence-form .checkbox-group {
-    gap: 0.4rem;
+    gap: 0;
   }
   
   .fence-form .checkbox-label {
     font-size: 0.8rem;
-    padding: 0.3rem;
+    padding: 0;
   }
 
   .fence-form .info-box {
@@ -2434,8 +2492,9 @@
   color: var(--color-steel-blue);
   font-weight: 500;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 8px;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
   transition: background-color 0.3s ease;
 }
 
@@ -2550,6 +2609,636 @@
   }
 }
 
+/* Stairway Form Styles */
+.stairway-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.stairway-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.stairway-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.stairway-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.stairway-form .form-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto 1rem auto;
+}
+
+.stairway-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.stairway-form .form-group:not(.form-row .form-group) {
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stairway-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.stairway-form .form-group input,
+.stairway-form .form-group select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: white;
+  color: var(--color-soft-charcoal);
+  width: 100%;
+}
+
+.stairway-form .form-group input:focus,
+.stairway-form .form-group select:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+  transform: translateY(-1px);
+}
+
+.stairway-form .form-group small {
+  margin-top: 0.25rem;
+  color: var(--color-soft-charcoal);
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.stairway-form .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.stairway-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-soft-charcoal);
+  cursor: pointer;
+}
+
+.stairway-form .checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: none;
+}
+
+.stairway-form .checkbox-label input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px rgba(44, 61, 75, 0.1);
+}
+
+.stairway-form h4 {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+.stairway-form .info-box {
+  max-width: 600px;
+  margin: 1.5rem auto 0 auto;
+}
+
+/* Stairway Form Mobile Responsive */
+@media (max-width: 768px) {
+  .stairway-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem;
+    max-width: 400px;
+  }
+  
+  .stairway-form .form-group input,
+  .stairway-form .form-group select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .stairway-form .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .stairway-form .form-group:not(.form-row .form-group) {
+    max-width: 400px;
+  }
+
+  .stairway-form .checkbox-group {
+    max-width: 400px;
+  }
+
+  .stairway-form .info-box {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stairway-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+  
+  .stairway-form .form-group input,
+  .stairway-form .form-group select {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .stairway-form .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .stairway-form .form-header h3 {
+    font-size: 18px;
+  }
+  
+  .stairway-form .form-header p {
+    font-size: 13px;
+  }
+
+  .stairway-form .form-group:not(.form-row .form-group) {
+    max-width: 100%;
+  }
+
+  .stairway-form .checkbox-group {
+    max-width: 100%;
+  }
+
+  .stairway-form .info-box {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .stairway-form .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem;
+  }
+}
+
+/* Hallway Form Styles */
+.hallway-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.hallway-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.hallway-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.hallway-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.hallway-form .form-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto 1rem auto;
+}
+
+.hallway-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.hallway-form .form-group:not(.form-row .form-group) {
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hallway-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.hallway-form .form-group input,
+.hallway-form .form-group select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: white;
+  color: var(--color-soft-charcoal);
+  width: 100%;
+}
+
+.hallway-form .form-group input:focus,
+.hallway-form .form-group select:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+  transform: translateY(-1px);
+}
+
+.hallway-form .form-group small {
+  margin-top: 0.25rem;
+  color: var(--color-soft-charcoal);
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.hallway-form .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hallway-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-soft-charcoal);
+  cursor: pointer;
+}
+
+.hallway-form .checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: none;
+}
+
+.hallway-form .checkbox-label input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px rgba(44, 61, 75, 0.1);
+}
+
+.hallway-form h4 {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hallway-form .info-box {
+  max-width: 600px;
+  margin: 1.5rem auto 0 auto;
+}
+
+/* Hallway Form Mobile Responsive */
+@media (max-width: 768px) {
+  .hallway-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem;
+    max-width: 400px;
+  }
+  
+  .hallway-form .form-group input,
+  .hallway-form .form-group select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .hallway-form .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .hallway-form .form-group:not(.form-row .form-group) {
+    max-width: 400px;
+  }
+
+  .hallway-form .checkbox-group {
+    max-width: 400px;
+  }
+
+  .hallway-form .info-box {
+    max-width: 400px;
+  }
+
+  .hallway-form h4 {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hallway-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+  
+  .hallway-form .form-group input,
+  .hallway-form .form-group select {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .hallway-form .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .hallway-form .form-header h3 {
+    font-size: 18px;
+  }
+  
+  .hallway-form .form-header p {
+    font-size: 13px;
+  }
+
+  .hallway-form .form-group:not(.form-row .form-group) {
+    max-width: 100%;
+  }
+
+  .hallway-form .checkbox-group {
+    max-width: 100%;
+  }
+
+  .hallway-form .info-box {
+    max-width: 100%;
+  }
+
+  .hallway-form h4 {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .hallway-form .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem;
+  }
+}
+
+/* Drywall Repair Form Styles */
+.drywall-repair-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.drywall-repair-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.drywall-repair-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.drywall-repair-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.drywall-repair-form .form-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto 1rem auto;
+}
+
+.drywall-repair-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.drywall-repair-form .form-group:not(.form-row .form-group) {
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.drywall-repair-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.drywall-repair-form .form-group input,
+.drywall-repair-form .form-group select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: white;
+  color: var(--color-soft-charcoal);
+  width: 100%;
+}
+
+.drywall-repair-form .form-group input:focus,
+.drywall-repair-form .form-group select:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+  transform: translateY(-1px);
+}
+
+.drywall-repair-form .form-group small {
+  margin-top: 0.25rem;
+  color: var(--color-soft-charcoal);
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.drywall-repair-form .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.drywall-repair-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-soft-charcoal);
+  cursor: pointer;
+}
+
+.drywall-repair-form .checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: none;
+}
+
+.drywall-repair-form .checkbox-label input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px rgba(44, 61, 75, 0.1);
+}
+
+.drywall-repair-form h4 {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Drywall Repair Form Mobile Responsive */
+@media (max-width: 768px) {
+  .drywall-repair-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem;
+    max-width: 400px;
+  }
+  
+  .drywall-repair-form .form-group input,
+  .drywall-repair-form .form-group select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .drywall-repair-form .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .drywall-repair-form .form-group:not(.form-row .form-group) {
+    max-width: 400px;
+  }
+
+  .drywall-repair-form .checkbox-group {
+    max-width: 400px;
+  }
+
+  .drywall-repair-form h4 {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .drywall-repair-form .form-row {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+  
+  .drywall-repair-form .form-group input,
+  .drywall-repair-form .form-group select {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .drywall-repair-form .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .drywall-repair-form .form-header h3 {
+    font-size: 18px;
+  }
+  
+  .drywall-repair-form .form-header p {
+    font-size: 13px;
+  }
+
+  .drywall-repair-form .form-group:not(.form-row .form-group) {
+    max-width: 100%;
+  }
+
+  .drywall-repair-form .checkbox-group {
+    max-width: 100%;
+  }
+
+  .drywall-repair-form h4 {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 320px) {
+  .drywall-repair-form .form-row {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem;
+  }
+}
+
 /* Custom Quote Form Styles */
 .custom-quote-form .form-group-container {
   max-width: 600px;
@@ -2643,6 +3332,7 @@
   font-weight: 400;
 }
 
+.upload-area,
 .custom-quote-form .upload-area {
   border: 2px dashed var(--color-calm-blue-gray);
   border-radius: 8px;
@@ -2651,13 +3341,43 @@
   cursor: pointer;
   transition: all 0.3s ease;
   background: var(--color-bone);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
+/* Ensure form-groups containing upload areas span full width */
+.form-group:has(.upload-area) {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Add top margin to Project Photos label */
+.form-group:has(.upload-area) label {
+  margin-top: 1rem;
+}
+
+/* Form-specific overrides for upload areas */
+.stairway-form .form-group:has(.upload-area),
+.hallway-form .form-group:has(.upload-area),
+.drywall-repair-form .form-group:has(.upload-area),
+.bedroom-form .form-group:has(.upload-area),
+.popcorn-ceiling-form .form-group:has(.upload-area),
+.bathroom-vanity-form .form-group:has(.upload-area),
+.fence-form .form-group:has(.upload-area) {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.upload-area:hover:not(.disabled),
 .custom-quote-form .upload-area:hover:not(.disabled) {
   border-color: var(--color-steel-blue);
   background: rgba(44, 61, 75, 0.05);
 }
 
+.upload-area.drag-over,
 .custom-quote-form .upload-area.drag-over {
   border-color: var(--color-steel-blue);
   background: rgba(44, 61, 75, 0.1);
@@ -2665,11 +3385,13 @@
   transform: scale(1.02);
 }
 
+.upload-area.disabled,
 .custom-quote-form .upload-area.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+.upload-content h4,
 .custom-quote-form .upload-content h4 {
   color: var(--color-steel-blue);
   font-size: 1.1rem;
@@ -2677,19 +3399,24 @@
   font-weight: 600;
 }
 
+.upload-content p,
 .custom-quote-form .upload-content p {
-  color: var(--color-steel-blue);
-  font-size: 0.9rem;
-  margin: 0.25rem 0;
-  opacity: 0.8;
+  color: var(--color-steel-blue) !important;
+  font-size: 0.9rem !important;
+  margin: 0.25rem 0 !important;
+  opacity: 0.8 !important;
+  line-height: 1.4 !important;
+  font-family: var(--font-body) !important;
 }
 
+.upload-limit,
 .custom-quote-form .upload-limit {
   color: var(--color-steel-blue);
   font-size: 0.8rem;
   opacity: 0.6;
 }
 
+.upload-icon,
 .custom-quote-form .upload-icon {
   width: 28px;
   height: 28px;
@@ -2699,32 +3426,38 @@
   justify-content: center;
 }
 
+.upload-icon img,
 .custom-quote-form .upload-icon img {
   width: 100%;
   height: 100%;
   object-fit: contain;
 }
 
+.photo-gallery,
 .custom-quote-form .photo-gallery {
   margin-top: 1rem;
 }
 
+.gallery-header,
 .custom-quote-form .gallery-header {
   margin-bottom: 1rem;
 }
 
+.gallery-header span,
 .custom-quote-form .gallery-header span {
   color: var(--color-steel-blue);
   font-weight: 600;
   font-size: 0.9rem;
 }
 
+.photo-grid,
 .custom-quote-form .photo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
 }
 
+.photo-item,
 .custom-quote-form .photo-item {
   position: relative;
   border-radius: 8px;
@@ -2732,6 +3465,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.photo-item img,
 .custom-quote-form .photo-item img {
   width: 100%;
   height: 120px;
@@ -2739,6 +3473,7 @@
   display: block;
 }
 
+.remove-photo,
 .custom-quote-form .remove-photo {
   position: absolute;
   top: 0.25rem;
@@ -2757,6 +3492,7 @@
   transition: background-color 0.3s ease;
 }
 
+.remove-photo:hover,
 .custom-quote-form .remove-photo:hover {
   background: #e74c3c;
 }
@@ -2811,19 +3547,45 @@
     font-size: 0.9rem;
   }
   
+  .upload-area,
   .custom-quote-form .upload-area {
-    padding: 1.5rem;
+    padding: 1.25rem 1rem;
+    min-height: auto;
   }
   
+  .upload-content h4,
   .custom-quote-form .upload-content h4 {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    margin: 0.4rem 0;
   }
   
+  .upload-content p,
+  .custom-quote-form .upload-content p {
+    font-size: 0.85rem !important;
+    margin: 0.2rem 0 !important;
+    opacity: 0.8 !important;
+    line-height: 1.3 !important;
+  }
+  
+  .upload-limit,
+  .custom-quote-form .upload-limit {
+    font-size: 0.75rem;
+  }
+  
+  .upload-icon,
+  .custom-quote-form .upload-icon {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto 0.4rem;
+  }
+  
+  .photo-grid,
   .custom-quote-form .photo-grid {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 0.75rem;
   }
   
+  .photo-item img,
   .custom-quote-form .photo-item img {
     height: 100px;
   }
@@ -2852,29 +3614,391 @@
     font-size: 0.85rem;
   }
   
+  .upload-area,
   .custom-quote-form .upload-area {
-    padding: 1rem;
+    padding: 0.875rem 0.75rem;
+    min-height: auto;
+    border-width: 1.5px;
   }
   
+  .upload-content h4,
   .custom-quote-form .upload-content h4 {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    margin: 0.3rem 0;
   }
   
+  .upload-content p,
   .custom-quote-form .upload-content p {
-    font-size: 0.8rem;
+    font-size: 0.75rem !important;
+    margin: 0.15rem 0 !important;
+    line-height: 1.3 !important;
+    opacity: 0.8 !important;
   }
   
+  .upload-limit,
+  .custom-quote-form .upload-limit {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  
+  .upload-icon,
+  .custom-quote-form .upload-icon {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto 0.3rem;
+  }
+  
+  .gallery-header span,
+  .custom-quote-form .gallery-header span {
+    font-size: 0.85rem;
+  }
+  
+  .photo-grid,
   .custom-quote-form .photo-grid {
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 0.5rem;
   }
   
+  .photo-item img,
   .custom-quote-form .photo-item img {
     height: 80px;
   }
   
+  .remove-photo,
+  .custom-quote-form .remove-photo {
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+  }
+  
   .custom-quote-form .submit-button {
     padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Standard Form Components - Used across all forms */
+
+/* Count Input (for +/- number inputs) */
+.count-input {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 200px;
+}
+
+.count-btn {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--color-calm-blue-gray);
+  background: white;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.count-btn:hover:not(:disabled) {
+  background: var(--color-steel-blue);
+  color: white;
+  border-color: var(--color-steel-blue);
+  transform: scale(1.05);
+}
+
+.count-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.count-input input[type="number"] {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  background: white;
+}
+
+.count-input input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+}
+
+/* Total Price Display */
+.total-price-display {
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, var(--color-steel-blue) 0%, var(--color-calm-blue-gray) 100%);
+  border-radius: 12px;
+  color: white;
+  margin-top: 1rem;
+}
+
+.total-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.total-amount {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Primary Button */
+.btn-primary {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: var(--color-steel-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2c3e50;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(44, 61, 75, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Standard Checkbox Group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: transparent;
+  font-size: 0.95rem;
+  color: var(--color-soft-charcoal);
+  margin: 0;
+}
+
+.checkbox-label:hover {
+  background: rgba(44, 61, 75, 0.02);
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-steel-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-label span {
+  flex: 1;
+}
+
+/* Info Box */
+.info-box {
+  background: var(--color-bone);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--color-steel-blue);
+  border: 2px solid var(--color-calm-blue-gray);
+  box-shadow: 0 2px 8px rgba(44, 61, 75, 0.08);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.info-box strong {
+  font-weight: 600;
+}
+
+/* Interior Door Form Styles */
+.interior-door-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.interior-door-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.interior-door-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.interior-door-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.interior-door-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.interior-door-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.interior-door-form .form-group small {
+  margin-top: 0.25rem;
+  color: var(--color-soft-charcoal);
+  opacity: 0.7;
+  font-size: 0.85rem;
+}
+
+/* Front Door Form Styles */
+.front-door-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.front-door-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.front-door-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.front-door-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.front-door-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.front-door-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.front-door-form .form-group small {
+  margin-top: 0.25rem;
+  color: var(--color-soft-charcoal);
+  opacity: 0.7;
+  font-size: 0.85rem;
+}
+
+/* Mobile Responsive for Standard Components */
+@media (max-width: 768px) {
+  .count-input {
+    max-width: 180px;
+  }
+
+  .count-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .total-price-display {
+    padding: 1.25rem;
+  }
+
+  .total-amount {
+    font-size: 1.75rem;
+  }
+
+  .btn-primary {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
+
+  .interior-door-form .form-group,
+  .front-door-form .form-group {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .count-input {
+    max-width: 160px;
+  }
+
+  .count-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+
+  .total-price-display {
+    padding: 1rem;
+  }
+
+  .total-label {
+    font-size: 0.85rem;
+  }
+
+  .total-amount {
+    font-size: 1.5rem;
+  }
+
+  .btn-primary {
+    padding: 0.7rem 1rem;
     font-size: 0.9rem;
   }
 }

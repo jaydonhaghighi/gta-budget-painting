@@ -40,6 +40,9 @@ const ServicePage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
+  // State for collapsible service description
+  const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
+  
   // Check if we're in editing mode
   const urlParams = new URLSearchParams(location.search);
   const editId = urlParams.get('editId');
@@ -67,80 +70,92 @@ const ServicePage = () => {
   const getServiceDescriptionTitle = (serviceId: string) => {
     switch (serviceId) {
       case 'accent-wall':
-        return 'Transform Your Space with Accent Walls';
+        return 'Why Choose an Accent Wall?';
       case 'ceiling':
-        return 'Refresh Your Ceiling Painting';
+        return 'The Impact of Fresh Ceilings';
       case 'small-bathroom':
-        return 'Complete Bathroom Makeover';
+        return 'Small Space, Big Transformation';
       case 'basement-painting':
-        return 'Transform Your Basement';
+        return 'Unlock Your Basement\'s Potential';
       case 'kitchen-walls':
-        return 'Kitchen Wall Transformation';
+        return 'Make Your Kitchen Shine';
       case 'trimming-baseboards':
-        return 'Professional Baseboard Painting';
+        return 'The Perfect Finishing Touch';
       case 'bedroom-painting':
-        return 'Create Your Perfect Bedroom';
+        return 'Your Personal Sanctuary Awaits';
       case 'staircase-painting':
-        return 'Elevate Your Staircase';
+        return 'Making a Lasting Impression';
+      case 'stairway-painting':
+        return 'Why Your Stairway Matters';
+      case 'hallway-painting':
+        return 'Creating Seamless Home Flow';
       case 'fence-painting':
-        return 'Protect & Beautify Your Fence';
+        return 'Protect and Beautify Your Fence';
       case 'kitchen-cabinet-painting':
-        return 'Kitchen Cabinet Makeover';
+        return 'Transform Without Full Replacement';
       case 'garage-door':
-        return 'Garage Door Refresh';
+        return 'First Impressions Start Here';
       case 'exterior-railings':
-        return 'Exterior Railing Restoration';
+        return 'Where Safety Meets Style';
       case 'stucco-ceiling-removal':
-        return 'Remove Popcorn Ceiling for Modern Look';
+        return 'Modernize and Increase Home Value';
       case 'interior-door':
-        return 'Interior Door Painting & Restoration';
+        return 'Details That Define Your Home';
       case 'front-door':
-        return 'Front Door Painting & Curb Appeal';
+        return 'Welcome Guests with Confidence';
       case 'bathroom-vanity-cabinet':
-        return 'Bathroom Vanity Painting';
+        return 'Elevate Your Daily Routine';
       case 'custom-project':
-        return 'Custom Painting Projects';
+        return 'Bringing Your Vision to Life';
+      case 'drywall-repair':
+        return 'Restore Your Walls to Perfection';
       default:
-        return 'Professional Painting Services';
+        return 'Why Choose Professional Painting?';
     }
   };
 
   const getServiceDescriptionText = (serviceId: string) => {
     switch (serviceId) {
       case 'accent-wall':
-        return 'An accent wall is the perfect way to add personality and visual interest to any room. Our professional painters will help you choose the right color and finish to create a stunning focal point that transforms your space.';
+        return 'An accent wall instantly transforms ordinary spaces into extraordinary ones, adding personality and visual interest to any room. Our professional painters help you choose the right color and finish to create a stunning focal point that enhances your home\'s interior design. Well-executed accent walls draw the eye, add depth, and can make small spaces feel larger. Investing in professional accent wall painting elevates your home\'s aesthetic appeal and property value while allowing you to experiment with bold colors or textures without overwhelming the entire room.';
       case 'ceiling':
-        return 'A fresh ceiling paint job can dramatically brighten and modernize any room. Our experts use premium paints and techniques to ensure smooth, even coverage that enhances your home\'s overall appearance.';
+        return 'A fresh ceiling paint job dramatically brightens and modernizes any room, creating the illusion of more space and making your entire home feel cleaner. Professionally painted ceilings reflect light more effectively, reducing the need for artificial lighting and creating a brighter, more energy-efficient living environment. Our experts use premium paints and specialized techniques to ensure smooth, even coverage. Well-maintained ceilings are essential for a finished, polished look and can hide imperfections, update outdated colors, and protect against moisture. Investing in professional ceiling painting improves your home\'s aesthetic, protects this critical surface, and adds value to your property.';
       case 'small-bathroom':
-        return 'Small bathrooms deserve big impact! Our bathroom painting specialists understand the unique challenges of humid environments and will use moisture-resistant paints to create a beautiful, long-lasting finish.';
+        return 'Small bathrooms deserve big impact! Professional bathroom painting transforms cramped spaces into spa-like retreats that feel luxurious and spacious. Our specialists use moisture-resistant paints specifically designed for high-humidity areas to create beautiful, long-lasting finishes that resist mold and mildew. The right paint color and finish make small bathrooms feel larger and brighter, while proper preparation ensures your investment lasts. Well-painted bathrooms improve daily comfort and significantly increase your home\'s value, as updated bathrooms are among the top features homebuyers seek.';
       case 'basement-painting':
-        return 'Transform your basement from a storage area into a beautiful living space. Our basement painting experts use specialized techniques and paints designed for below-grade environments to create a fresh, inviting atmosphere.';
+        return 'Transform your basement from a storage area into a beautiful, functional living space that adds valuable square footage. Professional basement painting creates an inviting atmosphere in below-grade spaces that often feel dark and unwelcoming. Our experts use specialized techniques and moisture-resistant paints designed for below-grade environments that prevent mold and mildew growth. The right paint colors brighten dark basements, make low ceilings feel higher, and create the perfect foundation for a home office or entertainment area. Well-painted basements significantly increase property value, as finished basements are highly desirable to homebuyers.';
       case 'kitchen-walls':
-        return 'The kitchen is the heart of your home, and fresh paint can make it shine. Our kitchen specialists use durable, washable paints that stand up to cooking splatters and daily wear while maintaining their beauty.';
+        return 'The kitchen is the heart of your home, and fresh paint makes it shine while protecting this high-traffic area from daily wear. Professional kitchen wall painting creates a clean, inviting atmosphere where families gather. Our specialists use durable, washable paints specifically formulated to stand up to cooking splatters, grease, and moisture while maintaining their beauty for years. The right paint finish and color make your kitchen feel more spacious, brighten dark corners, and create a cohesive design. Well-maintained kitchen walls enhance your home\'s value, as updated kitchens are one of the top selling features in real estate.';
       case 'trimming-baseboards':
-        return 'Crisp, clean baseboards frame your rooms beautifully. Our precision painters will give your baseboards a professional finish that complements your walls and adds that polished, finished look to your home.';
+        return 'Crisp, clean baseboards frame your rooms beautifully and create that polished, professional finish that separates average homes from exceptional ones. Professional baseboard painting adds the finishing touch that ties your entire room together, creating clean lines and visual boundaries that enhance your home\'s architectural details. Our precision painters give your baseboards a professional finish that complements your walls, protects them from scuff marks, and makes every room feel complete. Well-maintained baseboards improve your home\'s aesthetic appeal and protect walls from furniture damage. This attention to detail increases your home\'s perceived value and demonstrates quality care.';
       case 'bedroom-painting':
-        return 'Create your personal sanctuary with bedroom painting that reflects your style. Whether you want calming neutrals or bold statements, our bedroom specialists will help you achieve the perfect atmosphere for rest and relaxation.';
+        return 'Create your personal sanctuary with bedroom painting that reflects your style and promotes restful sleep. Your bedroom should be a retreat from the daily hustle, and the right paint colors transform this space into a calming oasis. Whether you want calming neutrals that promote relaxation or bold statements that express your personality, our bedroom specialists help you achieve the perfect atmosphere. Professional bedroom painting improves your quality of sleep and enhances your home\'s overall comfort. Well-painted bedrooms create tranquility, make small spaces feel more spacious, and provide the perfect backdrop for your furniture. Investing in professional bedroom painting is an investment in your wellbeing, and beautifully painted bedrooms increase your home\'s marketability and value.';
       case 'staircase-painting':
-        return 'Your staircase is often the first thing guests see. Our staircase painting experts will transform this high-traffic area with durable, beautiful finishes that make a lasting impression and protect against daily wear.';
+        return 'Your staircase is often the first thing guests see when entering your home, making it a crucial focal point that sets the tone for your entire interior. Professional staircase painting transforms this high-traffic architectural feature into a stunning design element that creates a lasting impression. Our experts use durable, beautiful finishes specifically designed for high-traffic areas, ensuring your stairs look magnificent while standing up to daily wear. A well-painted staircase enhances your home\'s aesthetic appeal and protects surfaces from scuff marks and damage. The right color and finish make narrow staircases feel wider and create visual flow between floors. Investing in professional staircase painting elevates your entire home\'s interior design and increases property value.';
+      case 'stairway-painting':
+        return 'Professional stairway painting transforms one of your home\'s most visible architectural features, creating a stunning first impression and enhancing your home\'s overall value. Well-painted stairways improve your home\'s aesthetic appeal and protect high-traffic areas from wear and tear. Our expert painters use premium paints and specialized techniques to handle complex stairwells, ensuring flawless coverage even in challenging spaces. A beautifully painted stairway creates visual flow between floors, adds architectural interest, and makes narrow spaces feel more open. Investing in professional stairway painting elevates your entire home\'s interior design while protecting your investment for years to come.';
+      case 'hallway-painting':
+        return 'Hallway painting creates seamless transitions throughout your home and enhances the flow between rooms. Professionally painted hallways make narrow spaces feel more open and inviting, while carefully chosen colors brighten darker areas and create a welcoming atmosphere. Well-painted hallways improve your home\'s aesthetic continuity and protect high-traffic areas from scuff marks and daily wear. Our specialists understand how color, lighting, and finish work together to transform these connecting spaces. A beautifully painted hallway makes your entire home feel more cohesive, elegant, and spacious, improving the overall first impression for guests while increasing property value.';
       case 'fence-painting':
-        return 'Protect your investment and boost curb appeal with professional fence painting. Our exterior specialists use weather-resistant paints and proper preparation techniques to ensure your fence looks great and lasts for years.';
+        return 'Protect your investment and boost curb appeal with professional fence painting that extends the life of your property\'s perimeter while dramatically improving its appearance. Well-maintained fences define your property boundaries, enhance your home\'s exterior aesthetic, and create privacy for your outdoor living spaces. Our exterior specialists use weather-resistant paints specifically formulated for outdoor use and proper preparation techniques to ensure your fence looks great and lasts for years, protecting it from UV damage, moisture, and rot. Professional fence painting prevents costly repairs and significantly extends your fence\'s lifespan. The right color and finish complement your home\'s exterior and increase your property\'s overall curb appeal and value.';
       case 'kitchen-cabinet-painting':
-        return 'Give your kitchen a complete makeover without the cost of replacement. Our cabinet painting experts will transform your existing cabinets with premium finishes that look like new, saving you thousands while dramatically updating your space.';
+        return 'Give your kitchen a complete makeover without the cost of replacement, transforming dated cabinets into modern masterpieces that look like new. Professional kitchen cabinet painting is one of the most cost-effective ways to dramatically update your kitchen, saving you thousands compared to full cabinet replacement. Our experts transform your existing cabinets with premium finishes, durable paints, and expert techniques that ensure smooth, long-lasting results. Well-painted cabinets refresh your kitchen\'s appearance and protect them from wear, moisture, and grease buildup. The right paint color and finish completely change your kitchen\'s style and make small kitchens feel more spacious. Investing in professional cabinet painting significantly increases your home\'s value, as updated kitchens are among the top features homebuyers seek.';
       case 'garage-door':
-        return 'Your garage door is a major part of your home\'s exterior. Our garage door specialists will refresh it with durable exterior paints that enhance curb appeal and protect against weather damage.';
+        return 'Your garage door is a major part of your home\'s exterior, occupying up to 40% of your front facade and making it one of the first things people notice. Professional garage door painting enhances curb appeal and protects this large investment from weather damage, UV exposure, and wear. Our specialists refresh your door with durable exterior paints specifically designed for metal, wood, or composite materials, ensuring a beautiful, long-lasting finish that complements your home\'s architecture. A well-painted garage door completely transforms your home\'s exterior appearance, increases property value, and creates a cohesive, polished look. Investing in professional garage door painting protects your investment from rust, fading, and deterioration while significantly improving your home\'s first impression.';
       case 'exterior-railings':
-        return 'Safety meets style with professional railing painting. Our exterior experts will restore your railings with weather-resistant finishes that protect against rust and wear while enhancing your home\'s architectural beauty.';
+        return 'Safety meets style with professional railing painting that protects your outdoor railings while enhancing your home\'s architectural beauty and curb appeal. Well-maintained exterior railings ensure safety for your family and guests while preventing costly rust damage, deterioration, and potential structural issues. Our experts restore your railings with weather-resistant finishes specifically designed for metal, wood, or composite materials, protecting against rust, corrosion, UV damage, and moisture. Professional railing painting extends the life of your railings significantly and prevents expensive replacements. The right paint color and finish highlight architectural details and complement your home\'s exterior. Investing in professional railing painting protects your investment, enhances safety, improves curb appeal, and increases property value.';
       case 'stucco-ceiling-removal':
-        return 'Transform your home with professional popcorn ceiling removal. Outdated textured ceilings can make rooms feel smaller and dated. Our specialists safely remove popcorn ceilings and create smooth, modern surfaces that brighten your space and increase your home\'s value.';
+        return 'Transform your home with professional popcorn ceiling removal that modernizes your interior and increases your property value. Outdated textured ceilings make rooms feel smaller, dated, and trap dust and allergens, while smooth, modern ceilings create a clean, contemporary look that brightens your entire space. Our specialists safely remove popcorn ceilings using proven techniques that minimize mess and protect your home, then create smooth, flawless surfaces ready for painting. Removing popcorn ceilings updates your home\'s appearance, improves air quality, makes rooms feel more spacious, and eliminates a dated feature that can decrease property value. The smooth, modern finish creates a professional, polished look that appeals to modern buyers and enhances any room\'s lighting. Investing in professional popcorn ceiling removal significantly increases your home\'s marketability and value.';
       case 'interior-door':
-        return 'Refresh your interior doors with professional painting that enhances your home\'s flow and style. Interior doors see constant use and benefit from durable, smooth finishes. Our door specialists ensure perfect coverage and smooth operation while matching your interior design.';
+        return 'Refresh your interior doors with professional painting that enhances your home\'s flow, style, and overall aesthetic while protecting these high-use surfaces from daily wear. Interior doors see constant use and benefit from durable, smooth finishes that ensure smooth operation and maintain their beauty over time. Professional door painting updates your home\'s appearance and creates visual continuity throughout your living spaces, making your entire home feel more cohesive and well-designed. Our specialists ensure perfect coverage, smooth operation, and finishes that complement your interior design while protecting doors from scuff marks and daily wear. Well-painted interior doors frame your rooms beautifully and add architectural interest. This attention to detail increases your home\'s perceived quality and value.';
       case 'front-door':
-        return 'Make a stunning first impression with professional front door painting. Your front door is the focal point of your home\'s exterior and deserves special attention. We use premium exterior paints and techniques to create a beautiful, weather-resistant finish that welcomes guests and protects your investment.';
+        return 'Make a stunning first impression with professional front door painting that welcomes guests and protects your home\'s most important entry point. Your front door is the focal point of your home\'s exterior and deserves special attention, as it\'s the first thing visitors see and plays a crucial role in curb appeal. We use premium exterior paints and specialized techniques to create a beautiful, weather-resistant finish that stands up to harsh weather conditions, UV exposure, and daily use. A well-painted front door completely transforms your home\'s exterior, increases property value, and creates a welcoming atmosphere. The right color choice complements your home\'s architecture and makes your entrance stand out. Investing in professional front door painting protects this critical investment and significantly improves your home\'s curb appeal and marketability.';
       case 'bathroom-vanity-cabinet':
-        return 'Professional bathroom vanity cabinet painting services that refresh and modernize your bathroom storage with expert techniques and quality finishes.';
+        return 'Professional bathroom vanity cabinet painting refreshes and modernizes your bathroom storage, transforming dated cabinets into beautiful, functional centerpieces. Updating your vanity cabinets is one of the most cost-effective ways to give your bathroom a complete makeover without the expense of full replacement. Our experts use premium paints, specialized primers for bathroom environments, and expert techniques to ensure smooth, durable finishes that resist moisture, humidity, and daily use. Well-painted vanity cabinets refresh your bathroom\'s style, protect them from water damage, and create a cohesive design. The right paint color and finish make your bathroom feel more spacious, modern, and luxurious. Investing in professional vanity cabinet painting significantly increases your home\'s value and creates a spa-like atmosphere.';
+      case 'drywall-repair':
+        return 'Professional drywall repair restores your walls to perfect condition, fixing holes, cracks, and damage before painting. Our specialists use expert techniques and quality materials to ensure seamless repairs that blend flawlessly with your existing walls. Well-repaired drywall not only improves your home\'s appearance but also prevents further damage and maintains structural integrity. Our experts assess wall conditions and apply appropriate repair methods, from small patch work to extensive restoration. Properly repaired walls provide the perfect foundation for painting, ensuring smooth, professional finishes that last. Investing in professional drywall repair protects your investment, enhances your home\'s value, and creates the flawless surface needed for beautiful paint results.';
       case 'custom-project':
-        return 'Every home is unique, and so are your painting needs. Our custom painting services are tailored to your specific vision and requirements. Whether you need a special color match, intricate designs, or work on unusual surfaces, our experienced team will bring your ideas to life with professional quality and attention to detail.';
+        return 'Every home is unique, and so are your painting needs. Our custom painting services are tailored to your specific vision and requirements, bringing your creative ideas to life with professional quality and expert craftsmanship. Whether you need a special color match, intricate designs, unique finishes, or work on unusual surfaces, our experienced team has the skills and expertise to handle any challenge. Custom painting projects allow you to create truly personalized spaces that reflect your individual style and make your home stand out. From accent walls with specialty finishes to custom murals and decorative techniques, we work closely with you to understand your vision and deliver results that exceed expectations. Investing in custom painting services transforms your home into a one-of-a-kind space that expresses your personality and increases property value through unique features.';
       default:
         return 'Get accurate estimates for your painting project with our professional calculation tools. Our experienced team provides detailed quotes based on your specific requirements, ensuring transparency and fair pricing for every project.';
     }
@@ -180,6 +195,12 @@ const ServicePage = () => {
         return '/services/front-door/1ce69539f7e825bbfe8c82868b607f34.jpg';
       case 'bathroom-vanity-cabinet':
         return '/services/bathroom-vanity/3daac1d98424946cbc1dbff549cdd7b7.jpg';
+      case 'stairway-painting':
+        return '/services/staircase/8739f61c8295c4f8c61e7b1ff8693b0e.jpg';
+      case 'hallway-painting':
+        return '/services/hallway/3bfc0c21ce1ec2d983082d489b272075.jpg';
+      case 'drywall-repair':
+        return '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.png';
       case 'custom-project':
         return '/2b0cfa6e362fbb3aa1094b290832dbe0.jpg';
       default:
@@ -459,9 +480,25 @@ const ServicePage = () => {
              {/* Service Description Section - Only show when not editing */}
              {!isEditing && (
                <div className="service-description-content">
+                 <button 
+                   className="service-description-toggle"
+                   onClick={() => setIsDescriptionOpen(!isDescriptionOpen)}
+                   aria-expanded={isDescriptionOpen}
+                   aria-controls="service-description-collapsible"
+                 >
+                   <h2>{getServiceDescriptionTitle(service?.id || '')}</h2>
+                   <span className={`service-description-toggle-icon ${isDescriptionOpen ? 'open' : ''}`}>
+                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                       <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                     </svg>
+                   </span>
+                 </button>
+                 <div 
+                   id="service-description-collapsible"
+                   className={`service-description-collapsible ${isDescriptionOpen ? 'open' : ''}`}
+                 >
                    <div className="service-description-text">
                      <div className="service-description-text-content">
-                       <h2>{getServiceDescriptionTitle(service?.id || '')}</h2>
                        <p className="service-description-description">
                          {getServiceDescriptionText(service?.id || '')}
                        </p>
@@ -474,6 +511,7 @@ const ServicePage = () => {
                        />
                      </div>
                    </div>
+                 </div>
                </div>
              )}
 

@@ -59,7 +59,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/services/custom-painting" element={<ServicePage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/contact" element={<ContactUsPage />} />
+            <Route path="/contact-us" element={<ContactUsPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>

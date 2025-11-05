@@ -324,8 +324,9 @@ export function calculateRoom(params: {
   baseboardProfile?: 'low' | 'high';
   doors?: number;
   windows?: number;
+  includeCloset?: boolean;
 }): EstimateBreakdown {
-  const { length, width, height, includeCeiling, includeBaseboards, baseboardProfile, doors = 0, windows = 0 } = params;
+  const { length, width, height, includeCeiling, includeBaseboards, baseboardProfile, doors = 0, windows = 0, includeCloset = false } = params;
   
   let rawLaborHours = 0;
   let ceilingPaintGallons = 0;
@@ -378,6 +379,29 @@ export function calculateRoom(params: {
     rawLaborHours += windowLaborHours;
     // Windows add minimal paint, grouped with trim
     breakdown.push(`Windows: ${windows} × ${PRODUCTION_RATES.WINDOW_SIMPLE} hrs = ${windowLaborHours.toFixed(2)} hours`);
+  }
+  
+  // Add closet if included (assume standard closet size: 2ft x 6ft x 8ft)
+  if (includeCloset) {
+    const closetLength = 2; // 2 feet
+    const closetWidth = 6;  // 6 feet
+    const closetHeight = height; // Same height as room
+    
+    // Closet walls (3 walls: back + 2 sides, no front opening)
+    const closetWallSqFt = (closetLength * closetHeight) + 2 * (closetWidth * closetHeight);
+    const closetWallLaborHours = closetWallSqFt / PRODUCTION_RATES.WALLS_TWO_COAT;
+    rawLaborHours += closetWallLaborHours;
+    const closetWallPaint = (closetWallSqFt / RATES.PAINT_COVERAGE) * RATES.TWO_COAT_MULTIPLIER;
+    wallPaintGallons += closetWallPaint;
+    breakdown.push(`Closet walls: ${closetWallSqFt} sq ft / ${PRODUCTION_RATES.WALLS_TWO_COAT} PR = ${closetWallLaborHours.toFixed(2)} hours`);
+    
+    // Closet ceiling
+    const closetCeilingSqFt = closetLength * closetWidth;
+    const closetCeilingLaborHours = closetCeilingSqFt / PRODUCTION_RATES.CEILING;
+    rawLaborHours += closetCeilingLaborHours;
+    const closetCeilingPaint = closetCeilingSqFt / RATES.PAINT_COVERAGE;
+    ceilingPaintGallons += closetCeilingPaint;
+    breakdown.push(`Closet ceiling: ${closetCeilingSqFt} sq ft / ${PRODUCTION_RATES.CEILING} PR = ${closetCeilingLaborHours.toFixed(2)} hours`);
   }
   
   // Round up raw labor hours FIRST
@@ -553,6 +577,7 @@ export function calculateMultipleBedrooms(rooms: Array<{
   baseboardProfile?: 'low' | 'high';
   doors?: number;
   windows?: number;
+  includeCloset?: boolean;
 }>): EstimateBreakdown {
   let totalRawLaborHours = 0;
   let totalCeilingPaint = 0;
@@ -565,7 +590,7 @@ export function calculateMultipleBedrooms(rooms: Array<{
 
   // Calculate each room individually (without fees/setup)
   rooms.forEach((room, index) => {
-    const { length, width, height, includeCeiling = true, includeBaseboards = true, baseboardProfile = 'low', doors = 1, windows = 1 } = room;
+    const { length, width, height, includeCeiling = true, includeBaseboards = true, baseboardProfile = 'low', doors = 1, windows = 1, includeCloset = false } = room;
     const roomName = room.name || `Bedroom ${index + 1}`;
     
     breakdown.push(`--- ${roomName} ---`);
@@ -616,6 +641,29 @@ export function calculateMultipleBedrooms(rooms: Array<{
       const windowLaborHours = windows * PRODUCTION_RATES.WINDOW_SIMPLE;
       roomLaborHours += windowLaborHours;
       breakdown.push(`  Windows: ${windows} × ${PRODUCTION_RATES.WINDOW_SIMPLE} hrs = ${windowLaborHours.toFixed(2)} hrs`);
+    }
+
+    // Closet
+    if (includeCloset) {
+      const closetLength = 2; // 2 feet
+      const closetWidth = 6;  // 6 feet
+      const closetHeight = height; // Same height as room
+      
+      // Closet walls (3 walls: back + 2 sides, no front opening)
+      const closetWallSqFt = (closetLength * closetHeight) + 2 * (closetWidth * closetHeight);
+      const closetWallLaborHours = closetWallSqFt / PRODUCTION_RATES.WALLS_TWO_COAT;
+      roomLaborHours += closetWallLaborHours;
+      const closetWallPaint = (closetWallSqFt / RATES.PAINT_COVERAGE) * RATES.TWO_COAT_MULTIPLIER;
+      wallPaint += closetWallPaint;
+      breakdown.push(`  Closet walls: ${closetWallSqFt} sq ft = ${closetWallLaborHours.toFixed(2)} hrs`);
+      
+      // Closet ceiling
+      const closetCeilingSqFt = closetLength * closetWidth;
+      const closetCeilingLaborHours = closetCeilingSqFt / PRODUCTION_RATES.CEILING;
+      roomLaborHours += closetCeilingLaborHours;
+      const closetCeilingPaint = closetCeilingSqFt / RATES.PAINT_COVERAGE;
+      ceilingPaint += closetCeilingPaint;
+      breakdown.push(`  Closet ceiling: ${closetCeilingSqFt} sq ft = ${closetCeilingLaborHours.toFixed(2)} hrs`);
     }
 
     breakdown.push(`  Room subtotal: ${roomLaborHours.toFixed(2)} hrs`);
@@ -1020,6 +1068,384 @@ export function calculateGarageDoor(params: {
   
   return {
     laborHours: totalLaborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
+// Calculate stairway painting
+export function calculateStairway(params: {
+  wallArea: number; // sq ft of stairwell walls
+  numberOfStairs?: number; // number of stairs
+  staircaseType?: string; // type of staircase
+  includeCeiling?: boolean;
+  ceilingArea?: number; // sq ft of ceiling area
+  includeRailings?: boolean;
+  railingLinearFeet?: number; // linear feet of railings
+}): EstimateBreakdown {
+  const { 
+    wallArea, 
+    numberOfStairs = 0,
+    staircaseType = 'straight',
+    includeCeiling = false, 
+    ceilingArea = 0, 
+    includeRailings = false,
+    railingLinearFeet = 0
+  } = params;
+  
+  let rawLaborHours = 0;
+  let wallPaintGallons = 0;
+  let ceilingPaintGallons = 0;
+  let trimPaintGallons = 0;
+  const breakdown: string[] = [];
+  
+  // Stairway walls (difficult access - variable difficulty multiplier based on type)
+  if (wallArea > 0) {
+    const stairwayLaborHours = wallArea / PRODUCTION_RATES.WALLS_TWO_COAT;
+    
+    // Difficulty multipliers based on staircase type
+    const difficultyMultipliers = {
+      'straight': 1.3,      // 30% extra for straight stairs
+      'l-shaped': 1.4,      // 40% extra for L-shaped (more complex)
+      'u-shaped': 1.5,      // 50% extra for U-shaped (most complex)
+      'spiral': 1.6,        // 60% extra for spiral (very complex)
+      'curved': 1.7         // 70% extra for curved (most difficult)
+    };
+    
+    const difficultyMultiplier = difficultyMultipliers[staircaseType as keyof typeof difficultyMultipliers] || 1.3;
+    const adjustedStairwayHours = stairwayLaborHours * difficultyMultiplier;
+    rawLaborHours += adjustedStairwayHours;
+    
+    wallPaintGallons += (wallArea / RATES.PAINT_COVERAGE) * RATES.TWO_COAT_MULTIPLIER;
+    breakdown.push(`Stairway walls: ${wallArea} sq ft / ${PRODUCTION_RATES.WALLS_TWO_COAT} PR × ${difficultyMultiplier} (${staircaseType} difficulty) = ${adjustedStairwayHours.toFixed(2)} hours`);
+    
+    // Add additional time based on number of stairs
+    if (numberOfStairs > 0) {
+      const stairsTimeMultiplier = Math.min(1 + (numberOfStairs * 0.02), 1.5); // 2% per stair, max 50% extra
+      const stairsAdditionalHours = adjustedStairwayHours * (stairsTimeMultiplier - 1);
+      rawLaborHours += stairsAdditionalHours;
+      breakdown.push(`Additional stairs complexity: ${numberOfStairs} stairs × 2% = ${stairsAdditionalHours.toFixed(2)} hours`);
+    }
+  }
+  
+  // Ceiling (if included)
+  if (includeCeiling && ceilingArea > 0) {
+    const ceilingLaborHours = ceilingArea / PRODUCTION_RATES.CEILING;
+    // Add 20% difficulty multiplier for overhead work in tight spaces
+    const adjustedCeilingHours = ceilingLaborHours * 1.2;
+    rawLaborHours += adjustedCeilingHours;
+    
+    ceilingPaintGallons = ceilingArea / RATES.PAINT_COVERAGE;
+    breakdown.push(`Ceiling: ${ceilingArea} sq ft / ${PRODUCTION_RATES.CEILING} PR × 1.2 (difficulty) = ${adjustedCeilingHours.toFixed(2)} hours`);
+  }
+  
+  // Railings (if included)
+  if (includeRailings && railingLinearFeet > 0) {
+    const railingProductionRate = PRODUCTION_RATES.BASEBOARD_HIGH_TWO_COAT; // Similar to high baseboards
+    const railingSpreadRate = SPREAD_RATES.BASEBOARD_HIGH_TWO_COAT;
+    const railingLaborHours = railingLinearFeet / railingProductionRate;
+    
+    // Add 25% difficulty multiplier for railing work
+    const adjustedRailingHours = railingLaborHours * 1.25;
+    rawLaborHours += adjustedRailingHours;
+    
+    const railingPaint = railingLinearFeet / railingSpreadRate;
+    trimPaintGallons += railingPaint;
+    breakdown.push(`Railings: ${railingLinearFeet} ft / ${railingProductionRate} PR × 1.25 (difficulty) = ${adjustedRailingHours.toFixed(2)} hours`);
+  }
+  
+  // Round up raw labor hours
+  const roundedLaborHours = Math.ceil(rawLaborHours);
+  
+  // Calculate setup/cleanup once
+  const setupCleanupHours = Math.ceil(roundedLaborHours / RATES.SETUP_CLEANUP_DIVISOR);
+  const totalHours = roundedLaborHours + setupCleanupHours;
+  
+  // Round up paint gallons
+  const ceilingGallons = Math.ceil(ceilingPaintGallons);
+  const wallGallons = Math.ceil(wallPaintGallons);
+  const trimGallons = Math.ceil(trimPaintGallons);
+  const totalPaintGallons = ceilingGallons + wallGallons + trimGallons;
+  
+  // Calculate costs
+  const laborCost = totalHours * RATES.LABOR_RATE;
+  const paintCost = totalPaintGallons * RATES.PAINT_RATE;
+  const suppliesCost = totalHours * RATES.SUPPLIES_RATE;
+  const prepFee = Math.ceil(laborCost * RATES.PREP_FEE_PERCENTAGE);
+  const travelFee = RATES.TRAVEL_FEE;
+  
+  const subtotal = laborCost + paintCost + suppliesCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  // Add summary to breakdown
+  breakdown.push('');
+  breakdown.push(`Total raw labor: ${rawLaborHours.toFixed(2)} → ${roundedLaborHours} hours`);
+  breakdown.push(`Setup/cleanup: ${roundedLaborHours} / ${RATES.SETUP_CLEANUP_DIVISOR} = ${setupCleanupHours} hours`);
+  breakdown.push(`Total hours: ${totalHours}`);
+  breakdown.push('');
+  if (ceilingGallons > 0) breakdown.push(`Ceiling paint: ${ceilingGallons} gallons`);
+  if (wallGallons > 0) breakdown.push(`Wall paint: ${wallGallons} gallons`);
+  if (trimGallons > 0) breakdown.push(`Trim paint: ${trimGallons} gallons`);
+  breakdown.push(`Total paint: ${totalPaintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`);
+  breakdown.push('');
+  breakdown.push(`Labor: ${totalHours} hours × $${RATES.LABOR_RATE} = $${laborCost}`);
+  breakdown.push(`Supplies: ${totalHours} hours × $${RATES.SUPPLIES_RATE} = $${suppliesCost}`);
+  breakdown.push(`Other fees (prep & travel): $${otherFees}`);
+  
+  return {
+    laborHours: roundedLaborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons: totalPaintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
+// Calculate hallway painting
+export function calculateHallway(params: {
+  wallArea: number; // sq ft of hallway walls
+  includeCeiling?: boolean;
+  ceilingArea?: number; // sq ft of ceiling area
+  includeBaseboards?: boolean;
+  baseboardLinearFeet?: number; // linear feet of baseboards
+}): EstimateBreakdown {
+  const { 
+    wallArea, 
+    includeCeiling = false, 
+    ceilingArea = 0, 
+    includeBaseboards = false, 
+    baseboardLinearFeet = 0
+  } = params;
+  
+  let rawLaborHours = 0;
+  let wallPaintGallons = 0;
+  let ceilingPaintGallons = 0;
+  let trimPaintGallons = 0;
+  const breakdown: string[] = [];
+  
+  // Hallway walls (standard rate)
+  if (wallArea > 0) {
+    const hallwayLaborHours = wallArea / PRODUCTION_RATES.WALLS_TWO_COAT;
+    rawLaborHours += hallwayLaborHours;
+    
+    wallPaintGallons += (wallArea / RATES.PAINT_COVERAGE) * RATES.TWO_COAT_MULTIPLIER;
+    breakdown.push(`Hallway walls: ${wallArea} sq ft / ${PRODUCTION_RATES.WALLS_TWO_COAT} PR = ${hallwayLaborHours.toFixed(2)} hours`);
+  }
+  
+  // Ceiling (if included)
+  if (includeCeiling && ceilingArea > 0) {
+    const ceilingLaborHours = ceilingArea / PRODUCTION_RATES.CEILING;
+    rawLaborHours += ceilingLaborHours;
+    
+    ceilingPaintGallons = ceilingArea / RATES.PAINT_COVERAGE;
+    breakdown.push(`Ceiling: ${ceilingArea} sq ft / ${PRODUCTION_RATES.CEILING} PR = ${ceilingLaborHours.toFixed(2)} hours`);
+  }
+  
+  // Baseboards (if included)
+  if (includeBaseboards && baseboardLinearFeet > 0) {
+    const baseboardProductionRate = PRODUCTION_RATES.BASEBOARD_LOW_TWO_COAT; // Assume low profile
+    const baseboardSpreadRate = SPREAD_RATES.BASEBOARD_LOW_TWO_COAT;
+    const baseboardLaborHours = baseboardLinearFeet / baseboardProductionRate;
+    rawLaborHours += baseboardLaborHours;
+    
+    const baseboardPaint = baseboardLinearFeet / baseboardSpreadRate;
+    trimPaintGallons += baseboardPaint;
+    breakdown.push(`Baseboards: ${baseboardLinearFeet} ft / ${baseboardProductionRate} PR = ${baseboardLaborHours.toFixed(2)} hours`);
+  }
+  
+  // Round up raw labor hours
+  const roundedLaborHours = Math.ceil(rawLaborHours);
+  
+  // Calculate setup/cleanup once
+  const setupCleanupHours = Math.ceil(roundedLaborHours / RATES.SETUP_CLEANUP_DIVISOR);
+  const totalHours = roundedLaborHours + setupCleanupHours;
+  
+  // Round up paint gallons
+  const ceilingGallons = Math.ceil(ceilingPaintGallons);
+  const wallGallons = Math.ceil(wallPaintGallons);
+  const trimGallons = Math.ceil(trimPaintGallons);
+  const totalPaintGallons = ceilingGallons + wallGallons + trimGallons;
+  
+  // Calculate costs
+  const laborCost = totalHours * RATES.LABOR_RATE;
+  const paintCost = totalPaintGallons * RATES.PAINT_RATE;
+  const suppliesCost = totalHours * RATES.SUPPLIES_RATE;
+  const prepFee = Math.ceil(laborCost * RATES.PREP_FEE_PERCENTAGE);
+  const travelFee = RATES.TRAVEL_FEE;
+  
+  const subtotal = laborCost + paintCost + suppliesCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  // Add summary to breakdown
+  breakdown.push('');
+  breakdown.push(`Total raw labor: ${rawLaborHours.toFixed(2)} → ${roundedLaborHours} hours`);
+  breakdown.push(`Setup/cleanup: ${roundedLaborHours} / ${RATES.SETUP_CLEANUP_DIVISOR} = ${setupCleanupHours} hours`);
+  breakdown.push(`Total hours: ${totalHours}`);
+  breakdown.push('');
+  if (ceilingGallons > 0) breakdown.push(`Ceiling paint: ${ceilingGallons} gallons`);
+  if (wallGallons > 0) breakdown.push(`Wall paint: ${wallGallons} gallons`);
+  if (trimGallons > 0) breakdown.push(`Trim paint: ${trimGallons} gallons`);
+  breakdown.push(`Total paint: ${totalPaintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`);
+  breakdown.push('');
+  breakdown.push(`Labor: ${totalHours} hours × $${RATES.LABOR_RATE} = $${laborCost}`);
+  breakdown.push(`Supplies: ${totalHours} hours × $${RATES.SUPPLIES_RATE} = $${suppliesCost}`);
+  breakdown.push(`Other fees (prep & travel): $${otherFees}`);
+  
+  return {
+    laborHours: roundedLaborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons: totalPaintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee,
+    travelFee,
+    subtotal,
+    totalCost,
+    breakdown
+  };
+}
+
+// Calculate drywall repair
+export function calculateDrywallRepair(params: {
+  wallArea: number; // Total wall area that needs repair
+  wallCondition: string; // Overall condition: 'minor', 'moderate', 'extensive'
+  hasHoles?: boolean; // Whether walls have holes
+  hasCracks?: boolean; // Whether walls have cracks
+  hasDents?: boolean; // Whether walls have dents
+  hasWaterDamage?: boolean; // Whether walls have water damage
+  includePriming?: boolean; // Whether to include primer
+  includePainting?: boolean; // Whether to include painting
+}): EstimateBreakdown {
+  const { 
+    wallArea,
+    wallCondition,
+    hasHoles = false,
+    hasCracks = false,
+    hasDents = false,
+    hasWaterDamage = false,
+    includePriming = true, 
+    includePainting = false
+  } = params;
+  
+  // Base repair rate per sq ft based on wall condition
+  const REPAIR_RATES = {
+    minor: 0.05,    // 0.05 hours per sq ft for minor damage
+    moderate: 0.08, // 0.08 hours per sq ft for moderate damage
+    extensive: 0.12 // 0.12 hours per sq ft for extensive damage
+  };
+  
+  // Additional complexity multipliers
+  const COMPLEXITY_MULTIPLIERS = {
+    hasHoles: 1.1,        // 10% extra for holes
+    hasCracks: 1.15,      // 15% extra for cracks
+    hasDents: 1.05,       // 5% extra for dents
+    hasWaterDamage: 1.25  // 25% extra for water damage
+  };
+  
+  let rawLaborHours = 0;
+  let paintGallons = 0;
+  const breakdown: string[] = [];
+  
+  // Calculate base repair hours
+  const baseRepairRate = REPAIR_RATES[wallCondition as keyof typeof REPAIR_RATES] || REPAIR_RATES.moderate;
+  let repairHours = wallArea * baseRepairRate;
+  
+  breakdown.push(`Base repair (${wallCondition}): ${wallArea} sq ft × ${baseRepairRate} = ${repairHours.toFixed(2)} hours`);
+  
+  // Apply complexity multipliers
+  let complexityMultiplier = 1;
+  if (hasHoles) {
+    complexityMultiplier *= COMPLEXITY_MULTIPLIERS.hasHoles;
+    breakdown.push(`Holes complexity: ×${COMPLEXITY_MULTIPLIERS.hasHoles}`);
+  }
+  if (hasCracks) {
+    complexityMultiplier *= COMPLEXITY_MULTIPLIERS.hasCracks;
+    breakdown.push(`Cracks complexity: ×${COMPLEXITY_MULTIPLIERS.hasCracks}`);
+  }
+  if (hasDents) {
+    complexityMultiplier *= COMPLEXITY_MULTIPLIERS.hasDents;
+    breakdown.push(`Dents complexity: ×${COMPLEXITY_MULTIPLIERS.hasDents}`);
+  }
+  if (hasWaterDamage) {
+    complexityMultiplier *= COMPLEXITY_MULTIPLIERS.hasWaterDamage;
+    breakdown.push(`Water damage complexity: ×${COMPLEXITY_MULTIPLIERS.hasWaterDamage}`);
+  }
+  
+  repairHours *= complexityMultiplier;
+  rawLaborHours = repairHours;
+  
+  if (complexityMultiplier > 1) {
+    breakdown.push(`Total complexity multiplier: ×${complexityMultiplier.toFixed(2)}`);
+    breakdown.push(`Adjusted repair time: ${repairHours.toFixed(2)} hours`);
+  }
+  
+  // Add priming time if included
+  if (includePriming) {
+    const primingHours = Math.max(0.5, repairHours * 0.3); // 30% of repair time for priming, minimum 0.5 hours
+    rawLaborHours += primingHours;
+    breakdown.push(`Priming: ${primingHours.toFixed(2)} hours`);
+  }
+  
+  // Add painting time if included
+  if (includePainting) {
+    const paintingHours = wallArea / PRODUCTION_RATES.WALLS_TWO_COAT;
+    rawLaborHours += paintingHours;
+    
+    paintGallons = Math.ceil((wallArea / RATES.PAINT_COVERAGE) * RATES.TWO_COAT_MULTIPLIER);
+    breakdown.push(`Painting: ${wallArea} sq ft / ${PRODUCTION_RATES.WALLS_TWO_COAT} PR = ${paintingHours.toFixed(2)} hours`);
+  }
+  
+  // Round up raw labor hours
+  const roundedLaborHours = Math.ceil(rawLaborHours);
+  
+  // Calculate setup/cleanup
+  const setupCleanupHours = Math.ceil(roundedLaborHours / RATES.SETUP_CLEANUP_DIVISOR);
+  const totalHours = roundedLaborHours + setupCleanupHours;
+  
+  // Calculate costs
+  const laborCost = totalHours * RATES.LABOR_RATE;
+  const paintCost = paintGallons * RATES.PAINT_RATE;
+  const suppliesCost = totalHours * RATES.SUPPLIES_RATE;
+  const prepFee = Math.ceil(laborCost * RATES.PREP_FEE_PERCENTAGE);
+  const travelFee = RATES.TRAVEL_FEE;
+  
+  const subtotal = laborCost + paintCost + suppliesCost;
+  const otherFees = prepFee + travelFee;
+  const totalCost = subtotal + otherFees;
+  
+  // Add summary to breakdown
+  breakdown.push('');
+  breakdown.push(`Total raw labor: ${rawLaborHours.toFixed(2)} → ${roundedLaborHours} hours`);
+  breakdown.push(`Setup/cleanup: ${roundedLaborHours} / ${RATES.SETUP_CLEANUP_DIVISOR} = ${setupCleanupHours} hours`);
+  breakdown.push(`Total hours: ${totalHours}`);
+  breakdown.push('');
+  if (paintGallons > 0) breakdown.push(`Paint: ${paintGallons} gallons × $${RATES.PAINT_RATE} = $${paintCost}`);
+  breakdown.push(`Labor: ${totalHours} hours × $${RATES.LABOR_RATE} = $${laborCost}`);
+  breakdown.push(`Supplies: ${totalHours} hours × $${RATES.SUPPLIES_RATE} = $${suppliesCost}`);
+  breakdown.push(`Other fees (prep & travel): $${otherFees}`);
+  
+  return {
+    laborHours: roundedLaborHours,
     setupCleanupHours,
     totalHours,
     laborCost,

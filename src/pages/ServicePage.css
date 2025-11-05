@@ -32,38 +32,116 @@
   padding: 1rem 0;
 }
 
+.service-description-toggle {
+  background: white;
+  border: 1px solid var(--color-grey-100);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0;
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.service-description-toggle:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.service-description-toggle:focus {
+  outline-offset: 2px;
+}
+
+.service-description-content:has(.service-description-collapsible.open) .service-description-toggle {
+  border-radius: 16px 16px 0 0;
+  border-bottom: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: -1px;
+}
+
+.service-description-toggle h2 {
+  color: var(--color-steel-blue);
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0;
+  line-height: 1.3;
+  position: relative;
+}
+
+.service-description-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-steel-blue);
+  transition: transform 0.3s ease;
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+.service-description-toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+.service-description-collapsible {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out, padding 0.3s ease, transform 0.4s ease-out, opacity 0.3s ease-out;
+  padding: 0;
+  transform: translateY(-10px);
+  opacity: 0;
+  margin-top: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+.service-description-collapsible.open {
+  max-height: 2000px;
+  padding: 0;
+  transform: translateY(0);
+  opacity: 1;
+  border-radius: 0 0 16px 16px;
+}
+
 .service-description-text {
   background: white;
   padding: 3rem;
   gap: 3rem;
-  border-radius: 16px;
+  border-radius: 0 0 16px 16px;
   border: 1px solid var(--color-grey-100);
+  border-top: none;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   position: relative;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
+  transform-origin: top;
+  animation: slideDownFromHeader 0.4s ease-out forwards;
 }
 
-.service-description-text h2 {
-  color: var(--color-steel-blue);
-  font-size: 24px;
-  font-weight: 300;
-  margin-bottom: 1.5rem;
-  line-height: 1.3;
-  position: relative;
+.service-description-content:has(.service-description-collapsible.open) .service-description-text {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
-.service-description-text h2::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 2px;
-  background: var(--color-steel-blue);
-  border-radius: 2px;
+.service-description-collapsible:not(.open) .service-description-text {
+  animation: none;
+}
+
+@keyframes slideDownFromHeader {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .service-description-text-content {
@@ -319,20 +397,19 @@
     padding: 1rem 0;
   }
 
-  .service-description-text {
-    padding: rem;
-    max-width: 100%;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .service-description-toggle {
+    padding: 1.25rem 1.5rem;
   }
 
-  .service-description-text h2 {
+  .service-description-toggle h2 {
     font-size: 20px;
   }
 
-  .service-description-text h2::after {
-    width: 40px;
-    height: 2px;
+  .service-description-text {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .service-description-description {
@@ -639,19 +716,18 @@
 
 @media (max-width: 480px) {
   /* Service Description Section Small Mobile */
+  .service-description-toggle {
+    padding: 1rem 1.25rem;
+  }
+
+  .service-description-toggle h2 {
+    font-size: 18px;
+  }
+
   .service-description-text {
     padding: 1.5rem;
     grid-template-columns: 1fr;
     gap: 1rem;
-  }
-
-  .service-description-text h2 {
-    font-size: 18px;
-  }
-
-  .service-description-text h2::after {
-    width: 30px;
-    height: 2px;
   }
 
   .service-description-description {
