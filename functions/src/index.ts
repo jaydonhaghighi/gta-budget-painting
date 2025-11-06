@@ -222,18 +222,28 @@ export const sendInquiryEmails = onRequest(
           subject: "We've Received Your Inquiry - GTA Budget Painting",
           html: generateInquiryCustomerEmail(inquiryData),
         });
-        logger.info("Customer inquiry email sent", {emailId: customerEmail.data?.id});
+        
+        if (customerEmail.error) {
+          logger.error("Failed to send customer inquiry email", {error: customerEmail.error});
+        } else {
+          logger.info("Customer inquiry email sent", {emailId: customerEmail.data?.id});
+        }
       }
 
       // Always send admin notification
       adminEmail = await resend.emails.send({
         from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
-        to: "info@gtabudgetpainting.ca",
+        to: "jaydon.haghighi@gmail.com",
         subject: `New Quick Inquiry - ${inquiryData.name}`,
         html: generateInquiryAdminEmail(inquiryData),
       });
 
-      logger.info("Admin inquiry email sent", {emailId: adminEmail.data?.id});
+      if (adminEmail.error) {
+        logger.error("Failed to send admin inquiry email", {error: adminEmail.error});
+        throw new Error(`Resend API error: ${JSON.stringify(adminEmail.error)}`);
+      } else {
+        logger.info("Admin inquiry email sent", {emailId: adminEmail.data?.id});
+      }
 
       response.status(200).json({
         success: true,

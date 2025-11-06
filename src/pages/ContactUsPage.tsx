@@ -12,6 +12,11 @@ const ContactUsPage: React.FC = () => {
   const [inqSuccess, setInqSuccess] = useState<string | null>(null);
   const [inqError, setInqError] = useState<string | null>(null);
 
+  const isInquiryValid =
+    inqName.trim().length > 0 &&
+    inqMessage.trim().length > 0 &&
+    (inqEmail.trim().length > 0 || inqPhone.trim().length > 0);
+
   const handleQuickInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setInqSubmitting(true);
@@ -34,7 +39,7 @@ const ContactUsPage: React.FC = () => {
 
       // Send emails via Cloud Function
       try {
-        await fetch('https://us-central1-gta-budget-painting.cloudfunctions.net/sendInquiryEmails', {
+        const emailResponse = await fetch('https://us-central1-gta-budget-painting.cloudfunctions.net/sendInquiryEmails', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -48,8 +53,16 @@ const ContactUsPage: React.FC = () => {
             createdAt: new Date().toISOString()
           }),
         });
+
+        if (emailResponse.ok) {
+          const emailResult = await emailResponse.json();
+          console.log('Inquiry emails sent successfully:', emailResult);
+        } else {
+          const errorText = await emailResponse.text();
+          console.error('Failed to send inquiry emails:', emailResponse.status, errorText);
+        }
       } catch (emailError) {
-        console.error('Failed to send email notification:', emailError);
+        console.error('Error calling email function:', emailError);
         // Don't fail the submission if email fails
       }
 
@@ -215,10 +228,9 @@ const ContactUsPage: React.FC = () => {
                       aria-label="Message"
                     />
                   </div>
-                  <small className="qi-hint">Name and either Email or Phone are required.</small>
                   {inqError && <div className="qi-alert error">{inqError}</div>}
                   {inqSuccess && <div className="qi-alert success">{inqSuccess}</div>}
-                  <button className="btn-primary" type="submit" disabled={inqSubmitting}>
+                  <button className="btn-primary" type="submit" disabled={inqSubmitting || !isInquiryValid}>
                     {inqSubmitting ? 'Sending…' : 'Send Message'}
                   </button>
                 </form>
