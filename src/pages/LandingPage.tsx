@@ -1,21 +1,111 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './LandingPage.css';
+import '../pages/ContactUsPage.css';
+import { db } from '../firebase';
+import { addDoc, collection, Timestamp } from 'firebase/firestore';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  
+  // Inquiry form state
+  const [inqName, setInqName] = useState('');
+  const [inqEmail, setInqEmail] = useState('');
+  const [inqPhone, setInqPhone] = useState('');
+  const [inqMessage, setInqMessage] = useState('');
+  const [inqSubmitting, setInqSubmitting] = useState(false);
+  const [inqSuccess, setInqSuccess] = useState<string | null>(null);
+  const [inqError, setInqError] = useState<string | null>(null);
+
+  const isInquiryValid =
+    inqName.trim().length > 0 &&
+    inqMessage.trim().length > 0 &&
+    (inqEmail.trim().length > 0 || inqPhone.trim().length > 0);
+
+  const handleQuickInquirySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setInqSubmitting(true);
+    setInqSuccess(null);
+    setInqError(null);
+
+    try {
+      if (!inqName || (!inqEmail && !inqPhone) || !inqMessage) {
+        throw new Error('Please provide your name, a contact (email or phone), and a brief message.');
+      }
+
+      const inquiryId = (await addDoc(collection(db, 'inquiries'), {
+        name: inqName,
+        email: inqEmail || null,
+        phone: inqPhone || null,
+        message: inqMessage,
+        source: 'landing-page-quick-form',
+        createdAt: Timestamp.fromDate(new Date())
+      })).id;
+
+      // Send emails via Cloud Function
+      try {
+        const emailResponse = await fetch('https://us-central1-gta-budget-painting.cloudfunctions.net/sendInquiryEmails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: inqName,
+            email: inqEmail || undefined,
+            phone: inqPhone || undefined,
+            message: inqMessage,
+            inquiryId: inquiryId,
+            createdAt: new Date().toISOString()
+          }),
+        });
+
+        if (emailResponse.ok) {
+          const emailResult = await emailResponse.json();
+          console.log('Inquiry emails sent successfully:', emailResult);
+        } else {
+          const errorText = await emailResponse.text();
+          console.error('Failed to send inquiry emails:', emailResponse.status, errorText);
+        }
+      } catch (emailError) {
+        console.error('Error calling email function:', emailError);
+        // Don't fail the submission if email fails
+      }
+
+      setInqSuccess('Thanks! We received your message and will reach out shortly.');
+      setInqName('');
+      setInqEmail('');
+      setInqPhone('');
+      setInqMessage('');
+    } catch (err: any) {
+      setInqError(err?.message || 'Failed to send. Please try again.');
+    } finally {
+      setInqSubmitting(false);
+    }
+  };
+
+  // Handle hash navigation with offset for fixed header
+  const scrollToSection = (hash: string) => {
+    const element = document.querySelector(hash);
+    if (element) {
+      const headerOffset = 150; // Adjust this value based on your header height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   // Handle hash navigation
   useEffect(() => {
     const hash = window.location.hash;
     if (hash === '#company-section' || hash === '#areas-served-section') {
       setTimeout(() => {
-        const element = document.querySelector(hash);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        scrollToSection(hash);
       }, 100);
     }
   }, []);
@@ -26,10 +116,7 @@ const LandingPage = () => {
       const hash = window.location.hash;
       if (hash === '#company-section' || hash === '#areas-served-section') {
         setTimeout(() => {
-          const element = document.querySelector(hash);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
+          scrollToSection(hash);
         }, 100);
       }
     };
@@ -56,6 +143,42 @@ const LandingPage = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [bannerDismissed]);
+
+  // Match inquiry image height to form height (desktop only)
+  useEffect(() => {
+    const matchInquiryHeights = () => {
+      // Only match heights on desktop (width > 630px)
+      if (window.innerWidth <= 630) {
+        const imageContainer = document.querySelector('.inquiry-image');
+        if (imageContainer) {
+          (imageContainer as HTMLElement).style.height = 'auto';
+        }
+        return;
+      }
+
+      const formContent = document.querySelector('.inquiry-form-content');
+      const imageContainer = document.querySelector('.inquiry-image');
+      
+      if (formContent && imageContainer) {
+        const formHeight = formContent.getBoundingClientRect().height;
+        if (formHeight > 0) {
+          (imageContainer as HTMLElement).style.height = `${formHeight}px`;
+        }
+      }
+    };
+
+    // Match heights on mount and resize
+    matchInquiryHeights();
+    window.addEventListener('resize', matchInquiryHeights);
+    
+    // Also match after a short delay to account for any dynamic content
+    const timeoutId = setTimeout(matchInquiryHeights, 100);
+    
+    return () => {
+      window.removeEventListener('resize', matchInquiryHeights);
+      clearTimeout(timeoutId);
+    };
+  }, [inqSuccess, inqError]);
 
   const handleBannerDismiss = () => {
     setBannerDismissed(true);
@@ -163,6 +286,63 @@ const LandingPage = () => {
               </div>
               <div className="areas-image">
                 <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Inquiry Section */}
+      <section id="inquiry-section" className="inquiry-section">
+        <div className="container">
+          <div className="inquiry-content">
+            <div className="inquiry-text">
+              <div className="inquiry-image">
+                <img src="/f16f1bd449899777bf18714eb6cb3df3.jpg" alt="Professional painting service" className="inquiry-photo" />
+              </div>
+              <div className="inquiry-form-content">
+                <h2>Get a Free Quote Now!</h2>
+                <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit}>
+                  <div className="qi-row">
+                    <input
+                      type="text"
+                      placeholder="Your name *"
+                      value={inqName}
+                      onChange={(e) => setInqName(e.target.value)}
+                      aria-label="Your name"
+                    />
+                  </div>
+                  <div className="qi-row qi-grid-2">
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={inqEmail}
+                      onChange={(e) => setInqEmail(e.target.value)}
+                      aria-label="Email"
+                    />
+                    <input
+                      type="tel"
+                      placeholder="Phone"
+                      value={inqPhone}
+                      onChange={(e) => setInqPhone(e.target.value)}
+                      aria-label="Phone"
+                    />
+                  </div>
+                  <div className="qi-row">
+                    <textarea
+                      placeholder="How can we help? *"
+                      rows={3}
+                      value={inqMessage}
+                      onChange={(e) => setInqMessage(e.target.value)}
+                      aria-label="Message"
+                    />
+                  </div>
+                  {inqError && <div className="qi-alert error">{inqError}</div>}
+                  {inqSuccess && <div className="qi-alert success">{inqSuccess}</div>}
+                  <button className="btn-primary" type="submit" disabled={inqSubmitting || !isInquiryValid}>
+                    {inqSubmitting ? 'Sending…' : 'Send Message'}
+                  </button>
+                </form>
               </div>
             </div>
           </div>

@@ -190,7 +190,7 @@ const ContactUsPage: React.FC = () => {
                     <img src="/mail.png" alt="Quick Inquiry" />
                   </div>
                 </div>
-                <h3>Quick Inquiry</h3>
+                <h3>Get a Free Quote Now!</h3>
               </div>
               <div className="contact-card-content">
                 <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit}>

@@ -356,6 +356,10 @@
   border: 1px solid #a7f3d0;
 }
 
+.quick-inquiry-form .btn-primary {
+  margin-top: 0;
+}
+
 /* Contact Information Card */
 .contact-item {
   display: flex;
