@@ -106,12 +106,6 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
     <div className="front-door-form-container">
       <div className="front-door-card-container">
 
-        {/* Price Display */}
-        <div className="front-door-price-display">
-          <div className="front-door-price-label">Per Door Pricing</div>
-          <div className="front-door-price-amount">${basePrice}</div>
-          <div className="front-door-price-note">Base rate per front door</div>
-        </div>
 
         {/* Door Count Input */}
         <div className="front-door-form-section">
