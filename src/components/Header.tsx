@@ -96,6 +96,21 @@ const Header = () => {
   const [isMobileServicesDropdownOpen, setIsMobileServicesDropdownOpen] = useState(false)
   const { cart } = useCart()
   const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleLogoClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      // If already on landing page, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      // Navigate to landing page and scroll to top
+      navigate('/')
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 100)
+    }
+  }
 
   const handleSectionClick = (sectionId: string) => {
     if (location.pathname === '/') {
@@ -114,7 +129,7 @@ const Header = () => {
       <header className="header">
         <div className="container">
           <div className="logo">
-            <Link to="/">
+            <Link to="/" onClick={handleLogoClick}>
               <img src="/logo.png" alt="GTA Budget Painting Logo" className="logo-image" />
             </Link>
           </div>
@@ -147,7 +162,7 @@ const Header = () => {
             
             <Link to="/#areas-served-section" className="nav-link" onClick={() => handleSectionClick('#areas-served-section')}>Areas Served</Link>
             <Link to="/gallery" className="nav-link">Gallery</Link>
-            <Link to="/contact" className="nav-link">Contact Us</Link>
+            <Link to="/contact-us" className="nav-link">Contact Us</Link>
           </nav>
 
           {/* Phone Number */}
@@ -196,7 +211,7 @@ const Header = () => {
               
               <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
               <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
-              <Link to="/contact" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
+              <Link to="/contact-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
             </div>
           </nav>
         </header>

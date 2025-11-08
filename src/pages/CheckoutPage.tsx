@@ -301,7 +301,6 @@ const CheckoutPage = () => {
                       <img src="/checkout/calendar-lines.svg" alt="Calendar" className="section-icon" />
                       Preferred Date Range
                     </h3>
-                    <p className="section-description">When would you like us to start and finish your project?</p>
                   </div>
                   <div className="form-row">
                     <div className="form-group">
@@ -314,7 +313,6 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         required 
                       />
-                      <small>When can we begin?</small>
                     </div>
                     <div className="form-group">
                       <label htmlFor="latestFinish">Latest Finish Date</label>
@@ -326,7 +324,6 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         required 
                       />
-                      <small>When should we be done by?</small>
                     </div>
                   </div>
                 </div>
@@ -338,7 +335,6 @@ const CheckoutPage = () => {
                       <img src="/checkout/circle-user.svg" alt="User" className="section-icon" />
                       Contact Information
                     </h3>
-                    <p className="section-description">Tell us how to reach you</p>
                   </div>
                   <div className="form-row">
                     <div className="form-group">
@@ -401,7 +397,6 @@ const CheckoutPage = () => {
                       <img src="/checkout/home.svg" alt="Home" className="section-icon" />
                       Service Address
                     </h3>
-                    <p className="section-description">Where will we be painting?</p>
                   </div>
                   <div className="form-group">
                     <label htmlFor="address">Street Address</label>
@@ -450,7 +445,6 @@ const CheckoutPage = () => {
                       <img src="/checkout/info.svg" alt="Info" className="section-icon" />
                       Additional Information
                     </h3>
-                    <p className="section-description">Help us provide the best service</p>
                   </div>
                   <div className="form-row">
                     <div className="form-group">
@@ -509,7 +503,6 @@ const CheckoutPage = () => {
                       rows={4}
                       placeholder="Any special requirements, access instructions, or additional notes..."
                     />
-                    <small>Let us know about any special requirements or access instructions</small>
                   </div>
                 </div>
 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { type Service } from '../../data/services';
+import ImageUpload from './ImageUpload';
 
 interface FrontDoorFormProps {
   service: Service;
@@ -14,6 +15,13 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
   const [includeDoorFrames, setIncludeDoorFrames] = useState<boolean>(initialFormData?.includeDoorFrames || false);
   const [includeHardware, setIncludeHardware] = useState<boolean>(initialFormData?.includeHardware || false);
   const [includeWeatherproofing, setIncludeWeatherproofing] = useState<boolean>(initialFormData?.includeWeatherproofing || true);
+  const [images, setImages] = useState<File[]>(initialFormData?.images || []);
+  const [imagePreviews, setImagePreviews] = useState<string[]>(initialFormData?.imagePreviews || []);
+
+  const handleImagesChange = (newImages: File[], newPreviews: string[]) => {
+    setImages(newImages);
+    setImagePreviews(newPreviews);
+  };
   
   const { addItem, updateItem } = useCart();
   const navigate = useNavigate();
@@ -43,7 +51,9 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
       includeDoorFrames,
       includeHardware,
       includeWeatherproofing,
-      totalPrice
+      totalPrice,
+      images,
+      imagePreviews
     };
 
     if (editId) {
@@ -96,12 +106,6 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
     <div className="front-door-form-container">
       <div className="front-door-card-container">
 
-        {/* Price Display */}
-        <div className="front-door-price-display">
-          <div className="front-door-price-label">Per Door Pricing</div>
-          <div className="front-door-price-amount">${basePrice}</div>
-          <div className="front-door-price-note">Base rate per front door</div>
-        </div>
 
         {/* Door Count Input */}
         <div className="front-door-form-section">
@@ -135,8 +139,8 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
         {/* Additional Services */}
         <div className="front-door-form-section">
           <h4>Additional Services</h4>
-          <div className="front-door-checkbox-group">
-            <label className="front-door-checkbox-label">
+          <div className="checkbox-group">
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={includeDoorFrames}
@@ -144,7 +148,7 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
               />
               <span>Include Door Frames/Trim (+${framePrice} per door)</span>
             </label>
-            <label className="front-door-checkbox-label">
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={includeHardware}
@@ -152,7 +156,7 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
               />
               <span>Include Hardware Removal/Replacement (+${hardwarePrice} per door)</span>
             </label>
-            <label className="front-door-checkbox-label">
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={includeWeatherproofing}
@@ -169,19 +173,20 @@ const FrontDoorForm = ({ service, initialFormData }: FrontDoorFormProps) => {
           <div className="front-door-total-amount">${calculateTotal()}</div>
         </div>
 
+        <ImageUpload
+          images={images}
+          imagePreviews={imagePreviews}
+          onImagesChange={handleImagesChange}
+          maxImages={5}
+          required={false}
+        />
+
         <button
           className="front-door-btn-proceed"
           onClick={handleAddToCart}
         >
           {editId ? 'Update Cart' : 'Add to Cart'}
         </button>
-
-        <div className="front-door-disclaimer">
-          <div className="front-door-disclaimer-icon">⚠️</div>
-          <div className="front-door-disclaimer-content">
-            <strong>Important:</strong> Front door painting must be combined with another service. Our professionals will confirm all details before the scheduled date.
-          </div>
-        </div>
       </div>
     </div>
   );

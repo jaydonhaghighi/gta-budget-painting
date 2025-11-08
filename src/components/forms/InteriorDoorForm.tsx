@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { type Service } from '../../data/services';
 import { useCart } from '../../context/CartContext';
+import ImageUpload from './ImageUpload';
 import './ServiceForms.css';
 
 interface InteriorDoorFormProps {
@@ -14,6 +15,13 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
   const [doorCount, setDoorCount] = useState<number>(initialFormData?.doorCount || 1);
   const [includeDoorFrames, setIncludeDoorFrames] = useState<boolean>(initialFormData?.includeDoorFrames || false);
   const [includeHardware, setIncludeHardware] = useState<boolean>(initialFormData?.includeHardware || false);
+  const [images, setImages] = useState<File[]>(initialFormData?.images || []);
+  const [imagePreviews, setImagePreviews] = useState<string[]>(initialFormData?.imagePreviews || []);
+
+  const handleImagesChange = (newImages: File[], newPreviews: string[]) => {
+    setImages(newImages);
+    setImagePreviews(newPreviews);
+  };
   
   const { addItem, updateItem } = useCart();
   const navigate = useNavigate();
@@ -60,7 +68,9 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
         doorCount,
         includeDoorFrames,
         includeHardware,
-        totalPrice
+        totalPrice,
+        images,
+        imagePreviews
       }
     };
 
@@ -80,12 +90,12 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
     <div className="interior-door-form-container">
       <div className="interior-door-card-container">
 
-        {/* Price Display */}
+        {/* Price Display
         <div className="interior-door-price-display">
           <div className="interior-door-price-label">Per Door Pricing</div>
           <div className="interior-door-price-amount">${basePrice}</div>
           <div className="interior-door-price-note">Base rate per interior door</div>
-        </div>
+        </div> */}
 
         {/* Door Count Input */}
         <div className="interior-door-form-section">
@@ -119,8 +129,8 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
         {/* Additional Services */}
         <div className="interior-door-form-section">
           <h4>Additional Services</h4>
-          <div className="interior-door-checkbox-group">
-            <label className="interior-door-checkbox-label">
+          <div className="checkbox-group">
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={includeDoorFrames}
@@ -128,7 +138,7 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
               />
               <span>Include Door Frames/Trim (+${framePrice} per door)</span>
             </label>
-            <label className="interior-door-checkbox-label">
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={includeHardware}
@@ -145,19 +155,20 @@ const InteriorDoorForm = ({ service, initialFormData }: InteriorDoorFormProps) =
           <div className="interior-door-total-amount">${calculateTotal()}</div>
         </div>
 
+        <ImageUpload
+          images={images}
+          imagePreviews={imagePreviews}
+          onImagesChange={handleImagesChange}
+          maxImages={5}
+          required={false}
+        />
+
         <button
           className="interior-door-btn-proceed"
           onClick={handleAddToCart}
         >
           {editId ? 'Update Cart' : 'Add to Cart'}
         </button>
-
-        <div className="interior-door-disclaimer">
-          <div className="interior-door-disclaimer-icon">⚠️</div>
-          <div className="interior-door-disclaimer-content">
-            <strong>Important:</strong> Interior door painting must be combined with another service, or you need at least 3 interior doors. Our professionals will confirm all details before the scheduled date.
-          </div>
-        </div>
       </div>
     </div>
   );

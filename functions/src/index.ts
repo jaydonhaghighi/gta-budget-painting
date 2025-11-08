@@ -7,7 +7,7 @@ import {onRequest} from "firebase-functions/v2/https";
 import {defineSecret} from "firebase-functions/params";
 import * as logger from "firebase-functions/logger";
 import {Resend} from "resend";
-import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail, generateInvoiceEmail} from "./emailTemplates";
+import {generateCustomerEmail, generateAdminEmail, generateCartCustomerEmail, generateCartAdminEmail, generateInvoiceEmail, generateInquiryCustomerEmail, generateInquiryAdminEmail} from "./emailTemplates";
 
 // Set global options for cost control
 setGlobalOptions({maxInstances: 10});
@@ -60,9 +60,9 @@ export const sendServiceRequestEmails = onRequest(
         });
 
         adminEmail = await resend.emails.send({
-          from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
+          from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
           to: "info@gtabudgetpainting.ca",
-          subject: `🛒 New Cart Order #${serviceRequestData.requestId} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
+          subject: `New Cart Order #${serviceRequestData.requestId} - $${serviceRequestData.totals.grandTotal.toFixed(2)}`,
           html: generateCartAdminEmail(serviceRequestData),
         });
       } else {
@@ -75,9 +75,9 @@ export const sendServiceRequestEmails = onRequest(
         });
 
         adminEmail = await resend.emails.send({
-          from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
+          from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
           to: "info@gtabudgetpainting.ca",
-          subject: `🔔 New Service Request #${serviceRequestData.requestId} - ${serviceRequestData.serviceName}`,
+          subject: `New Service Request #${serviceRequestData.requestId} - ${serviceRequestData.serviceName}`,
           html: generateAdminEmail(serviceRequestData),
         });
       }
@@ -147,9 +147,9 @@ export const sendInvoiceEmail = onRequest(
       // Send notification to admin
       logger.info("Attempting to send admin notification to", {email: "info@gtabudgetpainting.ca"});
       const adminEmail = await resend.emails.send({
-        from: "GTA Budget Painting System <system@gtabudgetpainting.ca>",
+        from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
         to: "info@gtabudgetpainting.ca",
-        subject: `📄 Invoice #${invoiceData.invoiceNumber} Sent to ${invoiceData.clientInfo.name}`,
+        subject: `Invoice #${invoiceData.invoiceNumber} Sent to ${invoiceData.clientInfo.name}`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <h2 style="color: #2C3D4B;">Invoice Sent</h2>
@@ -181,6 +181,81 @@ export const sendInvoiceEmail = onRequest(
       response.status(500).json({
         success: false,
         error: "Failed to send invoice email",
+        details: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+);
+
+/**
+ * Send emails when a new inquiry is submitted from contact page
+ */
+export const sendInquiryEmails = onRequest(
+  {cors: true, secrets: [resendApiKey]},
+  async (request, response) => {
+    try {
+      if (request.method !== "POST") {
+        response.status(405).json({error: "Method not allowed"});
+        return;
+      }
+
+      const resend = new Resend(resendApiKey.value());
+      const inquiryData = request.body;
+
+      // Convert createdAt string back to Date object
+      inquiryData.createdAt = new Date(inquiryData.createdAt);
+
+      logger.info("Sending inquiry emails", {
+        inquiryId: inquiryData.inquiryId,
+        name: inquiryData.name,
+        email: inquiryData.email || 'none',
+        phone: inquiryData.phone || 'none'
+      });
+
+      let customerEmail, adminEmail;
+
+      // Send customer confirmation email (only if email provided)
+      if (inquiryData.email) {
+        customerEmail = await resend.emails.send({
+          from: "GTA Budget Painting <noreply@gtabudgetpainting.ca>",
+          to: inquiryData.email,
+          subject: "We've Received Your Inquiry - GTA Budget Painting",
+          html: generateInquiryCustomerEmail(inquiryData),
+        });
+        
+        if (customerEmail.error) {
+          logger.error("Failed to send customer inquiry email", {error: customerEmail.error});
+        } else {
+          logger.info("Customer inquiry email sent", {emailId: customerEmail.data?.id});
+        }
+      }
+
+      // Always send admin notification
+      adminEmail = await resend.emails.send({
+        from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
+        to: "jaydon.haghighi@gmail.com",
+        subject: `New Quick Inquiry - ${inquiryData.name}`,
+        html: generateInquiryAdminEmail(inquiryData),
+      });
+
+      if (adminEmail.error) {
+        logger.error("Failed to send admin inquiry email", {error: adminEmail.error});
+        throw new Error(`Resend API error: ${JSON.stringify(adminEmail.error)}`);
+      } else {
+        logger.info("Admin inquiry email sent", {emailId: adminEmail.data?.id});
+      }
+
+      response.status(200).json({
+        success: true,
+        customerEmailId: customerEmail?.data?.id || null,
+        adminEmailId: adminEmail.data?.id,
+        message: "Emails sent successfully",
+      });
+    } catch (error) {
+      logger.error("Error sending inquiry emails", {error});
+      response.status(500).json({
+        success: false,
+        error: "Failed to send emails",
         details: error instanceof Error ? error.message : String(error),
       });
     }

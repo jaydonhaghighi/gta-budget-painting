@@ -54,7 +54,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: #a6b2b5; padding: 40px 30px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 100px; width: auto; margin-bottom: 0;" />
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 100px; width: auto; margin-bottom: 0;" />
                   </td>
                 </tr>
 
@@ -257,7 +257,7 @@ export const generateCartCustomerEmail = (data: any): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: #2b2b2b; padding: 24px 32px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 0;" />
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 0;" />
                   </td>
                 </tr>
 
@@ -406,8 +406,8 @@ export const generateCartAdminEmail = (data: any): string => {
                 <!-- Alert Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 20px 32px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 8px; filter: brightness(0) invert(1);" />
-                    <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">🚨 NEW CART ORDER</h1>
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 8px; filter: brightness(0) invert(1);" />
+                    <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 700;">New Cart Order</h1>
                     <p style="margin: 4px 0 0; color: #ffffff; font-size: 14px; opacity: 0.9;">${lineItems.length} service${lineItems.length > 1 ? 's' : ''} • $${totals.grandTotal.toFixed(2)}</p>
                   </td>
                 </tr>
@@ -416,7 +416,7 @@ export const generateCartAdminEmail = (data: any): string => {
                 <tr>
                   <td style="background-color: #fef3c7; padding: 16px 32px; border-left: 4px solid #f59e0b;">
                     <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                      ⚡ URGENT: Review and respond within 24 hours
+                      Please review and respond within 24 hours
                     </p>
                   </td>
                 </tr>
@@ -539,7 +539,7 @@ export const generateCartAdminEmail = (data: any): string => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center">
-                          <a href="https://console.firebase.google.com/project/gta-budget-painting/firestore" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">View in Firestore</a>
+                          <a href="https://gtabudgetpainting.ca/admin" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">View in Admin Page</a>
                           <a href="tel:${customerInfo.phone}" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 8px;">Call Customer</a>
                         </td>
                       </tr>
@@ -590,7 +590,7 @@ export const generateInvoiceEmail = (invoiceData: any): string => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="width: 60%; vertical-align: top;">
-                          <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 15px;" />
+                          <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 70px; width: auto; margin-bottom: 15px;" />
                           <div>
                             <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px; font-weight: 700;">GTA Budget Painting</p>
                             <p style="margin: 0 0 4px; color: #1E1E1E; font-size: 14px;">48 Fancamp Drive</p>
@@ -720,8 +720,8 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                 <!-- Header -->
                 <tr>
                   <td style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); padding: 30px; text-align: center;">
-                    <img src="https://gta-budget-painting.web.app/logo_BW.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1);" />
-                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 700;">🔔 New Service Request</h1>
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 80px; width: auto; margin-bottom: 12px; filter: brightness(0) invert(1);" />
+                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 700;">New Service Request</h1>
                     <p style="margin: 10px 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">${serviceName}</p>
                   </td>
                 </tr>
@@ -730,7 +730,7 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                 <tr>
                   <td style="background-color: #fef3c7; padding: 20px; border-left: 4px solid #f59e0b;">
                     <p style="margin: 0; color: #92400e; font-size: 14px; font-weight: 600;">
-                      ⚡ Action Required: Review and respond within 24 hours
+                      Action Required: Review and respond within 24 hours
                     </p>
                   </td>
                 </tr>
@@ -842,7 +842,7 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
                     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 30px;">
                       <tr>
                         <td align="center">
-                          <a href="https://console.firebase.google.com/project/gta-budget-painting/firestore" style="display: inline-block; padding: 14px 32px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">View in Firestore</a>
+                          <a href="https://gtabudgetpainting.ca/admin" style="display: inline-block; padding: 14px 32px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">View in Admin Page</a>
                           <a href="tel:${customerInfo.phone}" style="display: inline-block; padding: 14px 32px; background-color: #10b981; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 15px; margin: 0 8px;">Call Customer</a>
                         </td>
                       </tr>
@@ -868,3 +868,280 @@ export const generateAdminEmail = (data: ServiceRequestData): string => {
   `;
 };
 
+// Inquiry email templates
+export interface InquiryData {
+  name: string;
+  email?: string;
+  phone?: string;
+  message: string;
+  inquiryId: string;
+  createdAt: Date;
+}
+
+export const generateInquiryCustomerEmail = (data: InquiryData): string => {
+  const {name, message, inquiryId, createdAt} = data;
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Inquiry Received</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #ffffff;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 40px 20px;">
+          <tr>
+            <td align="center">
+              <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; max-width: 600px;">
+                <!-- Header -->
+                <tr>
+                  <td style="padding: 40px 0 30px; text-align: center; border-bottom: 2px solid #2C3D4B;">
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 60px; width: auto; margin-bottom: 20px;" />
+                    <h1 style="margin: 0; color: #2C3D4B; font-size: 28px; font-weight: 400; letter-spacing: -0.5px;">Inquiry Received</h1>
+                  </td>
+                </tr>
+                
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 40px 0;">
+                    <p style="margin: 0 0 24px; color: #2C3D4B; font-size: 16px; line-height: 1.6; font-weight: 400;">Hi ${name},</p>
+                    <p style="margin: 0 0 32px; color: #2C3D4B; font-size: 16px; line-height: 1.6; font-weight: 300;">We've received your inquiry and our team will review it shortly. We typically respond within 24 hours.</p>
+                    
+                    <!-- Inquiry Details -->
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 32px; border: 1px solid #E5E7EB;">
+                      <tr>
+                        <td style="padding: 16px; background-color: #2C3D4B; color: #ffffff; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Inquiry Details</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 20px; background-color: #ffffff;">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding-bottom: 12px; color: #6B7280; font-size: 14px; font-weight: 500;">Inquiry ID</td>
+                              <td style="padding-bottom: 12px; text-align: right; color: #2C3D4B; font-size: 14px; font-weight: 400; font-family: monospace;">${inquiryId}</td>
+                            </tr>
+                            <tr>
+                              <td style="color: #6B7280; font-size: 14px; font-weight: 500;">Date</td>
+                              <td style="text-align: right; color: #2C3D4B; font-size: 14px; font-weight: 400;">${createdAt.toLocaleDateString()}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    
+                    <!-- Message -->
+                    <div style="margin-bottom: 32px; padding: 24px; background-color: #F9FAFB; border-left: 3px solid #2C3D4B;">
+                      <p style="margin: 0 0 12px; color: #2C3D4B; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Your Message</p>
+                      <p style="margin: 0; color: #2C3D4B; font-size: 15px; line-height: 1.7; font-weight: 300; white-space: pre-wrap;">${message}</p>
+                    </div>
+                    
+                    <!-- Next Steps -->
+                    <div style="margin-bottom: 32px;">
+                      <h2 style="margin: 0 0 20px; color: #2C3D4B; font-size: 18px; font-weight: 400; letter-spacing: -0.3px;">What Happens Next?</h2>
+                      <table width="100%" cellpadding="0" cellspacing="0">
+                        <tr>
+                          <td style="padding-bottom: 16px; vertical-align: top;">
+                            <table cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td style="width: 24px; vertical-align: top; padding-right: 12px;">
+                                  <div style="width: 24px; height: 24px; background-color: #2C3D4B; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">1</div>
+                                </td>
+                                <td style="color: #2C3D4B; font-size: 15px; line-height: 1.6; font-weight: 300;">Our team will review your inquiry within 24 hours</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="padding-bottom: 16px; vertical-align: top;">
+                            <table cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td style="width: 24px; vertical-align: top; padding-right: 12px;">
+                                  <div style="width: 24px; height: 24px; background-color: #2C3D4B; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">2</div>
+                                </td>
+                                <td style="color: #2C3D4B; font-size: 15px; line-height: 1.6; font-weight: 300;">We'll contact you via your preferred method to discuss your needs</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="vertical-align: top;">
+                            <table cellpadding="0" cellspacing="0">
+                              <tr>
+                                <td style="width: 24px; vertical-align: top; padding-right: 12px;">
+                                  <div style="width: 24px; height: 24px; background-color: #2C3D4B; color: #ffffff; border-radius: 50%; text-align: center; line-height: 24px; font-size: 12px; font-weight: 600;">3</div>
+                                </td>
+                                <td style="color: #2C3D4B; font-size: 15px; line-height: 1.6; font-weight: 300;">We'll provide you with a detailed quote and answer any questions</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+                
+                <!-- Contact Section -->
+                <tr>
+                  <td style="padding: 32px 0; border-top: 1px solid #E5E7EB; border-bottom: 1px solid #E5E7EB;">
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="center">
+                          <a href="tel:6473907181" style="display: inline-block; padding: 12px 32px; background-color: #2C3D4B; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; margin-right: 12px;">Call (647) 390-7181</a>
+                          <a href="mailto:info@gtabudgetpainting.ca" style="display: inline-block; padding: 12px 32px; background-color: #ffffff; color: #2C3D4B; text-decoration: none; border: 1px solid #2C3D4B; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px;">Email Us</a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 32px 0 0; text-align: center;">
+                    <p style="margin: 0 0 8px; color: #2C3D4B; font-size: 14px; font-weight: 400;">GTA Budget Painting</p>
+                    <p style="margin: 0 0 16px; color: #6B7280; font-size: 12px; font-weight: 300;">Professional Painting Services in the Greater Toronto Area</p>
+                    <p style="margin: 0; color: #6B7280; font-size: 11px; font-weight: 300;">
+                      <a href="mailto:info@gtabudgetpainting.ca" style="color: #6B7280; text-decoration: none;">info@gtabudgetpainting.ca</a> | 
+                      <a href="tel:6473907181" style="color: #6B7280; text-decoration: none;">(647) 390-7181</a>
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+};
+
+export const generateInquiryAdminEmail = (data: InquiryData): string => {
+  const {name, email, phone, message, inquiryId, createdAt} = data;
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Inquiry - GTA Budget Painting</title>
+      </head>
+      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #ffffff;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 40px 20px;">
+          <tr>
+            <td align="center">
+              <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; max-width: 600px;">
+                <!-- Header -->
+                <tr>
+                  <td style="padding: 40px 0 30px; text-align: center; border-bottom: 2px solid #2C3D4B;">
+                    <img src="https://gtabudgetpainting.ca/logo.png" alt="GTA Budget Painting" style="height: 60px; width: auto; margin-bottom: 20px;" />
+                    <h1 style="margin: 0; color: #2C3D4B; font-size: 28px; font-weight: 400; letter-spacing: -0.5px;">New Quick Inquiry</h1>
+                    <p style="margin: 8px 0 0; color: #6B7280; font-size: 13px; font-weight: 300; text-transform: uppercase; letter-spacing: 0.5px;">From Contact Us Page</p>
+                  </td>
+                </tr>
+                
+                <!-- Alert -->
+                <tr>
+                  <td style="padding: 20px 0; text-align: center; border-bottom: 1px solid #E5E7EB;">
+                    <p style="margin: 0; color: #2C3D4B; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Action Required: Review and respond within 24 hours</p>
+                  </td>
+                </tr>
+                
+                <!-- Content -->
+                <tr>
+                  <td style="padding: 40px 0;">
+                    <!-- Inquiry Details -->
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 32px; border: 1px solid #E5E7EB;">
+                      <tr>
+                        <td style="padding: 16px; background-color: #2C3D4B; color: #ffffff; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Inquiry Details</td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 20px; background-color: #ffffff;">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding-bottom: 12px; color: #6B7280; font-size: 14px; font-weight: 500;">Inquiry ID</td>
+                              <td style="padding-bottom: 12px; text-align: right; color: #2C3D4B; font-size: 14px; font-weight: 400; font-family: monospace;">${inquiryId}</td>
+                            </tr>
+                            <tr>
+                              <td style="color: #6B7280; font-size: 14px; font-weight: 500;">Received</td>
+                              <td style="text-align: right; color: #2C3D4B; font-size: 14px; font-weight: 400;">${createdAt.toLocaleString()}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                    
+                    <!-- Contact Information -->
+                    <h2 style="margin: 0 0 16px; color: #2C3D4B; font-size: 18px; font-weight: 400; letter-spacing: -0.3px;">Contact Information</h2>
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 32px; border: 1px solid #E5E7EB;">
+                      <tr>
+                        <td style="padding: 20px; background-color: #F9FAFB; border-bottom: 1px solid #E5E7EB;">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding-bottom: 8px; color: #6B7280; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Name</td>
+                            </tr>
+                            <tr>
+                              <td style="color: #2C3D4B; font-size: 16px; font-weight: 400;">${name}</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      ${email ? `
+                      <tr>
+                        <td style="padding: 20px; background-color: #ffffff; border-bottom: ${phone ? '1px solid #E5E7EB' : 'none'};">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding-bottom: 8px; color: #6B7280; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Email</td>
+                            </tr>
+                            <tr>
+                              <td><a href="mailto:${email}" style="color: #2C3D4B; text-decoration: none; font-size: 16px; font-weight: 400;">${email}</a></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      ` : ''}
+                      ${phone ? `
+                      <tr>
+                        <td style="padding: 20px; background-color: ${email ? '#F9FAFB' : '#ffffff'};">
+                          <table width="100%" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="padding-bottom: 8px; color: #6B7280; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Phone</td>
+                            </tr>
+                            <tr>
+                              <td><a href="tel:${phone}" style="color: #2C3D4B; text-decoration: none; font-size: 16px; font-weight: 400;">${phone}</a></td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      ` : ''}
+                    </table>
+                    
+                    <!-- Message -->
+                    <h2 style="margin: 0 0 16px; color: #2C3D4B; font-size: 18px; font-weight: 400; letter-spacing: -0.3px;">Message</h2>
+                    <div style="margin-bottom: 32px; padding: 24px; background-color: #F9FAFB; border-left: 3px solid #2C3D4B;">
+                      <p style="margin: 0; color: #2C3D4B; font-size: 15px; line-height: 1.7; font-weight: 300; white-space: pre-wrap;">${message}</p>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td align="center">
+                          ${email ? `<a href="mailto:${email}" style="display: inline-block; padding: 12px 32px; background-color: #2C3D4B; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; margin-right: ${phone ? '12px' : '0'};">Reply via Email</a>` : ''}
+                          ${phone ? `<a href="tel:${phone}" style="display: inline-block; padding: 12px 32px; background-color: #ffffff; color: #2C3D4B; text-decoration: none; border: 1px solid #2C3D4B; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px;">Call Customer</a>` : ''}
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                
+                <!-- Footer -->
+                <tr>
+                  <td style="padding: 32px 0 0; text-align: center; border-top: 1px solid #E5E7EB;">
+                    <p style="margin: 0; color: #6B7280; font-size: 11px; font-weight: 300;">Automated notification from GTA Budget Painting contact system</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+};
