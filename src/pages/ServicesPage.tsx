@@ -1,27 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
-import { PostalCodeVerification } from '../components/PostalCodeVerification';
 import './ServicesPage.css';
 
 const ServicesPage = () => {
   const navigate = useNavigate();
-  const [showPostalVerification, setShowPostalVerification] = useState(false);
-  const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
-
-
-  const handlePostalVerificationClose = () => {
-    setShowPostalVerification(false);
-    setPendingServiceId(null);
-  };
-
-  const handlePostalVerificationSuccess = () => {
-    setShowPostalVerification(false);
-    if (pendingServiceId) {
-      navigate(`/services/${pendingServiceId}`);
-    }
-    setPendingServiceId(null);
-  };
 
   // Get services by category
   const interiorServices = getServicesByCategory('interior');
@@ -72,13 +54,6 @@ const ServicesPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Postal Code Verification Modal */}
-      <PostalCodeVerification
-        isOpen={showPostalVerification}
-        onClose={handlePostalVerificationClose}
-        onVerified={handlePostalVerificationSuccess}
-      />
     </div>
   );
 };

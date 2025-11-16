@@ -233,7 +233,7 @@ export const sendInquiryEmails = onRequest(
       // Always send admin notification
       adminEmail = await resend.emails.send({
         from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
-        to: "jaydon.haghighi@gmail.com",
+        to: inquiryData.email || "info@gtabudgetpainting.ca",
         subject: `New Quick Inquiry - ${inquiryData.name}`,
         html: generateInquiryAdminEmail(inquiryData),
       });

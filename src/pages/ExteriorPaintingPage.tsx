@@ -1,36 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
-import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
 import './ExteriorPaintingPage.css';
 
 const ExteriorPaintingPage = () => {
   const navigate = useNavigate();
-  const [showPostalVerification, setShowPostalVerification] = useState(false);
-  const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
 
   const handleServiceClick = (serviceId: string) => {
-    // Check if user is already verified
-    if (isPostalCodeVerified()) {
-      navigate(`/services/exterior-painting/${serviceId}`);
-    } else {
-      // Show verification popup
-      setPendingServiceId(serviceId);
-      setShowPostalVerification(true);
-    }
-  };
-
-  const handlePostalVerificationClose = () => {
-    setShowPostalVerification(false);
-    setPendingServiceId(null);
-  };
-
-  const handlePostalVerificationSuccess = () => {
-    setShowPostalVerification(false);
-    if (pendingServiceId) {
-      navigate(`/services/exterior-painting/${pendingServiceId}`);
-    }
-    setPendingServiceId(null);
+    navigate(`/services/exterior-painting/${serviceId}`);
   };
 
   // Get exterior services
@@ -92,13 +68,6 @@ const ExteriorPaintingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Postal Code Verification Modal */}
-      <PostalCodeVerification
-        isOpen={showPostalVerification}
-        onClose={handlePostalVerificationClose}
-        onVerified={handlePostalVerificationSuccess}
-      />
     </div>
   );
 };

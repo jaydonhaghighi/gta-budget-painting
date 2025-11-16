@@ -465,7 +465,7 @@ const LandingPage = () => {
             </div>
             <div className="reviews-actions">
               <a 
-                href="https://g.page/r/CdpRDNXB_0GFEAI/review" 
+                href="https://g.page/r/CdKUy82JtiCxEBM/review" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="btn-review-action btn-leave-review"

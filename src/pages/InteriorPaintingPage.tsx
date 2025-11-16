@@ -1,36 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { getServicesByCategory } from '../data/services';
-import { PostalCodeVerification, isPostalCodeVerified } from '../components/PostalCodeVerification';
 import './InteriorPaintingPage.css';
 
 const InteriorPaintingPage = () => {
   const navigate = useNavigate();
-  const [showPostalVerification, setShowPostalVerification] = useState(false);
-  const [pendingServiceId, setPendingServiceId] = useState<string | null>(null);
 
   const handleServiceClick = (serviceId: string) => {
-    // Check if user is already verified
-    if (isPostalCodeVerified()) {
-      navigate(`/services/interior-painting/${serviceId}`);
-    } else {
-      // Show verification popup
-      setPendingServiceId(serviceId);
-      setShowPostalVerification(true);
-    }
-  };
-
-  const handlePostalVerificationClose = () => {
-    setShowPostalVerification(false);
-    setPendingServiceId(null);
-  };
-
-  const handlePostalVerificationSuccess = () => {
-    setShowPostalVerification(false);
-    if (pendingServiceId) {
-      navigate(`/services/interior-painting/${pendingServiceId}`);
-    }
-    setPendingServiceId(null);
+    navigate(`/services/interior-painting/${serviceId}`);
   };
 
   // Get interior services
@@ -92,13 +68,6 @@ const InteriorPaintingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* Postal Code Verification Modal */}
-      <PostalCodeVerification
-        isOpen={showPostalVerification}
-        onClose={handlePostalVerificationClose}
-        onVerified={handlePostalVerificationSuccess}
-      />
     </div>
   );
 };
