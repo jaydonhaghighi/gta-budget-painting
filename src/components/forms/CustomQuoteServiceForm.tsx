@@ -133,12 +133,7 @@ const CustomQuoteServiceForm = ({ service }: CustomQuoteServiceFormProps) => {
         <textarea
           id="description"
           rows={5}
-          placeholder="Please describe the work you need done. Include details such as:
-• Current condition of the area
-• What needs to be painted
-• Any damage or repairs needed
-• Color preferences
-• Special requirements or concerns"
+          placeholder="Please describe the work you need done."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required

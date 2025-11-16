@@ -1019,7 +1019,7 @@
 /* Responsive Design for Areas Served */
 @media (max-width: 768px) {
   .areas-served-section {
-    padding: 1rem 0 2rem 0;
+    padding: 1rem 0;
   }
   
   .areas-content {
@@ -1104,7 +1104,7 @@
 /* Responsive Design for Areas Served - Very Small Screens */
 @media (max-width: 400px) {
   .areas-served-section {
-    padding: 0.5rem 0 1rem 0;
+    padding: 1rem 0;
   }
   
   .areas-content {
