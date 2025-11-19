@@ -354,10 +354,12 @@ const ServicePage = () => {
       }
 
       // Only add customProjectDetails if it's a custom quote service
+      // Note: images are already in formData, so we don't duplicate them here
+      // They will be extracted and uploaded from formData.images
       if (service?.type === 'custom-quote') {
         serviceRequestData.customProjectDetails = {
           description: formData.description || '',
-          images: formData.images || [],
+          // Don't duplicate images here - they're already in formData.images
           budget: formData.budget,
           timeline: formData.timeline,
         };

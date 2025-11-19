@@ -9,6 +9,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [isHowItWorksExpanded, setIsHowItWorksExpanded] = useState(false);
   
   // Inquiry form state
   const [inqName, setInqName] = useState('');
@@ -164,7 +165,7 @@ const LandingPage = () => {
   // Handle hash navigation
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash === '#company-section' || hash === '#areas-served-section') {
+    if (hash === '#company-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
       setTimeout(() => {
         scrollToSection(hash);
       }, 100);
@@ -175,7 +176,7 @@ const LandingPage = () => {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === '#company-section' || hash === '#areas-served-section') {
+      if (hash === '#company-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
         setTimeout(() => {
           scrollToSection(hash);
         }, 100);
@@ -306,6 +307,135 @@ const LandingPage = () => {
               <img src="/paint-roller.svg" alt="Paint Roller" className="hero-services-icon" />
               Our Services
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section id="how-it-works-section" className="how-it-works-section">
+        <div className="container">
+          <div className="how-it-works-content">
+            <button 
+              className="how-it-works-toggle"
+              onClick={() => setIsHowItWorksExpanded(!isHowItWorksExpanded)}
+              aria-expanded={isHowItWorksExpanded}
+              aria-controls="how-it-works-collapsible"
+            >
+              <h2>How to Book Your Service</h2>
+              <span className={`how-it-works-toggle-icon ${isHowItWorksExpanded ? 'open' : ''}`}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div 
+              id="how-it-works-collapsible"
+              className={`how-it-works-collapsible ${isHowItWorksExpanded ? 'open' : ''}`}
+            >
+              <div className="how-it-works-text">
+                <div className="steps-container">
+                  <div className="step-card">
+                <div className="step-number">1</div>
+                <div className="step-icon">
+                  <img src="/folder.svg" alt="Browse" />
+                </div>
+                <h3>Browse Services</h3>
+                <p>Explore our wide range of interior and exterior painting services.</p>
+                <button 
+                  className="step-action-btn"
+                  onClick={() => navigate('/services')}
+                >
+                  View Services
+                </button>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">2</div>
+                <div className="step-icon">
+                  <img src="/paint-roller.svg" alt="Select" />
+                </div>
+                <h3>Select Your Service</h3>
+                <p>Click on the service you need. You'll see detailed information about what's included, pricing options, and service details.</p>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">3</div>
+                <div className="step-icon">
+                  <img src="/calculator-bill.svg" alt="Calculate" />
+                </div>
+                <h3>Get Estimate or Contact Us</h3>
+                <p>Fill out our form for an instant estimate, or skip ahead and contact us directly for a personalized quote.</p>
+                <div className="step-contact-actions">
+                  <a 
+                    href="#inquiry-section" 
+                    className="step-contact-btn step-email-btn"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection('#inquiry-section');
+                    }}
+                  >
+                    Send Inquiry
+                  </a>
+                  <a href="tel:6473907181" className="step-contact-btn step-phone-btn">
+                    Call Us
+                  </a>
+                </div>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">4</div>
+                <div className="step-icon">
+                  <img src="/shopping-cart.png" alt="Cart" />
+                </div>
+                <h3>Add to Cart (Optional)</h3>
+                <p>Need multiple services? Add them to your cart and book everything at once. You can also proceed directly to checkout for a single service.</p>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">5</div>
+                <div className="step-icon">
+                  <img src="/checkout/clipboard.svg" alt="Checkout" />
+                </div>
+                <h3>Complete Your Booking</h3>
+                <p>Enter your contact information, preferred dates, and any special requirements. Review your order summary and submit your request.</p>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                <div className="step-number">6</div>
+                <div className="step-icon">
+                  <img src="/checkout/info.svg" alt="Confirm" />
+                </div>
+                <h3>Receive Confirmation</h3>
+                <p>We'll send you a confirmation email and our team will contact you within 24 hours to schedule your service and answer any questions.</p>
+              </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

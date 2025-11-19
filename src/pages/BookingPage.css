@@ -531,22 +531,6 @@
   font-size: 0.875rem;
 }
 
-.service-price {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-steel-blue);
-  margin-top: 0.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  display: inline-block;
-  position: relative;
-  z-index: 3;
-}
-
 .service-badge {
   display: inline-block;
   padding: 0.5rem 0.75rem;

@@ -2,7 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { getServiceRequests, updateServiceRequestStatus } from '../services/firestoreService';
 import { useAuth } from '../context/AuthContext';
 import type { ServiceRequest } from '../types/ServiceRequest';
+import { storage } from '../firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
 import './AdminPanel.css';
+
+// Component to handle image loading with retry logic
+const ImageWithRetry: React.FC<{ url: string; alt: string; onClick?: () => void }> = ({ url, alt, onClick }) => {
+  const [imgSrc, setImgSrc] = useState(url);
+  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const handleError = async () => {
+    if (hasError) return; // Prevent infinite loop
+    setHasError(true);
+    
+    // Try to extract path from URL and get fresh download URL
+    try {
+      const urlObj = new URL(url);
+      const pathMatch = urlObj.pathname.match(/\/o\/(.+)\?/);
+      if (pathMatch) {
+        const storagePath = decodeURIComponent(pathMatch[1]);
+        const storageRef = ref(storage, storagePath);
+        const freshUrl = await getDownloadURL(storageRef);
+        setImgSrc(freshUrl);
+        setHasError(false);
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.error('Failed to refresh image URL:', err);
+      setIsLoading(false);
+    }
+  };
+  
+  return (
+    <img 
+      src={imgSrc} 
+      alt={alt}
+      className="uploaded-image"
+      onError={handleError}
+      onLoad={() => {
+        setIsLoading(false);
+        setHasError(false);
+      }}
+      onClick={onClick}
+      style={{ 
+        display: isLoading && hasError ? 'none' : 'block',
+        cursor: onClick ? 'pointer' : 'default'
+      }}
+    />
+  );
+};
 
 const AdminPanel: React.FC = () => {
   const { user, loading: authLoading, isAdmin, signIn, logout } = useAuth();
@@ -22,6 +71,7 @@ const AdminPanel: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedOrder, setSelectedOrder] = useState<ServiceRequest | null>(null);
   const [showOrderDetails, setShowOrderDetails] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (user && isAdmin) {
@@ -227,7 +277,38 @@ const AdminPanel: React.FC = () => {
     setSelectedOrder(null);
   };
 
+  const openImageModal = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
+  };
+
+  // Close image modal on ESC key
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedImage) {
+        closeImageModal();
+      }
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [selectedImage]);
+
   const formatFormDataValue = (key: string, value: any): string => {
+    // Debug: log images data structure
+    if (key === 'images') {
+      console.log('Images data in formatFormDataValue:', {
+        key,
+        value,
+        isArray: Array.isArray(value),
+        length: Array.isArray(value) ? value.length : 0,
+        firstItem: Array.isArray(value) && value.length > 0 ? value[0] : null,
+        firstItemType: Array.isArray(value) && value.length > 0 ? typeof value[0] : null
+      });
+    }
+    
     // Handle bedroom arrays specially
     if (key === 'bedrooms' && Array.isArray(value)) {
       return value.map((bedroom, index) => {
@@ -613,7 +694,9 @@ const AdminPanel: React.FC = () => {
           {filteredRequests.length === 0 ? (
             <div className="no-requests">No requests found</div>
           ) : (
-                <table className="requests-table" key={refreshKey}>
+            <>
+              {/* Desktop Table View */}
+              <table className="requests-table" key={refreshKey}>
               <thead>
                 <tr>
                   <th>Service</th>
@@ -733,6 +816,137 @@ const AdminPanel: React.FC = () => {
                 ))}
               </tbody>
             </table>
+
+            {/* Mobile Card View */}
+            <div className="mobile-orders-list">
+              {filteredRequests.map(request => {
+                const estimate = getRequestEstimate(request);
+                return (
+                  <div 
+                    key={request.id} 
+                    className="mobile-order-card"
+                    onClick={() => handleViewOrderDetails(request)}
+                  >
+                    <div className="mobile-order-header">
+                      <div className="mobile-order-title">
+                        <div className="mobile-order-service-name">
+                          {request.type === 'cart-order' 
+                            ? `Cart Order (${request.lineItems?.length || 0} items)` 
+                            : request.serviceName}
+                        </div>
+                        <div className="mobile-order-id">#{request.id.slice(-8)}</div>
+                      </div>
+                      <div className="mobile-order-status">
+                        {getStatusBadge(request.status)}
+                      </div>
+                    </div>
+
+                    <div className="mobile-order-info">
+                      <div className="mobile-order-info-row">
+                        <span className="mobile-order-label">Customer</span>
+                        <div className="mobile-order-customer">
+                          <span className="mobile-order-customer-name">
+                            {request.customerInfo.firstName} {request.customerInfo.lastName}
+                          </span>
+                          <span className="mobile-order-customer-email">
+                            {request.customerInfo.email}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mobile-order-info-row">
+                        <span className="mobile-order-label">Price</span>
+                        <div onClick={(e) => e.stopPropagation()}>
+                          {estimate ? (
+                            editingRequest === request.id ? (
+                              <div className="mobile-order-edit-price">
+                                <input
+                                  type="number"
+                                  value={editedPrice}
+                                  onChange={(e) => setEditedPrice(Number(e.target.value))}
+                                  className="price-input"
+                                />
+                                <div className="mobile-order-edit-buttons">
+                                  <button 
+                                    onClick={() => handlePriceSave(request.id)}
+                                    className="btn-save"
+                                  >
+                                    Save
+                                  </button>
+                                  <button 
+                                    onClick={() => setEditingRequest(null)}
+                                    className="btn-cancel"
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="price-display">
+                                <div className="price-content">
+                                  <span className="mobile-order-price">
+                                    ${estimate.totalCost.toFixed(2)}
+                                  </span>
+                                  {estimate.isCartOrder && (
+                                    <small style={{ display: 'block', color: 'var(--color-grey-600)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
+                                      {estimate.itemCount} items
+                                    </small>
+                                  )}
+                                </div>
+                                <button 
+                                  onClick={() => handlePriceEdit(request)}
+                                  className="btn-edit-price"
+                                  title="Edit price"
+                                >
+                                  <img src="/pen.svg" alt="Edit" />
+                                </button>
+                              </div>
+                            )
+                          ) : (
+                            <span className="no-price">No estimate</span>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mobile-order-info-row">
+                        <span className="mobile-order-label">Date</span>
+                        <span className="mobile-order-value">
+                          {formatDate(request.createdAt)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mobile-order-actions" onClick={(e) => e.stopPropagation()}>
+                      {request.status === 'pending' && (
+                        <>
+                          <button 
+                            onClick={() => handleStatusUpdate(request.id, 'confirmed')}
+                            className="action-btn confirm"
+                          >
+                            Confirm
+                          </button>
+                          <button 
+                            onClick={() => handleStatusUpdate(request.id, 'denied')}
+                            className="action-btn deny"
+                          >
+                            Deny
+                          </button>
+                        </>
+                      )}
+                      {request.status === 'confirmed' && (
+                        <button 
+                          onClick={() => handleStatusUpdate(request.id, 'completed')}
+                          className="action-btn complete"
+                        >
+                          Mark Complete
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            </>
           )}
         </div>
       </div>
@@ -757,43 +971,45 @@ const AdminPanel: React.FC = () => {
               {/* Customer Information */}
               <div className="details-section">
                 <h3>Customer Information</h3>
-                <div className="details-grid">
-                  <div className="detail-item">
-                    <label>Name:</label>
-                    <span>{selectedOrder.customerInfo.firstName} {selectedOrder.customerInfo.lastName}</span>
+                <div className="details-list">
+                  <div className="detail-row">
+                    <span className="detail-label">Name:</span>
+                    <span className="detail-value">{selectedOrder.customerInfo.firstName} {selectedOrder.customerInfo.lastName}</span>
                   </div>
-                  <div className="detail-item">
-                    <label>Email:</label>
-                    <span>{selectedOrder.customerInfo.email}</span>
+                  <div className="detail-row">
+                    <span className="detail-label">Email:</span>
+                    <span className="detail-value">{selectedOrder.customerInfo.email}</span>
                   </div>
-                  <div className="detail-item">
-                    <label>Phone:</label>
-                    <span>{selectedOrder.customerInfo.phone}</span>
+                  <div className="detail-row">
+                    <span className="detail-label">Phone:</span>
+                    <span className="detail-value">{selectedOrder.customerInfo.phone}</span>
                   </div>
-                  <div className="detail-item">
-                    <label>Address:</label>
-                    <span>{selectedOrder.customerInfo.address}, {selectedOrder.customerInfo.city}, {selectedOrder.customerInfo.postalCode}</span>
+                  <div className="detail-row">
+                    <span className="detail-label">Address:</span>
+                    <span className="detail-value">{selectedOrder.customerInfo.address}, {selectedOrder.customerInfo.city}, {selectedOrder.customerInfo.postalCode}</span>
                   </div>
-                  <div className="detail-item">
-                    <label>Preferred Contact:</label>
-                    <span>{selectedOrder.customerInfo.preferredContact}</span>
-                  </div>
+                  {selectedOrder.customerInfo.preferredContact && (
+                    <div className="detail-row">
+                      <span className="detail-label">Preferred Contact:</span>
+                      <span className="detail-value">{selectedOrder.customerInfo.preferredContact}</span>
+                    </div>
+                  )}
                   {selectedOrder.customerInfo.bestTimeToCall && (
-                    <div className="detail-item">
-                      <label>Best Time to Call:</label>
-                      <span>{selectedOrder.customerInfo.bestTimeToCall}</span>
+                    <div className="detail-row">
+                      <span className="detail-label">Best Time to Call:</span>
+                      <span className="detail-value">{selectedOrder.customerInfo.bestTimeToCall}</span>
                     </div>
                   )}
                   {selectedOrder.customerInfo.howDidYouHear && (
-                    <div className="detail-item">
-                      <label>How They Heard:</label>
-                      <span>{selectedOrder.customerInfo.howDidYouHear}</span>
+                    <div className="detail-row">
+                      <span className="detail-label">How They Heard:</span>
+                      <span className="detail-value">{selectedOrder.customerInfo.howDidYouHear}</span>
                     </div>
                   )}
                   {selectedOrder.customerInfo.additionalNotes && (
-                    <div className="detail-item full-width">
-                      <label>Additional Notes:</label>
-                      <span>{selectedOrder.customerInfo.additionalNotes}</span>
+                    <div className="detail-row">
+                      <span className="detail-label">Additional Notes:</span>
+                      <span className="detail-value">{selectedOrder.customerInfo.additionalNotes}</span>
                     </div>
                   )}
                 </div>
@@ -805,55 +1021,97 @@ const AdminPanel: React.FC = () => {
                 {selectedOrder.lineItems && selectedOrder.lineItems.length > 0 ? (
                   // Cart Order
                   <div className="service-list">
-                    {selectedOrder.lineItems.map((item, index) => (
-                      <div key={index} className="service-item">
-                        <div className="service-header">
-                          <h4>{item.serviceName}</h4>
-                          <span className="service-price">${item.estimate?.totalCost?.toFixed(2) || '0.00'}</span>
-                        </div>
-                        <div className="service-details">
-                          <p><strong>Service Type:</strong> {item.serviceType}</p>
-                          {item.formData && Object.keys(item.formData).length > 0 && (
-                            <div className="form-data">
-                              <h5>Service Specifications:</h5>
-                              <div className="form-data-grid">
-                                {Object.entries(item.formData).map(([key, value]) => (
-                                  <div key={key} className="form-data-item">
-                                    <label>{key.replace(/([A-Z])/g, ' $1').trim()}:</label>
-                                    <span>{formatFormDataValue(key, value)}</span>
+                    {selectedOrder.lineItems.map((item, index) => {
+                      // Extract images from formData
+                      const formDataImages = item.formData?.images && Array.isArray(item.formData.images) 
+                        ? item.formData.images.filter((img: any) => 
+                            typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://'))
+                          )
+                        : [];
+                      
+                      // Extract images from customProjectDetails
+                      const customImages = item.customProjectDetails?.images && Array.isArray(item.customProjectDetails.images)
+                        ? item.customProjectDetails.images.filter((img: any) => 
+                            typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://'))
+                          )
+                        : [];
+                      
+                      // Combine all images
+                      const allImages = [...formDataImages, ...customImages];
+                      
+                      // Get form parameters (excluding images)
+                      const formParameters = item.formData 
+                        ? Object.entries(item.formData).filter(([key]) => key !== 'images')
+                        : [];
+                      
+                      return (
+                        <div key={index} className="service-item">
+                          {/* 1. Service Name */}
+                          <div className="service-name">
+                            <h4>{item.serviceName}</h4>
+                          </div>
+                          
+                          {/* 2. Service Price */}
+                          <div className="service-price-row">
+                            <span className="detail-label">Price:</span>
+                            <span className="service-price">${item.estimate?.totalCost?.toFixed(2) || '0.00'}</span>
+                          </div>
+                          
+                          {/* 3. Service Form Parameters */}
+                          {formParameters.length > 0 && (
+                            <div className="service-parameters">
+                              {formParameters.map(([key, value]) => (
+                                <div key={key} className="detail-row">
+                                  <span className="detail-label">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                                  <span className="detail-value">{formatFormDataValue(key, value)}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {/* 4. Service Images */}
+                          {allImages.length > 0 && (
+                            <div className="service-images">
+                              <span className="detail-label">Images:</span>
+                              <div className="image-gallery">
+                                {allImages.map((imageUrl: string, idx: number) => (
+                                  <div key={idx} className="image-item">
+                                    <ImageWithRetry 
+                                      url={imageUrl} 
+                                      alt={`Service image ${idx + 1}`}
+                                      onClick={() => openImageModal(imageUrl)}
+                                    />
                                   </div>
                                 ))}
                               </div>
                             </div>
                           )}
                         </div>
-                      </div>
-                    ))}
-                    
-                    {/* Cart Totals */}
+                      );
+                    })}
                     {selectedOrder.totals && (
                       <div className="cart-totals">
                         <h4>Order Summary</h4>
-                        <div className="totals-grid">
-                          <div className="total-item">
-                            <span>Items Subtotal:</span>
-                            <span>${selectedOrder.totals.itemsSubtotal?.toFixed(2) || '0.00'}</span>
+                        <div className="totals-list">
+                          <div className="detail-row">
+                            <span className="detail-label">Items Subtotal:</span>
+                            <span className="detail-value">${selectedOrder.totals.itemsSubtotal?.toFixed(2) || '0.00'}</span>
                           </div>
                           {selectedOrder.totals.travelFeeAdjustment && selectedOrder.totals.travelFeeAdjustment > 0 && (
-                            <div className="total-item">
-                              <span>Travel Fee:</span>
-                              <span>${selectedOrder.totals.travelFeeAdjustment.toFixed(2)}</span>
+                            <div className="detail-row">
+                              <span className="detail-label">Travel Fee:</span>
+                              <span className="detail-value">${selectedOrder.totals.travelFeeAdjustment.toFixed(2)}</span>
                             </div>
                           )}
                           {selectedOrder.totals.discount && selectedOrder.totals.discount > 0 && (
-                            <div className="total-item discount">
-                              <span>Discount (15%):</span>
-                              <span>-${selectedOrder.totals.discount.toFixed(2)}</span>
+                            <div className="detail-row">
+                              <span className="detail-label">Discount (15%):</span>
+                              <span className="detail-value">-${selectedOrder.totals.discount.toFixed(2)}</span>
                             </div>
                           )}
-                          <div className="total-item grand-total">
-                            <span>Grand Total:</span>
-                            <span>${selectedOrder.totals.grandTotal?.toFixed(2) || '0.00'}</span>
+                          <div className="detail-row grand-total">
+                            <span className="detail-label">Grand Total:</span>
+                            <span className="detail-value">${selectedOrder.totals.grandTotal?.toFixed(2) || '0.00'}</span>
                           </div>
                         </div>
                       </div>
@@ -861,28 +1119,74 @@ const AdminPanel: React.FC = () => {
                   </div>
                 ) : (
                   // Single Service
-                  <div className="service-item">
-                    <div className="service-header">
-                      <h4>{selectedOrder.serviceName}</h4>
-                      <span className="service-price">${selectedOrder.estimate?.totalCost?.toFixed(2) || '0.00'}</span>
-                    </div>
-                    <div className="service-details">
-                      <p><strong>Service Type:</strong> {selectedOrder.serviceType}</p>
-                      {selectedOrder.formData && Object.keys(selectedOrder.formData).length > 0 && (
-                        <div className="form-data">
-                          <h5>Service Specifications:</h5>
-                          <div className="form-data-grid">
-                            {Object.entries(selectedOrder.formData).map(([key, value]) => (
-                              <div key={key} className="form-data-item">
-                                <label>{key.replace(/([A-Z])/g, ' $1').trim()}:</label>
-                                <span>{formatFormDataValue(key, value)}</span>
+                  (() => {
+                    // Extract images from formData
+                    const formDataImages = selectedOrder.formData?.images && Array.isArray(selectedOrder.formData.images) 
+                      ? selectedOrder.formData.images.filter((img: any) => 
+                          typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://'))
+                        )
+                      : [];
+                    
+                    // Extract images from customProjectDetails
+                    const customImages = selectedOrder.customProjectDetails?.images && Array.isArray(selectedOrder.customProjectDetails.images)
+                      ? selectedOrder.customProjectDetails.images.filter((img: any) => 
+                          typeof img === 'string' && (img.startsWith('http://') || img.startsWith('https://'))
+                        )
+                      : [];
+                    
+                    // Combine all images
+                    const allImages = [...formDataImages, ...customImages];
+                    
+                    // Get form parameters (excluding images)
+                    const formParameters = selectedOrder.formData 
+                      ? Object.entries(selectedOrder.formData).filter(([key]) => key !== 'images')
+                      : [];
+                    
+                    return (
+                      <div className="service-item">
+                        {/* 1. Service Name */}
+                        <div className="service-name">
+                          <h4>{selectedOrder.serviceName}</h4>
+                        </div>
+                        
+                        {/* 2. Service Price */}
+                        <div className="service-price-row">
+                          <span className="detail-label">Price:</span>
+                          <span className="service-price">${selectedOrder.estimate?.totalCost?.toFixed(2) || '0.00'}</span>
+                        </div>
+                        
+                        {/* 3. Service Form Parameters */}
+                        {formParameters.length > 0 && (
+                          <div className="service-parameters">
+                            {formParameters.map(([key, value]) => (
+                              <div key={key} className="detail-row">
+                                <span className="detail-label">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
+                                <span className="detail-value">{formatFormDataValue(key, value)}</span>
                               </div>
                             ))}
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                        )}
+                        
+                        {/* 4. Service Images */}
+                        {allImages.length > 0 && (
+                          <div className="service-images">
+                            <span className="detail-label">Images:</span>
+                            <div className="image-gallery">
+                              {allImages.map((imageUrl: string, idx: number) => (
+                                <div key={idx} className="image-item">
+                                  <ImageWithRetry 
+                                    url={imageUrl} 
+                                    alt={`Service image ${idx + 1}`}
+                                    onClick={() => openImageModal(imageUrl)}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()
                 )}
               </div>
 
@@ -890,24 +1194,24 @@ const AdminPanel: React.FC = () => {
               <div className="details-section">
                 <h3>Order Status & Timeline</h3>
                 <div className="status-timeline">
-                  <div className="timeline-item">
-                    <span className="timeline-date">{formatDate(selectedOrder.createdAt)}</span>
-                    <span className="timeline-status">Order Created</span>
+                  <div className="detail-row">
+                    <span className="detail-label">{formatDate(selectedOrder.createdAt)}</span>
+                    <span className="detail-value">Order Created</span>
                   </div>
-                  <div className="timeline-item">
-                    <span className="timeline-date">{formatDate(selectedOrder.updatedAt)}</span>
-                    <span className="timeline-status">Status: {selectedOrder.status.toUpperCase()}</span>
+                  <div className="detail-row">
+                    <span className="detail-label">{formatDate(selectedOrder.updatedAt)}</span>
+                    <span className="detail-value">Status: {selectedOrder.status.toUpperCase()}</span>
                   </div>
                   {selectedOrder.scheduledDate && (
-                    <div className="timeline-item">
-                      <span className="timeline-date">{formatDate(selectedOrder.scheduledDate)}</span>
-                      <span className="timeline-status">Scheduled</span>
+                    <div className="detail-row">
+                      <span className="detail-label">{formatDate(selectedOrder.scheduledDate)}</span>
+                      <span className="detail-value">Scheduled</span>
                     </div>
                   )}
                   {selectedOrder.completionDate && (
-                    <div className="timeline-item">
-                      <span className="timeline-date">{formatDate(selectedOrder.completionDate)}</span>
-                      <span className="timeline-status">Completed</span>
+                    <div className="detail-row">
+                      <span className="detail-label">{formatDate(selectedOrder.completionDate)}</span>
+                      <span className="detail-value">Completed</span>
                     </div>
                   )}
                 </div>
@@ -917,6 +1221,26 @@ const AdminPanel: React.FC = () => {
             <div className="modal-footer">
               <button className="btn-secondary" onClick={closeOrderDetails}>Close</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Image Modal/Lightbox */}
+      {selectedImage && (
+        <div className="image-modal-overlay" onClick={closeImageModal}>
+          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="image-modal-close" onClick={closeImageModal} aria-label="Close">
+              ×
+            </button>
+            <img 
+              src={selectedImage} 
+              alt="Full size view"
+              className="image-modal-image"
+              onError={(e) => {
+                console.error('Failed to load full-size image:', selectedImage);
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
           </div>
         </div>
       )}

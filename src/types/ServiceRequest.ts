@@ -35,6 +35,12 @@ export interface CartLineItem {
   serviceType: 'flat-rate' | 'calculated' | 'custom-quote';
   estimate?: EstimateDetails;
   formData: Record<string, any>;
+  customProjectDetails?: {
+    description: string;
+    images: string[];
+    budget?: number;
+    timeline?: string;
+  };
 }
 
 export interface CartTotals {
