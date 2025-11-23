@@ -66,8 +66,17 @@ const CheckoutPage = () => {
   // Handle single-service checkout from location state
   useEffect(() => {
     if (location.state?.isSingleService && location.state?.singleService) {
-      setSingleService(location.state.singleService)
-      setIsSingleService(true)
+      const service = location.state.singleService;
+      // If customImages are provided, merge them into customProjectDetails
+      if (location.state?.customImages && Array.isArray(location.state.customImages)) {
+        if (!service.customProjectDetails) {
+          service.customProjectDetails = {};
+        }
+        // Replace the metadata with actual File objects
+        service.customProjectDetails.images = location.state.customImages;
+      }
+      setSingleService(service);
+      setIsSingleService(true);
     }
   }, [location.state])
 

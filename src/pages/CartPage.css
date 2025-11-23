@@ -228,6 +228,12 @@
   margin-top: 12px;
 }
 
+.cart-summary-actions .btn-primary,
+.cart-summary-actions .btn-secondary {
+  padding: 1rem 1.5rem;
+  min-height: auto;
+}
+
 
 /* Responsive Design */
 @media (max-width: 1024px) {

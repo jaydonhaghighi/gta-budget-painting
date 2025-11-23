@@ -9,6 +9,10 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [isHowItWorksExpanded, setIsHowItWorksExpanded] = useState(false);
+  const [isWhyChooseUsExpanded, setIsWhyChooseUsExpanded] = useState(false);
+  const [expandedBenefits, setExpandedBenefits] = useState<{ [key: number]: boolean }>({});
+  const [expandedSteps, setExpandedSteps] = useState<{ [key: number]: boolean }>({});
   
   // Inquiry form state
   const [inqName, setInqName] = useState('');
@@ -161,10 +165,26 @@ const LandingPage = () => {
     }
   };
 
+  // Toggle step card expansion
+  const toggleStep = (stepNumber: number) => {
+    setExpandedSteps(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber]
+    }));
+  };
+
+  // Toggle benefit card expansion
+  const toggleBenefit = (benefitNumber: number) => {
+    setExpandedBenefits(prev => ({
+      ...prev,
+      [benefitNumber]: !prev[benefitNumber]
+    }));
+  };
+
   // Handle hash navigation
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash === '#company-section' || hash === '#areas-served-section') {
+    if (hash === '#company-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
       setTimeout(() => {
         scrollToSection(hash);
       }, 100);
@@ -175,7 +195,7 @@ const LandingPage = () => {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === '#company-section' || hash === '#areas-served-section') {
+      if (hash === '#company-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
         setTimeout(() => {
           scrollToSection(hash);
         }, 100);
@@ -310,6 +330,225 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* How It Works Section */}
+      <section id="how-it-works-section" className="how-it-works-section">
+        <div className="container">
+          <div className="how-it-works-content">
+            <button 
+              className="how-it-works-toggle"
+              onClick={() => setIsHowItWorksExpanded(!isHowItWorksExpanded)}
+              aria-expanded={isHowItWorksExpanded}
+              aria-controls="how-it-works-collapsible"
+            >
+              <h2>How to Book Your Service</h2>
+              <span className={`how-it-works-toggle-icon ${isHowItWorksExpanded ? 'open' : ''}`}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div 
+              id="how-it-works-collapsible"
+              className={`how-it-works-collapsible ${isHowItWorksExpanded ? 'open' : ''}`}
+            >
+              <div className="how-it-works-text">
+                <div className="steps-container">
+                  <div className="step-card">
+                    <button 
+                      className="step-card-header"
+                      onClick={() => toggleStep(1)}
+                      aria-expanded={expandedSteps[1]}
+                    >
+                      <div className="step-header-content">
+                        <div className="step-number">1</div>
+                        <div className="step-icon">
+                          <img src="/folder.svg" alt="Browse" />
+                        </div>
+                        <h3>Browse Services</h3>
+                      </div>
+                      <span className={`step-toggle-icon ${expandedSteps[1] ? 'open' : ''}`}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                    </button>
+                    <div className={`step-card-content ${expandedSteps[1] ? 'open' : ''}`}>
+                      <p>Explore our wide range of interior and exterior painting services.</p>
+                      <button 
+                        className="step-action-btn"
+                        onClick={() => navigate('/services')}
+                      >
+                        View Services
+                      </button>
+                    </div>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                    <button 
+                      className="step-card-header"
+                      onClick={() => toggleStep(2)}
+                      aria-expanded={expandedSteps[2]}
+                    >
+                      <div className="step-header-content">
+                        <div className="step-number">2</div>
+                        <div className="step-icon">
+                          <img src="/paint-roller.svg" alt="Select" />
+                        </div>
+                        <h3>Select Your Service</h3>
+                      </div>
+                      <span className={`step-toggle-icon ${expandedSteps[2] ? 'open' : ''}`}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                    </button>
+                    <div className={`step-card-content ${expandedSteps[2] ? 'open' : ''}`}>
+                      <p>Click on the service you need. You'll see detailed information about what's included, pricing options, and service details.</p>
+                    </div>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                    <button 
+                      className="step-card-header"
+                      onClick={() => toggleStep(3)}
+                      aria-expanded={expandedSteps[3]}
+                    >
+                      <div className="step-header-content">
+                        <div className="step-number">3</div>
+                        <div className="step-icon">
+                          <img src="/calculator-bill.svg" alt="Calculate" />
+                        </div>
+                        <h3>Get Estimate or Contact Us</h3>
+                      </div>
+                      <span className={`step-toggle-icon ${expandedSteps[3] ? 'open' : ''}`}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                    </button>
+                    <div className={`step-card-content ${expandedSteps[3] ? 'open' : ''}`}>
+                      <p>Fill out our form for an instant estimate, or skip ahead and contact us directly for a personalized quote.</p>
+                      <div className="step-contact-actions">
+                        <a 
+                          href="#inquiry-section" 
+                          className="step-contact-btn step-email-btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            scrollToSection('#inquiry-section');
+                          }}
+                        >
+                          Send Inquiry
+                        </a>
+                        <a href="tel:6473907181" className="step-contact-btn step-phone-btn">
+                          Call Us
+                        </a>
+                      </div>
+                    </div>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                    <button 
+                      className="step-card-header"
+                      onClick={() => toggleStep(4)}
+                      aria-expanded={expandedSteps[4]}
+                    >
+                      <div className="step-header-content">
+                        <div className="step-number">4</div>
+                        <div className="step-icon">
+                          <img src="/shopping-cart.png" alt="Cart" />
+                        </div>
+                        <h3>Add to Cart (Optional)</h3>
+                      </div>
+                      <span className={`step-toggle-icon ${expandedSteps[4] ? 'open' : ''}`}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                    </button>
+                    <div className={`step-card-content ${expandedSteps[4] ? 'open' : ''}`}>
+                      <p>Need multiple services? Add them to your cart and book everything at once. You can also proceed directly to checkout for a single service.</p>
+                    </div>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                    <button 
+                      className="step-card-header"
+                      onClick={() => toggleStep(5)}
+                      aria-expanded={expandedSteps[5]}
+                    >
+                      <div className="step-header-content">
+                        <div className="step-number">5</div>
+                        <div className="step-icon">
+                          <img src="/checkout/clipboard.svg" alt="Checkout" />
+                        </div>
+                        <h3>Complete Your Booking</h3>
+                      </div>
+                      <span className={`step-toggle-icon ${expandedSteps[5] ? 'open' : ''}`}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                    </button>
+                    <div className={`step-card-content ${expandedSteps[5] ? 'open' : ''}`}>
+                      <p>Enter your contact information, preferred dates, and any special requirements. Review your order summary and submit your request.</p>
+                    </div>
+              </div>
+
+              <div className="step-connector">
+                <div className="connector-line"></div>
+                <div className="connector-arrow">→</div>
+              </div>
+
+              <div className="step-card">
+                    <button 
+                      className="step-card-header"
+                      onClick={() => toggleStep(6)}
+                      aria-expanded={expandedSteps[6]}
+                    >
+                      <div className="step-header-content">
+                        <div className="step-number">6</div>
+                        <div className="step-icon">
+                          <img src="/checkout/info.svg" alt="Confirm" />
+                        </div>
+                        <h3>Receive Confirmation</h3>
+                      </div>
+                      <span className={`step-toggle-icon ${expandedSteps[6] ? 'open' : ''}`}>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </span>
+                    </button>
+                    <div className={`step-card-content ${expandedSteps[6] ? 'open' : ''}`}>
+                      <p>We'll send you a confirmation email and our team will contact you within 24 hours to schedule your service and answer any questions.</p>
+                    </div>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Company Section */}
       <section id="company-section" className="company-section">
         <div className="container">
@@ -323,6 +562,150 @@ const LandingPage = () => {
               </div>
               <div className="company-image">
                 <img src="/partnership.png" alt="Professional painting team at work" className="company-photo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section id="why-choose-us-section" className="why-choose-us-section">
+        <div className="container">
+          <div className="why-choose-us-content">
+            <button 
+              className="why-choose-us-toggle"
+              onClick={() => setIsWhyChooseUsExpanded(!isWhyChooseUsExpanded)}
+              aria-expanded={isWhyChooseUsExpanded}
+              aria-controls="why-choose-us-collapsible"
+            >
+              <h2>Why Choose GTA Budget Painting?</h2>
+              <span className={`why-choose-us-toggle-icon ${isWhyChooseUsExpanded ? 'open' : ''}`}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div 
+              id="why-choose-us-collapsible"
+              className={`why-choose-us-collapsible ${isWhyChooseUsExpanded ? 'open' : ''}`}
+            >
+              <div className="why-choose-us-text">
+                <div className="benefits-grid">
+            <div className="benefit-card">
+              <button 
+                className="benefit-card-header"
+                onClick={() => toggleBenefit(1)}
+                aria-expanded={expandedBenefits[1]}
+              >
+                <div className="benefit-header-content">
+                  <h3>Budget-Friendly Pricing</h3>
+                </div>
+                <span className={`benefit-toggle-icon ${expandedBenefits[1] ? 'open' : ''}`}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`benefit-card-content ${expandedBenefits[1] ? 'open' : ''}`}>
+                <p>Affordable rates designed for homeowners who need quality work without breaking the bank</p>
+              </div>
+            </div>
+            <div className="benefit-card">
+              <button 
+                className="benefit-card-header"
+                onClick={() => toggleBenefit(2)}
+                aria-expanded={expandedBenefits[2]}
+              >
+                <div className="benefit-header-content">
+                  <h3>Free Instant Estimates</h3>
+                </div>
+                <span className={`benefit-toggle-icon ${expandedBenefits[2] ? 'open' : ''}`}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`benefit-card-content ${expandedBenefits[2] ? 'open' : ''}`}>
+                <p>Get free quotes online in minutes - no waiting, no obligation, transparent pricing upfront</p>
+              </div>
+            </div>
+            <div className="benefit-card">
+              <button 
+                className="benefit-card-header"
+                onClick={() => toggleBenefit(3)}
+                aria-expanded={expandedBenefits[3]}
+              >
+                <div className="benefit-header-content">
+                  <h3>Quick Turnaround</h3>
+                </div>
+                <span className={`benefit-toggle-icon ${expandedBenefits[3] ? 'open' : ''}`}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`benefit-card-content ${expandedBenefits[3] ? 'open' : ''}`}>
+                <p>Fast completion times - we understand you need your space back quickly and efficiently</p>
+              </div>
+            </div>
+            <div className="benefit-card">
+              <button 
+                className="benefit-card-header"
+                onClick={() => toggleBenefit(4)}
+                aria-expanded={expandedBenefits[4]}
+              >
+                <div className="benefit-header-content">
+                  <h3>No Hidden Fees</h3>
+                </div>
+                <span className={`benefit-toggle-icon ${expandedBenefits[4] ? 'open' : ''}`}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`benefit-card-content ${expandedBenefits[4] ? 'open' : ''}`}>
+                <p>What you see is what you pay - honest, upfront pricing with no surprises or extra charges</p>
+              </div>
+            </div>
+            <div className="benefit-card">
+              <button 
+                className="benefit-card-header"
+                onClick={() => toggleBenefit(5)}
+                aria-expanded={expandedBenefits[5]}
+              >
+                <div className="benefit-header-content">
+                  <h3>Small Jobs Welcome</h3>
+                </div>
+                <span className={`benefit-toggle-icon ${expandedBenefits[5] ? 'open' : ''}`}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`benefit-card-content ${expandedBenefits[5] ? 'open' : ''}`}>
+                <p>We take on projects of all sizes - from single rooms to full homes, no job too small</p>
+              </div>
+            </div>
+            <div className="benefit-card">
+              <button 
+                className="benefit-card-header"
+                onClick={() => toggleBenefit(6)}
+                aria-expanded={expandedBenefits[6]}
+              >
+                <div className="benefit-header-content">
+                  <h3>Fast Response Time</h3>
+                </div>
+                <span className={`benefit-toggle-icon ${expandedBenefits[6] ? 'open' : ''}`}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <div className={`benefit-card-content ${expandedBenefits[6] ? 'open' : ''}`}>
+                <p>Quick replies to inquiries and flexible scheduling to fit your timeline and budget</p>
+              </div>
+            </div>
+                </div>
               </div>
             </div>
           </div>

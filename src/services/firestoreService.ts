@@ -14,14 +14,78 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { ServiceRequest, ServiceRequestSubmission } from '../types/ServiceRequest';
+import { 
+  extractFileObjects, 
+  uploadImages, 
+  replaceFilesWithUrls 
+} from './storageService';
 
 const SERVICE_REQUESTS_COLLECTION = 'serviceRequests';
 
 // (Removed) generateServiceRequestId was unused after switching to Firestore auto IDs
 
+// Helper function to recursively remove File objects from data (fallback if upload fails)
+const removeFileObjects = (data: any): any => {
+  if (data === null || data === undefined) {
+    return data;
+  }
+  
+  // If it's a File object, return undefined to filter it out
+  if (data instanceof File) {
+    return undefined;
+  }
+  
+  // If it's an array, recursively process each item
+  if (Array.isArray(data)) {
+    return data
+      .map(item => removeFileObjects(item))
+      .filter(item => item !== undefined);
+  }
+  
+  // If it's an object, recursively process each property
+  if (typeof data === 'object') {
+    const cleaned: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      const cleanedValue = removeFileObjects(value);
+      // Only include the property if the cleaned value is not undefined
+      if (cleanedValue !== undefined) {
+        cleaned[key] = cleanedValue;
+      }
+    }
+    return cleaned;
+  }
+  
+  // For primitive values, return as-is
+  return data;
+};
+
 // Submit a new service request to Firestore
 export const submitServiceRequest = async (submission: ServiceRequestSubmission | any): Promise<string> => {
   try {
+    // Extract all File objects from the submission
+    const allFiles = extractFileObjects(submission);
+    
+    // Generate a temporary ID for organizing uploads (we'll use timestamp + random)
+    const tempRequestId = `temp-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    
+    // Upload all images first (if any)
+    let fileUrlMap = new Map<File, string>();
+    if (allFiles.length > 0) {
+      try {
+        console.log(`Uploading ${allFiles.length} image(s) to Firebase Storage...`);
+        const urls = await uploadImages(allFiles, tempRequestId);
+        // Create a map of File objects to their URLs
+        allFiles.forEach((file, index) => {
+          fileUrlMap.set(file, urls[index]);
+        });
+        console.log('Images uploaded successfully');
+      } catch (uploadError) {
+        console.error('Error uploading images:', uploadError);
+        // Continue without images if upload fails
+        // You might want to throw an error here instead, depending on your requirements
+      }
+    }
+    
     // Check if this is a cart submission (has lineItems)
     if (submission.lineItems && Array.isArray(submission.lineItems)) {
       // Cart submission with multiple line items
@@ -45,9 +109,13 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         };
       }
 
-      // Filter out undefined values for Firestore
+      // Replace File objects with URLs
+      const cleanedData = fileUrlMap.size > 0 
+        ? replaceFilesWithUrls(firestoreData, fileUrlMap)
+        : removeFileObjects(firestoreData);
+      
       const filteredData = Object.fromEntries(
-        Object.entries(firestoreData).filter(([_, value]) => value !== undefined)
+        Object.entries(cleanedData).filter(([_, value]) => value !== undefined)
       );
 
       // Also filter lineItems array to remove any items with undefined values
@@ -61,6 +129,11 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
 
       const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), filteredData);
       console.log('Cart order submitted successfully:', docRef.id);
+      
+      // Images are already uploaded with the tempRequestId in the path
+      // They're organized in: service-requests/{tempRequestId}/image-{index}-{timestamp}-{filename}
+      // You can optionally move them to the final requestId path if needed
+      
       return docRef.id;
     } else {
       // Single service submission (legacy)
@@ -79,13 +152,31 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         priority: determinePriority(submission),
       };
 
-      // Filter out undefined values for Firestore
+      // Replace File objects with URLs before creating Firestore data
+      const processedFormData = fileUrlMap.size > 0
+        ? replaceFilesWithUrls(serviceRequest.formData, fileUrlMap)
+        : removeFileObjects(serviceRequest.formData);
+      
+      // Process customProjectDetails - remove any File objects (images are stored in formData.images only)
+      let processedCustomProjectDetails = serviceRequest.customProjectDetails
+        ? (fileUrlMap.size > 0
+            ? replaceFilesWithUrls(serviceRequest.customProjectDetails, fileUrlMap)
+            : removeFileObjects(serviceRequest.customProjectDetails))
+        : undefined;
+      
+      // Remove images from customProjectDetails since they're already in formData.images
+      // This prevents duplication in Firestore
+      if (processedCustomProjectDetails && processedCustomProjectDetails.images) {
+        delete processedCustomProjectDetails.images;
+      }
+
+      // Remove File objects and filter out undefined values for Firestore
       const firestoreData: any = {
         serviceId: serviceRequest.serviceId,
         serviceName: serviceRequest.serviceName,
         serviceType: serviceRequest.serviceType,
         customerInfo: serviceRequest.customerInfo,
-        formData: serviceRequest.formData,
+        formData: processedFormData,
         status: serviceRequest.status,
         createdAt: Timestamp.fromDate(serviceRequest.createdAt),
         updatedAt: Timestamp.fromDate(serviceRequest.updatedAt),
@@ -99,9 +190,9 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         firestoreData.estimate = serviceRequest.estimate;
       }
 
-      // Only add customProjectDetails if it exists
-      if (serviceRequest.customProjectDetails) {
-        firestoreData.customProjectDetails = serviceRequest.customProjectDetails;
+      // Only add customProjectDetails if it exists (with uploaded image URLs)
+      if (processedCustomProjectDetails) {
+        firestoreData.customProjectDetails = processedCustomProjectDetails;
       }
 
       // Only add scheduledDate if it exists
@@ -109,8 +200,18 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         firestoreData.scheduledDate = Timestamp.fromDate(new Date(submission.customProjectDetails.timeline));
       }
 
-      const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), firestoreData);
+      // Final cleanup to remove any undefined values
+      const cleanedFirestoreData = Object.fromEntries(
+        Object.entries(firestoreData).filter(([_, value]) => value !== undefined)
+      );
+
+      const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), cleanedFirestoreData);
       console.log('Service request submitted successfully:', docRef.id);
+      
+      // Images are already uploaded with the tempRequestId in the path
+      // They're organized in: service-requests/{tempRequestId}/image-{index}-{timestamp}-{filename}
+      // You can optionally move them to the final requestId path if needed
+      
       return docRef.id;
     }
   } catch (error) {
