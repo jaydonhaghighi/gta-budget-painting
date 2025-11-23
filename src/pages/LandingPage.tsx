@@ -13,7 +13,6 @@ const LandingPage = () => {
   const [isWhyChooseUsExpanded, setIsWhyChooseUsExpanded] = useState(false);
   const [expandedBenefits, setExpandedBenefits] = useState<{ [key: number]: boolean }>({});
   const [expandedSteps, setExpandedSteps] = useState<{ [key: number]: boolean }>({});
-  const [expandedFaqs, setExpandedFaqs] = useState<{ [key: number]: boolean }>({});
   
   // Inquiry form state
   const [inqName, setInqName] = useState('');
@@ -171,14 +170,6 @@ const LandingPage = () => {
     setExpandedSteps(prev => ({
       ...prev,
       [stepNumber]: !prev[stepNumber]
-    }));
-  };
-
-  // Toggle FAQ expansion
-  const toggleFaq = (faqNumber: number) => {
-    setExpandedFaqs(prev => ({
-      ...prev,
-      [faqNumber]: !prev[faqNumber]
     }));
   };
 
@@ -873,59 +864,6 @@ const LandingPage = () => {
                 View More Reviews
               </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section id="faq-section" className="faq-section">
-        <div className="container">
-          <h2 className="faq-title">Frequently Asked Questions</h2>
-          <div className="faq-list">
-            {[
-              {
-                question: "How long does a typical painting project take?",
-                answer: "Project duration depends on the size and scope of work. A single room typically takes 1-2 days, while a full interior paint job can take 3-7 days. We'll provide a timeline estimate during your free quote."
-              },
-              {
-                question: "Do you provide free estimates?",
-                answer: "Yes! We offer free, no-obligation estimates for all projects. You can get an instant quote online through our service pages, or contact us directly for a personalized estimate."
-              },
-              {
-                question: "What areas do you serve?",
-                answer: "We serve the entire Greater Toronto Area, including Toronto, Mississauga, Brampton, Vaughan, Markham, Richmond Hill, Oakville, Burlington, and surrounding communities."
-              },
-              {
-                question: "Do you use eco-friendly paints?",
-                answer: "Yes, we can use eco-friendly and low-VOC (volatile organic compound) paints upon request. These paints are better for indoor air quality and the environment while maintaining excellent coverage and durability."
-              },
-              {
-                question: "What payment methods do you accept?",
-                answer: "We accept various payment methods including cash, check, and electronic transfers. Payment terms are typically discussed during the estimate process. A deposit may be required for larger projects."
-              },
-              {
-                question: "Are you licensed and insured?",
-                answer: "Yes, we are fully licensed and insured. This protects both you and our team, ensuring that any work performed meets professional standards and is covered by insurance."
-              }
-            ].map((faq, index) => (
-              <div key={index} className="faq-item">
-                <button 
-                  className="faq-question"
-                  onClick={() => toggleFaq(index)}
-                  aria-expanded={expandedFaqs[index]}
-                >
-                  <span>{faq.question}</span>
-                  <span className={`faq-icon ${expandedFaqs[index] ? 'open' : ''}`}>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
-                </button>
-                <div className={`faq-answer ${expandedFaqs[index] ? 'open' : ''}`}>
-                  <p>{faq.answer}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>

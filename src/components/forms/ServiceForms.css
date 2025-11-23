@@ -3931,7 +3931,6 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 1rem;
 }
 
 .btn-primary:hover:not(:disabled) {
