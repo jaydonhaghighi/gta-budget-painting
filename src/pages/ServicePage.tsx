@@ -359,7 +359,7 @@ const ServicePage = () => {
       if (service?.type === 'custom-quote') {
         serviceRequestData.customProjectDetails = {
           description: formData.description || '',
-          // Don't duplicate images here - they're already in formData.images
+          images: [], // Empty array - images are in formData.images and will be processed separately
           budget: formData.budget,
           timeline: formData.timeline,
         };
