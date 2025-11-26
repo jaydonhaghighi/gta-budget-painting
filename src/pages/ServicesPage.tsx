@@ -17,7 +17,7 @@ const ServicesPage = () => {
       <section className="all-services-hero">
         <div className="container">
           <h1>Our Painting Services</h1>
-          <p className="hero-subtitle">Professional painting services that won't break the bank. Get free instant quotes from our estimator calculators or from our licensed & insured contractors across the GTA.</p>
+          <p className="hero-subtitle">Professional painting for small residential jobs that won't break the bank. Get free instant quotes from our estimator calculators or from our licensed & insured professionals.</p>
         </div>
       </section>
 
