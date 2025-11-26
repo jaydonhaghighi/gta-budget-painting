@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="footer-section footer-about">
             <h3>GTA Budget Painting</h3>
-            <p>Your trusted painting professionals in the Greater Toronto Area. We provide expert interior and exterior painting services across the GTA with quality workmanship and competitive pricing.</p>
+            <p>Your trusted painting professionals for small residential jobs in the Greater Toronto Area. We specialize in quick turnaround times and budget-friendly pricing for interior and exterior projects.</p>
             
             <div className="business-hours">
               <h4>Business Hours</h4>
@@ -97,7 +97,7 @@ const Footer = () => {
           <div className="footer-bottom-content">
             <p>&copy; 2025 GTA Budget Painting. All rights reserved. | <a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer" style={{color: 'inherit', textDecoration: 'none'}} onMouseOver={e => (e.target as HTMLElement).style.color = '#8B0000'} onMouseOut={e => (e.target as HTMLElement).style.color = 'inherit'}>Partner of GTA Home Painting</a></p>
             <div className="footer-keywords">
-              <span>Affordable Painting Toronto GTA | Budget-Friendly Interior Painting | Fast & Cheap Exterior Painting | Greater Toronto Area Residential Painting | Best Value House Painters | Cost-Effective Condo Painting | Quick & Affordable Commercial Painting | Budget Interior Painters GTA | Affordable Exterior House Painting | Fast Residential Painting Services</span>
+              <span>Small Job Painters Toronto | Quick Turnaround Painting GTA | Budget Residential Painting | Affordable Small Job Painters | Fast Interior Painting | Exterior Painting for Small Homes | Best Value Painters GTA | Quick & Affordable Painting Services</span>
             </div>
           </div>
         </div>

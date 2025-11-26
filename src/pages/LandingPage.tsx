@@ -206,23 +206,82 @@ const LandingPage = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Scroll-triggered banner logic
+  // Update body class when banner visibility changes
   useEffect(() => {
-    const handleScroll = () => {
-      const heroSection = document.querySelector('.booking-hero');
-      if (heroSection && !bannerDismissed) {
-        const rect = heroSection.getBoundingClientRect();
-        // Show banner when user scrolls past the hero section
-        if (rect.bottom <= 0) {
-          setShowPromoBanner(true);
-        } else {
-          setShowPromoBanner(false);
-        }
+    if (showPromoBanner && !bannerDismissed) {
+      document.body.classList.add('promo-banner-visible');
+    } else {
+      document.body.classList.remove('promo-banner-visible');
+    }
+    return () => {
+      document.body.classList.remove('promo-banner-visible');
+    };
+  }, [showPromoBanner, bannerDismissed]);
+
+  // Position banner directly below header
+  useEffect(() => {
+    const updateBannerPosition = () => {
+      const header = document.querySelector('.header');
+      const banner = document.querySelector('.sticky-promo-banner') as HTMLElement;
+      if (header && banner) {
+        const headerHeight = header.getBoundingClientRect().height;
+        banner.style.top = `${headerHeight}px`;
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      updateBannerPosition();
+    }, 100);
+    
+    // Update on resize
+    window.addEventListener('resize', updateBannerPosition);
+    
+    // Also update when banner visibility changes
+    if (showPromoBanner) {
+      updateBannerPosition();
+    }
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', updateBannerPosition);
+    };
+  }, [showPromoBanner]);
+
+  // Scroll-triggered banner logic - show after scrolling past hero
+  useEffect(() => {
+    if (bannerDismissed) {
+      setShowPromoBanner(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      const heroSection = document.querySelector('.booking-hero');
+      if (heroSection) {
+        const rect = heroSection.getBoundingClientRect();
+        // Show banner when user scrolls past the hero section
+        const scrolledPastHero = rect.bottom <= 0;
+        setShowPromoBanner(scrolledPastHero);
+      } else {
+        // Fallback: show after scrolling 400px
+        const scrollY = window.scrollY || window.pageYOffset;
+        setShowPromoBanner(scrollY > 400);
+      }
+    };
+
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      handleScroll();
+    }, 100);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+    
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, [bannerDismissed]);
 
   // Match inquiry image height to form height (desktop only)
@@ -310,8 +369,8 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
-          <h1>Affordable Painting Services in the Greater Toronto Area</h1>
-          <p className="hero-subtitle">Professional painting services that won't break the bank. Get free instant quotes from licensed & insured contractors across the GTA.</p>
+          <h1>Quick & Affordable Painting for Small Residential Jobs in the GTA</h1>
+          <p className="hero-subtitle">We specialize in quick turnaround times and great results for homeowners on a budget. Get free instant quotes now.</p>
           
           {/* Contact Info */}
           <div className="hero-contact">
@@ -557,7 +616,7 @@ const LandingPage = () => {
               <div className="company-text-content">
                 <h2>About GTA Budget Painting</h2>
                 <p className="company-description">
-                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, designed to serve homeowners who need smaller, more affordable painting projects. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.</span>
+                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, designed to serve homeowners who need smaller, more affordable painting projects. We specialize in residential painting, focusing on delivering exceptional service for homes and apartments. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.</span>
                 </p>
               </div>
               <div className="company-image">
@@ -712,57 +771,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Areas Served Section */}
-      <section id="areas-served-section" className="areas-served-section">
-        <div className="container">
-          <div className="areas-content">
-            <div className="areas-text">
-              <div className="areas-text-content">
-                <h2>Service Areas</h2>
-                <p className="areas-description">
-                  We proudly serve the entire Greater Toronto Area, bringing professional painting services to communities across the region. From downtown Toronto to the outer suburbs, our experienced team is ready to transform your space.
-                </p>
-                <div className="areas-list">
-                  <div className="areas-column">
-                    <ul>
-                      <li>Vaughan</li>
-                      <li>Richmond Hill</li>
-                      <li>Markham</li>
-                      <li>Thornhill</li>
-                      <li>Woodbridge</li>
-                      <li>Maple</li>
-                    </ul>
-                  </div>
-                  <div className="areas-column">
-                    <ul>
-                      <li>Downtown Toronto</li>
-                      <li>North York</li>
-                      <li>Scarborough</li>
-                      <li>Etobicoke</li>
-                      <li>York</li>
-                      <li>East York</li>
-                    </ul>
-                  </div>
-                  <div className="areas-column">
-                    <ul>
-                      <li>Mississauga</li>
-                      <li>Brampton</li>
-                      <li>Oakville</li>
-                      <li>Burlington</li>
-                      <li>Milton</li>
-                      <li>Caledon</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="areas-image">
-                <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Quick Inquiry Section */}
       <section id="inquiry-section" className="inquiry-section">
         <div className="container">
@@ -814,6 +822,57 @@ const LandingPage = () => {
                     {inqSubmitting ? 'Sending…' : 'Send Message'}
                   </button>
                 </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Areas Served Section */}
+      <section id="areas-served-section" className="areas-served-section">
+        <div className="container">
+          <div className="areas-content">
+            <div className="areas-text">
+              <div className="areas-text-content">
+                <h2>Service Areas</h2>
+                <p className="areas-description">
+                  We proudly serve the entire Greater Toronto Area, bringing professional painting services to communities across the region. From downtown Toronto to the outer suburbs, our experienced team is ready to transform your space.
+                </p>
+                <div className="areas-list">
+                  <div className="areas-column">
+                    <ul>
+                      <li>Vaughan</li>
+                      <li>Richmond Hill</li>
+                      <li>Markham</li>
+                      <li>Thornhill</li>
+                      <li>Woodbridge</li>
+                      <li>Maple</li>
+                    </ul>
+                  </div>
+                  <div className="areas-column">
+                    <ul>
+                      <li>Downtown Toronto</li>
+                      <li>North York</li>
+                      <li>Scarborough</li>
+                      <li>Etobicoke</li>
+                      <li>York</li>
+                      <li>East York</li>
+                    </ul>
+                  </div>
+                  <div className="areas-column">
+                    <ul>
+                      <li>Mississauga</li>
+                      <li>Brampton</li>
+                      <li>Oakville</li>
+                      <li>Burlington</li>
+                      <li>Milton</li>
+                      <li>Caledon</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="areas-image">
+                <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
               </div>
             </div>
           </div>
