@@ -1,6 +1,7 @@
-import { StrictMode, useEffect } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import './index.css'
 import './App.css'
 import Header from './components/Header.tsx'
@@ -19,54 +20,33 @@ import ContactUsPage from './pages/ContactUsPage.tsx'
 import GalleryPage from './pages/GalleryPage.tsx'
 import AdminPanel from './pages/AdminPanel.tsx'
 
-// Component to handle input scroll prevention
-const InputScrollPrevention = () => {
-  useEffect(() => {
-    const preventScrollOnInputs = (e: WheelEvent) => {
-      const target = e.target as HTMLElement;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
-        e.preventDefault();
-      }
-    };
-
-    // Add event listener to prevent wheel events on inputs
-    document.addEventListener('wheel', preventScrollOnInputs, { passive: false });
-
-    // Cleanup
-    return () => {
-      document.removeEventListener('wheel', preventScrollOnInputs);
-    };
-  }, []);
-
-  return null;
-};
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <InputScrollPrevention />
-          <Header />
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/interior-painting" element={<InteriorPaintingPage />} />
-            <Route path="/services/exterior-painting" element={<ExteriorPaintingPage />} />
-            <Route path="/services/interior-painting/:serviceId" element={<ServicePage />} />
-            <Route path="/services/exterior-painting/:serviceId" element={<ServicePage />} />
-            <Route path="/services/custom-painting" element={<ServicePage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/contact-us" element={<ContactUsPage />} />
-            <Route path="/gallery" element={<GalleryPage />} />
-            <Route path="/admin" element={<AdminPanel />} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
-      </CartProvider>
-    </AuthProvider>
+    <HelmetProvider>
+      <AuthProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Header />
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/interior-painting" element={<InteriorPaintingPage />} />
+              <Route path="/services/exterior-painting" element={<ExteriorPaintingPage />} />
+              <Route path="/services/interior-painting/:serviceId" element={<ServicePage />} />
+              <Route path="/services/exterior-painting/:serviceId" element={<ServicePage />} />
+              <Route path="/services/custom-painting" element={<ServicePage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/contact-us" element={<ContactUsPage />} />
+              <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/admin" element={<AdminPanel />} />
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </CartProvider>
+      </AuthProvider>
+    </HelmetProvider>
   </StrictMode>,
 )
 

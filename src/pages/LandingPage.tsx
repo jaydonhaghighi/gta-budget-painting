@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import './LandingPage.css';
 import '../pages/ContactUsPage.css';
 import { db } from '../firebase';
@@ -355,6 +356,12 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
+      <SEO 
+        title="Fast & Affordable Painters Toronto | Small Jobs & Quick Turnaround"
+        description="Expert residential painting for small jobs in the GTA. Kitchens, bedrooms, condos & more. Quick turnaround and budget-friendly pricing. Get a quote today!"
+        canonical="/"
+      />
+
       {/* Sticky Promotion Banner */}
       <div className={`sticky-promo-banner ${showPromoBanner ? 'show' : 'hidden'}`}>
         <div className="promo-banner-content">
@@ -616,7 +623,7 @@ const LandingPage = () => {
               <div className="company-text-content">
                 <h2>About GTA Budget Painting</h2>
                 <p className="company-description">
-                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, designed to serve homeowners who need smaller, more affordable painting projects. We specialize in residential painting, focusing on delivering exceptional service for homes and apartments. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.</span>
+                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, dedicated to serving homeowners who need high-quality, affordable painting for smaller projects. We specialize in residential interior and exterior painting for homes, condos, and apartments across the Greater Toronto Area. While many contractors overlook small jobs, our professional painters are committed to delivering exceptional results, quick turnarounds, and budget-friendly pricing for every project—no matter the size.</span>
                 </p>
               </div>
               <div className="company-image">

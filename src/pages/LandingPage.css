@@ -730,7 +730,7 @@
 }
 
 .how-it-works-content {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem 0;
 }
@@ -2103,7 +2103,7 @@
 }
 
 .why-choose-us-content {
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 1rem 0;
 }
@@ -2215,7 +2215,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 0 1rem;
 }

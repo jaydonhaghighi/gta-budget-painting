@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getServiceById } from '../data/services';
+import SEO from '../components/SEO';
 import { type EstimateBreakdown } from '../utils/estimationCalculator';
 import CalculatedServiceForm from '../components/forms/CalculatedServiceForm';
 import InteriorDoorForm from '../components/forms/InteriorDoorForm';
@@ -441,6 +442,11 @@ const ServicePage = () => {
 
   return (
     <div className="service-page">
+      <SEO 
+        title={service ? `${service.name} Services | GTA Budget Painting` : 'Painting Services | GTA Budget Painting'}
+        description={service ? `Professional ${service.name.toLowerCase()} in Toronto. Affordable rates, quick service, and expert results.` : 'Get a quote for residential painting services in the GTA.'}
+        canonical={location.pathname}
+      />
       {/* Back Button */}
       <div className="service-page-header">
         <div className="container">

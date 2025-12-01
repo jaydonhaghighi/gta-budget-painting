@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { getServicesByCategory } from '../data/services';
+import SEO from '../components/SEO';
 import './InteriorPaintingPage.css';
 
 const InteriorPaintingPage = () => {
@@ -51,6 +52,11 @@ const InteriorPaintingPage = () => {
 
   return (
     <div className="interior-painting-page">
+      <SEO 
+        title="Interior Painting Services Toronto | Rooms, Trim, Ceilings & More"
+        description="Professional interior painting for single rooms, condos, and small projects. We paint kitchens, bedrooms, bathrooms, and trim. Fast service & great rates."
+        canonical="/services/interior-painting"
+      />
       {/* Hero Section */}
       <section className="interior-painting-hero">
         <div className="container">

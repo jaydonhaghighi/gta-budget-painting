@@ -31,11 +31,7 @@
   padding: 60px 0;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
+/* Container override removed to match App.css and Header */
 
 /* Section Headers */
 .gallery-section-header {
