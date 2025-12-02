@@ -85,4 +85,25 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Location Pages -->
+  <url><loc>https://gtabudgetpainting.ca/painters-toronto</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-north-york</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-scarborough</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-etobicoke</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-mississauga</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-brampton</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-vaughan</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-markham</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-richmond-hill</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-oakville</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-burlington</loc><priority>0.8</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-milton</loc><priority>0.8</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-caledon</loc><priority>0.8</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-thornhill</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-woodbridge</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-maple</loc><priority>0.9</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-york</loc><priority>0.8</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-east-york</loc><priority>0.8</priority></url>
+  <url><loc>https://gtabudgetpainting.ca/painters-downtown-toronto</loc><priority>0.9</priority></url>
 </urlset>

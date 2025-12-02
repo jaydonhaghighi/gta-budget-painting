@@ -817,7 +817,7 @@ const CalculatedServiceForm = ({
       </div>
 
       <div className="info-box" style={{
-        background: 'var(--color-golden-beige)',
+        background: 'var(--color-steel-blue)',
         padding: '1.5rem',
         borderRadius: '12px',
         marginTop: '1.5rem',
@@ -1422,7 +1422,7 @@ const CalculatedServiceForm = ({
                         right: '0.5rem',
                         width: '24px',
                         height: '24px',
-                        background: 'var(--color-golden-beige)',
+                        background: 'var(--color-steel-blue)',
                         color: 'var(--color-soft-charcoal)',
                         border: '2px solid var(--color-soft-charcoal)',
                         borderRadius: '50%',
@@ -1715,7 +1715,7 @@ const CalculatedServiceForm = ({
       )}
 
       <div className="info-box" style={{
-        background: 'var(--color-golden-beige)',
+        background: 'var(--color-steel-blue)',
         padding: '1.5rem',
         borderRadius: '12px',
         marginTop: '1.5rem',

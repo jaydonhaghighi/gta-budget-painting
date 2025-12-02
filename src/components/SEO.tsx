@@ -37,6 +37,73 @@ export default function SEO({
       <meta name="twitter:card" content={type === 'article' ? 'summary_large_image' : 'summary'} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
+
+      {/* Structured Data (Schema.org) - Local Business */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "HomeAndConstructionBusiness",
+          "name": "GTA Budget Painting",
+          "image": "https://gtabudgetpainting.ca/logo.png",
+          "description": "Specialized division of GTA Home Painting for small residential projects. Affordable, quick turnaround painting services in Toronto and the GTA.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Toronto",
+            "addressRegion": "ON",
+            "addressCountry": "CA"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "43.6532",
+            "longitude": "-79.3832"
+          },
+          "url": "https://gtabudgetpainting.ca",
+          "telephone": "+1-647-390-7181",
+          "priceRange": "$$",
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
+              ],
+              "opens": "08:00",
+              "closes": "20:00"
+            }
+          ],
+          "areaServed": [
+            { "@type": "City", "name": "Toronto" },
+            { "@type": "City", "name": "North York" },
+            { "@type": "City", "name": "Etobicoke" },
+            { "@type": "City", "name": "Scarborough" },
+            { "@type": "City", "name": "Vaughan" },
+            { "@type": "City", "name": "Richmond Hill" },
+            { "@type": "City", "name": "Markham" },
+            { "@type": "City", "name": "Mississauga" },
+            { "@type": "City", "name": "Brampton" },
+            { "@type": "City", "name": "Oakville" },
+            { "@type": "City", "name": "Burlington" },
+            { "@type": "City", "name": "Milton" },
+            { "@type": "City", "name": "Caledon" },
+            { "@type": "City", "name": "Thornhill" },
+            { "@type": "City", "name": "Woodbridge" },
+            { "@type": "City", "name": "Maple" },
+            { "@type": "City", "name": "York" },
+            { "@type": "City", "name": "East York" },
+            { "@type": "City", "name": "Downtown Toronto" }
+          ],
+          "parentOrganization": {
+            "@type": "LocalBusiness",
+            "name": "GTA Home Painting",
+            "url": "https://gtahomepainting.ca"
+          }
+        })}
+      </script>
     </Helmet>
   );
 }

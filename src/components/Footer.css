@@ -206,13 +206,13 @@
     grid-template-columns: 1fr 1fr; /* 2 columns on tablet */
     gap: 3rem;
   }
-  
+
   .contact-column {
     grid-column: span 2; /* Contact spans full width or fits in 2nd col */
     flex-direction: row;
     justify-content: space-between;
   }
-  
+
   .contact-wrapper, .social-wrapper {
     flex: 1;
   }
@@ -222,19 +222,19 @@
   .footer {
     padding: 2.5rem 0 1.5rem;
   }
-
+  
   .footer-content {
     grid-template-columns: 1fr; /* 1 column on mobile */
     gap: 2rem;
     margin-bottom: 2rem;
   }
-
+  
   .contact-column {
     grid-column: span 1;
     flex-direction: column;
     gap: 2rem;
   }
-
+  
   /* Accordion Style for Services on Mobile */
   .desktop-header {
     display: none;
@@ -254,11 +254,11 @@
     color: var(--color-steel-blue);
     transition: background-color 0.2s ease;
   }
-
+  
   .mobile-dropdown-header:active {
     background-color: #f1f5f9;
   }
-
+  
   .dropdown-arrow {
     display: block;
     width: 10px;
@@ -274,7 +274,7 @@
     transform: rotate(-135deg);
     margin-top: 6px;
   }
-
+  
   .footer-links-list {
     display: none;
     padding: 1rem;
@@ -285,7 +285,7 @@
     grid-template-columns: 1fr 1fr; /* Two columns on mobile */
     gap: 0.75rem 1rem;
   }
-
+  
   .services-column.active .footer-links-list {
     display: grid;
     animation: fadeIn 0.3s ease;
@@ -296,7 +296,7 @@
     background: #f1f5f9;
     border-bottom-color: transparent;
   }
-
+  
   /* Increase touch targets */
   .footer-links-list li a {
     padding: 0.5rem 0;
@@ -365,7 +365,7 @@
   .divider {
     display: none;
   }
-  
+
   .partner-link {
     display: block;
     margin-top: 0.25rem;
@@ -390,7 +390,7 @@
     padding: 0.5rem;
     word-break: break-word; /* Ensure long emails wrap */
   }
-  
+
   .footer-keywords {
     font-size: 0.7rem;
   }

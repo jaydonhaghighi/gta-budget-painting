@@ -60,7 +60,7 @@ body {
   color: var(--color-text-dark);
   line-height: 1.6;
   background-color: var(--color-bone);
-  padding-top: 127px; /* Account for fixed header height */
+  padding-top: 119px; /* Account for fixed header height */
 }
 
 @media (max-width: 1052px) {
