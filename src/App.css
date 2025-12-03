@@ -60,24 +60,24 @@ body {
   color: var(--color-text-dark);
   line-height: 1.6;
   background-color: var(--color-bone);
-  padding-top: 127px; /* Account for fixed header height */
+  padding-top: 119px; /* Account for fixed header height */
 }
 
 @media (max-width: 1052px) {
   body {
-    padding-top: 139.5px;
+    padding-top: 132.5px;
   }
 }
 
 @media (max-width: 768px) {
   body {
-    padding-top: 147.5px;
+    padding-top: 140.5px;
   }
 }
 
 @media (max-width: 630px) {
   body {
-    padding-top: 117.5px;
+    padding-top: 110.5px;
   }
 }
 

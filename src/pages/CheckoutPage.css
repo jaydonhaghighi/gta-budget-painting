@@ -373,8 +373,8 @@
 }
 
 .item-count {
-  background: var(--color-golden-beige);
-  color: var(--color-soft-charcoal);
+  background: var(--color-steel-blue);
+  color: var(--color-white);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.85rem;

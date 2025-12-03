@@ -94,7 +94,7 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         lineItems: submission.lineItems,
         totals: submission.totals,
         status: 'pending',
-        createdAt: Timestamp.fromDate(submission.createdAt),
+        createdAt: Timestamp.fromDate(new Date(submission.createdAt.getTime())),
         updatedAt: Timestamp.fromDate(new Date()),
         source: 'website',
         priority: determineCartPriority(submission.totals),
@@ -127,14 +127,57 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         });
       }
 
-      const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), filteredData);
-      console.log('Cart order submitted successfully:', docRef.id);
-      
-      // Images are already uploaded with the tempRequestId in the path
-      // They're organized in: service-requests/{tempRequestId}/image-{index}-{timestamp}-{filename}
-      // You can optionally move them to the final requestId path if needed
-      
-      return docRef.id;
+      // Validate required fields before saving
+      if (!filteredData.customerInfo) {
+        throw new Error('Missing customerInfo in service request data');
+      }
+      if (!filteredData.lineItems || !Array.isArray(filteredData.lineItems) || filteredData.lineItems.length === 0) {
+        throw new Error('Missing or empty lineItems in service request data');
+      }
+      if (!filteredData.totals) {
+        throw new Error('Missing totals in service request data');
+      }
+
+      // Check for any remaining File objects (should not happen, but just in case)
+      const remainingFiles = extractFileObjects(filteredData);
+      if (remainingFiles.length > 0) {
+        console.warn('Warning: Found', remainingFiles.length, 'File objects remaining in data after processing. Removing them...');
+        // Re-process to remove any remaining File objects
+        const cleanedAgain = removeFileObjects(filteredData);
+        // Use the cleaned version
+        const finalFilteredData = Object.fromEntries(
+          Object.entries(cleanedAgain).filter(([_, value]) => value !== undefined)
+        );
+        
+        // Update lineItems if they exist
+        if (finalFilteredData.lineItems && Array.isArray(finalFilteredData.lineItems)) {
+          finalFilteredData.lineItems = finalFilteredData.lineItems.map((item: any) => {
+            return Object.fromEntries(
+              Object.entries(item).filter(([_, value]) => value !== undefined)
+            );
+          });
+        }
+        
+        // Use the final cleaned data
+        Object.assign(filteredData, finalFilteredData);
+      }
+
+      try {
+        const docRef = await addDoc(collection(db, SERVICE_REQUESTS_COLLECTION), filteredData);
+        
+        // Verify the document was actually saved
+        const savedDoc = await getDoc(docRef);
+        if (!savedDoc.exists()) {
+          throw new Error('Document was not saved to Firestore');
+        }
+        
+        return docRef.id;
+      } catch (firestoreError: any) {
+        console.error('Firestore addDoc error:', firestoreError);
+        console.error('Error code:', firestoreError.code);
+        console.error('Error message:', firestoreError.message);
+        throw firestoreError;
+      }
     } else {
       // Single service submission (legacy)
       const serviceRequest: Omit<ServiceRequest, 'id'> = {
@@ -178,8 +221,8 @@ export const submitServiceRequest = async (submission: ServiceRequestSubmission 
         customerInfo: serviceRequest.customerInfo,
         formData: processedFormData,
         status: serviceRequest.status,
-        createdAt: Timestamp.fromDate(serviceRequest.createdAt),
-        updatedAt: Timestamp.fromDate(serviceRequest.updatedAt),
+        createdAt: Timestamp.fromDate(new Date(serviceRequest.createdAt.getTime())),
+        updatedAt: Timestamp.fromDate(new Date(serviceRequest.updatedAt.getTime())),
         source: serviceRequest.source,
         priority: serviceRequest.priority,
         type: 'single-service'
@@ -265,27 +308,68 @@ export const getServiceRequest = async (requestId: string): Promise<ServiceReque
       const data = docSnap.data();
       
       // Helper function to safely convert Firestore timestamps
-      const safeToDate = (timestamp: any): Date | undefined => {
-        if (!timestamp) return undefined;
+      const safeToDate = (timestamp: any): Date | null => {
+        if (!timestamp) return null;
+        
+        // Check if it has seconds and nanoseconds (Firestore Timestamp structure from Firestore)
+        // This is the actual format when reading from Firestore - check this FIRST
+        if (timestamp.seconds !== undefined) {
+          const seconds = typeof timestamp.seconds === 'number' ? timestamp.seconds : parseInt(String(timestamp.seconds));
+          const nanoseconds = timestamp.nanoseconds || 0;
+          const nanosecondsNum = typeof nanoseconds === 'number' ? nanoseconds : parseInt(String(nanoseconds));
+          // Convert seconds to milliseconds and nanoseconds to milliseconds, then add
+          return new Date(seconds * 1000 + nanosecondsNum / 1000000);
+        }
+        
+        // Check if it's a Firestore Timestamp instance
+        if (timestamp instanceof Timestamp) {
+          return timestamp.toDate();
+        }
+        
+        // Check if it has a toDate method (Firestore Timestamp)
         if (timestamp.toDate && typeof timestamp.toDate === 'function') {
           return timestamp.toDate();
         }
+        
+        // Check if it's already a Date object
         if (timestamp instanceof Date) {
-          return timestamp;
+          return new Date(timestamp.getTime());
         }
+        
+        // Check if it's a string that can be parsed
         if (typeof timestamp === 'string') {
           return new Date(timestamp);
         }
-        return undefined;
+        
+        return null;
       };
+      
+      // Handle scheduledDate which can be an object with earliestStart/latestFinish or a single date
+      let processedScheduledDate: Date | undefined;
+      if (data.scheduledDate) {
+        if (data.scheduledDate.earliestStart && data.scheduledDate.latestFinish) {
+          // It's a date range object - we'll keep it as is for now, but convert the timestamps
+          // For now, just use earliestStart as the scheduledDate
+          processedScheduledDate = safeToDate(data.scheduledDate.earliestStart) || undefined;
+        } else {
+          processedScheduledDate = safeToDate(data.scheduledDate) || undefined;
+        }
+      }
+      
+      const createdAtDate = safeToDate(data.createdAt);
+      const updatedAtDate = safeToDate(data.updatedAt);
+      const completionDateDate = safeToDate(data.completionDate);
+      
+      // Create a new object without the timestamp fields to avoid overwriting
+      const { createdAt: _, updatedAt: __, scheduledDate: ___, completionDate: ____, ...restData } = data;
       
       return {
         id: docSnap.id,
-        ...data,
-        createdAt: safeToDate(data.createdAt) || new Date(),
-        updatedAt: safeToDate(data.updatedAt) || new Date(),
-        scheduledDate: safeToDate(data.scheduledDate),
-        completionDate: safeToDate(data.completionDate),
+        ...restData,
+        createdAt: createdAtDate || new Date(),
+        updatedAt: updatedAtDate || new Date(),
+        scheduledDate: processedScheduledDate,
+        completionDate: completionDateDate || undefined,
       } as ServiceRequest;
     }
     return null;
@@ -335,27 +419,68 @@ export const getServiceRequests = async (
       const data = doc.data();
       
       // Helper function to safely convert Firestore timestamps
-      const safeToDate = (timestamp: any): Date | undefined => {
-        if (!timestamp) return undefined;
+      const safeToDate = (timestamp: any): Date | null => {
+        if (!timestamp) return null;
+        
+        // Check if it has seconds and nanoseconds (Firestore Timestamp structure from Firestore)
+        // This is the actual format when reading from Firestore - check this FIRST
+        if (timestamp.seconds !== undefined) {
+          const seconds = typeof timestamp.seconds === 'number' ? timestamp.seconds : parseInt(String(timestamp.seconds));
+          const nanoseconds = timestamp.nanoseconds || 0;
+          const nanosecondsNum = typeof nanoseconds === 'number' ? nanoseconds : parseInt(String(nanoseconds));
+          // Convert seconds to milliseconds and nanoseconds to milliseconds, then add
+          return new Date(seconds * 1000 + nanosecondsNum / 1000000);
+        }
+        
+        // Check if it's a Firestore Timestamp instance
+        if (timestamp instanceof Timestamp) {
+          return timestamp.toDate();
+        }
+        
+        // Check if it has a toDate method (Firestore Timestamp)
         if (timestamp.toDate && typeof timestamp.toDate === 'function') {
           return timestamp.toDate();
         }
+        
+        // Check if it's already a Date object
         if (timestamp instanceof Date) {
-          return timestamp;
+          return new Date(timestamp.getTime());
         }
+        
+        // Check if it's a string that can be parsed
         if (typeof timestamp === 'string') {
           return new Date(timestamp);
         }
-        return undefined;
+        
+        return null;
       };
+      
+      // Handle scheduledDate which can be an object with earliestStart/latestFinish or a single date
+      let processedScheduledDate: Date | undefined;
+      if (data.scheduledDate) {
+        if (data.scheduledDate.earliestStart && data.scheduledDate.latestFinish) {
+          // It's a date range object - we'll keep it as is for now, but convert the timestamps
+          // For now, just use earliestStart as the scheduledDate
+          processedScheduledDate = safeToDate(data.scheduledDate.earliestStart) || undefined;
+        } else {
+          processedScheduledDate = safeToDate(data.scheduledDate) || undefined;
+        }
+      }
+      
+      const createdAtDate = safeToDate(data.createdAt);
+      const updatedAtDate = safeToDate(data.updatedAt);
+      const completionDateDate = safeToDate(data.completionDate);
+      
+      // Create a new object without the timestamp fields to avoid overwriting
+      const { createdAt: _, updatedAt: __, scheduledDate: ___, completionDate: ____, ...restData } = data;
       
       requests.push({
         id: doc.id,
-        ...data,
-        createdAt: safeToDate(data.createdAt) || new Date(),
-        updatedAt: safeToDate(data.updatedAt) || new Date(),
-        scheduledDate: safeToDate(data.scheduledDate),
-        completionDate: safeToDate(data.completionDate),
+        ...restData,
+        createdAt: createdAtDate || new Date(),
+        updatedAt: updatedAtDate || new Date(),
+        scheduledDate: processedScheduledDate,
+        completionDate: completionDateDate || undefined,
       } as ServiceRequest);
     });
     
@@ -385,7 +510,6 @@ const getServiceName = (serviceId: string): string => {
     'bedroom-painting': 'Bedroom Painting',
     'small-bathroom': 'Small Bathroom',
     'accent-wall': 'Accent Wall',
-    'kitchen-cabinet-painting': 'Kitchen Cabinet Painting',
     'garage-door': 'Garage Door',
     'interior-door': 'Interior Door',
     'basement-painting': 'Basement Painting',
@@ -406,7 +530,6 @@ const getServiceType = (serviceId: string): 'flat-rate' | 'calculated' | 'custom
     'bedroom-painting': 'calculated',
     'small-bathroom': 'calculated',
     'accent-wall': 'calculated',
-    'kitchen-cabinet-painting': 'calculated',
     'garage-door': 'calculated',
     'interior-door': 'flat-rate',
     'basement-painting': 'calculated',

@@ -222,7 +222,10 @@ const CheckoutPage = () => {
 
       // Submit to Firestore
       const requestId = await submitServiceRequest(serviceRequestData)
-      console.log('Cart order submitted successfully:', requestId)
+      
+      if (!requestId) {
+        throw new Error('Service request submission returned no ID');
+      }
       
       // Mark purchase as completed to prevent adding to cart on exit
       setPurchaseCompleted(true)
@@ -255,9 +258,17 @@ const CheckoutPage = () => {
       clear()
       navigate('/?success=true')
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting cart order:', error)
-      setSubmitError('Failed to submit order. Please try again.')
+      console.error('Error details:', {
+        message: error?.message,
+        code: error?.code,
+        stack: error?.stack
+      });
+      setSubmitError(
+        error?.message || 'Failed to submit order. Please try again. ' +
+        'If the problem persists, please call us at (647) 390-7181.'
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -302,7 +313,7 @@ const CheckoutPage = () => {
           <div className="checkout-layout">
             {/* Main Form */}
             <div className="checkout-form-section">
-              <form onSubmit={handleSubmit} className="checkout-form">
+              <form onSubmit={handleSubmit} className="checkout-form" autoComplete="on" method="post">
                 {/* Date Range Section */}
                 <div className="form-section">
                   <div className="section-header">
@@ -354,6 +365,7 @@ const CheckoutPage = () => {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
+                        autoComplete="given-name"
                         required 
                         placeholder="Enter your first name"
                       />
@@ -366,6 +378,7 @@ const CheckoutPage = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
+                        autoComplete="family-name"
                         required 
                         placeholder="Enter your last name"
                       />
@@ -380,6 +393,7 @@ const CheckoutPage = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
+                        autoComplete="email"
                         required 
                         placeholder="your.email@example.com"
                       />
@@ -392,6 +406,7 @@ const CheckoutPage = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
+                        autoComplete="tel"
                         required 
                         placeholder="(555) 123-4567"
                       />
@@ -415,6 +430,7 @@ const CheckoutPage = () => {
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
+                      autoComplete="street-address"
                       required 
                       placeholder="123 Main Street"
                     />
@@ -428,6 +444,7 @@ const CheckoutPage = () => {
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
+                        autoComplete="address-level2"
                         required 
                         placeholder="Toronto"
                       />
@@ -440,6 +457,7 @@ const CheckoutPage = () => {
                         name="postalCode"
                         value={formData.postalCode}
                         onChange={handleInputChange}
+                        autoComplete="postal-code"
                         required 
                         placeholder="M5V 3A8"
                       />

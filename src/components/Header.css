@@ -336,14 +336,16 @@ body.sticky-bar-present .floating-cart-btn {
 
 /* Header */
 .header {
-  background: linear-gradient(180deg, #e8ecf0 0%, #d8dce0 100%);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1001;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  border-bottom: 8px solid var(--color-steel-blue);
+  border-bottom: 1px solid #f1f5f9;
   width: 100%;
   contain: layout style;
 }
@@ -885,7 +887,7 @@ body.sticky-bar-present .floating-cart-btn {
 /* Additional responsive styles from App.css */
 @media (max-width: 1052px) and (min-width: 768px) {
   .header .container { 
-    padding: 0.75rem 20px; 
+    padding: 0.75rem 1rem; 
   }
   .desktop-nav { 
     gap: 1rem; 
@@ -897,7 +899,7 @@ body.sticky-bar-present .floating-cart-btn {
     height: 100px; 
   }
   .container { 
-    padding: 0 16px; 
+    padding: 0 1rem; 
   }
 }
 
@@ -929,7 +931,7 @@ body.sticky-bar-present .floating-cart-btn {
 
 @media (max-width: 768px) {
   .header .container {
-    padding: 1rem 20px;
+    padding: 1rem 1rem;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

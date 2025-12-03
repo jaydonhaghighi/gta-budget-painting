@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { getServicesByCategory } from '../data/services';
+import SEO from '../components/SEO';
 import './ExteriorPaintingPage.css';
 
 const ExteriorPaintingPage = () => {
@@ -51,6 +52,11 @@ const ExteriorPaintingPage = () => {
 
   return (
     <div className="exterior-painting-page">
+      <SEO 
+        title="Exterior Painting Services Toronto | Doors, Garage Doors, Fences"
+        description="Boost your curb appeal with our exterior painting services. We paint front doors, garage doors, fences, and more. Quick, affordable updates."
+        canonical="/services/exterior-painting"
+      />
       {/* Hero Section */}
       <section className="exterior-painting-hero">
         <div className="container">

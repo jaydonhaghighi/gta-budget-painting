@@ -8,7 +8,6 @@ import {
   calculateStaircase,
   calculateFence,
   calculateMultipleBedrooms,
-  calculateKitchenCabinets,
   calculateGarageDoor,
   calculatePopcornCeilingRemoval,
   calculateBathroomVanityCabinet,
@@ -125,13 +124,6 @@ const CalculatedServiceForm = ({
       case 'fence-painting':
         return data.linearFeet && data.height && data.finishType &&
                parseFloat(data.linearFeet) > 0 && parseFloat(data.height) > 0;
-      
-      case 'kitchen-cabinet-painting':
-        return data.cabinetSections && Array.isArray(data.cabinetSections) && data.cabinetSections.length > 0 &&
-               data.cabinetSections.every((section: any) => 
-                 section.width && section.height && section.depth &&
-                 parseFloat(section.width) > 0 && parseFloat(section.height) > 0 && parseFloat(section.depth) > 0
-               );
       
       case 'garage-door':
         return data.width && data.height && 
@@ -292,20 +284,6 @@ const CalculatedServiceForm = ({
           }
           break;
 
-        case 'kitchen-cabinet-painting':
-          if (data.cabinetSections && data.cabinetSections.length > 0) {
-            newEstimate = calculateKitchenCabinets({
-              cabinetSections: data.cabinetSections.map((section: any) => ({
-                doors: parseInt(section.doors) || 0,
-                frames: parseInt(section.frames) || 0,
-                drawers: parseInt(section.drawers) || 0,
-                height: parseFloat(section.height) || 0,
-                width: parseFloat(section.width) || 0,
-                includeHardware: section.includeHardware || false,
-              }))
-            });
-          }
-          break;
 
         case 'garage-door':
           if (data.width && data.height && data.doors && data.material && data.condition) {
@@ -817,7 +795,7 @@ const CalculatedServiceForm = ({
       </div>
 
       <div className="info-box" style={{
-        background: 'var(--color-golden-beige)',
+        background: 'var(--color-steel-blue)',
         padding: '1.5rem',
         borderRadius: '12px',
         marginTop: '1.5rem',
@@ -906,6 +884,7 @@ const CalculatedServiceForm = ({
                 <option value="kids">Kids Bedroom</option>
                 <option value="nursery">Nursery</option>
                 <option value="office">Bedroom/Office</option>
+                <option value="living-room">Living Room</option>
                 <option value="other">Other</option>
               </select>
             </div>
@@ -1130,352 +1109,6 @@ const CalculatedServiceForm = ({
     </div>
   );
 
-  const renderKitchenCabinetForm = () => {
-    const addCabinetSection = () => {
-      const newSection = {
-        doors: 0,
-        frames: 0,
-        drawers: 0,
-        height: 0,
-        width: 0,
-        includeHardware: false
-      };
-      updateFormData('cabinetSections', [...(formData.cabinetSections || []), newSection]);
-    };
-
-    const updateCabinetSection = (index: number, field: string, value: any) => {
-      const updatedSections = [...(formData.cabinetSections || [])];
-      updatedSections[index] = { ...updatedSections[index], [field]: value };
-      updateFormData('cabinetSections', updatedSections);
-    };
-
-    const removeCabinetSection = (index: number) => {
-      const updatedSections = (formData.cabinetSections || []).filter((_: any, i: number) => i !== index);
-      updateFormData('cabinetSections', updatedSections);
-    };
-
-    return (
-      <div className="form-group-container">
-        <h3>Cabinet Sections</h3>
-        <p className="form-help">
-          Add each cabinet section in your kitchen. This allows for precise measurements 
-          and accurate pricing based on your specific cabinet configuration.
-        </p>
-
-        {(formData.cabinetSections || []).map((section: any, index: number) => (
-          <div key={index} className="multi-room-item" style={{
-            background: 'var(--color-bone)',
-            border: '2px solid var(--color-calm-blue-gray)',
-            borderRadius: '12px',
-            padding: '1.5rem',
-            marginBottom: '1.5rem',
-            boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h4 style={{ color: 'var(--color-steel-blue)', margin: 0, fontSize: '1.1rem' }}>
-                Cabinet Section {index + 1}
-              </h4>
-              <button
-                type="button"
-                className="btn-remove-room"
-                onClick={() => removeCabinetSection(index)}
-                style={{
-                  background: '#dc2626',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  padding: '0.5rem 1rem',
-        fontSize: '0.9rem',
-                  fontWeight: '700',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                Remove Section
-              </button>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Number of Doors</label>
-                <input
-                  type="number"
-                  value={section.doors || ''}
-                  onChange={(e) => updateCabinetSection(index, 'doors', e.target.value)}
-                  min="0"
-                  placeholder="e.g., 2"
-                />
-                <small>Cabinet doors in this section</small>
-              </div>
-
-              <div className="form-group">
-                <label>Number of Frames</label>
-                <input
-                  type="number"
-                  value={section.frames || ''}
-                  onChange={(e) => updateCabinetSection(index, 'frames', e.target.value)}
-                  min="0"
-                  placeholder="e.g., 1"
-                />
-                <small>Cabinet frame sections</small>
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Number of Drawers</label>
-                <input
-                  type="number"
-                  value={section.drawers || ''}
-                  onChange={(e) => updateCabinetSection(index, 'drawers', e.target.value)}
-                  min="0"
-                  placeholder="e.g., 3"
-                />
-                <small>Drawer fronts in this section</small>
-              </div>
-
-              <div className="form-group">
-                <label>Height (inches)</label>
-                <input
-                  type="number"
-                  value={section.height || ''}
-                  onChange={(e) => updateCabinetSection(index, 'height', e.target.value)}
-                  min="0"
-                  step="0.1"
-                  placeholder="e.g., 30"
-                />
-                <small>Height of cabinet doors</small>
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Width (inches)</label>
-                <input
-                  type="number"
-                  value={section.width || ''}
-                  onChange={(e) => updateCabinetSection(index, 'width', e.target.value)}
-                  min="0"
-                  step="0.1"
-                  placeholder="e.g., 18"
-                />
-                <small>Width of cabinet doors</small>
-              </div>
-
-              <div className="form-group">
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={section.includeHardware || false}
-                    onChange={(e) => updateCabinetSection(index, 'includeHardware', e.target.checked)}
-                  />
-                  <span>Include hardware for this section</span>
-                </label>
-                <small>Remove and reinstall handles, knobs, hinges</small>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <button
-          type="button"
-          onClick={addCabinetSection}
-          style={{
-            background: 'var(--color-steel-blue)',
-            color: 'white',
-            border: 'none',
-            borderRadius: '12px',
-            padding: '1rem 1.5rem',
-            fontSize: '1rem',
-            fontWeight: '700',
-            cursor: 'pointer',
-            transition: 'all 0.2s ease',
-            width: '100%',
-            marginTop: '1rem'
-          }}
-        >
-          + Add Another Cabinet Section
-        </button>
-
-        {/* Image Upload Section */}
-        <div className="image-upload-section" style={{
-          margin: '2.5rem 0',
-          padding: '2.5rem',
-          background: 'white',
-          borderRadius: '16px',
-          border: '3px dashed var(--color-calm-blue-gray)',
-          boxShadow: '0 8px 24px rgba(44, 61, 75, 0.08)'
-        }}>
-          <label style={{
-            color: 'var(--color-steel-blue)',
-            fontSize: '1.2rem',
-            fontWeight: '700',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            marginBottom: '1rem'
-          }}>
-            <img src="/camera.svg" alt="Camera" style={{ width: '20px', height: '20px' }} />
-            Upload Cabinet Photos (Optional)
-          </label>
-          <p className="upload-help" style={{
-            color: 'var(--color-calm-blue-gray)',
-            fontSize: '1rem',
-            fontWeight: '500',
-            marginBottom: '1.5rem'
-          }}>
-            Help us provide a more accurate estimate by uploading photos of your cabinets. 
-            Include different angles and any specific details you'd like us to see.
-          </p>
-          
-          <input
-            type="file"
-            id="cabinetImages"
-            multiple
-            accept="image/*"
-            onChange={(e) => updateFormData('cabinetImages', e.target.files)}
-            style={{ display: 'none' }}
-          />
-          
-          <label
-            htmlFor="cabinetImages"
-            className="btn-upload"
-            style={{
-              padding: '1.25rem',
-              background: 'white',
-              border: '3px solid var(--color-steel-blue)',
-              color: 'var(--color-steel-blue)',
-              borderRadius: '12px',
-              fontSize: '1.1rem',
-              fontWeight: '700',
-              cursor: 'pointer',
-              display: 'inline-block',
-              transition: 'all 0.2s ease',
-              boxShadow: '0 4px 12px rgba(44, 61, 75, 0.1)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--color-steel-blue)';
-              e.currentTarget.style.color = 'white';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(44, 61, 75, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'white';
-              e.currentTarget.style.color = 'var(--color-steel-blue)';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(44, 61, 75, 0.1)';
-            }}
-          >
-            <img src="/folder.svg" alt="Folder" style={{ width: '18px', height: '18px', marginRight: '0.5rem', filter: 'brightness(0) saturate(100%) invert(20%) sepia(8%) saturate(2000%) hue-rotate(180deg) brightness(95%) contrast(90%)' }} />
-            Choose Images
-          </label>
-          
-          {formData.cabinetImages && formData.cabinetImages.length > 0 && (
-            <div style={{ marginTop: '1.5rem' }}>
-              <p style={{ 
-                color: 'var(--color-steel-blue)', 
-                fontWeight: '600', 
-                marginBottom: '1rem' 
-              }}>
-                Selected Images ({formData.cabinetImages.length}):
-              </p>
-              <div style={{ 
-                display: 'grid', 
-                gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
-                gap: '1rem' 
-              }}>
-                {Array.from(formData.cabinetImages).map((file, index) => (
-                  <div key={index} style={{
-                    position: 'relative',
-                    border: '2px solid var(--color-calm-blue-gray)',
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    background: 'var(--color-bone)'
-                  }}>
-                    <img
-                      src={URL.createObjectURL(file as File)}
-                      alt={`Cabinet ${index + 1}`}
-                      style={{
-                        width: '100%',
-                        height: '120px',
-                        objectFit: 'cover'
-                      }}
-                    />
-                    <div style={{
-                      padding: '0.5rem',
-                      fontSize: '0.8rem',
-                      color: 'var(--color-steel-blue)',
-                      fontWeight: '500',
-                      textAlign: 'center'
-                    }}>
-                      {(file as File).name}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const newFiles = Array.from(formData.cabinetImages).filter((_, i) => i !== index);
-                        updateFormData('cabinetImages', newFiles);
-                      }}
-                      style={{
-                        position: 'absolute',
-                        top: '0.5rem',
-                        right: '0.5rem',
-                        width: '24px',
-                        height: '24px',
-                        background: 'var(--color-golden-beige)',
-                        color: 'var(--color-soft-charcoal)',
-                        border: '2px solid var(--color-soft-charcoal)',
-                        borderRadius: '50%',
-                        fontSize: '0.8rem',
-                        fontWeight: '800',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          <div className="upload-note" style={{
-            marginTop: '1.5rem',
-            color: 'var(--color-calm-blue-gray)',
-            fontSize: '0.9rem',
-            fontWeight: '500'
-          }}>
-            <strong>Tip:</strong> Upload clear photos showing the current condition, style, and any specific details of your cabinets. This helps us provide the most accurate estimate.
-          </div>
-        </div>
-
-        <div className="info-box" style={{
-          background: 'var(--color-bone)',
-          padding: '1.5rem',
-          borderRadius: '12px',
-          marginTop: '1.5rem',
-          fontSize: '0.95rem',
-          color: 'var(--color-steel-blue)',
-          border: '2px solid var(--color-calm-blue-gray)',
-          boxShadow: '0 4px 12px rgba(44, 61, 75, 0.08)',
-          fontWeight: '500'
-        }}>
-          <strong>Note:</strong> Cabinet painting requires detailed preparation, multiple coats, and careful attention to hardware. Each section can have different dimensions and hardware requirements.
-      </div>
-
-      <ImageUpload
-        images={images}
-        imagePreviews={imagePreviews}
-        onImagesChange={handleImagesChange}
-        maxImages={5}
-        required={false}
-      />
-    </div>
-  );
-  };
 
   const renderFenceForm = () => (
     <div className="form-group-container fence-form">
@@ -1715,7 +1348,7 @@ const CalculatedServiceForm = ({
       )}
 
       <div className="info-box" style={{
-        background: 'var(--color-golden-beige)',
+        background: 'var(--color-steel-blue)',
         padding: '1.5rem',
         borderRadius: '12px',
         marginTop: '1.5rem',
@@ -2432,8 +2065,6 @@ const CalculatedServiceForm = ({
         return renderBathroomForm();
       case 'kitchen-walls':
         return renderKitchenWallsForm();
-      case 'kitchen-cabinet-painting':
-        return renderKitchenCabinetForm();
       case 'garage-door':
         return renderGarageDoorForm();
       case 'basement-painting':

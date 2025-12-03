@@ -51,7 +51,7 @@
 
 /* Hero Promotion */
 .hero-promotion {
-  background: var(--color-golden-beige);
+  background: var(--color-steel-blue);
   border-radius: 16px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.5rem;
@@ -149,7 +149,7 @@
 }
 
 .keyword-tag:hover {
-  background: var(--color-golden-beige);
+  background: var(--color-steel-blue);
   transform: translateY(-2px);
 }
 

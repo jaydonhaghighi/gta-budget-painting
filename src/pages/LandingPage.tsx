@@ -1,16 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
 import './LandingPage.css';
 import '../pages/ContactUsPage.css';
 import { db } from '../firebase';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { useCart } from '../context/CartContext';
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const { addItem } = useCart();
   const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [isHowItWorksExpanded, setIsHowItWorksExpanded] = useState(false);
   const [isWhyChooseUsExpanded, setIsWhyChooseUsExpanded] = useState(false);
+  const [isAreasServedExpanded, setIsAreasServedExpanded] = useState(false);
   const [expandedBenefits, setExpandedBenefits] = useState<{ [key: number]: boolean }>({});
   const [expandedSteps, setExpandedSteps] = useState<{ [key: number]: boolean }>({});
   
@@ -74,7 +78,7 @@ const LandingPage = () => {
       name: "Kris J",
       rating: 5,
       date: "October 2, 2025",
-      text: "Peter and team did an amazing job painting our kitchen cabinets. We weren't sure what colour we wanted and he came in with his recommendations and colour swatches. It completely updated and changed our kitchen. His professionalism, expert advice and ability to get the job done quickly and of quality was great!"
+      text: "Peter and team did an amazing job painting our kitchen. We weren't sure what colour we wanted and he came in with his recommendations and colour swatches. It completely updated and changed our kitchen. His professionalism, expert advice and ability to get the job done quickly and of quality was great!"
     },
     {
       name: "Paul Lillakas",
@@ -83,6 +87,136 @@ const LandingPage = () => {
       text: "Peter provides an exceptional service that warrants high regard and recommendation. Not only is the quality of workmanship top notch, he is trustworthy and made us feel so comfortable from the first quote up to the completion of the job. He went above and beyond, helping us choose colour, finishes and then working with us on scheduling. I would give 6 stars if I could and would highly recommend him for any painting project!"
     }
   ];
+
+  const promotions = [
+    {
+      id: 'january-jumpstart',
+      name: 'January Jumpstart',
+      subtitle: '3-Room Bundle',
+      price: 999,
+      originalPrice: 1847,
+      savings: 848,
+      percentage: 46,
+      features: [
+        'Any 3 standard rooms (up to 12\'x12\' each)',
+        'Walls painted (2 coats) in each room',
+        'Minor wall patching included',
+        'Full prep & cleanup included'
+      ]
+    },
+    {
+      id: 'first-impressions',
+      name: 'First Impressions Package',
+      subtitle: 'Entryway & Powder Room',
+      price: 699,
+      originalPrice: 849,
+      savings: 150,
+      percentage: 18,
+      features: [
+        'Foyer/Hallway walls painted (2 coats)',
+        'Powder Room walls painted (2 coats)',
+        'Baseboard painting included',
+        'Minor wall patching included'
+      ]
+    },
+    {
+      id: 'holiday-feast',
+      name: 'Holiday Feast Combo',
+      subtitle: 'Kitchen & Dining Room',
+      price: 749,
+      originalPrice: 1248,
+      savings: 499,
+      percentage: 40,
+      features: [
+        'Kitchen walls painted (2 coats)',
+        'Dining Room walls painted (2 coats)',
+        'Premium washable/scrubbable paint included',
+        'Minor wall patching included'
+      ]
+    },
+    {
+      id: 'guest-suite',
+      name: 'Guest Suite Special',
+      subtitle: 'Bedroom with Free Trim',
+      price: 499,
+      originalPrice: 949,
+      savings: 450,
+      percentage: 47,
+      features: [
+        'Bedroom walls painted (2 coats)',
+        'Up to 12\'x12\' room size',
+        'Baseboards painted (2 coats)',
+        'Window casings painted (2 coats)'
+      ]
+    },
+    {
+      id: 'master-suite',
+      name: 'Master Suite Bundle',
+      subtitle: 'Bedroom + Ensuite',
+      price: 799,
+      originalPrice: 1049,
+      savings: 250,
+      percentage: 24,
+      features: [
+        'Master bedroom walls painted (2 coats)',
+        'Ensuite bathroom walls painted (2 coats)',
+        'Premium moisture-resistant paint in bathroom',
+        'Minor wall patching included'
+      ]
+    },
+    {
+      id: 'living-space',
+      name: 'Living Space Bundle',
+      subtitle: 'Living Room + Hallway',
+      price: 1099,
+      originalPrice: 1548,
+      savings: 449,
+      percentage: 29,
+      features: [
+        'Living room walls painted (2 coats)',
+        'Hallway/foyer walls painted (2 coats)',
+        'Baseboard painting included (2 coats)',
+        'Minor wall patching included'
+      ]
+    },
+  ];
+
+  const handleAddPromotionToCart = (promotionId: string) => {
+    const promotion = promotions.find(p => p.id === promotionId);
+    if (!promotion) return;
+
+    const estimate = {
+      laborHours: 8,
+      setupCleanupHours: 1,
+      totalHours: 9,
+      laborCost: promotion.price * 0.7,
+      paintGallons: 3,
+      paintCost: promotion.price * 0.2,
+      suppliesCost: promotion.price * 0.1,
+      otherFees: 0,
+      subtotal: promotion.price,
+      totalCost: promotion.price,
+    };
+
+    const cartItem = {
+      serviceId: promotionId,
+      serviceName: promotion.name,
+      serviceType: 'flat-rate' as const,
+      estimate: estimate,
+      formData: {
+        promotionId,
+        promotionName: promotion.name,
+        promotionSubtitle: promotion.subtitle,
+        originalPrice: promotion.originalPrice,
+        savings: promotion.savings,
+        percentage: promotion.percentage,
+        price: promotion.price,
+      },
+    };
+
+    addItem(cartItem);
+    navigate('/cart');
+  };
 
   const isInquiryValid =
     inqName.trim().length > 0 &&
@@ -284,41 +418,6 @@ const LandingPage = () => {
     };
   }, [bannerDismissed]);
 
-  // Match inquiry image height to form height (desktop only)
-  useEffect(() => {
-    const matchInquiryHeights = () => {
-      // Only match heights on desktop (width > 630px)
-      if (window.innerWidth <= 630) {
-        const imageContainer = document.querySelector('.inquiry-image');
-        if (imageContainer) {
-          (imageContainer as HTMLElement).style.height = 'auto';
-        }
-        return;
-      }
-
-      const formContent = document.querySelector('.inquiry-form-content');
-      const imageContainer = document.querySelector('.inquiry-image');
-      
-      if (formContent && imageContainer) {
-        const formHeight = formContent.getBoundingClientRect().height;
-        if (formHeight > 0) {
-          (imageContainer as HTMLElement).style.height = `${formHeight}px`;
-        }
-      }
-    };
-
-    // Match heights on mount and resize
-    matchInquiryHeights();
-    window.addEventListener('resize', matchInquiryHeights);
-    
-    // Also match after a short delay to account for any dynamic content
-    const timeoutId = setTimeout(matchInquiryHeights, 100);
-    
-    return () => {
-      window.removeEventListener('resize', matchInquiryHeights);
-      clearTimeout(timeoutId);
-    };
-  }, [inqSuccess, inqError]);
 
   // Auto-rotate reviews every 5 seconds
   useEffect(() => {
@@ -331,7 +430,8 @@ const LandingPage = () => {
     return () => clearInterval(interval);
   }, [reviews.length]);
 
-  const handleBannerDismiss = () => {
+  const handleBannerDismiss = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setBannerDismissed(true);
     setShowPromoBanner(false);
   };
@@ -355,12 +455,22 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
+      <SEO 
+        title="Fast & Affordable Painters Toronto | Small Jobs & Quick Turnaround"
+        description="Expert residential painting for small jobs in the GTA. Kitchens, bedrooms, condos & more. Quick turnaround and budget-friendly pricing. Get a quote today!"
+        canonical="/"
+      />
+
       {/* Sticky Promotion Banner */}
       <div className={`sticky-promo-banner ${showPromoBanner ? 'show' : 'hidden'}`}>
         <div className="promo-banner-content">
-          <span className="promo-banner-text">
+          <span 
+            className="promo-banner-text"
+            onClick={() => scrollToSection('#promotions-section')}
+            style={{ cursor: 'pointer' }}
+          >
             {/* <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" /> */}
-            Big projects deserve big savings <span className="deal-bubble">15% off $1000+ painting jobs!</span>
+            Limited Time Deal! <span className="deal-bubble">15% off $1000+ painting jobs - Ends January 15th!</span>
           </span>
           <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
         </div>
@@ -389,6 +499,69 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Promotions Section */}
+      <section id="promotions-section" className="promotions-section">
+        <div className="container">
+          <div className="promotions-content">
+            <div className="promotions-heading">
+              <h2>Winter Holiday Specials</h2>
+              <p className="promotions-subtitle">
+                Wow your guests this winter! All promotions end January 31st. Lock in your painting deal and get your home party-ready!
+              </p>
+            </div>
+            <div className="promotions-grid">
+              {promotions.map((promotion, index) => (
+                <div 
+                  key={promotion.id} 
+                  className={`promotion-card ${index === 0 ? 'promotion-featured promotion-best-deal' : ''}`}
+                >
+                  {index === 0 && (
+                    <div className="promotion-badge">Best Deal</div>
+                  )}
+                  <h3>{promotion.name}</h3>
+                  <p className="promotion-subtitle">{promotion.subtitle}</p>
+                  <div className="promotion-pricing">
+                    <span className="promotion-price">${promotion.price.toLocaleString()} CAD</span>
+                    <span className="promotion-original">Regular ${promotion.originalPrice.toLocaleString()} CAD</span>
+                    <span className="promotion-savings">Save ${promotion.savings.toLocaleString()} ({promotion.percentage}% off)</span>
+                  </div>
+                  <ul className="promotion-features">
+                    {promotion.features.map((feature, idx) => (
+                      <li key={idx}>{feature}</li>
+                    ))}
+                  </ul>
+                  <button 
+                    onClick={() => handleAddPromotionToCart(promotion.id)}
+                    className="btn-primary promotion-cta"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Company Section */}
+      <section id="company-section" className="company-section">
+        <div className="container">
+          <div className="company-content">
+            <div className="company-text">
+              <div className="company-text-content">
+                <h2>About GTA Budget Painting</h2>
+                <p className="company-description">
+                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, dedicated to serving homeowners who need high-quality, affordable painting for smaller projects. We specialize in residential interior and exterior painting for homes, condos, and apartments across the Greater Toronto Area. While many contractors overlook small jobs, our professional painters are committed to delivering exceptional results, quick turnarounds, and budget-friendly pricing for every project, no matter the size.</span>
+                </p>
+              </div>
+              <div className="company-image">
+                <img src="/partnership.png" alt="Professional painting team at work" className="company-photo" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works-section" className="how-it-works-section">
         <div className="container">
@@ -399,7 +572,7 @@ const LandingPage = () => {
               aria-expanded={isHowItWorksExpanded}
               aria-controls="how-it-works-collapsible"
             >
-              <h2>How to Book Your Service</h2>
+              <h2>How to Book Your Service?</h2>
               <span className={`how-it-works-toggle-icon ${isHowItWorksExpanded ? 'open' : ''}`}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -608,25 +781,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Company Section */}
-      <section id="company-section" className="company-section">
-        <div className="container">
-          <div className="company-content">
-            <div className="company-text">
-              <div className="company-text-content">
-                <h2>About GTA Budget Painting</h2>
-                <p className="company-description">
-                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, designed to serve homeowners who need smaller, more affordable painting projects. We specialize in residential painting, focusing on delivering exceptional service for homes and apartments. While larger companies often overlook smaller jobs, we're committed to providing quality painting services at budget-friendly prices for every project, no matter the size.</span>
-                </p>
-              </div>
-              <div className="company-image">
-                <img src="/partnership.png" alt="Professional painting team at work" className="company-photo" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Why Choose Us Section */}
       <section id="why-choose-us-section" className="why-choose-us-section">
         <div className="container">
@@ -771,14 +925,83 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Areas Served Section */}
+      <section id="areas-served-section" className="areas-served-section">
+        <div className="container">
+          <div className="areas-served-content">
+            <button 
+              className="areas-served-toggle"
+              onClick={() => setIsAreasServedExpanded(!isAreasServedExpanded)}
+              aria-expanded={isAreasServedExpanded}
+              aria-controls="areas-served-collapsible"
+            >
+              <h2>Service Areas</h2>
+              <span className={`areas-served-toggle-icon ${isAreasServedExpanded ? 'open' : ''}`}>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+            <div 
+              id="areas-served-collapsible"
+              className={`areas-served-collapsible ${isAreasServedExpanded ? 'open' : ''}`}
+            >
+              <div className="areas-served-text">
+                <div className="areas-content">
+                  <div className="areas-text">
+                    <div className="areas-text-content">
+                      <p className="areas-description">
+                        We proudly serve the entire Greater Toronto Area, bringing professional painting services to communities across the region. From downtown Toronto to the outer suburbs, our experienced team is ready to transform your space.
+                      </p>
+                      <div className="areas-list">
+                        <div className="areas-column">
+                          <ul>
+                            <li>Vaughan</li>
+                            <li>Richmond Hill</li>
+                            <li>Markham</li>
+                            <li>Thornhill</li>
+                            <li>Woodbridge</li>
+                            <li>Maple</li>
+                          </ul>
+                        </div>
+                        <div className="areas-column">
+                          <ul>
+                            <li>Downtown Toronto</li>
+                            <li>North York</li>
+                            <li>Scarborough</li>
+                            <li>Etobicoke</li>
+                            <li>York</li>
+                            <li>East York</li>
+                          </ul>
+                        </div>
+                        <div className="areas-column">
+                          <ul>
+                            <li>Mississauga</li>
+                            <li>Brampton</li>
+                            <li>Oakville</li>
+                            <li>Burlington</li>
+                            <li>Milton</li>
+                            <li>Caledon</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="areas-image">
+                      <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Quick Inquiry Section */}
       <section id="inquiry-section" className="inquiry-section">
         <div className="container">
           <div className="inquiry-content">
             <div className="inquiry-text">
-              <div className="inquiry-image">
-                <img src="/f16f1bd449899777bf18714eb6cb3df3.jpg" alt="Professional painting service" className="inquiry-photo" />
-              </div>
               <div className="inquiry-form-content">
                 <h2>Get a Free Quote Now!</h2>
                 <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit}>
@@ -822,57 +1045,6 @@ const LandingPage = () => {
                     {inqSubmitting ? 'Sending…' : 'Send Message'}
                   </button>
                 </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Areas Served Section */}
-      <section id="areas-served-section" className="areas-served-section">
-        <div className="container">
-          <div className="areas-content">
-            <div className="areas-text">
-              <div className="areas-text-content">
-                <h2>Service Areas</h2>
-                <p className="areas-description">
-                  We proudly serve the entire Greater Toronto Area, bringing professional painting services to communities across the region. From downtown Toronto to the outer suburbs, our experienced team is ready to transform your space.
-                </p>
-                <div className="areas-list">
-                  <div className="areas-column">
-                    <ul>
-                      <li>Vaughan</li>
-                      <li>Richmond Hill</li>
-                      <li>Markham</li>
-                      <li>Thornhill</li>
-                      <li>Woodbridge</li>
-                      <li>Maple</li>
-                    </ul>
-                  </div>
-                  <div className="areas-column">
-                    <ul>
-                      <li>Downtown Toronto</li>
-                      <li>North York</li>
-                      <li>Scarborough</li>
-                      <li>Etobicoke</li>
-                      <li>York</li>
-                      <li>East York</li>
-                    </ul>
-                  </div>
-                  <div className="areas-column">
-                    <ul>
-                      <li>Mississauga</li>
-                      <li>Brampton</li>
-                      <li>Oakville</li>
-                      <li>Burlington</li>
-                      <li>Milton</li>
-                      <li>Caledon</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="areas-image">
-                <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
               </div>
             </div>
           </div>
