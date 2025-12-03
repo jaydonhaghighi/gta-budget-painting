@@ -929,6 +929,8 @@
   width: 28px;
   height: 28px;
   font-size: 0.875rem;
+  aspect-ratio: 1;
+  flex-shrink: 0;
 }
 
 .step-header-content .step-icon {
@@ -983,6 +985,8 @@
   font-weight: 400;
   font-size: 0.875rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  aspect-ratio: 1;
+  flex-shrink: 0;
 }
 
 .step-icon {
