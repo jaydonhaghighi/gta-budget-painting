@@ -550,21 +550,26 @@
   left: 0;
   right: 0;
   z-index: 999; /* Below header (1001) */
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
   color: white;
   padding: 0.75rem 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   transform: translateY(-100%); /* Hide above viewport */
-  transition: transform 0.3s ease;
-  visibility: visible; /* Ensure it's in the DOM */
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .sticky-promo-banner.show {
   transform: translateY(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .sticky-promo-banner.hidden {
   transform: translateY(-100%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none;
 }
 
@@ -1390,7 +1395,7 @@
 
 .company-text {
   background: var(--color-background);
-  padding: 2rem;
+  padding: 3rem;
   gap: 3rem;
   border-radius: 16px;
   border: 1px solid var(--color-grey-100);
@@ -2404,7 +2409,7 @@
 
 /* Reviews Section */
 .reviews-section {
-  padding: 4rem 0;
+  padding: 3rem 0;
   position: relative;
   background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }

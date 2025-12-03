@@ -75,7 +75,7 @@ const LandingPage = () => {
       name: "Kris J",
       rating: 5,
       date: "October 2, 2025",
-      text: "Peter and team did an amazing job painting our kitchen cabinets. We weren't sure what colour we wanted and he came in with his recommendations and colour swatches. It completely updated and changed our kitchen. His professionalism, expert advice and ability to get the job done quickly and of quality was great!"
+      text: "Peter and team did an amazing job painting our kitchen. We weren't sure what colour we wanted and he came in with his recommendations and colour swatches. It completely updated and changed our kitchen. His professionalism, expert advice and ability to get the job done quickly and of quality was great!"
     },
     {
       name: "Paul Lillakas",
@@ -367,7 +367,7 @@ const LandingPage = () => {
         <div className="promo-banner-content">
           <span className="promo-banner-text">
             {/* <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" /> */}
-            Big projects deserve big savings <span className="deal-bubble">15% off $1000+ painting jobs!</span>
+            Limited Time Deal! <span className="deal-bubble">15% off $1000+ painting jobs - Ends January 15th!</span>
           </span>
           <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
         </div>
@@ -623,7 +623,7 @@ const LandingPage = () => {
               <div className="company-text-content">
                 <h2>About GTA Budget Painting</h2>
                 <p className="company-description">
-                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, dedicated to serving homeowners who need high-quality, affordable painting for smaller projects. We specialize in residential interior and exterior painting for homes, condos, and apartments across the Greater Toronto Area. While many contractors overlook small jobs, our professional painters are committed to delivering exceptional results, quick turnarounds, and budget-friendly pricing for every project—no matter the size.</span>
+                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, dedicated to serving homeowners who need high-quality, affordable painting for smaller projects. We specialize in residential interior and exterior painting for homes, condos, and apartments across the Greater Toronto Area. While many contractors overlook small jobs, our professional painters are committed to delivering exceptional results, quick turnarounds, and budget-friendly pricing for every project, no matter the size.</span>
                 </p>
               </div>
               <div className="company-image">

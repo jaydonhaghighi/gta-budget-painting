@@ -65,19 +65,19 @@ body {
 
 @media (max-width: 1052px) {
   body {
-    padding-top: 139.5px;
+    padding-top: 132.5px;
   }
 }
 
 @media (max-width: 768px) {
   body {
-    padding-top: 147.5px;
+    padding-top: 140.5px;
   }
 }
 
 @media (max-width: 630px) {
   body {
-    padding-top: 117.5px;
+    padding-top: 110.5px;
   }
 }
 

@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ContactUsPage.css';
 import { db } from '../firebase';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 
 const ContactUsPage: React.FC = () => {
+  useEffect(() => {
+    // Scroll to quote section if hash is present
+    if (window.location.hash === '#quote-section') {
+      setTimeout(() => {
+        const element = document.getElementById('quote-section');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, []);
   const [inqName, setInqName] = useState('');
   const [inqEmail, setInqEmail] = useState('');
   const [inqPhone, setInqPhone] = useState('');
@@ -183,7 +194,7 @@ const ContactUsPage: React.FC = () => {
             </div>
 
             {/* Quick Inquiry Card */}
-            <div className="contact-card">
+            <div id="quote-section" className="contact-card">
               <div className="contact-card-header">
                 <div className="contact-card-icon">
                   <div className="contact-item-icon">
