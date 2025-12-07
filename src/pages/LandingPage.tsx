@@ -1004,34 +1004,44 @@ const LandingPage = () => {
             <div className="inquiry-text">
               <div className="inquiry-form-content">
                 <h2>Get a Free Quote Now!</h2>
-                <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit}>
+                <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit} autoComplete="on">
                   <div className="qi-row">
                     <input
                       type="text"
+                      id="inq-name"
+                      name="name"
                       placeholder="Your name *"
                       value={inqName}
                       onChange={(e) => setInqName(e.target.value)}
+                      autoComplete="name"
                       aria-label="Your name"
                     />
                   </div>
                   <div className="qi-row qi-grid-2">
                     <input
                       type="email"
+                      id="inq-email"
+                      name="email"
                       placeholder="Email"
                       value={inqEmail}
                       onChange={(e) => setInqEmail(e.target.value)}
+                      autoComplete="email"
                       aria-label="Email"
                     />
                     <input
                       type="tel"
+                      id="inq-phone"
+                      name="phone"
                       placeholder="Phone"
                       value={inqPhone}
                       onChange={(e) => setInqPhone(e.target.value)}
+                      autoComplete="tel"
                       aria-label="Phone"
                     />
                   </div>
                   <div className="qi-row">
                     <textarea
+                      name="message"
                       placeholder="How can we help? *"
                       rows={3}
                       value={inqMessage}

@@ -230,10 +230,10 @@ export const sendInquiryEmails = onRequest(
         }
       }
 
-      // Always send admin notification
+      // Always send admin notification to admin email
       adminEmail = await resend.emails.send({
         from: "GTA Budget Painting Admin <admin@gtabudgetpainting.ca>",
-        to: inquiryData.email || "info@gtabudgetpainting.ca",
+        to: "info@gtabudgetpainting.ca",
         subject: `New Quick Inquiry - ${inquiryData.name}`,
         html: generateInquiryAdminEmail(inquiryData),
       });
