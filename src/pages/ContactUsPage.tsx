@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ContactUsPage.css';
 import { db } from '../firebase';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import SEO from '../components/SEO';
 
 const ContactUsPage: React.FC = () => {
   useEffect(() => {
@@ -91,6 +92,11 @@ const ContactUsPage: React.FC = () => {
 
   return (
     <div className="contact-page">
+      <SEO
+        title="Contact Budget Painters Toronto & GTA | Fast Quotes | GTA Budget Painting"
+        description="Need painting on a budget with fast turnaround? Contact GTA Budget Painting for a quick quote and great results across the Greater Toronto Area."
+        canonical="/contact-us"
+      />
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">

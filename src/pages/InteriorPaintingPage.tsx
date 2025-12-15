@@ -53,8 +53,8 @@ const InteriorPaintingPage = () => {
   return (
     <div className="interior-painting-page">
       <SEO 
-        title="Interior Painting Services Toronto | Rooms, Trim, Ceilings & More"
-        description="Professional interior painting for single rooms, condos, and small projects. We paint kitchens, bedrooms, bathrooms, and trim. Fast service & great rates."
+        title="Budget Interior Painting Toronto & GTA | Fast Turnaround | GTA Budget Painting"
+        description="Affordable interior painting for small jobs—bedrooms, bathrooms, kitchens, trim, and ceilings. Fast turnaround, great results, and free instant quotes across the GTA."
         canonical="/services/interior-painting"
       />
       {/* Hero Section */}

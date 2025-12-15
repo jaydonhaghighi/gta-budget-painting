@@ -1,4 +1,7 @@
 User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
 Allow: /
 
 Sitemap: https://gtabudgetpainting.ca/sitemap.xml

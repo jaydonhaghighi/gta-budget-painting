@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { getServicesByCategory } from '../data/services';
+import SEO from '../components/SEO';
 import './ServicesPage.css';
 
 const ServicesPage = () => {
@@ -13,6 +14,11 @@ const ServicesPage = () => {
 
   return (
     <div className="services-page">
+      <SEO
+        title="Budget Painting Services Toronto & GTA | Fast Turnaround | GTA Budget Painting"
+        description="Explore budget-friendly interior, exterior, and custom painting services across the Greater Toronto Area. Fast turnaround, great results, and free instant quotes."
+        canonical="/services"
+      />
       {/* Hero Section */}
       <section className="all-services-hero">
         <div className="container">

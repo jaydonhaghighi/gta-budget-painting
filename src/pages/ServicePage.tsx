@@ -437,8 +437,8 @@ const ServicePage = () => {
   return (
     <div className="service-page">
       <SEO 
-        title={service ? `${service.name} Services | GTA Budget Painting` : 'Painting Services | GTA Budget Painting'}
-        description={service ? `Professional ${service.name.toLowerCase()} in Toronto. Affordable rates, quick service, and expert results.` : 'Get a quote for residential painting services in the GTA.'}
+        title={service ? `${service.name} | Budget Painters Toronto & GTA | GTA Budget Painting` : 'Painting Services | Budget Painters Toronto & GTA | GTA Budget Painting'}
+        description={service ? `${service.name} for small jobs across Toronto & the GTA. Budget-friendly pricing, fast turnaround, and great results. Get a free quote.` : 'Budget-friendly residential painting across Toronto & the GTA with fast turnaround and great results. Get a free quote.'}
         canonical={location.pathname}
       />
       {/* Back Button */}

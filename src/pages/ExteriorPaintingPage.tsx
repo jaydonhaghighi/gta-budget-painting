@@ -53,8 +53,8 @@ const ExteriorPaintingPage = () => {
   return (
     <div className="exterior-painting-page">
       <SEO 
-        title="Exterior Painting Services Toronto | Doors, Garage Doors, Fences"
-        description="Boost your curb appeal with our exterior painting services. We paint front doors, garage doors, fences, and more. Quick, affordable updates."
+        title="Budget Exterior Painting Toronto & GTA | Fast Turnaround | GTA Budget Painting"
+        description="Affordable exterior painting for small jobs—front doors, garage doors, fences and more. Fast turnaround, durable finishes, and great results across the GTA."
         canonical="/services/exterior-painting"
       />
       {/* Hero Section */}

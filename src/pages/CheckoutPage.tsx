@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext'
 import { submitServiceRequest } from '../services/firestoreService'
 import type { CustomerInfo } from '../types/ServiceRequest'
 import type { CartItem } from '../context/CartContext'
+import SEO from '../components/SEO'
 import './CheckoutPage.css'
 
 interface CheckoutFormData {
@@ -276,6 +277,12 @@ const CheckoutPage = () => {
 
   return (
     <main className="checkout-page">
+      <SEO
+        title="Checkout | GTA Budget Painting"
+        description="Submit your painting service request."
+        canonical="/checkout"
+        robots="noindex, nofollow"
+      />
       <div className="container">
         {/* Back Button */}
         <div className="checkout-back-section">

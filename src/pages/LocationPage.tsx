@@ -261,8 +261,8 @@ const LocationPage = () => {
   return (
     <div className="location-page">
       <SEO
-        title={`Best Painters in ${formattedCity} | Affordable & Fast | GTA Budget Painting`}
-        description={`Looking for painters in ${formattedCity}? We provide affordable, high-quality residential painting for small jobs in ${formattedCity}. Get a free quote today!`}
+        title={`Budget Painters in ${formattedCity} | Fast Turnaround & Great Results | GTA Budget Painting`}
+        description={`Looking for budget painters in ${formattedCity}? We specialize in small residential jobs with fast turnaround and great results. Get a free quote today!`}
         canonical={location.pathname}
       />
 

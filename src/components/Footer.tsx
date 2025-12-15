@@ -41,7 +41,8 @@ const Footer = () => {
             <ul className="footer-links-list">
               <li><Link to="/services/interior-painting">Interior Painting</Link></li>
               <li><Link to="/services/exterior-painting">Exterior Painting</Link></li>
-              <li><Link to="/services/interior-painting/kitchen">Kitchen Painting</Link></li>
+              <li><Link to="/services/custom-painting">Custom Painting</Link></li>
+              <li><Link to="/services/interior-painting/kitchen-walls">Kitchen Painting</Link></li>
               <li><Link to="/services/interior-painting/bedroom-painting">Bedroom Painting</Link></li>
               <li><Link to="/services/interior-painting/small-bathroom">Bathroom Painting</Link></li>
               <li><Link to="/services/interior-painting/accent-wall">Accent Walls</Link></li>

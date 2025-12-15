@@ -93,9 +93,9 @@ const LandingPage = () => {
       id: 'january-jumpstart',
       name: 'January Jumpstart',
       subtitle: '3-Room Bundle',
-      price: 999,
-      originalPrice: 1847,
-      savings: 848,
+      price: 1000,
+      originalPrice: 1850,
+      savings: 850,
       percentage: 46,
       features: [
         'Any 3 standard rooms (up to 12\'x12\' each)',
@@ -108,8 +108,8 @@ const LandingPage = () => {
       id: 'first-impressions',
       name: 'First Impressions Package',
       subtitle: 'Entryway & Powder Room',
-      price: 699,
-      originalPrice: 849,
+      price: 700,
+      originalPrice: 850,
       savings: 150,
       percentage: 18,
       features: [
@@ -123,9 +123,9 @@ const LandingPage = () => {
       id: 'holiday-feast',
       name: 'Holiday Feast Combo',
       subtitle: 'Kitchen & Dining Room',
-      price: 749,
-      originalPrice: 1248,
-      savings: 499,
+      price: 750,
+      originalPrice: 1250,
+      savings: 500,
       percentage: 40,
       features: [
         'Kitchen walls painted (2 coats)',
@@ -138,8 +138,8 @@ const LandingPage = () => {
       id: 'guest-suite',
       name: 'Guest Suite Special',
       subtitle: 'Bedroom with Free Trim',
-      price: 499,
-      originalPrice: 949,
+      price: 500,
+      originalPrice: 950,
       savings: 450,
       percentage: 47,
       features: [
@@ -153,8 +153,8 @@ const LandingPage = () => {
       id: 'master-suite',
       name: 'Master Suite Bundle',
       subtitle: 'Bedroom + Ensuite',
-      price: 799,
-      originalPrice: 1049,
+      price: 800,
+      originalPrice: 1050,
       savings: 250,
       percentage: 24,
       features: [
@@ -168,9 +168,9 @@ const LandingPage = () => {
       id: 'living-space',
       name: 'Living Space Bundle',
       subtitle: 'Living Room + Hallway',
-      price: 1099,
-      originalPrice: 1548,
-      savings: 449,
+      price: 1100,
+      originalPrice: 1550,
+      savings: 450,
       percentage: 29,
       features: [
         'Living room walls painted (2 coats)',
@@ -456,8 +456,8 @@ const LandingPage = () => {
   return (
     <div className="landing-page">
       <SEO 
-        title="Fast & Affordable Painters Toronto | Small Jobs & Quick Turnaround"
-        description="Expert residential painting for small jobs in the GTA. Kitchens, bedrooms, condos & more. Quick turnaround and budget-friendly pricing. Get a quote today!"
+        title="Budget Painters Toronto | Fast Turnaround & Great Results | GTA Budget Painting"
+        description="Need painting on a budget with fast turnaround? We specialize in small residential jobs across Toronto & the GTA—clean work, great results, and free quotes."
         canonical="/"
       />
 

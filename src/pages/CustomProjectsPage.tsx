@@ -1,5 +1,7 @@
+import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getServicesByCategory } from '../data/services';
+import SEO from '../components/SEO';
 import './CustomProjectsPage.css';
 
 const CustomProjectsPage = () => {
@@ -40,7 +42,7 @@ const CustomProjectsPage = () => {
           className={`service-card ${isFeatured ? 'featured-card' : ''}`}
           style={service.backgroundImage ? {
             '--bg-image': `url(${service.backgroundImage})`
-          } as React.CSSProperties : {}}
+          } as CSSProperties : {}}
         >
           <span className="service-icon">{service.icon}</span>
         </div>
@@ -51,6 +53,11 @@ const CustomProjectsPage = () => {
 
   return (
     <div className="custom-projects-page">
+      <SEO
+        title="Custom Painting Quotes Toronto & GTA | Budget-Friendly & Fast | GTA Budget Painting"
+        description="Have a unique project? Get a custom painting quote designed for your budget, with fast turnaround and great results across the Greater Toronto Area."
+        canonical="/custom-projects"
+      />
       {/* Hero Section */}
       <section className="services-hero">
         <div className="container">
