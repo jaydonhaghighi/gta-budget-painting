@@ -6,6 +6,8 @@ import '../pages/ContactUsPage.css';
 import { db } from '../firebase';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { useCart } from '../context/CartContext';
+import { PROMOTIONS, withPromotionDerived } from '../data/promotions';
+import { buildPromotionEstimate } from '../utils/promotionEstimate';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -88,115 +90,13 @@ const LandingPage = () => {
     }
   ];
 
-  const promotions = [
-    {
-      id: 'january-jumpstart',
-      name: 'January Jumpstart',
-      subtitle: '3-Room Bundle',
-      price: 1000,
-      originalPrice: 1850,
-      savings: 850,
-      percentage: 46,
-      features: [
-        'Any 3 standard rooms (up to 12\'x12\' each)',
-        'Walls painted (2 coats) in each room',
-        'Minor wall patching included',
-        'Full prep & cleanup included'
-      ]
-    },
-    {
-      id: 'first-impressions',
-      name: 'First Impressions Package',
-      subtitle: 'Entryway & Powder Room',
-      price: 700,
-      originalPrice: 850,
-      savings: 150,
-      percentage: 18,
-      features: [
-        'Foyer/Hallway walls painted (2 coats)',
-        'Powder Room walls painted (2 coats)',
-        'Baseboard painting included',
-        'Minor wall patching included'
-      ]
-    },
-    {
-      id: 'holiday-feast',
-      name: 'Holiday Feast Combo',
-      subtitle: 'Kitchen & Dining Room',
-      price: 750,
-      originalPrice: 1250,
-      savings: 500,
-      percentage: 40,
-      features: [
-        'Kitchen walls painted (2 coats)',
-        'Dining Room walls painted (2 coats)',
-        'Premium washable/scrubbable paint included',
-        'Minor wall patching included'
-      ]
-    },
-    {
-      id: 'guest-suite',
-      name: 'Guest Suite Special',
-      subtitle: 'Bedroom with Free Trim',
-      price: 500,
-      originalPrice: 950,
-      savings: 450,
-      percentage: 47,
-      features: [
-        'Bedroom walls painted (2 coats)',
-        'Up to 12\'x12\' room size',
-        'Baseboards painted (2 coats)',
-        'Window casings painted (2 coats)'
-      ]
-    },
-    {
-      id: 'master-suite',
-      name: 'Master Suite Bundle',
-      subtitle: 'Bedroom + Ensuite',
-      price: 800,
-      originalPrice: 1050,
-      savings: 250,
-      percentage: 24,
-      features: [
-        'Master bedroom walls painted (2 coats)',
-        'Ensuite bathroom walls painted (2 coats)',
-        'Premium moisture-resistant paint in bathroom',
-        'Minor wall patching included'
-      ]
-    },
-    {
-      id: 'living-space',
-      name: 'Living Space Bundle',
-      subtitle: 'Living Room + Hallway',
-      price: 1100,
-      originalPrice: 1550,
-      savings: 450,
-      percentage: 29,
-      features: [
-        'Living room walls painted (2 coats)',
-        'Hallway/foyer walls painted (2 coats)',
-        'Baseboard painting included (2 coats)',
-        'Minor wall patching included'
-      ]
-    },
-  ];
+  const promotions = PROMOTIONS.map(withPromotionDerived);
 
   const handleAddPromotionToCart = (promotionId: string) => {
     const promotion = promotions.find(p => p.id === promotionId);
     if (!promotion) return;
 
-    const estimate = {
-      laborHours: 8,
-      setupCleanupHours: 1,
-      totalHours: 9,
-      laborCost: promotion.price * 0.7,
-      paintGallons: 3,
-      paintCost: promotion.price * 0.2,
-      suppliesCost: promotion.price * 0.1,
-      otherFees: 0,
-      subtotal: promotion.price,
-      totalCost: promotion.price,
-    };
+    const estimate = buildPromotionEstimate(promotion.price);
 
     const cartItem = {
       serviceId: promotionId,
