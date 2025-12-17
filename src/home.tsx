@@ -1,11 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import './index.css'
 import './App.css'
 import Header from './components/Header.tsx'
-import SEO from './components/SEO.tsx'
 import { CartProvider } from './context/CartContext.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import Footer from './components/Footer.tsx'
@@ -21,27 +20,6 @@ import ContactUsPage from './pages/ContactUsPage.tsx'
 import GalleryPage from './pages/GalleryPage.tsx'
 import AdminPanel from './pages/AdminPanel.tsx'
 import LocationPage from './pages/LocationPage.tsx'
-import CustomProjectsPage from './pages/CustomProjectsPage.tsx'
-
-export const NotFound = () => {
-  return (
-    <main style={{ padding: '4rem 1rem' }}>
-      <SEO
-        title="Page Not Found | GTA Budget Painting"
-        description="This page could not be found."
-        canonical="/"
-        robots="noindex, nofollow"
-      />
-      <div className="container">
-        <h1>Page not found</h1>
-        <p>The page you’re looking for doesn’t exist. Try one of these links:</p>
-        <p>
-          <Link to="/">Home</Link> · <Link to="/services">Services</Link> · <Link to="/contact-us">Contact</Link>
-        </p>
-      </div>
-    </main>
-  )
-}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -59,13 +37,10 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/services/interior-painting/:serviceId" element={<ServicePage />} />
               <Route path="/services/exterior-painting/:serviceId" element={<ServicePage />} />
               <Route path="/services/custom-painting" element={<ServicePage />} />
-              <Route path="/services/custom-painting/:serviceId" element={<ServicePage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/contact-us" element={<ContactUsPage />} />
-              <Route path="/contact" element={<Navigate to="/contact-us" replace />} />
               <Route path="/gallery" element={<GalleryPage />} />
-              <Route path="/custom-projects" element={<CustomProjectsPage />} />
               <Route path="/admin" element={<AdminPanel />} />
               {/* Dynamic Location Pages (e.g. /painters-mississauga) */}
               {/* Note: We use a regex-like pattern or just match the specific prefix structure if possible, 
@@ -103,7 +78,6 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/painters-york" element={<LocationPage />} />
               <Route path="/painters-east-york" element={<LocationPage />} />
               <Route path="/painters-downtown-toronto" element={<LocationPage />} />
-              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </BrowserRouter>

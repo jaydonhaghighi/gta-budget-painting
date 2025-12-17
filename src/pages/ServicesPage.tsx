@@ -16,7 +16,7 @@ const ServicesPage = () => {
     <div className="services-page">
       <SEO
         title="Budget Painting Services Toronto & GTA | Fast Turnaround | GTA Budget Painting"
-        description="Explore budget-friendly interior, exterior, and custom painting services across the Greater Toronto Area. Fast turnaround, great results, and free instant quotes."
+        description="Explore budget-friendly interior, exterior, and custom painting services across the Greater Toronto Area. Fast turnaround, great results, and free quotes."
         canonical="/services"
       />
       {/* Hero Section */}

@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { useCart } from '../context/CartContext';
-import { PROMOTIONS, withPromotionDerived } from '../data/promotions';
-import { buildPromotionEstimate } from '../utils/promotionEstimate';
 import './LocationPage.css';
 
 const LocationPage = () => {
@@ -36,13 +34,79 @@ const LocationPage = () => {
     },
   ];
 
-  const promotions = PROMOTIONS.map(withPromotionDerived);
+  const promotions = [
+    {
+      id: 'january-jumpstart',
+      name: 'January Jumpstart',
+      subtitle: '3-Room Bundle',
+      price: 999,
+      originalPrice: 1847,
+      savings: 848,
+      percentage: 46,
+    },
+    {
+      id: 'first-impressions',
+      name: 'First Impressions Package',
+      subtitle: 'Entryway & Powder Room',
+      price: 699,
+      originalPrice: 849,
+      savings: 150,
+      percentage: 18,
+    },
+    {
+      id: 'holiday-feast',
+      name: 'Holiday Feast Combo',
+      subtitle: 'Kitchen & Dining Room',
+      price: 749,
+      originalPrice: 1248,
+      savings: 499,
+      percentage: 40,
+    },
+    {
+      id: 'guest-suite',
+      name: 'Guest Suite Special',
+      subtitle: 'Bedroom with Free Trim',
+      price: 499,
+      originalPrice: 949,
+      savings: 450,
+      percentage: 47,
+    },
+    {
+      id: 'master-suite',
+      name: 'Master Suite Bundle',
+      subtitle: 'Bedroom + Ensuite',
+      price: 799,
+      originalPrice: 1049,
+      savings: 250,
+      percentage: 24,
+    },
+    {
+      id: 'living-space',
+      name: 'Living Space Bundle',
+      subtitle: 'Living Room + Hallway',
+      price: 1099,
+      originalPrice: 1548,
+      savings: 449,
+      percentage: 29,
+    },
+  ];
 
   const handleAddPromotionToCart = (promotionId: string) => {
     const promotion = promotions.find(p => p.id === promotionId);
     if (!promotion) return;
 
-    const estimate = buildPromotionEstimate(promotion.price);
+    const estimate = {
+      laborHours: 8,
+      setupCleanupHours: 1,
+      totalHours: 9,
+      laborCost: promotion.price * 0.7,
+      paintGallons: 3,
+      paintCost: promotion.price * 0.2,
+      suppliesCost: promotion.price * 0.1,
+      otherFees: 0,
+      subtotal: promotion.price,
+      totalCost: promotion.price,
+    };
 
     const cartItem = {
       serviceId: promotionId,
@@ -197,8 +261,8 @@ const LocationPage = () => {
   return (
     <div className="location-page">
       <SEO
-        title={`Budget Painters in ${formattedCity} | Fast Turnaround & Great Results | GTA Budget Painting`}
-        description={`Looking for budget painters in ${formattedCity}? We specialize in small residential jobs with fast turnaround and great results. Get a free quote today!`}
+        title={`Best Painters in ${formattedCity} | Affordable & Fast | GTA Budget Painting`}
+        description={`Looking for painters in ${formattedCity}? We provide affordable, high-quality residential painting for small jobs in ${formattedCity}. Get a free quote today!`}
         canonical={location.pathname}
       />
 
@@ -253,34 +317,138 @@ const LocationPage = () => {
             </p>
           </div>
           <div className="location-promotions-grid">
-            {promotions.map((promotion, index) => (
-              <div
-                key={promotion.id}
-                className={`location-promotion-card ${index === 0 ? 'location-promotion-featured location-promotion-best-deal' : ''}`}
-              >
-                {index === 0 && <div className="location-promotion-badge">Best Deal</div>}
-                <h3>{promotion.name}</h3>
-                <p className="location-promotion-subtitle">{promotion.subtitle}</p>
-                <div className="location-promotion-pricing">
-                  <span className="location-promotion-price">${promotion.price.toLocaleString()} CAD</span>
-                  <span className="location-promotion-original">Regular ${promotion.originalPrice.toLocaleString()} CAD</span>
-                  <span className="location-promotion-savings">
-                    Save ${promotion.savings.toLocaleString()} ({promotion.percentage}% off)
-                  </span>
-                </div>
-                <ul className="location-promotion-features">
-                  {promotion.features.map((feature, idx) => (
-                    <li key={idx}>{feature}</li>
-                  ))}
-                </ul>
-                <button
-                  onClick={() => handleAddPromotionToCart(promotion.id)}
-                  className="location-btn-primary location-promotion-cta"
-                >
-                  Add to Cart
-                </button>
+            <div className="location-promotion-card location-promotion-featured location-promotion-best-deal">
+              <div className="location-promotion-badge">Best Deal</div>
+              <h3>January Jumpstart</h3>
+              <p className="location-promotion-subtitle">3-Room Bundle</p>
+              <div className="location-promotion-pricing">
+                <span className="location-promotion-price">$999 CAD</span>
+                <span className="location-promotion-original">Regular $1,847 CAD</span>
+                <span className="location-promotion-savings">Save $848 (46% off)</span>
               </div>
-            ))}
+              <ul className="location-promotion-features">
+                <li>Any 3 standard rooms (up to 12'x12' each)</li>
+                <li>Walls painted (2 coats) in each room</li>
+                <li>Minor wall patching included</li>
+                <li>Full prep & cleanup included</li>
+              </ul>
+              <button 
+                onClick={() => handleAddPromotionToCart('january-jumpstart')}
+                className="location-btn-primary location-promotion-cta"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+            <div className="location-promotion-card">
+              <h3>First Impressions Package</h3>
+              <p className="location-promotion-subtitle">Entryway & Powder Room</p>
+              <div className="location-promotion-pricing">
+                <span className="location-promotion-price">$699 CAD</span>
+                <span className="location-promotion-original">Regular $849 CAD</span>
+                <span className="location-promotion-savings">Save $150 (18% off)</span>
+              </div>
+              <ul className="location-promotion-features">
+                <li>Foyer/Hallway walls painted (2 coats)</li>
+                <li>Powder Room walls painted (2 coats)</li>
+                <li>Baseboard painting included</li>
+                <li>Minor wall patching included</li>
+              </ul>
+              <button 
+                onClick={() => handleAddPromotionToCart('first-impressions')}
+                className="location-btn-primary location-promotion-cta"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+            <div className="location-promotion-card">
+              <h3>Holiday Feast Combo</h3>
+              <p className="location-promotion-subtitle">Kitchen & Dining Room</p>
+              <div className="location-promotion-pricing">
+                <span className="location-promotion-price">$749 CAD</span>
+                <span className="location-promotion-original">Regular $1,248 CAD</span>
+                <span className="location-promotion-savings">Save $499 (40% off)</span>
+              </div>
+              <ul className="location-promotion-features">
+                <li>Kitchen walls painted (2 coats)</li>
+                <li>Dining Room walls painted (2 coats)</li>
+                <li>Premium washable/scrubbable paint included</li>
+                <li>Minor wall patching included</li>
+              </ul>
+              <button 
+                onClick={() => handleAddPromotionToCart('holiday-feast')}
+                className="location-btn-primary location-promotion-cta"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+            <div className="location-promotion-card">
+              <h3>Guest Suite Special</h3>
+              <p className="location-promotion-subtitle">Bedroom with Free Trim</p>
+              <div className="location-promotion-pricing">
+                <span className="location-promotion-price">$499 CAD</span>
+                <span className="location-promotion-original">Regular $949 CAD</span>
+                <span className="location-promotion-savings">Save $450 (47% off)</span>
+              </div>
+              <ul className="location-promotion-features">
+                <li>Bedroom walls painted (2 coats)</li>
+                <li>Up to 12'x12' room size</li>
+                <li>Baseboards painted (2 coats)</li>
+                <li>Window casings painted (2 coats)</li>
+              </ul>
+              <button 
+                onClick={() => handleAddPromotionToCart('guest-suite')}
+                className="location-btn-primary location-promotion-cta"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+            <div className="location-promotion-card">
+              <h3>Master Suite Bundle</h3>
+              <p className="location-promotion-subtitle">Bedroom + Ensuite</p>
+              <div className="location-promotion-pricing">
+                <span className="location-promotion-price">$799 CAD</span>
+                <span className="location-promotion-original">Regular $1,049 CAD</span>
+                <span className="location-promotion-savings">Save $250 (24% off)</span>
+              </div>
+              <ul className="location-promotion-features">
+                <li>Master bedroom walls painted (2 coats)</li>
+                <li>Ensuite bathroom walls painted (2 coats)</li>
+                <li>Premium moisture-resistant paint in bathroom</li>
+                <li>Minor wall patching included</li>
+              </ul>
+              <button 
+                onClick={() => handleAddPromotionToCart('master-suite')}
+                className="location-btn-primary location-promotion-cta"
+              >
+                Add to Cart
+              </button>
+            </div>
+
+            <div className="location-promotion-card">
+              <h3>Living Space Bundle</h3>
+              <p className="location-promotion-subtitle">Living Room + Hallway</p>
+              <div className="location-promotion-pricing">
+                <span className="location-promotion-price">$1,099 CAD</span>
+                <span className="location-promotion-original">Regular $1,548 CAD</span>
+                <span className="location-promotion-savings">Save $449 (29% off)</span>
+              </div>
+              <ul className="location-promotion-features">
+                <li>Living room walls painted (2 coats)</li>
+                <li>Hallway/foyer walls painted (2 coats)</li>
+                <li>Baseboard painting included (2 coats)</li>
+                <li>Minor wall patching included</li>
+              </ul>
+              <button 
+                onClick={() => handleAddPromotionToCart('living-space')}
+                className="location-btn-primary location-promotion-cta"
+              >
+                Add to Cart
+              </button>
+            </div>
 
           </div>
         </div>

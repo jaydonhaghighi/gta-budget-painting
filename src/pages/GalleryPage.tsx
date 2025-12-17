@@ -124,8 +124,8 @@ const GalleryPage = () => {
   return (
     <div className="gallery-page">
       <SEO
-        title="Painting Results Gallery | Budget-Friendly, Great Quality | GTA Budget Painting"
-        description="See before-and-after painting results from budget-friendly projects across Toronto & the GTA. Fast turnaround, clean finishes, and great results."
+        title="Painting Results Gallery | GTA Budget Painting"
+        description="See before-and-after painting results from small, budget-friendly projects across Toronto & the GTA."
         canonical="/gallery"
       />
       <section className="gallery-hero">

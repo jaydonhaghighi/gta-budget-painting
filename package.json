@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/prerender.mjs",
+    "build": "tsc -b && vite build && node scripts/prerender.mjs && node scripts/verify-prerender.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prerender": "node scripts/prerender.mjs"
+    "prerender": "node scripts/prerender.mjs",
+    "verify:prerender": "node scripts/verify-prerender.mjs"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

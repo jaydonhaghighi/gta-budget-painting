@@ -93,8 +93,8 @@ const ContactUsPage: React.FC = () => {
   return (
     <div className="contact-page">
       <SEO
-        title="Contact Budget Painters Toronto & GTA | Fast Quotes | GTA Budget Painting"
-        description="Need painting on a budget with fast turnaround? Contact GTA Budget Painting for a quick quote and great results across the Greater Toronto Area."
+        title="Contact GTA Budget Painting | Fast Quotes in Toronto & GTA"
+        description="Request a fast painting quote for small jobs across the Greater Toronto Area. Budget-friendly pricing, quick turnaround, and great results."
         canonical="/contact-us"
       />
       {/* Hero Section */}

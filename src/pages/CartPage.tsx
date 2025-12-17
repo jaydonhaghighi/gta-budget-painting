@@ -10,8 +10,8 @@ const CartPage = () => {
   return (
     <main className="cart-page">
       <SEO
-        title="Your Service Cart | GTA Budget Painting"
-        description="Review your painting services and submit your request."
+        title="Service Cart | GTA Budget Painting"
+        description="Review your selected painting services."
         canonical="/cart"
         robots="noindex, nofollow"
       />

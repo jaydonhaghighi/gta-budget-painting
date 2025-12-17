@@ -34,7 +34,8 @@ export default function SEO({
     if (!image) return `${siteUrl}/logo.png`;
     return image.startsWith('http') ? image : `${siteUrl}${image.startsWith('/') ? image : `/${image}`}`;
   })();
-  const resolvedImageAlt = imageAlt ?? `${siteName} - budget-friendly painters with fast turnaround in the Greater Toronto Area`;
+  const resolvedImageAlt =
+    imageAlt ?? `${siteName} - budget-friendly painters with fast turnaround in the Greater Toronto Area`;
 
   return (
     <Helmet>
@@ -43,6 +44,8 @@ export default function SEO({
       <meta name='description' content={description} />
       <link rel="canonical" href={fullUrl} />
       {robots && <meta name="robots" content={robots} />}
+      <link rel="alternate" hrefLang="en-CA" href={fullUrl} />
+      <link rel="alternate" hrefLang="x-default" href={fullUrl} />
 
       {/* Open Graph tags (Facebook, LinkedIn) */}
       <meta property="og:type" content={type} />
