@@ -35,7 +35,3 @@ export function buildPromotionEstimate(price: number): PromotionEstimate {
     totalCost: roundedTotal,
   };
 }
-
-
-
-
