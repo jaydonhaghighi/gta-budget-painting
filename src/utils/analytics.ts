@@ -347,8 +347,8 @@ export const initAnalytics = (measurementId: string): void => {
 
   // Initialize dataLayer and gtag
   window.dataLayer = window.dataLayer || [];
-  window.gtag = function () {
-    window.dataLayer!.push(arguments);
+  window.gtag = (...args: unknown[]) => {
+    window.dataLayer!.push(args);
   };
 
   window.gtag('js', new Date());

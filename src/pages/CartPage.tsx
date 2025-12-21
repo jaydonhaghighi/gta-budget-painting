@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import SEO from '../components/SEO'
 import './CartPage.css'
 
 const CartPage = () => {
@@ -8,6 +9,12 @@ const CartPage = () => {
   const count = cart.items.length
   return (
     <main className="cart-page">
+      <SEO
+        title="Service Cart | GTA Budget Painting"
+        description="Review your selected painting services."
+        canonical="/cart"
+        robots="noindex, nofollow"
+      />
       <div className="container">
         <div className="cart-header">
           <div className="cart-title">

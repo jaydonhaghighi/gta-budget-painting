@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import type { ServiceRequest } from '../types/ServiceRequest';
 import { storage } from '../firebase';
 import { ref, getDownloadURL } from 'firebase/storage';
+import SEO from '../components/SEO';
 import './AdminPanel.css';
 
 // Component to handle image loading with retry logic
@@ -58,6 +59,15 @@ const AdminPanel: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+
+  const seo = (
+    <SEO
+      title="Admin | GTA Budget Painting"
+      description="Administration panel."
+      canonical="/admin"
+      robots="noindex, nofollow"
+    />
+  );
   
   const [requests, setRequests] = useState<ServiceRequest[]>([]);
   const [loading, setLoading] = useState(true);
@@ -499,6 +509,7 @@ const AdminPanel: React.FC = () => {
   if (authLoading) {
     return (
       <div className="admin-panel">
+        {seo}
         <div className="admin-container">
           <div className="loading">Checking authentication...</div>
         </div>
@@ -510,6 +521,7 @@ const AdminPanel: React.FC = () => {
   if (user && !isAdmin) {
     return (
       <div className="admin-panel">
+        {seo}
         <div className="admin-container">
           <div className="access-denied">
             <h2>Access Denied</h2>
@@ -527,6 +539,7 @@ const AdminPanel: React.FC = () => {
   if (!user) {
     return (
       <div className="admin-panel">
+        {seo}
         <div className="admin-container">
           <div className="login-container">
             <div className="login-form">
@@ -572,6 +585,7 @@ const AdminPanel: React.FC = () => {
   if (loading) {
     return (
       <div className="admin-panel">
+        {seo}
         <div className="admin-container">
           <div className="loading">Loading requests...</div>
         </div>
@@ -582,6 +596,7 @@ const AdminPanel: React.FC = () => {
   if (error) {
     return (
       <div className="admin-panel">
+        {seo}
         <div className="admin-container">
           <div className="error">{error}</div>
         </div>
@@ -591,6 +606,7 @@ const AdminPanel: React.FC = () => {
 
   return (
     <div className="admin-panel">
+        {seo}
         <div className="admin-container">
           <div className="admin-header">
             <div className="admin-stats">

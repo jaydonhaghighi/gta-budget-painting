@@ -751,7 +751,7 @@
   border: 1px solid var(--color-calm-blue-gray);
   color: white;
   border-radius: 16px;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1.5rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -1475,7 +1475,7 @@
   border: 1px solid var(--color-calm-blue-gray);
   color: white;
   border-radius: 16px;
-  padding: 1.5rem 2rem;
+  padding: 1rem 1.5rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -1745,7 +1745,7 @@
   }
 
   .areas-served-toggle {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.5rem;
   }
 
   .areas-served-toggle h2 {
@@ -1760,7 +1760,7 @@
 
   /* Why Choose Us Mobile */
   .why-choose-us-toggle {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.5rem;
   }
 
   .why-choose-us-toggle h2 {
@@ -2177,7 +2177,7 @@
   border: 1px solid var(--color-calm-blue-gray);
   color: white;
   border-radius: 16px;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.5rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -2875,12 +2875,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.promotion-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  border-color: var(--color-grey-300);
-}
-
 .promotion-featured {
   border: 2px solid var(--color-steel-blue);
   background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
@@ -2900,11 +2894,6 @@
   background: #DC143C;
   color: #ffffff;
   border: 1px solid #DC143C;
-}
-
-.promotion-best-deal .promotion-cta:hover {
-  background: #B91C1C;
-  border-color: #B91C1C;
 }
 
 .promotion-badge {
@@ -3006,6 +2995,37 @@
   font-weight: 600;
   border-radius: 8px;
   border: 1px solid var(--color-steel-blue);
+}
+
+/* Promotions CTA: always use #DC143C (do not inherit generic .btn-primary colors/hover styles) */
+.promotions-section .btn-primary.promotion-cta {
+  background: #DC143C;
+  border-color: #DC143C;
+  color: var(--color-white);
+}
+
+.promotions-section .btn-primary.promotion-cta:hover:not(:disabled) {
+  background: #DC143C;
+  border-color: #DC143C;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
+
+.promotions-section .btn-primary.promotion-cta:focus,
+.promotions-section .btn-primary.promotion-cta:focus-visible,
+.promotions-section .btn-primary.promotion-cta:active {
+  background: #DC143C;
+  border-color: #DC143C;
+  color: var(--color-white);
+}
+
+.promotions-section .btn-primary.promotion-cta:disabled {
+  background: #DC143C;
+  border-color: #DC143C;
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Responsive Design for Promotions */

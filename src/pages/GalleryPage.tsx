@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SEO from '../components/SEO';
 import './GalleryPage.css';
 
 interface GalleryImage {
@@ -122,6 +123,11 @@ const GalleryPage = () => {
 
   return (
     <div className="gallery-page">
+      <SEO
+        title="Painting Results Gallery | GTA Budget Painting"
+        description="See before-and-after painting results from small, budget-friendly projects across Toronto & the GTA."
+        canonical="/gallery"
+      />
       <section className="gallery-hero">
         <div className="container">
           <h1>Our Work Gallery</h1>
