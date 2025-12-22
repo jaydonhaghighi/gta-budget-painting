@@ -20,6 +20,9 @@ const Footer = () => {
             <p className="brand-description">
               Your trusted professionals for residential painting in the Greater Toronto Area. Quick turnaround, budget-friendly pricing, and exceptional results.
             </p>
+            <p style={{ marginTop: '0.75rem' }}>
+              <Link to="/about-us">About Us</Link>
+            </p>
             
             <div className="business-hours">
               <h4>Business Hours</h4>

@@ -136,8 +136,6 @@ const Header = () => {
           
           {/* Navigation Menu */}
           <nav className="desktop-nav">
-            <Link to="/#company-section" className="nav-link" onClick={() => handleSectionClick('#company-section')}>About Us</Link>
-            
             {/* Services Dropdown */}
             <div className="nav-dropdown">
               <button 
@@ -162,6 +160,7 @@ const Header = () => {
             
             <Link to="/#areas-served-section" className="nav-link" onClick={() => handleSectionClick('#areas-served-section')}>Areas Served</Link>
             <Link to="/gallery" className="nav-link">Gallery</Link>
+            <Link to="/about-us" className="nav-link">About Us</Link>
             <Link to="/contact-us" className="nav-link">Contact Us</Link>
           </nav>
 
@@ -190,8 +189,6 @@ const Header = () => {
               <button className="mobile-nav-close" onClick={() => setIsMobileMenuOpen(false)}>×</button>
             </div>
             <div className="mobile-nav-body">
-              <Link to="/#company-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#company-section'); }}>About Us</Link>
-              
               {/* Mobile Services Dropdown */}
               <div className="mobile-nav-dropdown">
                 <button 
@@ -211,6 +208,7 @@ const Header = () => {
               
               <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
               <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
+              <Link to="/about-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
               <Link to="/contact-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
             </div>
           </nav>

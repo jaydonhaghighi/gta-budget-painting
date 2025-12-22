@@ -218,7 +218,11 @@ const LandingPage = () => {
   // Handle hash navigation
   useEffect(() => {
     const hash = window.location.hash;
-    if (hash === '#company-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
+    if (hash === '#company-section') {
+      navigate('/about-us');
+      return;
+    }
+    if (hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
       setTimeout(() => {
         scrollToSection(hash);
       }, 100);
@@ -229,7 +233,11 @@ const LandingPage = () => {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === '#company-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
+      if (hash === '#company-section') {
+        navigate('/about-us');
+        return;
+      }
+      if (hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
         setTimeout(() => {
           scrollToSection(hash);
         }, 100);
@@ -357,7 +365,7 @@ const LandingPage = () => {
     <div className="landing-page">
       <SEO 
         title="Budget Painters Toronto | Fast Turnaround & Great Results | GTA Budget Painting"
-        description="Need painting on a budget with fast turnaround? We specialize in small residential jobs across Toronto & the GTA—clean work, great results, and free quotes."
+        description="Need painting on a budget with fast turnaround? We specialize in small residential jobs across Toronto & the GTA, with clean work, great results, and free quotes."
         canonical="/"
       />
 
@@ -438,25 +446,6 @@ const LandingPage = () => {
                   </button>
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Company Section */}
-      <section id="company-section" className="company-section">
-        <div className="container">
-          <div className="company-content">
-            <div className="company-text">
-              <div className="company-text-content">
-                <h2>About GTA Budget Painting</h2>
-                <p className="company-description">
-                <span>GTA Budget Painting is a specialized division of <b style={{color: '#800000'}}><a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer">GTA Home Painting</a></b>, dedicated to serving homeowners who need high-quality, affordable painting for smaller projects. We specialize in residential interior and exterior painting for homes, condos, and apartments across the Greater Toronto Area. While many contractors overlook small jobs, our professional painters are committed to delivering exceptional results, quick turnarounds, and budget-friendly pricing for every project, no matter the size.</span>
-                </p>
-              </div>
-              <div className="company-image">
-                <img src="/partnership.png" alt="Professional painting team at work" className="company-photo" />
-              </div>
             </div>
           </div>
         </div>
@@ -973,7 +962,7 @@ const LandingPage = () => {
               {renderStars(reviews[currentReviewIndex].rating)}
               <p className="review-text">"{reviews[currentReviewIndex].text}"</p>
               <div className="review-footer">
-                <p className="review-author">— {reviews[currentReviewIndex].name}</p>
+                <p className="review-author">- {reviews[currentReviewIndex].name}</p>
                 <p className="review-date">{reviews[currentReviewIndex].date}</p>
               </div>
             </div>
