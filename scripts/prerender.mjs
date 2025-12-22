@@ -64,6 +64,29 @@ async function ensureDirForFile(filePath) {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
 }
 
+async function gotoWithRetry(browser, url, attempts = 3) {
+  let lastErr;
+  for (let i = 0; i < attempts; i++) {
+    const page = await browser.newPage();
+    try {
+      page.setDefaultNavigationTimeout(60_000);
+      await page.goto(url, { waitUntil: 'networkidle2' });
+      await page.waitForFunction(() => document.readyState === 'complete');
+      return page;
+    } catch (err) {
+      lastErr = err;
+      try {
+        await page.close();
+      } catch {
+        // ignore
+      }
+      // Small backoff before retry
+      await new Promise(r => setTimeout(r, 250 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 async function main() {
   const sitemapPath = (await exists(path.join(DIST_DIR, 'sitemap.xml')))
     ? path.join(DIST_DIR, 'sitemap.xml')

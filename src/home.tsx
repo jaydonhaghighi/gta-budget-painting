@@ -20,6 +20,7 @@ import ContactUsPage from './pages/ContactUsPage.tsx'
 import GalleryPage from './pages/GalleryPage.tsx'
 import AdminPanel from './pages/AdminPanel.tsx'
 import LocationPage from './pages/LocationPage.tsx'
+import AboutUsPage from './pages/AboutUsPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/cart" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/contact-us" element={<ContactUsPage />} />
+              <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
               <Route path="/admin" element={<AdminPanel />} />
               {/* Dynamic Location Pages (e.g. /painters-mississauga) */}

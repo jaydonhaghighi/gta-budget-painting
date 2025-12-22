@@ -513,7 +513,7 @@ const LocationPage = () => {
               </blockquote>
               <div className="location-review-footer">
                 <p className="location-review-author">
-                  — {landingReviews[currentReviewIndex].name}
+                  - {landingReviews[currentReviewIndex].name}
                 </p>
                 <p className="location-review-date">
                   {landingReviews[currentReviewIndex].date}

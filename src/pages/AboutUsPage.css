@@ -1,0 +1,181 @@
+.about-page {
+  background: #ffffff;
+}
+
+.about-hero {
+  padding: 4.5rem 0 2.5rem;
+  background:
+    radial-gradient(1200px 600px at 10% 0%, rgba(76, 110, 245, 0.12), transparent 55%),
+    radial-gradient(900px 500px at 90% 10%, rgba(255, 193, 7, 0.14), transparent 55%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.04), transparent 55%);
+}
+
+.about-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.7);
+  margin-bottom: 0.75rem;
+}
+
+.about-hero h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  color: #0f172a;
+}
+
+.about-subtitle {
+  max-width: 60ch;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(15, 23, 42, 0.8);
+}
+
+.about-section {
+  padding: 2.5rem 0;
+}
+
+.about-split {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.about-split-text {
+  grid-column: span 7;
+}
+
+.about-split-text h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.about-split-text p {
+  margin: 0 0 0.75rem;
+  color: rgba(15, 23, 42, 0.78);
+  line-height: 1.65;
+}
+
+.about-split-text a {
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.about-split-media {
+  grid-column: span 5;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+  background: #fff;
+}
+
+.about-split-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+
+.about-card {
+  grid-column: span 6;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem 1.25rem;
+  background: #fff;
+}
+
+.about-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.about-card p {
+  margin: 0;
+  color: rgba(15, 23, 42, 0.78);
+  line-height: 1.65;
+}
+
+.about-process .about-section-title {
+  margin: 0 0 1rem;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.about-steps {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+
+.about-step {
+  grid-column: span 4;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  padding: 1.25rem;
+  background: #fff;
+}
+
+.about-step h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  color: #0f172a;
+}
+
+.about-step p {
+  margin: 0;
+  color: rgba(15, 23, 42, 0.78);
+  line-height: 1.6;
+}
+
+.about-cta {
+  padding: 3rem 0 4rem;
+}
+
+.about-cta-inner {
+  border-radius: 18px;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.06), rgba(15, 23, 42, 0.02));
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.about-cta-inner h2 {
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+
+.about-cta-inner p {
+  margin: 0 0 1.25rem;
+  color: rgba(15, 23, 42, 0.78);
+}
+
+.about-cta-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .about-card {
+    grid-column: span 12;
+  }
+  .about-step {
+    grid-column: span 12;
+  }
+  .about-split-text,
+  .about-split-media {
+    grid-column: span 12;
+  }
+}
+
