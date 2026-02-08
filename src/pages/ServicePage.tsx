@@ -672,7 +672,7 @@ const ServicePage = () => {
                       id="bestTimeToCall"
                       value={customerInfo.bestTimeToCall}
                       onChange={(e) => setCustomerInfo({ ...customerInfo, bestTimeToCall: e.target.value })}
-                      placeholder="e.g., Weekdays 9-5, Evenings after 6pm"
+                      placeholder="Your availability"
                     />
                   </div>
                   <div className="form-group">
@@ -682,7 +682,7 @@ const ServicePage = () => {
                       id="howDidYouHear"
                       value={customerInfo.howDidYouHear}
                       onChange={(e) => setCustomerInfo({ ...customerInfo, howDidYouHear: e.target.value })}
-                      placeholder="e.g., Google, Facebook, Referral"
+                      placeholder="How you heard about us"
                     />
                   </div>
                   <div className="form-group" style={{ gridColumn: '1 / -1' }}>

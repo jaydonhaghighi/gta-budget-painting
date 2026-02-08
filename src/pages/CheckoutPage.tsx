@@ -402,7 +402,7 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         autoComplete="email"
                         required 
-                        placeholder="your.email@example.com"
+                        placeholder="Email address"
                       />
                     </div>
                     <div className="form-group">
@@ -415,7 +415,7 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         autoComplete="tel"
                         required 
-                        placeholder="(555) 123-4567"
+                        placeholder="Phone number"
                       />
                     </div>
                   </div>
@@ -439,7 +439,7 @@ const CheckoutPage = () => {
                       onChange={handleInputChange}
                       autoComplete="street-address"
                       required 
-                      placeholder="123 Main Street"
+                      placeholder="Street address"
                     />
                   </div>
                   <div className="form-row">
@@ -453,7 +453,7 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         autoComplete="address-level2"
                         required 
-                        placeholder="Toronto"
+                        placeholder="City"
                       />
                     </div>
                     <div className="form-group">
@@ -466,7 +466,7 @@ const CheckoutPage = () => {
                         onChange={handleInputChange}
                         autoComplete="postal-code"
                         required 
-                        placeholder="M5V 3A8"
+                        placeholder="Postal code"
                       />
                     </div>
                   </div>

@@ -33,7 +33,7 @@ export function withPromotionDerived(promotion: Promotion): PromotionWithDerived
 export const PROMOTIONS: Promotion[] = [
   {
     id: 'january-jumpstart',
-    name: 'January Jumpstart',
+    name: 'Spring Refresh',
     subtitle: '3-Room Bundle',
     price: 1000,
     originalPrice: 1850,
@@ -46,7 +46,7 @@ export const PROMOTIONS: Promotion[] = [
   },
   {
     id: 'first-impressions',
-    name: 'First Impressions Package',
+    name: 'Fresh Start Package',
     subtitle: 'Entryway & Powder Room',
     price: 700,
     originalPrice: 850,
@@ -59,7 +59,7 @@ export const PROMOTIONS: Promotion[] = [
   },
   {
     id: 'holiday-feast',
-    name: 'Holiday Feast Combo',
+    name: 'Kitchen & Dining Refresh',
     subtitle: 'Kitchen & Dining Room',
     price: 750,
     originalPrice: 1250,
@@ -72,7 +72,7 @@ export const PROMOTIONS: Promotion[] = [
   },
   {
     id: 'guest-suite',
-    name: 'Guest Suite Special',
+    name: 'Guest Room Refresh',
     subtitle: 'Bedroom with Free Trim',
     price: 500,
     originalPrice: 950,
@@ -110,3 +110,4 @@ export const PROMOTIONS: Promotion[] = [
     ],
   },
 ];
+
