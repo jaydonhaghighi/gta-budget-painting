@@ -158,6 +158,16 @@ export const allServices: Service[] = [
     description: 'Professional fence painting services that protect and beautify your outdoor fencing with weather-resistant finishes.',
     seoDescription: 'Professional fence painting services in Toronto and the GTA. Our expert painters specialize in fence painting that protects and beautifies your outdoor fencing with weather-resistant finishes. We use premium exterior paints, proper surface preparation, and professional techniques to ensure long-lasting protection against weather elements. Whether you need wood fence painting, metal fence painting, or composite fence staining, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Vaughan, Richmond Hill, and surrounding areas with competitive pricing.'
   },
+  {
+    id: 'driveway-sealing',
+    name: 'Driveway Sealing',
+    type: 'calculated',
+    icon: '',
+    category: 'exterior',
+    backgroundImage: '/services/driveway/bac56abdd6adb37858835aacae49dcc8.jpg',
+    description: 'Protect and refresh your asphalt driveway with professional sealing. Choose a driveway size and add optional crack filling, oil-stain primer, second coat, and hand edging.',
+    seoDescription: 'Professional driveway sealing services in Toronto and the GTA. Protect your asphalt driveway from weather, salt, UV damage, and wear with a fresh coat of sealer. Choose from common driveway sizes with optional add-ons like crack filling, oil-stain primer, second coat, and hand edging for a clean finish. Serving homeowners across Toronto, Mississauga, Brampton, Vaughan, and surrounding areas.'
+  },
   
   // Custom Quote Services
   {

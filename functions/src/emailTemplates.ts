@@ -685,7 +685,7 @@ export const generateInvoiceEmail = (invoiceData: any): string => {
                   <td style="padding: 30px; background-color: #EDEAEO; text-align: center;">
                     <h3 style="margin: 0 0 10px; color: #1E1E1E; font-size: 16px; font-weight: 700;">Contact Information</h3>
                     <p style="margin: 0 0 8px; color: #1E1E1E; font-size: 14px; font-weight: 600;">Thank you for choosing GTA Budget Painting!</p>
-                    <p style="margin: 0 0 12px; color: #1E1E1E; font-size: 13px; font-style: italic;">We paint your home like it's our own — with quality work that fits your budget</p>
+                    <p style="margin: 0 0 12px; color: #1E1E1E; font-size: 13px; font-style: italic;">We paint your home like it's our own, with quality work that fits your budget</p>
                     <p style="margin: 0 0 6px; color: #1E1E1E; font-size: 13px;">Phone: (647) 334-1234</p>
                     <p style="margin: 0; color: #1E1E1E; font-size: 13px;">Email: peter@gtahomepainting.ca</p>
                   </td>

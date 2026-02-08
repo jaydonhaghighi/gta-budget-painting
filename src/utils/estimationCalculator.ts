@@ -65,6 +65,127 @@ export interface EstimateBreakdown {
   breakdown: string[];
 }
 
+// Driveway sealing (asphalt) - tiered packages + optional add-ons
+export function calculateDrivewaySealing(params: {
+  drivewaySize: '1-car' | '2-car' | 'large';
+  drivewaySqFt?: number;
+  crackFillingLinearFeet?: number;
+  includeOilStainPrimer?: boolean;
+  includeSecondCoat?: boolean;
+  includeHandEdging?: boolean;
+}): EstimateBreakdown {
+  const {
+    drivewaySize,
+    drivewaySqFt,
+    crackFillingLinearFeet = 0,
+    includeOilStainPrimer = false,
+    includeSecondCoat = false,
+    includeHandEdging = false,
+  } = params;
+
+  // Mid-range package pricing (user-facing ranges exist; estimator uses midpoint)
+  const BASE_PACKAGE_PRICE: Record<typeof drivewaySize, number> = {
+    '1-car': 175,   // $150-$200
+    '2-car': 260,   // $220-$300
+    'large': 375,   // $300-$450+
+  };
+
+  // Add-ons: use mid-range pricing for estimate
+  const CRACK_FILL_RATE_PER_LF = 2; // $1-$3 per linear ft
+  const OIL_STAIN_PRIMER_EXTRA = 40; // $25-$50
+  const HAND_EDGING_EXTRA = 40; // $25-$50
+  const SECOND_COAT_MULTIPLIER = 1.35; // +30-40%
+
+  const basePrice = BASE_PACKAGE_PRICE[drivewaySize];
+
+  const coatingAddOns =
+    (includeOilStainPrimer ? OIL_STAIN_PRIMER_EXTRA : 0) +
+    (includeHandEdging ? HAND_EDGING_EXTRA : 0);
+
+  const coatingSubtotal = (basePrice + coatingAddOns) * (includeSecondCoat ? SECOND_COAT_MULTIPLIER : 1);
+  const crackFillingCost = Math.max(0, crackFillingLinearFeet) * CRACK_FILL_RATE_PER_LF;
+
+  const subtotal = Math.round(coatingSubtotal + crackFillingCost);
+
+  // Optional sealer material guidance (informational; included in package pricing)
+  const SEALER_PAIL_COVERAGE_LOW = 250; // sq ft per 5-gal pail
+  const SEALER_PAIL_COVERAGE_HIGH = 300;
+  const SEALER_COST_PER_PAIL_LOW = 40;
+  const SEALER_COST_PER_PAIL_HIGH = 60;
+
+  let recommendedPailsMid = 0;
+  let recommendedPailsLow = 0;
+  let recommendedPailsHigh = 0;
+  if (drivewaySqFt && drivewaySqFt > 0) {
+    recommendedPailsLow = Math.ceil(drivewaySqFt / SEALER_PAIL_COVERAGE_HIGH); // fewer pails at higher coverage
+    recommendedPailsHigh = Math.ceil(drivewaySqFt / SEALER_PAIL_COVERAGE_LOW); // more pails at lower coverage
+    // Midpoint for internal allocation
+    const midCoverage = (SEALER_PAIL_COVERAGE_LOW + SEALER_PAIL_COVERAGE_HIGH) / 2; // 275
+    recommendedPailsMid = Math.ceil(drivewaySqFt / midCoverage);
+  }
+
+  // Allocate subtotal into labor/materials/supplies for consistency with the rest of the app
+  const paintGallons = recommendedPailsMid; // treat sealer pails like "gallons" for tracking
+  const paintCost = Math.round(subtotal * 0.25);
+  const suppliesCost = Math.round(subtotal * 0.1);
+  const laborCost = subtotal - paintCost - suppliesCost;
+
+  // Rough hours (not used for pricing; kept for consistency)
+  const baseHours = drivewaySize === '1-car' ? 2 : drivewaySize === '2-car' ? 3 : 4;
+  const crackHours = crackFillingLinearFeet > 0 ? crackFillingLinearFeet / 20 : 0; // ~20 lf/hr
+  const coatMultiplierForHours = includeSecondCoat ? 1.35 : 1;
+  const laborHours = Math.max(1, Math.ceil((baseHours + crackHours) * coatMultiplierForHours));
+  const setupCleanupHours = 1;
+  const totalHours = laborHours + setupCleanupHours;
+
+  const breakdown: string[] = [
+    'Driveway sealing estimate (mid-range pricing)',
+    '',
+    `Driveway size: ${drivewaySize === '1-car' ? '1-car' : drivewaySize === '2-car' ? '2-car' : 'Large / double-wide'}`,
+    `Base package: $${basePrice}`,
+  ];
+
+  if (includeOilStainPrimer) {
+    breakdown.push(`Oil stain primer: +$${OIL_STAIN_PRIMER_EXTRA}`);
+  }
+  if (includeHandEdging) {
+    breakdown.push(`Hand edging / brush finish: +$${HAND_EDGING_EXTRA}`);
+  }
+  if (includeSecondCoat) {
+    breakdown.push(`Second coat: ×${SECOND_COAT_MULTIPLIER} on sealing portion`);
+  }
+  if (crackFillingLinearFeet > 0) {
+    breakdown.push(`Crack filling: ${crackFillingLinearFeet} lf × $${CRACK_FILL_RATE_PER_LF}/lf = $${Math.round(crackFillingCost)}`);
+  }
+
+  if (drivewaySqFt && drivewaySqFt > 0) {
+    breakdown.push('');
+    breakdown.push(`Driveway area: ${drivewaySqFt} sq ft (optional)`);
+    breakdown.push(`Sealer coverage: 1 pail (5-gal) ≈ ${SEALER_PAIL_COVERAGE_LOW}-${SEALER_PAIL_COVERAGE_HIGH} sq ft`);
+    breakdown.push(`Recommended sealer: ${recommendedPailsLow}-${recommendedPailsHigh} pails`);
+    breakdown.push(`Typical sealer cost: ~$${recommendedPailsLow * SEALER_COST_PER_PAIL_LOW}-$${recommendedPailsHigh * SEALER_COST_PER_PAIL_HIGH} (included in package pricing)`);
+  }
+
+  breakdown.push('');
+  breakdown.push(`Estimated total: $${subtotal}`);
+  breakdown.push('Note: This instant estimate uses mid-range pricing. Final price may vary based on condition, prep, and access.');
+
+  return {
+    laborHours,
+    setupCleanupHours,
+    totalHours,
+    laborCost,
+    paintGallons,
+    paintCost,
+    suppliesCost,
+    prepFee: 0,
+    travelFee: 0,
+    subtotal,
+    totalCost: subtotal,
+    breakdown,
+  };
+}
+
 // Calculate popcorn ceiling removal estimate ($5 per sq ft + additional services)
 export function calculatePopcornCeilingRemoval(sqFt: number, includeSkimCoat: boolean = false, includePainting: boolean = false, includeFeesAndSetup: boolean = true): EstimateBreakdown {
   const baseRatePerSqFt = 5; // $5 per square foot base rate

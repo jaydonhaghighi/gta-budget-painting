@@ -9,6 +9,7 @@ import {
   calculateFence,
   calculateMultipleBedrooms,
   calculateGarageDoor,
+  calculateDrivewaySealing,
   calculatePopcornCeilingRemoval,
   calculateBathroomVanityCabinet,
   calculateStairway,
@@ -124,6 +125,16 @@ const CalculatedServiceForm = ({
       case 'fence-painting':
         return data.linearFeet && data.height && data.finishType &&
                parseFloat(data.linearFeet) > 0 && parseFloat(data.height) > 0;
+
+      case 'driveway-sealing': {
+        const sizeValid = Boolean(data.drivewaySize);
+        if (!sizeValid) return false;
+        // If crack filling is selected, require a positive linear-feet value
+        if (data.includeCrackFilling) {
+          return data.crackFillingLinearFeet && parseFloat(data.crackFillingLinearFeet) > 0;
+        }
+        return true;
+      }
       
       case 'garage-door':
         return data.width && data.height && 
@@ -307,6 +318,19 @@ const CalculatedServiceForm = ({
               height: parseFloat(data.height),
               sides: (sides === 2 ? 2 : 1) as 1 | 2,
               includeStaining: includeStaining
+            });
+          }
+          break;
+
+        case 'driveway-sealing':
+          if (data.drivewaySize) {
+            newEstimate = calculateDrivewaySealing({
+              drivewaySize: data.drivewaySize,
+              drivewaySqFt: data.drivewaySqFt ? parseFloat(data.drivewaySqFt) : undefined,
+              crackFillingLinearFeet: data.includeCrackFilling ? (parseFloat(data.crackFillingLinearFeet) || 0) : 0,
+              includeOilStainPrimer: data.includeOilStainPrimer || false,
+              includeSecondCoat: data.includeSecondCoat || false,
+              includeHandEdging: data.includeHandEdging || false,
             });
           }
           break;
@@ -1180,6 +1204,114 @@ const CalculatedServiceForm = ({
     </div>
   );
 
+  const renderDrivewaySealingForm = () => (
+    <div className="form-group-container driveway-sealing-form">
+      <div className="form-header">
+        <h3>Driveway Sealing</h3>
+        <p>Select your driveway size and optional add-ons to receive an estimate</p>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="drivewaySize">Driveway Size *</label>
+        <select
+          id="drivewaySize"
+          value={formData.drivewaySize || ''}
+          onChange={(e) => updateFormData('drivewaySize', e.target.value)}
+          required
+        >
+          <option value="">Select size</option>
+          <option value="1-car">1-car driveway ($150-$200)</option>
+          <option value="2-car">2-car driveway ($220-$300)</option>
+          <option value="large">Large / double-wide ($300-$450+)</option>
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="drivewaySqFt">Driveway Area (sq ft) (optional)</label>
+        <input
+          type="number"
+          id="drivewaySqFt"
+          min="0"
+          step="1"
+          value={formData.drivewaySqFt || ''}
+          onChange={(e) => updateFormData('drivewaySqFt', e.target.value)}
+        />
+        <small>Used to estimate sealer quantity (not required)</small>
+      </div>
+
+      <h4 className="driveway-section-title">Add-Ons</h4>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeCrackFilling || false}
+            onChange={(e) => updateFormData('includeCrackFilling', e.target.checked)}
+          />
+          <span>Crack filling ($1-$3 per linear ft)</span>
+        </label>
+
+        {formData.includeCrackFilling && (
+          <div className="form-group" style={{ marginTop: '0.75rem', paddingLeft: '1.5rem', borderLeft: '3px solid var(--color-steel-blue)' }}>
+            <label htmlFor="crackFillingLinearFeet">Crack filling length (linear ft) *</label>
+            <input
+              type="number"
+              id="crackFillingLinearFeet"
+              min="0"
+              step="1"
+              value={formData.crackFillingLinearFeet || ''}
+              onChange={(e) => updateFormData('crackFillingLinearFeet', e.target.value)}
+              required
+            />
+          </div>
+        )}
+
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeOilStainPrimer || false}
+            onChange={(e) => updateFormData('includeOilStainPrimer', e.target.checked)}
+          />
+          <span>Oil stain primer (+$25-$50)</span>
+        </label>
+
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeSecondCoat || false}
+            onChange={(e) => updateFormData('includeSecondCoat', e.target.checked)}
+          />
+          <span>Second coat (+30-40%)</span>
+        </label>
+
+        <label className="checkbox-label">
+          <input
+            type="checkbox"
+            checked={formData.includeHandEdging || false}
+            onChange={(e) => updateFormData('includeHandEdging', e.target.checked)}
+          />
+          <span>Hand edging / brush finish (+$25-$50)</span>
+        </label>
+      </div>
+
+      <div className="info-box">
+        <strong>Sealer guidance:</strong>
+        <ul style={{ marginTop: '0.75rem', paddingLeft: '1.5rem', marginBottom: 0, fontWeight: '500' }}>
+          <li>1 pail (5-gal) covers about 250-300 sq ft</li>
+          <li>Costs about $40-$60 per pail</li>
+          <li>A 700 sq ft driveway typically needs 2-3 pails</li>
+        </ul>
+      </div>
+
+      <ImageUpload
+        images={images}
+        imagePreviews={imagePreviews}
+        onImagesChange={handleImagesChange}
+        maxImages={5}
+        required={false}
+      />
+    </div>
+  );
+
   const renderExteriorRailingsForm = () => (
     <div className="form-group-container">
       <h3>Exterior Railings & Porch</h3>
@@ -2023,6 +2155,8 @@ const CalculatedServiceForm = ({
         return renderStaircaseForm();
       case 'fence-painting':
         return renderFenceForm();
+      case 'driveway-sealing':
+        return renderDrivewaySealingForm();
       case 'exterior-railings':
         return renderExteriorRailingsForm();
       case 'stucco-ceiling-removal':

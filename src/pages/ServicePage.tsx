@@ -92,6 +92,8 @@ const ServicePage = () => {
         return 'Creating Seamless Home Flow';
       case 'fence-painting':
         return 'Protect and Beautify Your Fence';
+      case 'driveway-sealing':
+        return 'Protect Your Driveway & Boost Curb Appeal';
       case 'kitchen-cabinet-painting':
         return 'Transform Without Full Replacement';
       case 'garage-door':
@@ -139,6 +141,8 @@ const ServicePage = () => {
         return 'Hallway painting creates seamless transitions throughout your home and enhances the flow between rooms. Professionally painted hallways make narrow spaces feel more open and inviting, while carefully chosen colors brighten darker areas and create a welcoming atmosphere. Well-painted hallways improve your home\'s aesthetic continuity and protect high-traffic areas from scuff marks and daily wear. Our specialists understand how color, lighting, and finish work together to transform these connecting spaces. A beautifully painted hallway makes your entire home feel more cohesive, elegant, and spacious, improving the overall first impression for guests while increasing property value.';
       case 'fence-painting':
         return 'Protect your investment and boost curb appeal with professional fence painting that extends the life of your property\'s perimeter while dramatically improving its appearance. Well-maintained fences define your property boundaries, enhance your home\'s exterior aesthetic, and create privacy for your outdoor living spaces. Our exterior specialists use weather-resistant paints specifically formulated for outdoor use and proper preparation techniques to ensure your fence looks great and lasts for years, protecting it from UV damage, moisture, and rot. Professional fence painting prevents costly repairs and significantly extends your fence\'s lifespan. The right color and finish complement your home\'s exterior and increase your property\'s overall curb appeal and value.';
+      case 'driveway-sealing':
+        return 'Protect your asphalt driveway with professional driveway sealing in Toronto and the GTA. A fresh coat of sealer helps defend against water penetration, UV fading, salt damage, and everyday wear while giving your driveway a clean, dark finish that improves curb appeal. Our driveway sealing options can include crack filling, oil-stain primer, a second coat for extra durability, and hand edging or brush finishing for a sharper look. Get a fast, transparent estimate based on your driveway size and add-ons, and we’ll confirm the details on-site to ensure the right prep and long-lasting results.';
       case 'kitchen-cabinet-painting':
         return 'Give your kitchen a complete makeover without the cost of replacement, transforming dated cabinets into modern masterpieces that look like new. Professional kitchen cabinet painting is one of the most cost-effective ways to dramatically update your kitchen, saving you thousands compared to full cabinet replacement. Our experts transform your existing cabinets with premium finishes, durable paints, and expert techniques that ensure smooth, long-lasting results. Well-painted cabinets refresh your kitchen\'s appearance and protect them from wear, moisture, and grease buildup. The right paint color and finish completely change your kitchen\'s style and make small kitchens feel more spacious. Investing in professional cabinet painting significantly increases your home\'s value, as updated kitchens are among the top features homebuyers seek.';
       case 'garage-door':
@@ -182,6 +186,8 @@ const ServicePage = () => {
         return '/services/staircase/5db3f964bfa951122f3c9defc12d3bfb.jpg';
       case 'fence-painting':
         return '/services/fence/2d09e8bfd742f8617ccba90e8f9312e3.jpg';
+      case 'driveway-sealing':
+        return '/services/driveway/fcbd2477e0642e362a677a40addd7cf1.jpg';
       case 'kitchen-cabinet-painting':
         return '/services/kitchen-cabinets/1d5d1205901c93bfef8674023d3ed719.jpg';
       case 'garage-door':

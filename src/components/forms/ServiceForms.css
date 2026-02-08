@@ -2473,6 +2473,192 @@
   margin-bottom: 0 !important;
 }
 
+/* Driveway Sealing Form Styles */
+.driveway-sealing-form .form-group-container {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.driveway-sealing-form .form-header {
+  text-align: center;
+  padding-bottom: 1rem;
+}
+
+.driveway-sealing-form .form-header h3 {
+  color: var(--color-steel-blue);
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin: 0 0 0.5rem 0;
+}
+
+.driveway-sealing-form .form-header p {
+  color: var(--color-soft-charcoal);
+  font-size: 16px;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.driveway-sealing-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.driveway-sealing-form .form-group:not(.form-row .form-group) {
+  margin-bottom: 1rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.driveway-sealing-form .form-group label {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.driveway-sealing-form .form-group input,
+.driveway-sealing-form .form-group select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-calm-blue-gray);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: white;
+  color: var(--color-soft-charcoal);
+  width: 100%;
+}
+
+.driveway-sealing-form .form-group input:focus,
+.driveway-sealing-form .form-group select:focus {
+  outline: none;
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 0 0 3px rgba(44, 61, 75, 0.1);
+  transform: translateY(-1px);
+}
+
+.driveway-sealing-form .form-group small {
+  margin-top: 0.25rem;
+  color: var(--color-soft-charcoal);
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.driveway-sealing-form .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.driveway-sealing-form .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-soft-charcoal);
+  cursor: pointer;
+}
+
+.driveway-sealing-form .checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  transform: none;
+}
+
+.driveway-sealing-form .checkbox-label input[type="checkbox"]:focus {
+  box-shadow: 0 0 0 2px rgba(44, 61, 75, 0.1);
+}
+
+.driveway-sealing-form .driveway-section-title {
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.driveway-sealing-form .info-box {
+  max-width: 400px;
+  margin: 1.25rem auto 0 auto;
+}
+
+/* Driveway Sealing Form Mobile Responsive */
+@media (max-width: 768px) {
+  .driveway-sealing-form .form-group input,
+  .driveway-sealing-form .form-group select {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .driveway-sealing-form .form-group label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .driveway-sealing-form .form-group:not(.form-row .form-group),
+  .driveway-sealing-form .checkbox-group,
+  .driveway-sealing-form .info-box,
+  .driveway-sealing-form .driveway-section-title {
+    max-width: 400px;
+  }
+
+  .driveway-sealing-form .form-group:has(.upload-area) {
+    max-width: 400px !important;
+  }
+
+  .driveway-sealing-form .upload-area {
+    max-width: 400px;
+  }
+
+  .driveway-sealing-form .photo-gallery,
+  .driveway-sealing-form .photo-grid {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .driveway-sealing-form .form-group input,
+  .driveway-sealing-form .form-group select {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .driveway-sealing-form .form-group label {
+    font-size: 0.75rem;
+  }
+
+  .driveway-sealing-form .form-header h3 {
+    font-size: 18px;
+  }
+
+  .driveway-sealing-form .form-header p {
+    font-size: 13px;
+  }
+
+  .driveway-sealing-form .form-group:not(.form-row .form-group),
+  .driveway-sealing-form .checkbox-group,
+  .driveway-sealing-form .info-box,
+  .driveway-sealing-form .driveway-section-title {
+    max-width: 100%;
+  }
+}
+
 .garage-door-form .form-header {
   text-align: center;
   padding-bottom: 1rem;
