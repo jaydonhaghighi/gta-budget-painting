@@ -550,7 +550,8 @@
   left: 0;
   right: 0;
   z-index: 999; /* Below header (1001) */
-  background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+  /* Spring theme: fresh green → sky */
+  background: linear-gradient(135deg, #15803D 0%, #0EA5E9 100%);
   color: white;
   padding: 0.75rem 1rem;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
@@ -2806,8 +2807,9 @@
   right: -200px;
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, #ff3c6a, transparent 60%),
-    radial-gradient(circle, #3f61ff, transparent 60%);
+  /* Spring theme glow: mint + sky */
+  background: radial-gradient(circle, #34D399, transparent 60%),
+    radial-gradient(circle, #38BDF8, transparent 60%);
   filter: blur(140px);
   opacity: 0.2;
   z-index: 0;
@@ -2881,19 +2883,19 @@
 }
 
 .promotion-best-deal {
-  border: 3px solid #DC143C;
+  border: 3px solid #16A34A;
   background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
 }
 
 .promotion-best-deal .promotion-badge {
-  background: #DC143C;
+  background: #16A34A;
   color: #ffffff;
 }
 
 .promotion-best-deal .promotion-cta {
-  background: #DC143C;
+  background: #16A34A;
   color: #ffffff;
-  border: 1px solid #DC143C;
+  border: 1px solid #16A34A;
 }
 
 .promotion-badge {
@@ -2954,7 +2956,7 @@
 
 .promotion-savings {
   font-size: 0.85rem;
-  color: #ff3c6a;
+  color: #15803D;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -2997,16 +2999,16 @@
   border: 1px solid var(--color-steel-blue);
 }
 
-/* Promotions CTA: always use #DC143C (do not inherit generic .btn-primary colors/hover styles) */
+/* Promotions CTA: always use Spring green (do not inherit generic .btn-primary colors/hover styles) */
 .promotions-section .btn-primary.promotion-cta {
-  background: #DC143C;
-  border-color: #DC143C;
+  background: #16A34A;
+  border-color: #16A34A;
   color: var(--color-white);
 }
 
 .promotions-section .btn-primary.promotion-cta:hover:not(:disabled) {
-  background: #DC143C;
-  border-color: #DC143C;
+  background: #15803D;
+  border-color: #15803D;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
 }
@@ -3014,14 +3016,14 @@
 .promotions-section .btn-primary.promotion-cta:focus,
 .promotions-section .btn-primary.promotion-cta:focus-visible,
 .promotions-section .btn-primary.promotion-cta:active {
-  background: #DC143C;
-  border-color: #DC143C;
+  background: #15803D;
+  border-color: #15803D;
   color: var(--color-white);
 }
 
 .promotions-section .btn-primary.promotion-cta:disabled {
-  background: #DC143C;
-  border-color: #DC143C;
+  background: #16A34A;
+  border-color: #16A34A;
   opacity: 0.65;
   cursor: not-allowed;
   transform: none;

@@ -465,7 +465,6 @@ const CalculatedServiceForm = ({
             id="length"
             min="1"
             step="0.5"
-            placeholder="e.g. 12"
             value={formData.length || ''}
             onChange={(e) => updateFormData('length', e.target.value)}
             required
@@ -478,7 +477,6 @@ const CalculatedServiceForm = ({
             id="height"
             min="7"
             step="0.5"
-            placeholder="e.g. 9"
             value={formData.height || ''}
             onChange={(e) => updateFormData('height', e.target.value)}
             required
@@ -511,7 +509,6 @@ const CalculatedServiceForm = ({
             id="length"
             min="1"
             step="0.5"
-            placeholder="e.g. 12"
             value={formData.length || ''}
             onChange={(e) => updateFormData('length', e.target.value)}
             required
@@ -524,7 +521,6 @@ const CalculatedServiceForm = ({
             id="width"
             min="1"
             step="0.5"
-            placeholder="e.g. 10"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -557,7 +553,6 @@ const CalculatedServiceForm = ({
             id="length"
             min="1"
             step="0.5"
-            placeholder="e.g. 12"
             value={formData.length || ''}
             onChange={(e) => updateFormData('length', e.target.value)}
             required
@@ -570,7 +565,6 @@ const CalculatedServiceForm = ({
             id="width"
             min="1"
             step="0.5"
-            placeholder="e.g. 10"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -586,7 +580,6 @@ const CalculatedServiceForm = ({
             id="height"
             min="7"
             step="0.5"
-            placeholder="e.g. 9"
             value={formData.height || ''}
             onChange={(e) => updateFormData('height', e.target.value)}
             required
@@ -598,7 +591,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="doors"
             min="0"
-            placeholder="0"
             value={formData.doors || ''}
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
@@ -612,7 +604,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="windows"
             min="0"
-            placeholder="0"
             value={formData.windows || ''}
             onChange={(e) => updateFormData('windows', e.target.value)}
           />
@@ -665,7 +656,6 @@ const CalculatedServiceForm = ({
             id="linearFeet"
             min="1"
             step="0.5"
-            placeholder="e.g. 40"
             value={formData.linearFeet || ''}
             onChange={(e) => updateFormData('linearFeet', e.target.value)}
             required
@@ -709,7 +699,6 @@ const CalculatedServiceForm = ({
             id="length"
             min="1"
             step="0.5"
-            placeholder="e.g. 25"
             value={formData.length || ''}
             onChange={(e) => updateFormData('length', e.target.value)}
             required
@@ -723,7 +712,6 @@ const CalculatedServiceForm = ({
             id="width"
             min="1"
             step="0.5"
-            placeholder="e.g. 20"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -738,7 +726,6 @@ const CalculatedServiceForm = ({
           id="height"
           min="1"
           step="0.5"
-          placeholder="e.g. 7.5"
           value={formData.height || ''}
           onChange={(e) => updateFormData('height', e.target.value)}
           required
@@ -774,7 +761,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="doors"
             min="0"
-            placeholder="0"
             value={formData.doors || ''}
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
@@ -786,7 +772,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="windows"
             min="0"
-            placeholder="0"
             value={formData.windows || ''}
             onChange={(e) => updateFormData('windows', e.target.value)}
           />
@@ -897,7 +882,6 @@ const CalculatedServiceForm = ({
                   id={`bedroom-${bedroom.id}-length`}
                   min="1"
                   step="0.5"
-                  placeholder="12"
                   value={bedroom.length}
                   onChange={(e) => updateBedroom(bedroom.id, 'length', e.target.value)}
                   required
@@ -910,7 +894,6 @@ const CalculatedServiceForm = ({
                   id={`bedroom-${bedroom.id}-width`}
                   min="1"
                   step="0.5"
-                  placeholder="10"
                   value={bedroom.width}
                   onChange={(e) => updateBedroom(bedroom.id, 'width', e.target.value)}
                   required
@@ -926,7 +909,6 @@ const CalculatedServiceForm = ({
                   id={`bedroom-${bedroom.id}-height`}
                   min="1"
                   step="0.5"
-                  placeholder="8"
                   value={bedroom.height}
                   onChange={(e) => updateBedroom(bedroom.id, 'height', e.target.value)}
                   required
@@ -970,7 +952,6 @@ const CalculatedServiceForm = ({
                   type="number"
                   id={`bedroom-${bedroom.id}-doors`}
                   min="0"
-                  placeholder="1"
                   value={bedroom.doors}
                   onChange={(e) => updateBedroom(bedroom.id, 'doors', e.target.value)}
                 />
@@ -981,7 +962,6 @@ const CalculatedServiceForm = ({
                   type="number"
                   id={`bedroom-${bedroom.id}-windows`}
                   min="0"
-                  placeholder="1"
                   value={bedroom.windows}
                   onChange={(e) => updateBedroom(bedroom.id, 'windows', e.target.value)}
                 />
@@ -1024,7 +1004,6 @@ const CalculatedServiceForm = ({
             id="length"
             min="1"
             step="0.5"
-            placeholder="e.g. 12"
             value={formData.length || ''}
             onChange={(e) => updateFormData('length', e.target.value)}
             required
@@ -1037,7 +1016,6 @@ const CalculatedServiceForm = ({
             id="width"
             min="1"
             step="0.5"
-            placeholder="e.g. 10"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -1053,7 +1031,6 @@ const CalculatedServiceForm = ({
             id="height"
             min="1"
             step="0.5"
-            placeholder="e.g. 8"
             value={formData.height || ''}
             onChange={(e) => updateFormData('height', e.target.value)}
             required
@@ -1081,7 +1058,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="doors"
             min="0"
-            placeholder="0"
             value={formData.doors || ''}
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
@@ -1092,7 +1068,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="windows"
             min="0"
-            placeholder="0"
             value={formData.windows || ''}
             onChange={(e) => updateFormData('windows', e.target.value)}
           />
@@ -1125,7 +1100,6 @@ const CalculatedServiceForm = ({
             id="linearFeet"
             min="1"
             step="0.5"
-            placeholder="e.g. 50"
             value={formData.linearFeet || ''}
             onChange={(e) => updateFormData('linearFeet', e.target.value)}
             required
@@ -1139,7 +1113,6 @@ const CalculatedServiceForm = ({
             id="height"
             min="1"
             step="0.5"
-            placeholder="e.g. 6"
             value={formData.height || ''}
             onChange={(e) => updateFormData('height', e.target.value)}
             required
@@ -1219,7 +1192,6 @@ const CalculatedServiceForm = ({
           id="railingsLength"
           min="1"
           step="0.5"
-          placeholder="e.g. 30"
           value={formData.railingsLength || ''}
           onChange={(e) => updateFormData('railingsLength', e.target.value)}
           required
@@ -1247,7 +1219,6 @@ const CalculatedServiceForm = ({
             id="porchArea"
             min="0"
             step="1"
-            placeholder="e.g. 100"
             value={formData.porchArea || ''}
             onChange={(e) => updateFormData('porchArea', e.target.value)}
             required
@@ -1297,7 +1268,6 @@ const CalculatedServiceForm = ({
           id="wallArea"
           min="0"
           step="1"
-          placeholder="e.g. 150"
           value={formData.wallArea || ''}
           onChange={(e) => updateFormData('wallArea', e.target.value)}
         />
@@ -1311,7 +1281,6 @@ const CalculatedServiceForm = ({
           id="ceilingArea"
           min="0"
           step="1"
-          placeholder="e.g. 80"
           value={formData.ceilingArea || ''}
           onChange={(e) => updateFormData('ceilingArea', e.target.value)}
         />
@@ -1338,7 +1307,6 @@ const CalculatedServiceForm = ({
             id="railingsLength"
             min="0"
             step="0.5"
-            placeholder="e.g. 20"
             value={formData.railingsLength || ''}
             onChange={(e) => updateFormData('railingsLength', e.target.value)}
             required
@@ -1392,7 +1360,6 @@ const CalculatedServiceForm = ({
             min="6"
             max="20"
             step="0.5"
-            placeholder="e.g., 16"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -1407,7 +1374,6 @@ const CalculatedServiceForm = ({
             min="6"
             max="8"
             step="0.5"
-            placeholder="e.g., 7"
             value={formData.height || ''}
             onChange={(e) => updateFormData('height', e.target.value)}
             required
@@ -1423,7 +1389,6 @@ const CalculatedServiceForm = ({
             id="doors"
             min="1"
             max="4"
-            placeholder="e.g., 2"
             value={formData.doors || ''}
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
@@ -1497,7 +1462,6 @@ const CalculatedServiceForm = ({
             id="length"
             min="1"
             step="0.5"
-            placeholder="e.g. 12"
             value={formData.length || ''}
             onChange={(e) => updateFormData('length', e.target.value)}
             required
@@ -1510,7 +1474,6 @@ const CalculatedServiceForm = ({
             id="width"
             min="1"
             step="0.5"
-            placeholder="e.g. 10"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -1565,7 +1528,6 @@ const CalculatedServiceForm = ({
             id="width"
             min="1"
             step="0.5"
-            placeholder="e.g. 30"
             value={formData.width || ''}
             onChange={(e) => updateFormData('width', e.target.value)}
             required
@@ -1578,7 +1540,6 @@ const CalculatedServiceForm = ({
             id="height"
             min="1"
             step="0.5"
-            placeholder="e.g. 34"
             value={formData.height || ''}
             onChange={(e) => updateFormData('height', e.target.value)}
             required
@@ -1591,7 +1552,6 @@ const CalculatedServiceForm = ({
             id="depth"
             min="1"
             step="0.5"
-            placeholder="e.g. 21"
             value={formData.depth || ''}
             onChange={(e) => updateFormData('depth', e.target.value)}
             required
@@ -1606,7 +1566,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="doors"
             min="0"
-            placeholder="0"
             value={formData.doors || ''}
             onChange={(e) => updateFormData('doors', e.target.value)}
           />
@@ -1617,7 +1576,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="drawers"
             min="0"
-            placeholder="0"
             value={formData.drawers || ''}
             onChange={(e) => updateFormData('drawers', e.target.value)}
           />
@@ -1663,7 +1621,6 @@ const CalculatedServiceForm = ({
             id="stairLength"
             min="1"
             step="0.5"
-            placeholder="e.g. 15"
             value={formData.stairLength || ''}
             onChange={(e) => updateFormData('stairLength', e.target.value)}
             required
@@ -1676,7 +1633,6 @@ const CalculatedServiceForm = ({
             id="stairHeight"
             min="7"
             step="0.5"
-            placeholder="e.g. 9"
             value={formData.stairHeight || ''}
             onChange={(e) => updateFormData('stairHeight', e.target.value)}
             required
@@ -1688,7 +1644,6 @@ const CalculatedServiceForm = ({
             type="number"
             id="numberOfStairs"
             min="0"
-            placeholder="e.g. 12"
             value={formData.numberOfStairs || ''}
             onChange={(e) => updateFormData('numberOfStairs', e.target.value)}
           />
@@ -1733,7 +1688,6 @@ const CalculatedServiceForm = ({
                 id="ceilingLength"
                 min="1"
                 step="0.5"
-                placeholder="e.g. 15"
                 value={formData.ceilingLength || ''}
                 onChange={(e) => updateFormData('ceilingLength', e.target.value)}
                 required
@@ -1746,7 +1700,6 @@ const CalculatedServiceForm = ({
                 id="ceilingWidth"
                 min="1"
                 step="0.5"
-                placeholder="e.g. 3.5"
                 value={formData.ceilingWidth || ''}
                 onChange={(e) => updateFormData('ceilingWidth', e.target.value)}
                 required
@@ -1781,7 +1734,6 @@ const CalculatedServiceForm = ({
             id="hallwayLength"
             min="1"
             step="0.5"
-            placeholder="e.g. 20"
             value={formData.hallwayLength || ''}
             onChange={(e) => updateFormData('hallwayLength', e.target.value)}
             required
@@ -1794,7 +1746,6 @@ const CalculatedServiceForm = ({
             id="hallwayHeight"
             min="7"
             step="0.5"
-            placeholder="e.g. 8"
             value={formData.hallwayHeight || ''}
             onChange={(e) => updateFormData('hallwayHeight', e.target.value)}
             required
@@ -1807,7 +1758,6 @@ const CalculatedServiceForm = ({
             id="hallwayWidth"
             min="1"
             step="0.5"
-            placeholder="e.g. 4"
             value={formData.hallwayWidth || ''}
             onChange={(e) => updateFormData('hallwayWidth', e.target.value)}
             required
@@ -1933,7 +1883,6 @@ const CalculatedServiceForm = ({
             id="wallArea"
             min="0"
             step="1"
-            placeholder="e.g. 150"
             value={calculatedArea ? calculatedArea.toFixed(0) : (formData.wallArea || '')}
             onChange={(e) => {
               const value = e.target.value;
@@ -1963,7 +1912,6 @@ const CalculatedServiceForm = ({
               id="roomLength"
               min="1"
               step="0.5"
-              placeholder="e.g. 12"
               value={formData.roomLength || ''}
               onChange={(e) => handleDimensionChange('roomLength', e.target.value)}
             />
@@ -1975,7 +1923,6 @@ const CalculatedServiceForm = ({
               id="roomWidth"
               min="1"
               step="0.5"
-              placeholder="e.g. 10"
               value={formData.roomWidth || ''}
               onChange={(e) => handleDimensionChange('roomWidth', e.target.value)}
             />
@@ -1987,8 +1934,7 @@ const CalculatedServiceForm = ({
               id="roomHeight"
               min="7"
               step="0.5"
-              placeholder="9"
-              value={formData.roomHeight || '9'}
+              value={formData.roomHeight || ''}
               onChange={(e) => handleDimensionChange('roomHeight', e.target.value)}
             />
           </div>

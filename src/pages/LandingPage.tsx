@@ -378,7 +378,7 @@ const LandingPage = () => {
             style={{ cursor: 'pointer' }}
           >
             {/* <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" /> */}
-            Limited Time Deal! <span className="deal-bubble">15% off $1000+ painting jobs - Ends January 15th!</span>
+            Limited Time Deal! <span className="deal-bubble">15% off $1000+ painting jobs</span>
           </span>
           <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
         </div>
@@ -412,9 +412,9 @@ const LandingPage = () => {
         <div className="container">
           <div className="promotions-content">
             <div className="promotions-heading">
-              <h2>Winter Holiday Specials</h2>
+              <h2>Spring Specials</h2>
               <p className="promotions-subtitle">
-                Wow your guests this winter! All promotions end January 31st. Lock in your painting deal and get your home party-ready!
+                Freshen up your home this spring with limited-time bundles. Lock in your painting deal and get your space looking bright and new.
               </p>
             </div>
             <div className="promotions-grid">
