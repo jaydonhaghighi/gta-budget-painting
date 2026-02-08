@@ -1297,8 +1297,8 @@ const CalculatedServiceForm = ({
         <strong>Sealer guidance:</strong>
         <ul style={{ marginTop: '0.75rem', paddingLeft: '1.5rem', marginBottom: 0, fontWeight: '500' }}>
           <li>1 pail (5-gal) covers about 250-300 sq ft</li>
-          <li>Costs about $40-$60 per pail</li>
-          <li>A 700 sq ft driveway typically needs 2-3 pails</li>
+          <li>Material quantity is calculated automatically based on your driveway size</li>
+          <li>All pricing includes professional-grade sealer and application</li>
         </ul>
       </div>
 
