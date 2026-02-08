@@ -19,7 +19,7 @@ const LocationPage = () => {
   const fastFacts = [
     {
       label: 'Fast turnaround',
-      value: '1–2 days',
+      value: '1-2 days',
       detail: 'Perfect for a quick freshen up before holidays',
     },
     {
