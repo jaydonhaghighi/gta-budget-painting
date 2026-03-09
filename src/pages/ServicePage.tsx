@@ -169,21 +169,21 @@ const ServicePage = () => {
   const getServiceDescriptionImage = (serviceId: string) => {
     switch (serviceId) {
       case 'accent-wall':
-        return '/services/accent-wall/0e12ab43ba833f8eb4a8e8f6919cc4d3.jpg';
+        return '/services/accent-wall/accent-wall.jpeg';
       case 'ceiling':
-        return '/services/ceiling/d9b8cceca38623dd777f98c279a07ff7.jpg';
+        return '/services/ceiling/ceiling.jpeg';
       case 'small-bathroom':
-        return '/services/bathroom/2031918adaa8a45c68f9dcaf26a85e54.jpg';
+        return '/services/bathroom/bathroom.jpeg';
       case 'basement-painting':
         return '/services/basement/ede4060fc66d608019efd65027cfa170.jpg';
       case 'kitchen-walls':
-        return '/services/kitchen-walls/18e71280752e388d198b783ef57e1a1a.jpg';
+        return '/services/kitchen-walls/kitchen-walls.jpg';
       case 'trimming-baseboards':
-        return '/services/trimming/2169f21924b68c9e2503f9c2788d794d.jpg';
+        return '/services/trimming/baseboards.jpeg';
       case 'bedroom-painting':
         return '/services/bedroom/5d4fb4cdf08b0ec987e44298b53c5a41.jpg';
       case 'staircase-painting':
-        return '/services/staircase/5db3f964bfa951122f3c9defc12d3bfb.jpg';
+        return '/services/staircase/staircase3.jpeg';
       case 'fence-painting':
         return '/services/fence/2d09e8bfd742f8617ccba90e8f9312e3.jpg';
       case 'driveway-sealing':
@@ -191,19 +191,19 @@ const ServicePage = () => {
       case 'kitchen-cabinet-painting':
         return '/services/kitchen-cabinets/1d5d1205901c93bfef8674023d3ed719.jpg';
       case 'garage-door':
-        return '/services/garage/51af29468889910e0ff032eb12e29d79.jpg';
+        return '/services/garage/garage.jpeg';
       case 'exterior-railings':
         return '/services/railings/7e0e0eca999d1b8d42b34d1d4d3b5acb.jpg';
       case 'stucco-ceiling-removal':
-        return '/services/stucco-ceiling-removal/8039a71027ffccfbcfac6eab26f3167c.jpg';
+        return '/services/stucco-ceiling-removal/ceiling-removal.jpeg';
       case 'interior-door':
         return '/services/interior-door/663b0736b9625a124d64f7f2338b3b9b.jpg';
       case 'front-door':
-        return '/services/front-door/1ce69539f7e825bbfe8c82868b607f34.jpg';
+        return '/services/front-door/front-door.jpeg';
       case 'bathroom-vanity-cabinet':
-        return '/services/bathroom-vanity/3daac1d98424946cbc1dbff549cdd7b7.jpg';
+        return '/services/bathroom-vanity/bathroom-vanity.jpeg';
       case 'stairway-painting':
-        return '/services/staircase/8739f61c8295c4f8c61e7b1ff8693b0e.jpg';
+        return '/services/staircase/staircase3.jpeg';
       case 'hallway-painting':
         return '/services/hallway/3bfc0c21ce1ec2d983082d489b272075.jpg';
       case 'drywall-repair':
