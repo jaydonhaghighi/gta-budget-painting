@@ -181,7 +181,7 @@ const ServicePage = () => {
       case 'trimming-baseboards':
         return '/services/trimming/baseboards.jpeg';
       case 'bedroom-painting':
-        return '/services/bedroom/5d4fb4cdf08b0ec987e44298b53c5a41.jpg';
+        return '/services/bedroom/bedroom.jpeg';
       case 'staircase-painting':
         return '/services/staircase/staircase3.jpeg';
       case 'fence-painting':
@@ -197,7 +197,7 @@ const ServicePage = () => {
       case 'stucco-ceiling-removal':
         return '/services/stucco-ceiling-removal/ceiling-removal.jpeg';
       case 'interior-door':
-        return '/services/interior-door/663b0736b9625a124d64f7f2338b3b9b.jpg';
+        return '/services/interior-door/interior-door.jpeg';
       case 'front-door':
         return '/services/front-door/front-door.jpeg';
       case 'bathroom-vanity-cabinet':
@@ -205,7 +205,7 @@ const ServicePage = () => {
       case 'stairway-painting':
         return '/services/staircase/staircase3.jpeg';
       case 'hallway-painting':
-        return '/services/hallway/3bfc0c21ce1ec2d983082d489b272075.jpg';
+        return '/services/hallway/hallway.jpeg';
       case 'drywall-repair':
         return '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.png';
       case 'custom-project':
