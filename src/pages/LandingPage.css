@@ -684,13 +684,13 @@
 .hero-services-btn {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   text-decoration: none;
   color: var(--color-steel-blue);
   background: whitesmoke;
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.6rem 1.2rem;
+  font-size: 1.1rem;
+  padding: 0.85rem 1.7rem;
   border-radius: 8px;
   border: 2px solid var(--color-bone);
   cursor: pointer;
@@ -698,8 +698,8 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
   flex-shrink: 0;
-  min-width: 180px;
-  height: 48px;
+  min-width: 250px;
+  height: 60px;
   justify-content: center;
 }
 
@@ -711,39 +711,9 @@
 
 }
 
-.hero-specials-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  color: var(--color-white);
-  background: #16A34A;
-  font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  border: 2px solid #16A34A;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  white-space: nowrap;
-  flex-shrink: 0;
-  min-width: 180px;
-  height: 48px;
-  justify-content: center;
-}
-
-.hero-specials-btn:hover {
-  background: #15803D;
-  border-color: #15803D;
-  color: var(--color-white);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .hero-services-icon {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   filter: brightness(0) saturate(100%) invert(20%) sepia(8%) saturate(2000%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
@@ -1970,15 +1940,13 @@
     width: 100% !important;
   }
   
-  .hero-contact-link,
-  .hero-services-btn,
-  .hero-specials-btn {
-    padding: 0.5rem 0.8rem !important;
-    font-size: 0.75rem !important;
-    min-width: 140px !important;
-    height: 36px !important;
+  .hero-services-btn {
+    padding: 0.65rem 1rem !important;
+    font-size: 0.9rem !important;
+    min-width: 190px !important;
+    height: 46px !important;
     width: 100% !important;
-    max-width: 200px !important;
+    max-width: 240px !important;
   }
   
   .hero-contact-text {
@@ -2058,13 +2026,11 @@
     justify-content: center;
   }
 
-  .hero-contact-link,
-  .hero-services-btn,
-  .hero-specials-btn {
-    font-size: 0.85rem;
-    padding: 0.5rem 0.75rem;
-    min-width: 160px;
-    height: 44px;
+  .hero-services-btn {
+    font-size: 0.95rem;
+    padding: 0.65rem 1rem;
+    min-width: 200px;
+    height: 48px;
   }
 
   /* Company Section Mobile */

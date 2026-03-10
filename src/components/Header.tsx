@@ -123,6 +123,11 @@ const Header = () => {
     // If not on landing page, Link will handle navigation
   }
 
+  const handleOpenCart = () => {
+    setIsCartOpen(true)
+    setIsMobileMenuOpen(false)
+  }
+
   return (
     <>
       {/* Header */}
@@ -171,6 +176,15 @@ const Header = () => {
             Call (647) 390-7181
           </a>
 
+          <button
+            type="button"
+            className="cart-header-btn"
+            onClick={handleOpenCart}
+            aria-label="Open Cart"
+          >
+            <CartIcon count={cart.items.length} />
+          </button>
+
             {/* Mobile Menu Button */}
             <button 
               className="mobile-menu-btn"
@@ -206,27 +220,19 @@ const Header = () => {
                   <Link to="/services/custom-painting" className="mobile-dropdown-link" onClick={() => setIsMobileMenuOpen(false)}>Custom Project</Link>
                 </div>
               </div>
-              
+
               <Link to="/specials" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Specials</Link>
               <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
               <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
               <Link to="/about-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
               <Link to="/contact-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Contact Us</Link>
+              <button type="button" className="cart-mobile-btn" onClick={handleOpenCart}>
+                <CartIcon count={cart.items.length} />
+                <span>Cart</span>
+              </button>
             </div>
           </nav>
         </header>
-
-      {/* Floating Cart Button */}
-      <button 
-        className="floating-cart-btn" 
-        onClick={() => {
-          setIsCartOpen(true);
-          setIsMobileMenuOpen(false);
-        }}
-        aria-label="Open Cart"
-      >
-        <CartIcon count={cart.items.length} />
-      </button>
 
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>

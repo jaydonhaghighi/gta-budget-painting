@@ -430,16 +430,10 @@ const LandingPage = () => {
         <div className="container">
           <h1>Do You Need Affordable Painters In The GTA?</h1>
           <h1>We Offer The Following Services</h1>
-          <p className="hero-subtitle">We specialize in quick turnaround times and great results for homeowners on a budget. Get free instant quotes now.</p>
+          <p className="hero-subtitle">We keep overhead low so you get fair pricing and quality results without the runaround. Jobs start at just $250, with straightforward quotes, no hassle, and zero sales pitch.</p>
           
           {/* Contact Info */}
           <div className="hero-contact">
-            <button
-              className="hero-specials-btn"
-              onClick={() => navigate('/specials')}
-            >
-              Specials
-            </button>
             <button 
               className="hero-services-btn"
               onClick={() => navigate('/services')}

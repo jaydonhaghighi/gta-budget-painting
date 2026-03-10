@@ -116,10 +116,33 @@
 
 /* Cart in header */
 .cart-header-btn {
-  background: transparent;
-  border: none;
+  width: 46px;
+  height: 46px;
+  background: var(--color-steel-blue);
+  border: 1px solid transparent;
+  border-radius: 10px;
   cursor: pointer;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(44, 61, 75, 0.2);
+  transition: all 0.2s ease;
+}
+
+.cart-header-btn:hover {
+  transform: translateY(-1px);
+  background: var(--color-soft-charcoal);
+}
+
+.cart-header-btn .cart-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.cart-header-btn .cart-icon-bag img {
+  width: 20px;
+  height: 20px;
 }
 
 /* Floating Cart Button */
@@ -288,6 +311,11 @@ body.sticky-bar-present .floating-cart-btn {
   width: 100%;
   justify-content: flex-start;
   margin-top: 0.5rem;
+}
+
+.cart-mobile-btn .cart-icon {
+  width: 22px;
+  height: 22px;
 }
 
 .cart-mobile-btn .cart-icon-bag img {
@@ -813,6 +841,10 @@ body.sticky-bar-present .floating-cart-btn {
 
 @media (max-width: 985px) {
   .desktop-nav {
+    display: none;
+  }
+
+  .cart-header-btn {
     display: none;
   }
   
