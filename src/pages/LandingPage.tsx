@@ -5,13 +5,10 @@ import './LandingPage.css';
 import '../pages/ContactUsPage.css';
 import { db } from '../firebase';
 import { addDoc, collection, Timestamp } from 'firebase/firestore';
-import { useCart } from '../context/CartContext';
-import { PROMOTIONS, withPromotionDerived } from '../data/promotions';
-import { buildPromotionEstimate } from '../utils/promotionEstimate';
+import { allServices, type Service } from '../data/services';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const { addItem } = useCart();
   const [showPromoBanner, setShowPromoBanner] = useState(false);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [isHowItWorksExpanded, setIsHowItWorksExpanded] = useState(false);
@@ -31,6 +28,8 @@ const LandingPage = () => {
 
   // Reviews carousel state
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+  const [currentServiceSlide, setCurrentServiceSlide] = useState(0);
+  const [servicesPerView, setServicesPerView] = useState(3);
 
   // Real customer reviews from GTA Home Painting (ordered from earliest to latest)
   const reviews = [
@@ -90,38 +89,17 @@ const LandingPage = () => {
     }
   ];
 
-  const promotions = PROMOTIONS.map(withPromotionDerived);
-
-  const handleAddPromotionToCart = (promotionId: string) => {
-    const promotion = promotions.find(p => p.id === promotionId);
-    if (!promotion) return;
-
-    const estimate = buildPromotionEstimate(promotion.price);
-
-    const cartItem = {
-      serviceId: promotionId,
-      serviceName: promotion.name,
-      serviceType: 'flat-rate' as const,
-      estimate: estimate,
-      formData: {
-        promotionId,
-        promotionName: promotion.name,
-        promotionSubtitle: promotion.subtitle,
-        originalPrice: promotion.originalPrice,
-        savings: promotion.savings,
-        percentage: promotion.percentage,
-        price: promotion.price,
-      },
-    };
-
-    addItem(cartItem);
-    navigate('/cart');
-  };
-
   const isInquiryValid =
     inqName.trim().length > 0 &&
     inqMessage.trim().length > 0 &&
     (inqEmail.trim().length > 0 || inqPhone.trim().length > 0);
+
+  const servicesForCarousel = allServices.filter((service) => service.id !== 'custom-project');
+  const maxServiceSlide = Math.max(0, servicesForCarousel.length - servicesPerView);
+  const visibleServices = servicesForCarousel.slice(
+    currentServiceSlide,
+    currentServiceSlide + servicesPerView
+  );
 
   const handleQuickInquirySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -222,7 +200,7 @@ const LandingPage = () => {
       navigate('/about-us');
       return;
     }
-    if (hash === '#promotions-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
+    if (hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
       setTimeout(() => {
         scrollToSection(hash);
       }, 100);
@@ -237,7 +215,7 @@ const LandingPage = () => {
         navigate('/about-us');
         return;
       }
-      if (hash === '#promotions-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
+      if (hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
         setTimeout(() => {
           scrollToSection(hash);
         }, 100);
@@ -326,6 +304,41 @@ const LandingPage = () => {
     };
   }, [bannerDismissed]);
 
+  // Responsive service carousel sizing
+  useEffect(() => {
+    const updateServicesPerView = () => {
+      if (window.innerWidth <= 768) {
+        setServicesPerView(1);
+      } else if (window.innerWidth <= 1200) {
+        setServicesPerView(2);
+      } else {
+        setServicesPerView(3);
+      }
+    };
+
+    updateServicesPerView();
+    window.addEventListener('resize', updateServicesPerView);
+    return () => window.removeEventListener('resize', updateServicesPerView);
+  }, []);
+
+  // Keep current slide in bounds when viewport changes
+  useEffect(() => {
+    setCurrentServiceSlide((prevSlide) => Math.min(prevSlide, maxServiceSlide));
+  }, [maxServiceSlide]);
+
+  // Auto-rotate services carousel
+  useEffect(() => {
+    if (servicesForCarousel.length <= servicesPerView) return;
+
+    const interval = setInterval(() => {
+      setCurrentServiceSlide((prevSlide) =>
+        prevSlide >= maxServiceSlide ? 0 : prevSlide + 1
+      );
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, [maxServiceSlide, servicesForCarousel.length, servicesPerView]);
+
 
   // Auto-rotate reviews every 5 seconds
   useEffect(() => {
@@ -342,6 +355,34 @@ const LandingPage = () => {
     e.stopPropagation();
     setBannerDismissed(true);
     setShowPromoBanner(false);
+  };
+
+  const getServiceRoute = (service: Service) => {
+    if (service.category === 'exterior') {
+      return `/services/exterior-painting/${service.id}`;
+    }
+    if (service.category === 'specialty') {
+      return '/services/custom-painting';
+    }
+    return `/services/interior-painting/${service.id}`;
+  };
+
+  const getShortDescription = (description?: string) => {
+    if (!description) return 'Professional painting with clean prep, quality finish, and fast turnaround.';
+    if (description.length <= 120) return description;
+    return `${description.slice(0, 117)}...`;
+  };
+
+  const handleServicePrev = () => {
+    setCurrentServiceSlide((prevSlide) =>
+      prevSlide <= 0 ? maxServiceSlide : prevSlide - 1
+    );
+  };
+
+  const handleServiceNext = () => {
+    setCurrentServiceSlide((prevSlide) =>
+      prevSlide >= maxServiceSlide ? 0 : prevSlide + 1
+    );
   };
 
   // Helper function to render star rating
@@ -374,7 +415,7 @@ const LandingPage = () => {
         <div className="promo-banner-content">
           <span 
             className="promo-banner-text"
-            onClick={() => scrollToSection('#promotions-section')}
+            onClick={() => navigate('/specials')}
             style={{ cursor: 'pointer' }}
           >
             {/* <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" /> */}
@@ -394,9 +435,8 @@ const LandingPage = () => {
           {/* Contact Info */}
           <div className="hero-contact">
             <button
-              className="hero-services-btn"
-              onClick={() => scrollToSection('#promotions-section')}
-              aria-label="View Spring Specials"
+              className="hero-specials-btn"
+              onClick={() => navigate('/specials')}
             >
               Specials
             </button>
@@ -411,45 +451,130 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Promotions Section */}
-      <section id="promotions-section" className="promotions-section">
+      {/* Services Carousel Section */}
+      <section className="services-preview-section">
         <div className="container">
-          <div className="promotions-content">
-            <div className="promotions-heading">
-              <h2>Spring Specials</h2>
-              <p className="promotions-subtitle">
-                Freshen up your home this spring with limited-time bundles. Lock in your painting deal and get your space looking bright and new.
-              </p>
-            </div>
-            <div className="promotions-grid">
-              {promotions.map((promotion, index) => (
-                <div 
-                  key={promotion.id} 
-                  className={`promotion-card ${index === 0 ? 'promotion-featured promotion-best-deal' : ''}`}
-                >
-                  {index === 0 && (
-                    <div className="promotion-badge">Best Deal</div>
-                  )}
-                  <h3>{promotion.name}</h3>
-                  <p className="promotion-subtitle">{promotion.subtitle}</p>
-                  <div className="promotion-pricing">
-                    <span className="promotion-price">${promotion.price.toLocaleString()} CAD</span>
-                    <span className="promotion-original">Regular ${promotion.originalPrice.toLocaleString()} CAD</span>
-                    <span className="promotion-savings">Save ${promotion.savings.toLocaleString()} ({promotion.percentage}% off)</span>
-                  </div>
-                  <ul className="promotion-features">
-                    {promotion.features.map((feature, idx) => (
-                      <li key={idx}>{feature}</li>
-                    ))}
-                  </ul>
-                  <button 
-                    onClick={() => handleAddPromotionToCart(promotion.id)}
-                    className="btn-primary promotion-cta"
+          <h2 className="services-preview-title">Explore Our Services</h2>
+          <p className="services-preview-subtitle">
+            Browse popular interior and exterior painting services and jump straight into booking.
+          </p>
+
+          <div className="services-carousel">
+            <button
+              type="button"
+              className="services-carousel-nav"
+              onClick={handleServicePrev}
+              aria-label="Previous services"
+            >
+              ‹
+            </button>
+
+            <div className="services-preview-grid">
+              {visibleServices.map((service) => (
+                <article key={service.id} className="service-preview-card">
+                  <div
+                    className="service-preview-image"
+                    style={{ backgroundImage: `url(${service.backgroundImage ?? '/logo.png'})` }}
+                    aria-hidden="true"
+                  />
+                  <h3>{service.name}</h3>
+                  <p>{getShortDescription(service.description)}</p>
+                  <button
+                    type="button"
+                    className="service-preview-btn"
+                    onClick={() => navigate(getServiceRoute(service))}
                   >
-                    Add to Cart
+                    View Service
                   </button>
-                </div>
+                </article>
               ))}
+            </div>
+
+            <button
+              type="button"
+              className="services-carousel-nav"
+              onClick={handleServiceNext}
+              aria-label="Next services"
+            >
+              ›
+            </button>
+          </div>
+
+          {maxServiceSlide > 0 && (
+            <div className="services-carousel-dots" aria-label="Services carousel navigation">
+              {Array.from({ length: maxServiceSlide + 1 }).map((_, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className={`service-carousel-dot ${index === currentServiceSlide ? 'active' : ''}`}
+                  onClick={() => setCurrentServiceSlide(index)}
+                  aria-label={`Go to services slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Quick Inquiry Section */}
+      <section id="inquiry-section" className="inquiry-section">
+        <div className="container">
+          <div className="inquiry-content">
+            <div className="inquiry-text">
+              <div className="inquiry-form-content">
+                <h2>Get a Free Quote Now!</h2>
+                <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit} autoComplete="on">
+                  <div className="qi-row">
+                    <input
+                      type="text"
+                      id="inq-name"
+                      name="name"
+                      placeholder="Your name *"
+                      value={inqName}
+                      onChange={(e) => setInqName(e.target.value)}
+                      autoComplete="name"
+                      aria-label="Your name"
+                    />
+                  </div>
+                  <div className="qi-row qi-grid-2">
+                    <input
+                      type="email"
+                      id="inq-email"
+                      name="email"
+                      placeholder="Email"
+                      value={inqEmail}
+                      onChange={(e) => setInqEmail(e.target.value)}
+                      autoComplete="email"
+                      aria-label="Email"
+                    />
+                    <input
+                      type="tel"
+                      id="inq-phone"
+                      name="phone"
+                      placeholder="Phone"
+                      value={inqPhone}
+                      onChange={(e) => setInqPhone(e.target.value)}
+                      autoComplete="tel"
+                      aria-label="Phone"
+                    />
+                  </div>
+                  <div className="qi-row">
+                    <textarea
+                      name="message"
+                      placeholder="How can we help? *"
+                      rows={3}
+                      value={inqMessage}
+                      onChange={(e) => setInqMessage(e.target.value)}
+                      aria-label="Message"
+                    />
+                  </div>
+                  {inqError && <div className="qi-alert error">{inqError}</div>}
+                  {inqSuccess && <div className="qi-alert success">{inqSuccess}</div>}
+                  <button className="btn-primary" type="submit" disabled={inqSubmitting || !isInquiryValid}>
+                    {inqSubmitting ? 'Sending…' : 'Send Message'}
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -884,70 +1009,6 @@ const LandingPage = () => {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Inquiry Section */}
-      <section id="inquiry-section" className="inquiry-section">
-        <div className="container">
-          <div className="inquiry-content">
-            <div className="inquiry-text">
-              <div className="inquiry-form-content">
-                <h2>Get a Free Quote Now!</h2>
-                <form className="quick-inquiry-form" onSubmit={handleQuickInquirySubmit} autoComplete="on">
-                  <div className="qi-row">
-                    <input
-                      type="text"
-                      id="inq-name"
-                      name="name"
-                      placeholder="Your name *"
-                      value={inqName}
-                      onChange={(e) => setInqName(e.target.value)}
-                      autoComplete="name"
-                      aria-label="Your name"
-                    />
-                  </div>
-                  <div className="qi-row qi-grid-2">
-                    <input
-                      type="email"
-                      id="inq-email"
-                      name="email"
-                      placeholder="Email"
-                      value={inqEmail}
-                      onChange={(e) => setInqEmail(e.target.value)}
-                      autoComplete="email"
-                      aria-label="Email"
-                    />
-                    <input
-                      type="tel"
-                      id="inq-phone"
-                      name="phone"
-                      placeholder="Phone"
-                      value={inqPhone}
-                      onChange={(e) => setInqPhone(e.target.value)}
-                      autoComplete="tel"
-                      aria-label="Phone"
-                    />
-                  </div>
-                  <div className="qi-row">
-                    <textarea
-                      name="message"
-                      placeholder="How can we help? *"
-                      rows={3}
-                      value={inqMessage}
-                      onChange={(e) => setInqMessage(e.target.value)}
-                      aria-label="Message"
-                    />
-                  </div>
-                  {inqError && <div className="qi-alert error">{inqError}</div>}
-                  {inqSuccess && <div className="qi-alert success">{inqSuccess}</div>}
-                  <button className="btn-primary" type="submit" disabled={inqSubmitting || !isInquiryValid}>
-                    {inqSubmitting ? 'Sending…' : 'Send Message'}
-                  </button>
-                </form>
               </div>
             </div>
           </div>
