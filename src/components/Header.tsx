@@ -158,6 +158,7 @@ const Header = () => {
               </div>
             </div>
             
+            <Link to="/#promotions-section" className="nav-link" onClick={() => handleSectionClick('#promotions-section')}>Specials</Link>
             <Link to="/#areas-served-section" className="nav-link" onClick={() => handleSectionClick('#areas-served-section')}>Areas Served</Link>
             <Link to="/gallery" className="nav-link">Gallery</Link>
             <Link to="/about-us" className="nav-link">About Us</Link>
@@ -206,6 +207,7 @@ const Header = () => {
                 </div>
               </div>
               
+              <Link to="/#promotions-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#promotions-section'); }}>Specials</Link>
               <Link to="/#areas-served-section" className="mobile-nav-link" onClick={() => { setIsMobileMenuOpen(false); handleSectionClick('#areas-served-section'); }}>Areas Served</Link>
               <Link to="/gallery" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Gallery</Link>
               <Link to="/about-us" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
@@ -232,4 +234,3 @@ const Header = () => {
 }
 
 export default Header
-

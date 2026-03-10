@@ -24,7 +24,7 @@ export const allServices: Service[] = [
     icon: '',
     category: 'interior',
     featured: true,
-    backgroundImage: '/services/bedroom/e1077bd2751943866c972d4cb3b3a576.jpg',
+    backgroundImage: '/services/bedroom/bedroom.jpeg',
     description: 'Transform your bedroom into a peaceful sanctuary with professional bedroom painting services that create the perfect atmosphere for rest and relaxation.',
     seoDescription: 'Professional bedroom painting services in Toronto and the GTA. Our expert painters transform bedrooms into peaceful sanctuaries with carefully selected colors and professional techniques. We specialize in creating the perfect atmosphere for rest and relaxation using premium paints, proper surface preparation, and attention to detail. Whether you need a single bedroom or multiple bedrooms painted, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Vaughan, Markham, and surrounding areas with competitive pricing and guaranteed satisfaction.'
   },
@@ -113,7 +113,7 @@ export const allServices: Service[] = [
     type: 'calculated',
     icon: '',
     category: 'interior',
-    backgroundImage: '/services/hallway/329e24c429f539051a368741a0cea969.jpg',
+    backgroundImage: '/services/hallway/hallway.jpeg',
     description: 'Professional hallway painting services that create seamless transitions and enhance the flow of your home.',
     seoDescription: 'Professional hallway painting services in Toronto and the GTA. Our expert painters specialize in hallway painting that creates seamless transitions and enhances the flow of your home. We use premium paints, proper surface preparation, and professional techniques to ensure flawless results in these high-traffic areas. Whether you need narrow hallways, wide corridors, or multiple hallways painted, our licensed and insured team delivers exceptional quality. Serving residential properties across Toronto, Mississauga, Brampton, and surrounding areas with competitive pricing.'
   },
@@ -135,7 +135,7 @@ export const allServices: Service[] = [
     type: 'flat-rate',
     icon: '',
     category: 'interior',
-    backgroundImage: '/services/interior-door/663b0736b9625a124d64f7f2338b3b9b.jpg',
+    backgroundImage: '/services/interior-door/interior-door.jpeg',
     description: 'Professional interior door painting services that refresh and modernize your home\'s interior doors with expert techniques and quality finishes.',
   },
   {

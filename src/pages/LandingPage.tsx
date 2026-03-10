@@ -222,7 +222,7 @@ const LandingPage = () => {
       navigate('/about-us');
       return;
     }
-    if (hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
+    if (hash === '#promotions-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
       setTimeout(() => {
         scrollToSection(hash);
       }, 100);
@@ -237,7 +237,7 @@ const LandingPage = () => {
         navigate('/about-us');
         return;
       }
-      if (hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
+      if (hash === '#promotions-section' || hash === '#areas-served-section' || hash === '#how-it-works-section' || hash === '#inquiry-section') {
         setTimeout(() => {
           scrollToSection(hash);
         }, 100);
