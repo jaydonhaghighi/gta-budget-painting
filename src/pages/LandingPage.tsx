@@ -387,15 +387,19 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
-          <h1>Quick & Affordable Painting for Small Residential Jobs in the GTA</h1>
+          <h1>Do You Need Affordable Painters In The GTA?</h1>
+          <h1>We Offer The Following Services</h1>
           <p className="hero-subtitle">We specialize in quick turnaround times and great results for homeowners on a budget. Get free instant quotes now.</p>
           
           {/* Contact Info */}
           <div className="hero-contact">
-            <a href="tel:6473907181" className="hero-contact-link">
-              <img src="/telephone.png" alt="Phone" className="hero-contact-icon" />
-              <span className="hero-contact-text">Call (647) 390-7181</span>
-            </a>
+            <button
+              className="hero-services-btn"
+              onClick={() => scrollToSection('#promotions-section')}
+              aria-label="View Spring Specials"
+            >
+              Specials
+            </button>
             <button 
               className="hero-services-btn"
               onClick={() => navigate('/services')}
@@ -1003,5 +1007,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-
-

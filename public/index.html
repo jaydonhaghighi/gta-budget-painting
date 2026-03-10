@@ -37,6 +37,15 @@
         body { border-top: 16px solid #ffa100; }
       }
     </style>
+    <!-- For BidClips Widget -->
+    <script type="text/javascript" src="https://widget.bidclips.com/bidclips_integration.js"></script>
+    <style>
+      #bcwidget_frame {
+        left: 10px !important;
+        right: auto !important;
+        bottom: 10px !important;
+      }
+    </style>
   </head>
   <body>
     <div id="message">
@@ -85,5 +94,7 @@
         }
       });
     </script>
+    <!-- For BidClips Widget -->
+    <iframe id="bcwidget_frame" src="//widget.bidclips.com/68bcf3bff37c7f7bc1620b5b" height="64px" width="64px" style="position: fixed; bottom: 10px; left: 10px; right: auto; z-index: 99999; border:none; overflow-y: auto;" allow="geolocation; microphone; camera"></iframe>
   </body>
 </html>

@@ -312,6 +312,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- For BidClips Widget -->
+    <script type="text/javascript" src="https://widget.bidclips.com/bidclips_integration.js"></script>
+    <style>
+      #bcwidget_frame {
+        left: 10px !important;
+        right: auto !important;
+        bottom: 10px !important;
+      }
+    </style>
 
     <!-- 
       Many restless nights spent building this...
@@ -322,5 +331,7 @@
   <body>
     <div id="root" role="main" aria-label="GTA Budget Painting Application"></div>
     <script type="module" src="/src/home.tsx"></script>
+    <!-- For BidClips Widget -->
+    <iframe id="bcwidget_frame" src="//widget.bidclips.com/68bcf3bff37c7f7bc1620b5b" height="64px" width="64px" style="position: fixed; bottom: 10px; left: 10px; right: auto; z-index: 99999; border:none; overflow-y: auto;" allow="geolocation; microphone; camera"></iframe>
   </body>
 </html>
