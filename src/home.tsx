@@ -21,6 +21,7 @@ import GalleryPage from './pages/GalleryPage.tsx'
 import AdminPanel from './pages/AdminPanel.tsx'
 import LocationPage from './pages/LocationPage.tsx'
 import AboutUsPage from './pages/AboutUsPage.tsx'
+import SpecialsPage from './pages/SpecialsPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path="/contact-us" element={<ContactUsPage />} />
               <Route path="/about-us" element={<AboutUsPage />} />
               <Route path="/gallery" element={<GalleryPage />} />
+              <Route path="/specials" element={<SpecialsPage />} />
               <Route path="/admin" element={<AdminPanel />} />
               {/* Dynamic Location Pages (e.g. /painters-mississauga) */}
               {/* Note: We use a regex-like pattern or just match the specific prefix structure if possible, 
@@ -88,4 +90,3 @@ createRoot(document.getElementById('root')!).render(
     </HelmetProvider>
   </StrictMode>,
 )
-

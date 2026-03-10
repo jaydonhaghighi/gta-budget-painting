@@ -1,0 +1,298 @@
+/* Specials Page */
+
+.specials-page {
+  background: #16A34A;
+  min-height: 100vh;
+}
+
+.specials-page .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.specials-hero {
+  background: linear-gradient(120deg, rgba(44, 61, 75, 0.92), rgba(44, 61, 75, 0.82)),
+    url('/discount1.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-white);
+  text-align: center;
+  padding: 4rem 0 3rem;
+}
+
+.specials-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0 0 1rem;
+  color: var(--color-white);
+}
+
+.specials-hero-subtitle {
+  max-width: 760px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.specials-page .promotions-section {
+  padding: 3.5rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.specials-page .promotions-section::before {
+  content: '';
+  position: absolute;
+  top: -220px;
+  right: -220px;
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, #34d399, transparent 60%),
+    radial-gradient(circle, #38bdf8, transparent 60%);
+  filter: blur(140px);
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.specials-page .promotions-content {
+  position: relative;
+  z-index: 1;
+}
+
+.specials-page .promotions-heading {
+  text-align: center;
+  margin: 0 auto 2.5rem;
+  max-width: 800px;
+}
+
+.specials-page .promotions-heading h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  color: var(--color-steel-blue);
+  margin: 0 0 1rem;
+  font-weight: 700;
+  position: relative;
+}
+
+.specials-page .promotions-heading h2::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -12px;
+  width: 56px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-steel-blue);
+}
+
+.specials-page .promotions-subtitle {
+  margin: 1.5rem 0 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 500;
+  color: var(--color-text-medium);
+}
+
+.specials-page .promotions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.specials-page .promotion-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-grey-200);
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.specials-page .promotion-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-steel-blue);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+.specials-page .promotion-featured {
+  border: 2px solid var(--color-steel-blue);
+}
+
+.specials-page .promotion-best-deal {
+  border: 3px solid #16a34a;
+}
+
+.specials-page .promotion-badge {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: #16a34a;
+  color: #ffffff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.specials-page .promotion-card h3 {
+  font-family: var(--font-heading);
+  color: var(--color-black);
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin: 0;
+  margin-top: 0.5rem;
+  padding-right: 82px;
+  line-height: 1.3;
+}
+
+.specials-page .promotion-subtitle {
+  margin: -0.4rem 0 0;
+  color: var(--color-text-medium);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.specials-page .promotion-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--color-grey-200);
+  border-bottom: 1px solid var(--color-grey-200);
+}
+
+.specials-page .promotion-price {
+  color: var(--color-steel-blue);
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.specials-page .promotion-original {
+  font-size: 0.9rem;
+  color: var(--color-text-medium);
+  text-decoration: line-through;
+}
+
+.specials-page .promotion-savings {
+  font-size: 0.85rem;
+  color: #15803d;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.specials-page .promotion-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.specials-page .promotion-features li {
+  color: var(--color-text-medium);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.specials-page .promotion-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-steel-blue);
+  font-weight: 700;
+}
+
+.specials-page .promotion-cta {
+  width: 100%;
+  margin-top: auto;
+  padding: 0.875rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.specials-page .promotion-cta:hover:not(:disabled),
+.specials-page .promotion-cta:focus-visible {
+  background: #15803d;
+  border-color: #15803d;
+  color: #ffffff;
+}
+
+.specials-page .promotion-cta:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+  .specials-page .promotions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .specials-hero {
+    padding: 3rem 0 2.25rem;
+  }
+
+  .specials-page .promotions-section {
+    padding: 2.5rem 0 3rem;
+  }
+
+  .specials-page .promotions-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .specials-page .promotion-card {
+    padding: 1.5rem;
+  }
+
+  .specials-page .promotion-card h3 {
+    font-size: 1.3rem;
+    padding-right: 70px;
+  }
+
+  .specials-page .promotion-price {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .specials-page .container {
+    padding: 0 1rem;
+  }
+
+  .specials-page .promotion-card {
+    padding: 1.25rem;
+  }
+
+  .specials-page .promotion-card h3 {
+    font-size: 1.2rem;
+    padding-right: 62px;
+  }
+
+  .specials-page .promotion-features li {
+    font-size: 0.86rem;
+  }
+}
