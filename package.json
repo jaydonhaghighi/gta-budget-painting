@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/prerender.mjs && node scripts/verify-prerender.mjs",
+    "build": "node scripts/generate-sitemap.mjs && tsc -b && vite build && node scripts/prerender.mjs && node scripts/verify-prerender.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
+    "generate:sitemap": "node scripts/generate-sitemap.mjs",
     "prerender": "node scripts/prerender.mjs",
-    "verify:prerender": "node scripts/verify-prerender.mjs"
+    "verify:prerender": "node scripts/verify-prerender.mjs",
+    "verify:live": "node scripts/verify-live-seo.mjs",
+    "optimize:images": "python3 scripts/optimize_images.py"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",

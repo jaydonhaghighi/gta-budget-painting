@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { getServiceById } from '../data/services';
 import SEO from '../components/SEO';
 import { type EstimateBreakdown } from '../utils/estimationCalculator';
@@ -36,6 +37,7 @@ interface SavedBookingState {
 }
 
 const ServicePage = () => {
+  const siteUrl = 'https://gtabudgetpainting.ca';
   const { addItem } = useCart();
   const { serviceId } = useParams<{ serviceId: string }>();
   const location = useLocation();
@@ -207,7 +209,7 @@ const ServicePage = () => {
       case 'hallway-painting':
         return '/services/hallway/hallway.jpeg';
       case 'drywall-repair':
-        return '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.png';
+        return '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.jpg';
       case 'custom-project':
         return '/2b0cfa6e362fbb3aa1094b290832dbe0.jpg';
       default:
@@ -445,14 +447,95 @@ const ServicePage = () => {
     }
   };
 
+  const seoDescription = service
+    ? (service.seoDescription
+      ?? service.description
+      ?? `Professional ${service.name.toLowerCase()} in Toronto. Affordable rates, quick service, and expert results.`)
+    : 'Get a quote for residential painting services in the GTA.';
+
+  const canonicalPath = location.pathname === '/'
+    ? '/'
+    : location.pathname.endsWith('/')
+      ? location.pathname
+      : `${location.pathname}/`;
+  const fullPageUrl = `${siteUrl}${canonicalPath}`;
+
+  const serviceSchema = service
+    ? {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.name,
+      serviceType: service.name,
+      description: seoDescription,
+      url: fullPageUrl,
+      areaServed: 'Greater Toronto Area',
+      provider: {
+        '@type': 'LocalBusiness',
+        name: 'GTA Budget Painting',
+        url: siteUrl,
+        telephone: '+1-647-390-7181',
+      },
+    }
+    : null;
+
+  const breadcrumbSchema = service
+    ? {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: `${siteUrl}/`,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: 'Services',
+          item: `${siteUrl}/services/`,
+        },
+        ...(category === 'custom'
+          ? [
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: 'Custom Painting',
+              item: `${siteUrl}/services/custom-painting/`,
+            },
+          ]
+          : [
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: category === 'interior-painting' ? 'Interior Painting' : 'Exterior Painting',
+              item: `${siteUrl}/services/${category}/`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 4,
+              name: service.name,
+              item: fullPageUrl,
+            },
+          ]),
+      ],
+    }
+    : null;
+
 
   return (
     <div className="service-page">
       <SEO 
         title={service ? `${service.name} Services | GTA Budget Painting` : 'Painting Services | GTA Budget Painting'}
-        description={service ? `Professional ${service.name.toLowerCase()} in Toronto. Affordable rates, quick service, and expert results.` : 'Get a quote for residential painting services in the GTA.'}
+        description={seoDescription}
         canonical={location.pathname}
       />
+      {serviceSchema && breadcrumbSchema && (
+        <Helmet>
+          <script type="application/ld+json">{JSON.stringify(serviceSchema)}</script>
+          <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+        </Helmet>
+      )}
       {/* Back Button */}
       <div className="service-page-header">
         <div className="container">
@@ -857,4 +940,3 @@ const ServicePage = () => {
 };
 
 export default ServicePage;
-

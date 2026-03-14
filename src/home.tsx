@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
@@ -9,19 +9,21 @@ import { CartProvider } from './context/CartContext.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
 import Footer from './components/Footer.tsx'
 import ScrollToTop from './components/ScrollToTop.tsx'
-import LandingPage from './pages/LandingPage.tsx'
-import ServicesPage from './pages/ServicesPage.tsx'
-import InteriorPaintingPage from './pages/InteriorPaintingPage.tsx'
-import ExteriorPaintingPage from './pages/ExteriorPaintingPage.tsx'
-import ServicePage from './pages/ServicePage.tsx'
-import CartPage from './pages/CartPage.tsx'
-import CheckoutPage from './pages/CheckoutPage.tsx'
-import ContactUsPage from './pages/ContactUsPage.tsx'
-import GalleryPage from './pages/GalleryPage.tsx'
-import AdminPanel from './pages/AdminPanel.tsx'
-import LocationPage from './pages/LocationPage.tsx'
-import AboutUsPage from './pages/AboutUsPage.tsx'
-import SpecialsPage from './pages/SpecialsPage.tsx'
+
+const LandingPage = lazy(() => import('./pages/LandingPage.tsx'))
+const ServicesPage = lazy(() => import('./pages/ServicesPage.tsx'))
+const InteriorPaintingPage = lazy(() => import('./pages/InteriorPaintingPage.tsx'))
+const ExteriorPaintingPage = lazy(() => import('./pages/ExteriorPaintingPage.tsx'))
+const ServicePage = lazy(() => import('./pages/ServicePage.tsx'))
+const CartPage = lazy(() => import('./pages/CartPage.tsx'))
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage.tsx'))
+const ContactUsPage = lazy(() => import('./pages/ContactUsPage.tsx'))
+const GalleryPage = lazy(() => import('./pages/GalleryPage.tsx'))
+const AdminPanel = lazy(() => import('./pages/AdminPanel.tsx'))
+const LocationPage = lazy(() => import('./pages/LocationPage.tsx'))
+const AboutUsPage = lazy(() => import('./pages/AboutUsPage.tsx'))
+const SpecialsPage = lazy(() => import('./pages/SpecialsPage.tsx'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage.tsx'))
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -31,21 +33,22 @@ createRoot(document.getElementById('root')!).render(
           <BrowserRouter>
             <ScrollToTop />
             <Header />
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/services/interior-painting" element={<InteriorPaintingPage />} />
-              <Route path="/services/exterior-painting" element={<ExteriorPaintingPage />} />
-              <Route path="/services/interior-painting/:serviceId" element={<ServicePage />} />
-              <Route path="/services/exterior-painting/:serviceId" element={<ServicePage />} />
-              <Route path="/services/custom-painting" element={<ServicePage />} />
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/contact-us" element={<ContactUsPage />} />
-              <Route path="/about-us" element={<AboutUsPage />} />
-              <Route path="/gallery" element={<GalleryPage />} />
-              <Route path="/specials" element={<SpecialsPage />} />
-              <Route path="/admin" element={<AdminPanel />} />
+            <Suspense fallback={<main className="route-loading" aria-busy="true" />}>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/services/interior-painting" element={<InteriorPaintingPage />} />
+                <Route path="/services/exterior-painting" element={<ExteriorPaintingPage />} />
+                <Route path="/services/interior-painting/:serviceId" element={<ServicePage />} />
+                <Route path="/services/exterior-painting/:serviceId" element={<ServicePage />} />
+                <Route path="/services/custom-painting" element={<ServicePage />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/contact-us" element={<ContactUsPage />} />
+                <Route path="/about-us" element={<AboutUsPage />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/specials" element={<SpecialsPage />} />
+                <Route path="/admin" element={<AdminPanel />} />
               {/* Dynamic Location Pages (e.g. /painters-mississauga) */}
               {/* Note: We use a regex-like pattern or just match the specific prefix structure if possible, 
                   but simpler is to capture the whole segment and parse it inside the component if needed. 
@@ -63,26 +66,29 @@ createRoot(document.getElementById('root')!).render(
                   ACTUALLY: React Router v6 doesn't support partial segment parameters like "/painters-:city".
                   We must use specific paths for each city to keep the URL structure "/painters-mississauga".
               */}
-              <Route path="/painters-toronto" element={<LocationPage />} />
-              <Route path="/painters-north-york" element={<LocationPage />} />
-              <Route path="/painters-etobicoke" element={<LocationPage />} />
-              <Route path="/painters-scarborough" element={<LocationPage />} />
-              <Route path="/painters-mississauga" element={<LocationPage />} />
-              <Route path="/painters-brampton" element={<LocationPage />} />
-              <Route path="/painters-vaughan" element={<LocationPage />} />
-              <Route path="/painters-markham" element={<LocationPage />} />
-              <Route path="/painters-richmond-hill" element={<LocationPage />} />
-              <Route path="/painters-oakville" element={<LocationPage />} />
-              <Route path="/painters-burlington" element={<LocationPage />} />
-              <Route path="/painters-milton" element={<LocationPage />} />
-              <Route path="/painters-caledon" element={<LocationPage />} />
-              <Route path="/painters-thornhill" element={<LocationPage />} />
-              <Route path="/painters-woodbridge" element={<LocationPage />} />
-              <Route path="/painters-maple" element={<LocationPage />} />
-              <Route path="/painters-york" element={<LocationPage />} />
-              <Route path="/painters-east-york" element={<LocationPage />} />
-              <Route path="/painters-downtown-toronto" element={<LocationPage />} />
-            </Routes>
+                <Route path="/painters-toronto" element={<LocationPage />} />
+                <Route path="/painters-north-york" element={<LocationPage />} />
+                <Route path="/painters-etobicoke" element={<LocationPage />} />
+                <Route path="/painters-scarborough" element={<LocationPage />} />
+                <Route path="/painters-mississauga" element={<LocationPage />} />
+                <Route path="/painters-brampton" element={<LocationPage />} />
+                <Route path="/painters-vaughan" element={<LocationPage />} />
+                <Route path="/painters-markham" element={<LocationPage />} />
+                <Route path="/painters-richmond-hill" element={<LocationPage />} />
+                <Route path="/painters-oakville" element={<LocationPage />} />
+                <Route path="/painters-burlington" element={<LocationPage />} />
+                <Route path="/painters-milton" element={<LocationPage />} />
+                <Route path="/painters-caledon" element={<LocationPage />} />
+                <Route path="/painters-thornhill" element={<LocationPage />} />
+                <Route path="/painters-woodbridge" element={<LocationPage />} />
+                <Route path="/painters-maple" element={<LocationPage />} />
+                <Route path="/painters-york" element={<LocationPage />} />
+                <Route path="/painters-east-york" element={<LocationPage />} />
+                <Route path="/painters-downtown-toronto" element={<LocationPage />} />
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Suspense>
             <Footer />
           </BrowserRouter>
         </CartProvider>

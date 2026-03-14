@@ -543,104 +543,6 @@
   }
 }
 
-/* Sticky Promo Banner */
-.sticky-promo-banner {
-  position: fixed;
-  top: 0; /* Will be set dynamically via JavaScript */
-  left: 0;
-  right: 0;
-  z-index: 999; /* Below header (1001) */
-  /* Spring theme: fresh green → sky */
-  background: linear-gradient(135deg, #15803D 0%, #0EA5E9 100%);
-  color: white;
-  padding: 0.75rem 1rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-  transform: translateY(-100%); /* Hide above viewport */
-  opacity: 0;
-  visibility: hidden;
-  transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.sticky-promo-banner.show {
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.sticky-promo-banner.hidden {
-  transform: translateY(-100%) !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none;
-}
-
-.promo-banner-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.promo-banner-text {
-  font-size: 14px;
-  font-weight: 400;
-  text-align: center;
-  flex: 1;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.promo-banner-text:hover {
-  opacity: 0.9;
-}
-
-.deal-bubble {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.25rem 0.5rem;
-  border-radius: 12px;
-  font-weight: 400;
-  margin-left: 0.5rem;
-}
-
-.promo-banner-close {
-  position: absolute;
-  right: 0;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.25rem;
-  line-height: 1;
-  opacity: 0.8;
-  transition: opacity 0.2s ease;
-}
-
-.promo-banner-close:hover {
-  opacity: 1;
-}
-
-/* No need to adjust header - banner is below it */
-
-/* Responsive promo banner - stack deal bubble under text */
-@media (max-width: 520px) {
-  .promo-banner-content {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .promo-banner-text {
-    text-align: center;
-  }
-  
-  .deal-bubble {
-    margin-left: 0;
-    display: inline-block;
-  }
-}
-
 /* Hero Contact */
 .hero-contact {
   display: flex !important;
@@ -2212,6 +2114,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: var(--font-body);
+  text-decoration: none;
+  display: inline-block;
 }
 
 .service-preview-btn:hover {
@@ -2403,7 +2307,7 @@
 }
 
 .benefit-card-header h3 {
-  font-family: 'Fira Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   color: var(--color-steel-blue);
   margin: 0;

@@ -123,7 +123,7 @@ export const allServices: Service[] = [
     type: 'calculated',
     icon: '',
     category: 'interior',
-    backgroundImage: '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.png',
+    backgroundImage: '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.jpg',
     description: 'Professional drywall repair services that fix holes, cracks, and damage to restore your walls to perfect condition before painting.',
     seoDescription: 'Professional drywall repair services in Toronto and the GTA. Our expert painters specialize in drywall repair that fixes holes, cracks, and damage to restore your walls to perfect condition. We use professional techniques, quality materials, and proper finishing to ensure seamless repairs that are ready for painting. Whether you need small hole repairs, large patch work, or crack repairs, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Mississauga, Brampton, and surrounding areas with competitive pricing.'
   },
@@ -154,7 +154,7 @@ export const allServices: Service[] = [
     type: 'calculated',
     icon: '',
     category: 'exterior',
-    backgroundImage: '/services/fence/739cc85f924bf84f79f5414f52957d1c.jpg',
+    backgroundImage: '/services/fence/739cc85f924bf84f79f5414f52957d1c.webp',
     description: 'Professional fence painting services that protect and beautify your outdoor fencing with weather-resistant finishes.',
     seoDescription: 'Professional fence painting services in Toronto and the GTA. Our expert painters specialize in fence painting that protects and beautifies your outdoor fencing with weather-resistant finishes. We use premium exterior paints, proper surface preparation, and professional techniques to ensure long-lasting protection against weather elements. Whether you need wood fence painting, metal fence painting, or composite fence staining, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Vaughan, Richmond Hill, and surrounding areas with competitive pricing.'
   },
@@ -176,7 +176,7 @@ export const allServices: Service[] = [
     type: 'calculated',
     icon: '',
     category: 'exterior',
-    backgroundImage: '/services/garage/garage2.jpeg',
+    backgroundImage: '/services/garage/garage2.webp',
     description: 'Professional garage door painting services that enhance your home\'s exterior with weather-resistant finishes.',
     seoDescription: 'Professional garage door painting services in Toronto and the GTA. Our expert painters specialize in garage door painting that enhances your home\'s exterior with weather-resistant finishes. We use premium exterior paints, proper surface preparation, and professional techniques to ensure long-lasting protection against weather elements. Whether you need steel garage door painting, wood garage door painting, or aluminum garage door refinishing, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Mississauga, Brampton, and surrounding areas with competitive pricing.'
   },

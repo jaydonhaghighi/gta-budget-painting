@@ -119,7 +119,7 @@
 .location-btn-primary {
   background: rgba(255, 255, 255, 0.82);
   color: var(--lp-soft);
-  font-family: 'Fira Sans', sans-serif;
+  font-family: var(--font-body);
   border: none;
 }
 
@@ -132,7 +132,7 @@
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(18px);
   color: var(--lp-soft);
-  font-family: 'Fira Sans', sans-serif;
+  font-family: var(--font-body);
 }
 
 .location-btn-secondary:hover {

@@ -1,41 +1,42 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getServicesByCategory } from '../data/services';
 import SEO from '../components/SEO';
 import './InteriorPaintingPage.css';
 
 const InteriorPaintingPage = () => {
-  const navigate = useNavigate();
-
-  const handleServiceClick = (serviceId: string) => {
-    navigate(`/services/interior-painting/${serviceId}`);
-  };
-
   // Get interior services
   const interiorServices = getServicesByCategory('interior');
+
+  const getServiceRoute = (serviceId: string) => {
+    if (serviceId === 'custom-project') {
+      return '/services/custom-painting';
+    }
+    return `/services/interior-painting/${serviceId}`;
+  };
 
   const renderServiceCard = (service: typeof interiorServices[0], isFeatured: boolean = false) => {
     // Special handling for custom project
     if (service.id === 'custom-project') {
       return (
-        <div
+        <Link
           key={service.id}
+          to={getServiceRoute(service.id)}
           className="service-card-wrapper custom-project-wrapper"
-          onClick={() => handleServiceClick(service.id)}
         >
               <div className="custom-project-text">
                 <h3>Service Not Here?</h3>
                 <p>Tell us what you need and we'll provide a personalized quote for your custom painting project.</p>
               </div>
-            </div>
+            </Link>
       );
     }
 
     // Regular service cards
     return (
-      <div
+      <Link
         key={service.id}
         className="service-card-wrapper"
-        onClick={() => handleServiceClick(service.id)}
+        to={getServiceRoute(service.id)}
       >
         <div
           className={`service-card ${isFeatured ? 'featured-card' : ''}`}
@@ -46,7 +47,7 @@ const InteriorPaintingPage = () => {
           <span className="service-icon">{service.icon}</span>
         </div>
         <h3 className="service-card-title">{service.name}</h3>
-      </div>
+      </Link>
     );
   };
 

@@ -1,0 +1,48 @@
+.not-found-page {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+}
+
+.not-found-card {
+  width: min(680px, 100%);
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #ece3df;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.not-found-card h1 {
+  margin: 0 0 0.75rem;
+}
+
+.not-found-card p {
+  margin: 0 0 1.25rem;
+  color: #433b37;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.not-found-link {
+  display: inline-block;
+  padding: 0.625rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #1f6f8b;
+  text-decoration: none;
+  color: #ffffff;
+  background: #1f6f8b;
+  font-weight: 600;
+}
+
+.not-found-link-secondary {
+  background: transparent;
+  color: #1f6f8b;
+}

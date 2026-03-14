@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>GTA Budget Painting</title>
 
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#f6efed" />
     
     <!-- Security Headers are now set via HTTP headers in _headers file -->
     
@@ -311,9 +311,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Fira+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- For BidClips Widget -->
-    <script type="text/javascript" src="https://widget.bidclips.com/bidclips_integration.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       #bcwidget_frame {
         left: 10px !important;
@@ -331,7 +329,55 @@
   <body>
     <div id="root" role="main" aria-label="GTA Budget Painting Application"></div>
     <script type="module" src="/src/home.tsx"></script>
-    <!-- For BidClips Widget -->
-    <iframe id="bcwidget_frame" src="//widget.bidclips.com/68bcf3bff37c7f7bc1620b5b" height="64px" width="64px" style="position: fixed; bottom: 10px; left: 10px; right: auto; z-index: 99999; border:none; overflow-y: auto;" allow="geolocation; microphone; camera"></iframe>
+    <script>
+      (function initializeBidClipsWidget() {
+        var isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        var isHeadless = /HeadlessChrome/i.test(navigator.userAgent);
+        if (isLocal || isHeadless) return;
+
+        var widgetLoaded = false;
+
+        function loadWidget() {
+          if (widgetLoaded) return;
+          widgetLoaded = true;
+
+          var script = document.createElement('script');
+          script.src = 'https://widget.bidclips.com/bidclips_integration.js';
+          script.async = true;
+          document.head.appendChild(script);
+
+          var frame = document.createElement('iframe');
+          frame.id = 'bcwidget_frame';
+          frame.src = '//widget.bidclips.com/68bcf3bff37c7f7bc1620b5b';
+          frame.height = '64';
+          frame.width = '64';
+          frame.style.position = 'fixed';
+          frame.style.bottom = '10px';
+          frame.style.left = '10px';
+          frame.style.right = 'auto';
+          frame.style.zIndex = '99999';
+          frame.style.border = 'none';
+          frame.style.overflowY = 'auto';
+          frame.allow = 'geolocation; microphone; camera';
+          document.body.appendChild(frame);
+        }
+
+        var triggers = ['pointerdown', 'scroll', 'keydown', 'touchstart'];
+        function handleFirstInteraction() {
+          for (var i = 0; i < triggers.length; i += 1) {
+            window.removeEventListener(triggers[i], handleFirstInteraction);
+          }
+          loadWidget();
+        }
+
+        for (var i = 0; i < triggers.length; i += 1) {
+          window.addEventListener(triggers[i], handleFirstInteraction, { once: true, passive: true });
+        }
+
+        window.addEventListener('load', function () {
+          window.setTimeout(loadWidget, 3000);
+        }, { once: true });
+      })();
+    </script>
   </body>
 </html>

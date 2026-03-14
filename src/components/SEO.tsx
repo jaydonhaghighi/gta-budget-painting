@@ -25,10 +25,26 @@ export default function SEO({
   const siteUrl = 'https://gtabudgetpainting.ca';
   const location = useLocation();
 
+  const normalizeCanonicalPath = (inputPath: string) => {
+    const withLeadingSlash = inputPath.startsWith('/') ? inputPath : `/${inputPath}`;
+    if (withLeadingSlash === '/') return '/';
+    return withLeadingSlash.endsWith('/') ? withLeadingSlash : `${withLeadingSlash}/`;
+  };
+
   const canonicalPath = canonical ?? location.pathname;
   const fullUrl = canonicalPath.startsWith('http')
-    ? canonicalPath
-    : `${siteUrl}${canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`}`;
+    ? (() => {
+        try {
+          const parsed = new URL(canonicalPath);
+          parsed.pathname = normalizeCanonicalPath(parsed.pathname);
+          parsed.search = '';
+          parsed.hash = '';
+          return parsed.toString();
+        } catch {
+          return canonicalPath;
+        }
+      })()
+    : `${siteUrl}${normalizeCanonicalPath(canonicalPath)}`;
 
   const imageUrl = (() => {
     if (!image) return `${siteUrl}/logo.png`;
@@ -66,4 +82,3 @@ export default function SEO({
     </Helmet>
   );
 }
-

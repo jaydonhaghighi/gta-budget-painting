@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import SEO from '../components/SEO';
 import { useCart } from '../context/CartContext';
 import './LocationPage.css';
 
 const LocationPage = () => {
+  const siteUrl = 'https://gtabudgetpainting.ca';
   const location = useLocation();
   const navigate = useNavigate();
   const { addItem } = useCart();
@@ -258,13 +260,63 @@ const LocationPage = () => {
     return () => clearInterval(interval);
   }, [landingReviews.length]);
 
+  const canonicalPath = location.pathname === '/'
+    ? '/'
+    : location.pathname.endsWith('/')
+      ? location.pathname
+      : `${location.pathname}/`;
+  const fullPageUrl = `${siteUrl}${canonicalPath}`;
+  const seoDescription = `Looking for painters in ${formattedCity}? We provide affordable, high-quality residential painting for small jobs in ${formattedCity}. Get a free quote today!`;
+
+  const locationServiceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `House Painting Services in ${formattedCity}`,
+    serviceType: 'Residential Painting',
+    description: seoDescription,
+    url: fullPageUrl,
+    areaServed: {
+      '@type': 'City',
+      name: formattedCity,
+    },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'GTA Budget Painting',
+      url: siteUrl,
+      telephone: '+1-647-390-7181',
+    },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `${siteUrl}/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: `Painters ${formattedCity}`,
+        item: fullPageUrl,
+      },
+    ],
+  };
+
   return (
     <div className="location-page">
       <SEO
         title={`Best Painters in ${formattedCity} | Affordable & Fast | GTA Budget Painting`}
-        description={`Looking for painters in ${formattedCity}? We provide affordable, high-quality residential painting for small jobs in ${formattedCity}. Get a free quote today!`}
+        description={seoDescription}
         canonical={location.pathname}
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(locationServiceSchema)}</script>
+        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
+      </Helmet>
 
       <section className="location-hero">
         <div className="location-hero-blob location-hero-blob-one" aria-hidden="true" />
@@ -560,4 +612,3 @@ const LocationPage = () => {
 };
 
 export default LocationPage;
-

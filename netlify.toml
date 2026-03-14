@@ -5,12 +5,6 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Redirect rules for SPA routing
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
 # Security headers (backup to _headers file)
 [[headers]]
   for = "/*"
@@ -47,3 +41,18 @@
   for = "*.svg"
   [headers.values]
     Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/admin*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/cart*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/checkout*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

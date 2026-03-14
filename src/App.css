@@ -17,49 +17,51 @@ html {
 
 :root {
   /* Typography */
-  --font-heading: 'Gloock', serif;
-  --font-service-title: 'Gloock';
-  --font-body: 'Fira Sans', sans-serif;
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-service-title: 'Cormorant Garamond', serif;
+  --font-body: 'Manrope', sans-serif;
   
-  /* New Color Palette */
-  --color-soft-charcoal: #1E1E1E;
-  --color-warm-gray: #2C2C2C;
-  --color-steel-blue: #2C3D4B;
-  --color-calm-blue-gray: #435463;
-  --color-maroon: #a83636;
-  --color-bone: #EDEAEO;
+  /* Elegant blush/plum palette */
+  --color-soft-charcoal: #332633;
+  --color-warm-gray: #6a4a5d;
+  --color-steel-blue: #6a4a5d;
+  --color-calm-blue-gray: #8c7083;
+  --color-maroon: #9b4f72;
+  --color-bone: #efe4e1;
+  --color-dark-blue: #4d3745;
   
   /* Updated Colors */
-  --color-black: #1E1E1E;
+  --color-black: #2d212d;
   --color-white: #ffffff;
-  --color-grey-50: #EDEAEO;
-  --color-grey-100: #EDEAEO;
-  --color-grey-200: #435463;
-  --color-grey-300: #435463;
-  --color-grey-400: #2C2C2C;
-  --color-grey-500: #2C3D4B;
-  --color-grey-600: #1E1E1E;
-  --color-grey-700: #1E1E1E;
-  --color-grey-800: #1E1E1E;
-  --color-grey-900: #1E1E1E;
+  --color-grey-50: #f6efed;
+  --color-grey-100: #efe4e1;
+  --color-grey-200: #dfcdc7;
+  --color-grey-300: #cbb0a8;
+  --color-grey-400: #a88794;
+  --color-grey-500: #8c7083;
+  --color-grey-600: #6a4a5d;
+  --color-grey-700: #553d4b;
+  --color-grey-800: #3f2e3c;
+  --color-grey-900: #2d212d;
   
   /* Primary Colors */
-  --color-primary: #2C3D4B;
-  --color-primary-dark: #1E1E1E;
-  --color-primary-light: #435463;
-  --color-secondary: #435463;
-  --color-accent: #D9B665;
-  --color-background: #EDEAEO;
-  --color-text-dark: #1E1E1E;
-  --color-text-medium: #2C2C2C;
-  --color-text-light: #435463;
+  --color-primary: #6a4a5d;
+  --color-primary-dark: #4d3745;
+  --color-primary-light: #a88794;
+  --color-secondary: #8c7083;
+  --color-accent: #e7d7d6;
+  --color-background: #f6efed;
+  --color-text-dark: #2d212d;
+  --color-text-medium: #553d4b;
+  --color-text-light: #8c7083;
 }
 
 body {
   font-family: var(--font-body);
+  font-weight: 600;
   color: var(--color-text-dark);
   line-height: 1.6;
-  background-color: var(--color-bone);
+  background-color: var(--color-background);
   padding-top: 119px; /* Account for fixed header height */
 }
 
@@ -90,7 +92,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--color-black);
   line-height: 1.2;
-  font-weight: 400;
+  font-weight: 700;
 }
 
 h1 {
@@ -115,6 +117,7 @@ h4 {
 
 p {
   font-family: var(--font-body);
+  font-weight: 600;
   color: var(--color-grey-600);
   font-size: 1.1rem;
   line-height: 1.7;
@@ -141,7 +144,7 @@ p {
   font-family: var(--font-body);
   color: rgba(255, 255, 255, 0.85);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
   transition: all 0.3s ease;
@@ -208,4 +211,6 @@ p {
   color: var(--color-accent);
 }
 
-
+.route-loading {
+  min-height: 40vh;
+}

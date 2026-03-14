@@ -27,7 +27,7 @@ const GalleryPage = () => {
     },
     {
       id: 'work-5-before',
-      src: '/gallery/gbp-work-5-before.jpeg',
+      src: '/gallery/gbp-work-5-before.webp',
       alt: 'Before painting - Project 5',
       title: 'Project 5 - Before',
       type: 'before',
@@ -45,7 +45,7 @@ const GalleryPage = () => {
     },
     {
       id: 'work-7-before',
-      src: '/gallery/gbp-work-7-before.jpeg',
+      src: '/gallery/gbp-work-7-before.webp',
       alt: 'Before painting - Project 7',
       title: 'Project 7 - Before',
       type: 'before',
@@ -72,7 +72,7 @@ const GalleryPage = () => {
     },
     {
       id: 'work-12-before',
-      src: '/gallery/gbp-work-12-before.jpeg',
+      src: '/gallery/gbp-work-12-before.webp',
       alt: 'Before painting - Project 12',
       title: 'Project 12 - Before',
       type: 'before',
@@ -84,7 +84,7 @@ const GalleryPage = () => {
   const afterImages: GalleryImage[] = [
     {
       id: 'work-1-after',
-      src: '/gallery/gbp-work-1-after.png',
+      src: '/gallery/gbp-work-1-after.jpg',
       alt: 'Professional painting work - Project 1',
       title: 'Project 1 - After',
       type: 'after',
@@ -92,7 +92,7 @@ const GalleryPage = () => {
     },
     {
       id: 'work-2-after',
-      src: '/gallery/gbp-work-2-after.png',
+      src: '/gallery/gbp-work-2-after.jpg',
       alt: 'Professional painting work - Project 2',
       title: 'Project 2 - After',
       type: 'after',

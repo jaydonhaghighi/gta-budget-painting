@@ -1,8 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import http from 'node:http';
-
-const SITE_URL = 'https://gtabudgetpainting.ca';
+import { getPrerenderRoutes, toCanonicalUrl, toRoutePath } from './route-manifest.mjs';
 const DIST_DIR = path.resolve('dist');
 const PORT = process.env.VERIFY_PORT ? Number(process.env.VERIFY_PORT) : 4174;
 const BASE_URL = `http://127.0.0.1:${PORT}`;
@@ -22,23 +21,6 @@ function routeToDistIndex(routePath) {
   return path.join(DIST_DIR, cleaned, 'index.html');
 }
 
-function extractPathsFromSitemapXml(xml) {
-  const re = /<loc>([^<]+)<\/loc>/g;
-  const paths = [];
-  let m;
-  while ((m = re.exec(xml)) !== null) {
-    const loc = m[1].trim();
-    try {
-      const u = new URL(loc);
-      if (u.origin !== new URL(SITE_URL).origin) continue;
-      paths.push(u.pathname);
-    } catch {
-      // ignore
-    }
-  }
-  return [...new Set(paths)];
-}
-
 function isProbablyPrerendered(html) {
   // If we served the plain SPA shell, root is empty.
   // If prerendered, root contains lots of markup, often including header/footer.
@@ -51,8 +33,7 @@ function isProbablyPrerendered(html) {
 }
 
 function expectedCanonical(pathname) {
-  const p = pathname === '/' ? '/' : pathname;
-  return `${SITE_URL}${p}`;
+  return toCanonicalUrl(pathname);
 }
 
 function hasCanonicalForRoute(html, pathname) {
@@ -66,6 +47,26 @@ function hasHreflangForRoute(html, pathname) {
   const reEn = new RegExp(`<link\\s+rel=\"alternate\"[^>]*hreflang=\"en-CA\"[^>]*href=\"${expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\"`, 'i');
   const reXd = new RegExp(`<link\\s+rel=\"alternate\"[^>]*hreflang=\"x-default\"[^>]*href=\"${expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\"`, 'i');
   return reEn.test(html) && reXd.test(html);
+}
+
+function hasNonEmptyTitle(html) {
+  const m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  return Boolean(m?.[1]?.trim());
+}
+
+function hasNonEmptyMetaDescription(html) {
+  const m = html.match(/<meta\s+name=\"description\"\s+content=\"([^\"]+)\"/i);
+  return Boolean(m?.[1]?.trim());
+}
+
+function h1Count(html) {
+  const matches = html.match(/<h1\b[^>]*>/gi);
+  return matches ? matches.length : 0;
+}
+
+function isNoindexPage(html) {
+  const m = html.match(/<meta\s+name=\"robots\"\s+content=\"([^\"]+)\"/i);
+  return Boolean(m?.[1]?.toLowerCase().includes('noindex'));
 }
 
 async function fetchHtml(url) {
@@ -130,16 +131,10 @@ function createStaticServer(rootDir) {
 }
 
 async function main() {
-  const sitemapPath = (await exists(path.join(DIST_DIR, 'sitemap.xml')))
-    ? path.join(DIST_DIR, 'sitemap.xml')
-    : path.resolve('public', 'sitemap.xml');
-
-  const sitemapXml = await fs.readFile(sitemapPath, 'utf8');
-  const routes = extractPathsFromSitemapXml(sitemapXml)
-    .filter(p => !['/admin', '/cart', '/checkout'].some(prefix => p === prefix || p.startsWith(`${prefix}/`)));
+  const routes = getPrerenderRoutes();
 
   if (routes.length === 0) {
-    throw new Error(`No routes found in sitemap: ${sitemapPath}`);
+    throw new Error('No prerender routes found in route manifest');
   }
 
   // 1) Verify the files exist + contain expected tags
@@ -154,6 +149,11 @@ async function main() {
     if (!isProbablyPrerendered(html)) fileFailures.push(`${route}: dist HTML does not look prerendered`);
     if (!hasCanonicalForRoute(html, route)) fileFailures.push(`${route}: dist HTML missing/incorrect canonical`);
     if (!hasHreflangForRoute(html, route)) fileFailures.push(`${route}: dist HTML missing hreflang tags`);
+    if (!hasNonEmptyTitle(html)) fileFailures.push(`${route}: dist HTML missing/empty title`);
+    if (!hasNonEmptyMetaDescription(html)) fileFailures.push(`${route}: dist HTML missing/empty meta description`);
+    if (!isNoindexPage(html) && h1Count(html) !== 1) {
+      fileFailures.push(`${route}: dist HTML expected exactly 1 h1, found ${h1Count(html)}`);
+    }
   }
   if (fileFailures.length > 0) {
     throw new Error(`Prerender file verification failed (showing first 20):\n- ${fileFailures.slice(0, 20).join('\n- ')}`);
@@ -177,12 +177,24 @@ async function main() {
           failures.push(`${v}: expected 200, got ${status}`);
           continue;
         }
-        const canonicalPath = v.endsWith('/') && v !== '/' ? v.slice(0, -1) : v;
+        const canonicalPath = toRoutePath(v);
         if (!isProbablyPrerendered(html)) failures.push(`${v}: served HTML does not look prerendered`);
         if (!hasCanonicalForRoute(html, canonicalPath)) failures.push(`${v}: missing/incorrect canonical for ${canonicalPath}`);
         if (!hasHreflangForRoute(html, canonicalPath)) failures.push(`${v}: missing hreflang tags for ${canonicalPath}`);
+        if (!hasNonEmptyTitle(html)) failures.push(`${v}: missing/empty title`);
+        if (!hasNonEmptyMetaDescription(html)) failures.push(`${v}: missing/empty meta description`);
+        if (!isNoindexPage(html) && h1Count(html) !== 1) {
+          failures.push(`${v}: expected exactly 1 h1, found ${h1Count(html)}`);
+        }
       }
     }
+
+    const unknownPath = '/non-existent-test-url-12345';
+    const unknownResponse = await fetchHtml(`${BASE_URL}${unknownPath}`);
+    if (unknownResponse.status !== 404) {
+      failures.push(`${unknownPath}: expected 404 for unknown URL, got ${unknownResponse.status}`);
+    }
+
     if (failures.length > 0) {
       throw new Error(`Prerender server verification failed (showing first 20):\n- ${failures.slice(0, 20).join('\n- ')}`);
     }

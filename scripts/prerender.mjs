@@ -2,20 +2,11 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import puppeteer from 'puppeteer';
+import { getPrerenderRoutes, toCanonicalUrl } from './route-manifest.mjs';
 
-const SITE_URL = 'https://gtabudgetpainting.ca';
 const DIST_DIR = path.resolve('dist');
 const PORT = process.env.PRERENDER_PORT ? Number(process.env.PRERENDER_PORT) : 4173;
 const BASE_URL = process.env.PRERENDER_BASE_URL ?? `http://127.0.0.1:${PORT}`;
-
-async function exists(p) {
-  try {
-    await fs.access(p);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 async function waitForHttpOk(url, timeoutMs = 60_000) {
   const start = Date.now();
@@ -35,25 +26,6 @@ async function waitForHttpOk(url, timeoutMs = 60_000) {
   }
 }
 
-function extractPathsFromSitemapXml(xml) {
-  const re = /<loc>([^<]+)<\/loc>/g;
-  const paths = [];
-  let m;
-  while ((m = re.exec(xml)) !== null) {
-    const loc = m[1].trim();
-    try {
-      const u = new URL(loc);
-      if (u.origin !== new URL(SITE_URL).origin) continue;
-      paths.push(u.pathname);
-    } catch {
-      // ignore malformed
-    }
-  }
-
-  const unique = [...new Set(paths)];
-  return unique.filter(p => !['/admin', '/cart', '/checkout'].some(prefix => p === prefix || p.startsWith(`${prefix}/`)));
-}
-
 function routeToOutputFile(routePath) {
   if (routePath === '/' || routePath === '') return path.join(DIST_DIR, 'index.html');
   const cleaned = routePath.startsWith('/') ? routePath.slice(1) : routePath;
@@ -64,39 +36,66 @@ async function ensureDirForFile(filePath) {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
 }
 
-async function gotoWithRetry(browser, url, attempts = 3) {
-  let lastErr;
-  for (let i = 0; i < attempts; i++) {
-    const page = await browser.newPage();
-    try {
-      page.setDefaultNavigationTimeout(60_000);
-      await page.goto(url, { waitUntil: 'networkidle2' });
-      await page.waitForFunction(() => document.readyState === 'complete');
-      return page;
-    } catch (err) {
-      lastErr = err;
-      try {
-        await page.close();
-      } catch {
+async function createPrerenderPage(browser) {
+  const page = await browser.newPage();
+  page.setDefaultNavigationTimeout(60_000);
+  await page.setRequestInterception(true);
+  page.on('request', request => {
+    if (/bidclips\.com/i.test(request.url())) {
+      request.abort().catch(() => {
         // ignore
-      }
-      // Small backoff before retry
-      await new Promise(r => setTimeout(r, 250 * (i + 1)));
+      });
+      return;
+    }
+    request.continue().catch(() => {
+      // ignore
+    });
+  });
+  return page;
+}
+
+async function renderRouteHtml(browser, route, attempts = 3) {
+  const url = `${BASE_URL}${route}`;
+  const expectedCanonical = toCanonicalUrl(route);
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    const page = await createPrerenderPage(browser);
+    try {
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 45_000 });
+      await page.waitForFunction(
+        expected => {
+          if (document.readyState !== 'complete') return false;
+          const canonical = document.querySelector('link[rel="canonical"]');
+          if (!canonical) return false;
+          if (canonical.getAttribute('href') !== expected) return false;
+          const root = document.getElementById('root');
+          if (!root) return false;
+          return !root.innerHTML.includes('route-loading');
+        },
+        { timeout: 30_000 },
+        expectedCanonical,
+      );
+      return await page.content();
+    } catch (error) {
+      lastError = error;
+      // eslint-disable-next-line no-console
+      console.warn(`Prerender retry ${attempt}/${attempts} failed for ${route}`);
+      await new Promise(r => setTimeout(r, 250 * attempt));
+    } finally {
+      await page.close();
     }
   }
-  throw lastErr;
+
+  const reason = lastError instanceof Error ? lastError.message : String(lastError);
+  throw new Error(`Prerender failed for ${route}: ${reason}`);
 }
 
 async function main() {
-  const sitemapPath = (await exists(path.join(DIST_DIR, 'sitemap.xml')))
-    ? path.join(DIST_DIR, 'sitemap.xml')
-    : path.resolve('public', 'sitemap.xml');
-
-  const sitemapXml = await fs.readFile(sitemapPath, 'utf8');
-  const routes = extractPathsFromSitemapXml(sitemapXml);
+  const routes = getPrerenderRoutes();
 
   if (routes.length === 0) {
-    throw new Error(`No routes found in sitemap: ${sitemapPath}`);
+    throw new Error('No prerender routes found in route manifest');
   }
 
   // Start a local preview server for dist
@@ -115,17 +114,8 @@ async function main() {
     });
 
     try {
-      const page = await browser.newPage();
-      page.setDefaultNavigationTimeout(60_000);
-
       for (const route of routes) {
-        const url = `${BASE_URL}${route}`;
-        await page.goto(url, { waitUntil: 'networkidle0' });
-
-        // Give Helmet a beat to flush tags in case of late effects
-        await page.waitForFunction(() => document.readyState === 'complete');
-
-        const html = await page.content();
+        const html = await renderRouteHtml(browser, route);
         const outFile = routeToOutputFile(route);
         await ensureDirForFile(outFile);
         await fs.writeFile(outFile, html, 'utf8');

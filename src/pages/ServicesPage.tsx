@@ -1,11 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getServicesByCategory } from '../data/services';
 import SEO from '../components/SEO';
 import './ServicesPage.css';
 
 const ServicesPage = () => {
-  const navigate = useNavigate();
-
   // Get services by category
   const interiorServices = getServicesByCategory('interior');
   const exteriorServices = getServicesByCategory('exterior');
@@ -34,29 +32,29 @@ const ServicesPage = () => {
           <p className="section-subtitle">Select the type of painting service you need to get started with your project</p>
           
           <div className="services-categories-grid">
-            <div className="category-card" onClick={() => navigate('/services/interior-painting')}>
+            <Link className="category-card" to="/services/interior-painting">
               <div className="category-icon">
               </div>
               <h4>Interior Painting</h4>
               <p>Transform your indoor spaces with professional interior painting services</p>
               <div className="category-count">{interiorServices.length} Services</div>
-            </div>
+            </Link>
 
-            <div className="category-card" onClick={() => navigate('/services/exterior-painting')}>
+            <Link className="category-card" to="/services/exterior-painting">
               <div className="category-icon">
               </div>
               <h4>Exterior Painting</h4>
               <p>Protect and beautify your home's exterior with our expert exterior painting services</p>
               <div className="category-count">{exteriorServices.length} Services</div>
-            </div>
+            </Link>
 
-            <div className="category-card" onClick={() => navigate('/services/custom-painting')}>
+            <Link className="category-card" to="/services/custom-painting">
               <div className="category-icon">
               </div>
               <h4>Custom Project</h4>
               <p>Need something specific? We offer custom painting solutions tailored to your unique requirements</p>
               <div className="category-count">{customServices.length} Services</div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

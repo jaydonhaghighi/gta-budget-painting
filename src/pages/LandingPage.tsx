@@ -1,16 +1,12 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import SEO from '../components/SEO';
 import './LandingPage.css';
 import '../pages/ContactUsPage.css';
-import { db } from '../firebase';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
 import { allServices, type Service } from '../data/services';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-  const [showPromoBanner, setShowPromoBanner] = useState(false);
-  const [bannerDismissed, setBannerDismissed] = useState(false);
   const [isHowItWorksExpanded, setIsHowItWorksExpanded] = useState(false);
   const [isWhyChooseUsExpanded, setIsWhyChooseUsExpanded] = useState(false);
   const [isAreasServedExpanded, setIsAreasServedExpanded] = useState(false);
@@ -112,13 +108,18 @@ const LandingPage = () => {
         throw new Error('Please provide your name, a contact (email or phone), and a brief message.');
       }
 
-      const inquiryId = (await addDoc(collection(db, 'inquiries'), {
+      const [{ db }, firestore] = await Promise.all([
+        import('../firebase'),
+        import('firebase/firestore'),
+      ]);
+
+      const inquiryId = (await firestore.addDoc(firestore.collection(db, 'inquiries'), {
         name: inqName,
         email: inqEmail || null,
         phone: inqPhone || null,
         message: inqMessage,
         source: 'landing-page-quick-form',
-        createdAt: Timestamp.fromDate(new Date())
+        createdAt: firestore.Timestamp.fromDate(new Date())
       })).id;
 
       // Send emails via Cloud Function
@@ -226,84 +227,6 @@ const LandingPage = () => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Update body class when banner visibility changes
-  useEffect(() => {
-    if (showPromoBanner && !bannerDismissed) {
-      document.body.classList.add('promo-banner-visible');
-    } else {
-      document.body.classList.remove('promo-banner-visible');
-    }
-    return () => {
-      document.body.classList.remove('promo-banner-visible');
-    };
-  }, [showPromoBanner, bannerDismissed]);
-
-  // Position banner directly below header
-  useEffect(() => {
-    const updateBannerPosition = () => {
-      const header = document.querySelector('.header');
-      const banner = document.querySelector('.sticky-promo-banner') as HTMLElement;
-      if (header && banner) {
-        const headerHeight = header.getBoundingClientRect().height;
-        banner.style.top = `${headerHeight}px`;
-      }
-    };
-
-    // Small delay to ensure DOM is ready
-    const timeoutId = setTimeout(() => {
-      updateBannerPosition();
-    }, 100);
-    
-    // Update on resize
-    window.addEventListener('resize', updateBannerPosition);
-    
-    // Also update when banner visibility changes
-    if (showPromoBanner) {
-      updateBannerPosition();
-    }
-    
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('resize', updateBannerPosition);
-    };
-  }, [showPromoBanner]);
-
-  // Scroll-triggered banner logic - show after scrolling past hero
-  useEffect(() => {
-    if (bannerDismissed) {
-      setShowPromoBanner(false);
-      return;
-    }
-
-    const handleScroll = () => {
-      const heroSection = document.querySelector('.booking-hero');
-      if (heroSection) {
-        const rect = heroSection.getBoundingClientRect();
-        // Show banner when user scrolls past the hero section
-        const scrolledPastHero = rect.bottom <= 0;
-        setShowPromoBanner(scrolledPastHero);
-      } else {
-        // Fallback: show after scrolling 400px
-        const scrollY = window.scrollY || window.pageYOffset;
-        setShowPromoBanner(scrollY > 400);
-      }
-    };
-
-    // Small delay to ensure DOM is ready
-    const timeoutId = setTimeout(() => {
-      handleScroll();
-    }, 100);
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [bannerDismissed]);
-
   // Responsive service carousel sizing
   useEffect(() => {
     const updateServicesPerView = () => {
@@ -350,12 +273,6 @@ const LandingPage = () => {
 
     return () => clearInterval(interval);
   }, [reviews.length]);
-
-  const handleBannerDismiss = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setBannerDismissed(true);
-    setShowPromoBanner(false);
-  };
 
   const getServiceRoute = (service: Service) => {
     if (service.category === 'exterior') {
@@ -409,38 +326,19 @@ const LandingPage = () => {
         description="Need painting on a budget with fast turnaround? We specialize in small residential jobs across Toronto & the GTA, with clean work, great results, and free quotes."
         canonical="/"
       />
-
-      {/* Sticky Promotion Banner */}
-      <div className={`sticky-promo-banner ${showPromoBanner ? 'show' : 'hidden'}`}>
-        <div className="promo-banner-content">
-          <span 
-            className="promo-banner-text"
-            onClick={() => navigate('/specials')}
-            style={{ cursor: 'pointer' }}
-          >
-            {/* <img src="/megaphone.svg" alt="Megaphone" className="promo-banner-icon" /> */}
-            Limited Time Deal! <span className="deal-bubble">15% off $1000+ painting jobs</span>
-          </span>
-          <button className="promo-banner-close" onClick={handleBannerDismiss}>×</button>
-        </div>
-      </div>
-      
       {/* Hero Section */}
       <section className="booking-hero">
         <div className="container">
           <h1>Do You Need Affordable Painters In The GTA?</h1>
-          <h1>We Offer The Following Services</h1>
+          <h2>We Offer The Following Services</h2>
           <p className="hero-subtitle">We keep overhead low so you get fair pricing and quality results without the runaround. Jobs start at just $250, with straightforward quotes, no hassle, and zero sales pitch.</p>
           
           {/* Contact Info */}
           <div className="hero-contact">
-            <button 
-              className="hero-services-btn"
-              onClick={() => navigate('/services')}
-            >
+            <Link className="hero-services-btn" to="/services">
               <img src="/paint-roller.svg" alt="Paint Roller" className="hero-services-icon" />
               Our Services
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -473,13 +371,12 @@ const LandingPage = () => {
                   />
                   <h3>{service.name}</h3>
                   <p>{getShortDescription(service.description)}</p>
-                  <button
-                    type="button"
+                  <Link
                     className="service-preview-btn"
-                    onClick={() => navigate(getServiceRoute(service))}
+                    to={getServiceRoute(service)}
                   >
                     View Service
-                  </button>
+                  </Link>
                 </article>
               ))}
             </div>
@@ -618,12 +515,9 @@ const LandingPage = () => {
                     </button>
                     <div className={`step-card-content ${expandedSteps[1] ? 'open' : ''}`}>
                       <p>Explore our wide range of interior and exterior painting services.</p>
-                      <button 
-                        className="step-action-btn"
-                        onClick={() => navigate('/services')}
-                      >
+                      <Link className="step-action-btn" to="/services">
                         View Services
-                      </button>
+                      </Link>
                     </div>
               </div>
 
@@ -999,7 +893,7 @@ const LandingPage = () => {
                       </div>
                     </div>
                     <div className="areas-image">
-                      <img src="/bc3b5c629ebb79ac398492a345c50337.jpg" alt="Beautiful painted kitchen interior" className="areas-photo" />
+                      <img src="/bc3b5c629ebb79ac398492a345c50337.webp" alt="Beautiful painted kitchen interior" className="areas-photo" />
                     </div>
                   </div>
                 </div>
