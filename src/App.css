@@ -81,24 +81,24 @@ body {
     radial-gradient(circle at 10% -10%, rgba(232, 216, 229, 0.45), transparent 50%),
     radial-gradient(circle at 95% 10%, rgba(234, 224, 216, 0.36), transparent 45%),
     var(--color-background);
-  padding-top: 112px;
+  padding-top: calc(112px + env(safe-area-inset-top));
 }
 
 @media (max-width: 1024px) {
   body {
-    padding-top: 102px;
+    padding-top: calc(102px + env(safe-area-inset-top));
   }
 }
 
 @media (max-width: 768px) {
   body {
-    padding-top: 92px;
+    padding-top: calc(92px + env(safe-area-inset-top));
   }
 }
 
 @media (max-width: 540px) {
   body {
-    padding-top: 84px;
+    padding-top: calc(84px + env(safe-area-inset-top));
   }
 }
 

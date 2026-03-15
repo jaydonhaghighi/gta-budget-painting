@@ -4,5 +4,4 @@
   --scp-hero-image: url('/exterior.webp');
   --scp-hero-overlay: rgba(56, 48, 66, 0.48);
   --scp-hero-orb: radial-gradient(circle at 35% 30%, rgba(162, 169, 149, 0.28), rgba(162, 169, 149, 0));
-  --scp-showcase-background: linear-gradient(165deg, #eef2ef, #f5ede8);
 }

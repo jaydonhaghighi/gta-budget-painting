@@ -11,30 +11,6 @@ const serviceTypeLabel: Record<'calculated' | 'flat-rate' | 'custom-quote', stri
   'custom-quote': 'Custom Quote',
 };
 
-const interiorShowcase = [
-  {
-    title: 'Kitchen Transformation',
-    image: '/gallery/gbp-work-8-after.jpeg',
-    alt: 'Freshly painted kitchen interior with bright walls',
-  },
-  {
-    title: 'Bedroom Refresh',
-    image: '/services/bedroom/bedroom.jpeg',
-    alt: 'Calm bedroom after professional interior painting',
-  },
-  {
-    title: 'Bathroom Update',
-    image: '/gallery/gbp-work-5-after.jpeg',
-    alt: 'Modern bathroom with clean painted finish',
-  },
-];
-
-const trustPillars = [
-  'Furniture and flooring protection from start to finish',
-  'Low-odor products and tidy daily cleanup routines',
-  'Clear scheduling and respectful in-home communication',
-];
-
 const InteriorPaintingPage = () => {
   const interiorServices = useMemo(() => getServicesByCategory('interior'), []);
 
@@ -113,36 +89,6 @@ const InteriorPaintingPage = () => {
             >
               Call 647-675-8101
             </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="scp-trust">
-        <div className="container scp-trust-grid">
-          {trustPillars.map((pillar) => (
-            <article key={pillar} className="scp-trust-card">
-              <p>{pillar}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="scp-showcase" aria-label="Interior painting highlights">
-        <div className="container">
-          <div className="scp-heading">
-            <p className="scp-eyebrow">Project Highlights</p>
-            <h2>Interior transformations that feel lighter, cleaner, and more refined.</h2>
-          </div>
-
-          <div className="scp-showcase-grid">
-            {interiorShowcase.map((item) => (
-              <article key={item.title} className="scp-showcase-card">
-                <img src={item.image} alt={item.alt} loading="lazy" />
-                <div className="scp-showcase-copy">
-                  <h3>{item.title}</h3>
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>

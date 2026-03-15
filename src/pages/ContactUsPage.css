@@ -304,4 +304,13 @@
   .cu-partner-card img {
     margin: 0 auto;
   }
+
+  .cu-info-grid a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
 }

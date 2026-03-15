@@ -1880,3 +1880,199 @@
     height: 15px;
   }
 }
+
+/* Mobile UX polish overrides to keep controls readable and touch-friendly */
+@media (max-width: 768px) {
+  .checkout-page {
+    padding: 1.25rem 0 2rem;
+  }
+
+  .checkout-page .container {
+    width: min(1200px, calc(100% - 1.2rem));
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .checkout-back-section {
+    padding: 0;
+    margin-bottom: 0.75rem;
+  }
+
+  .checkout-back-btn {
+    min-height: 44px;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
+    font-size: 0.92rem;
+  }
+
+  .checkout-header {
+    padding: 0.75rem 0.25rem 1.15rem;
+  }
+
+  .checkout-header h1 {
+    font-size: clamp(1.5rem, 6vw, 1.95rem);
+    line-height: 1.2;
+  }
+
+  .checkout-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .prefer-call-section {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .prefer-call-text {
+    font-size: 1rem;
+  }
+
+  .call-button {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .checkout-form-section {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  .checkout-page .form-section {
+    padding: 0 0 0.75rem 0;
+  }
+
+  .checkout-page .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .section-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .section-header h3 {
+    font-size: 1.15rem;
+    line-height: 1.3;
+    gap: 0.5rem;
+  }
+
+  .checkout-page .form-group {
+    gap: 0.38rem;
+  }
+
+  .checkout-page .form-group label {
+    font-size: 0.86rem;
+    line-height: 1.3;
+  }
+
+  .checkout-page .form-group input,
+  .checkout-page .form-group select,
+  .checkout-page .form-group textarea {
+    min-height: 44px;
+    padding: 0.72rem 0.78rem;
+    font-size: 0.95rem;
+  }
+
+  .checkout-page .form-actions {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .checkout-page .form-actions .btn-secondary,
+  .checkout-page .form-actions .btn-primary {
+    width: 100%;
+    min-height: 46px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .summary-card {
+    border-radius: 14px;
+    padding: 1rem;
+  }
+
+  .summary-header {
+    margin-bottom: 0.95rem;
+    padding-bottom: 0.55rem;
+  }
+
+  .summary-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .item-count {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .summary-item {
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .item-info h4 {
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+
+  .item-price {
+    font-size: 1rem;
+  }
+
+  .total-row {
+    font-size: 0.9rem;
+  }
+
+  .total-row.final-total {
+    font-size: 1.05rem;
+  }
+
+  .summary-footer {
+    padding: 1rem;
+  }
+
+  .summary-note {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-page .container {
+    max-width: 100% !important;
+    width: calc(100% - 1rem);
+    margin: 0 auto !important;
+    padding: 0 0 0.75rem 0 !important;
+  }
+
+  .checkout-header h1 {
+    font-size: clamp(1.38rem, 7vw, 1.75rem);
+  }
+
+  .checkout-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .checkout-back-btn {
+    font-size: 0.88rem;
+  }
+
+  .section-header h3 {
+    font-size: 1.05rem;
+  }
+
+  .checkout-page .form-group label {
+    font-size: 0.84rem;
+  }
+
+  .checkout-page .form-group input,
+  .checkout-page .form-group select,
+  .checkout-page .form-group textarea {
+    font-size: 0.92rem;
+  }
+}

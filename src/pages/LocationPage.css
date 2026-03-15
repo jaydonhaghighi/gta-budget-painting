@@ -829,6 +829,42 @@
   }
 }
 
+@media (max-width: 768px) {
+  .location-carousel-dots {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .location-dot {
+    width: 40px !important;
+    height: 40px !important;
+    flex: 0 0 40px;
+    padding: 0 !important;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .location-dot.location-dot-active {
+    width: 40px !important;
+  }
+
+  .location-dot::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #d6d6d6;
+    transition: background-color 0.2s ease;
+  }
+
+  .location-dot.location-dot-active::before {
+    background: var(--lp-soft);
+  }
+}
+
 @media (max-width: 640px) {
   .location-container {
     width: calc(100% - 24px);

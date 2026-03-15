@@ -313,11 +313,6 @@ const LandingPage = () => {
               </a>
             </div>
 
-            <div className="lp-hero-notes">
-              <span>5-star client feedback</span>
-              <span>Fast scheduling across GTA</span>
-              <span>Transparent pricing</span>
-            </div>
           </div>
 
           <div className="lp-hero-visual reveal">

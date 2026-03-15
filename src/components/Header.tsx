@@ -166,6 +166,14 @@ const Header = () => {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [isCartOpen, isMobileMenuOpen]);
 
+  useEffect(() => {
+    const shouldLockScroll = isCartOpen || isMobileMenuOpen;
+    document.body.classList.toggle('header-scroll-lock', shouldLockScroll);
+    return () => {
+      document.body.classList.remove('header-scroll-lock');
+    };
+  }, [isCartOpen, isMobileMenuOpen]);
+
   const scrollToSection = (hash: string) => {
     const section = document.querySelector(hash);
     if (!section) return;

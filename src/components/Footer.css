@@ -227,6 +227,38 @@
     grid-column: auto;
   }
 
+  .footer-links a,
+  .footer-contact-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.18rem 0;
+  }
+
+  .footer-contact-list li {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .footer-contact-list a,
+  .partner-link {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .footer-socials a {
+    min-height: 40px;
+    padding: 0.4rem 0.74rem;
+  }
+
+  .partner-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+  }
+
   .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
@@ -245,5 +277,10 @@
   .footer-top-actions .btn-primary,
   .footer-top-actions .btn-secondary {
     width: 100%;
+  }
+
+  .footer-links,
+  .footer-contact-list {
+    gap: 0.36rem;
   }
 }

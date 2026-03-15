@@ -98,7 +98,7 @@ const ServicesPage = () => {
       </section>
 
       <section className="sp-pillars">
-        <div className="container sp-pillars-grid">
+        <div className="sp-pillars-grid">
           <article>
             <h3>Clean Work Standards</h3>
             <p>Protective prep, tidy execution, and daily cleanup that respects your home.</p>

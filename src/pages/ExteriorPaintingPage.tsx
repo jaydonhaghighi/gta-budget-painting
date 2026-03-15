@@ -11,30 +11,6 @@ const serviceTypeLabel: Record<'calculated' | 'flat-rate' | 'custom-quote', stri
   'custom-quote': 'Custom Quote',
 };
 
-const exteriorShowcase = [
-  {
-    title: 'Front Entrance Refresh',
-    image: '/services/front-door/front-door.jpeg',
-    alt: 'Freshly painted front door with elegant curb appeal',
-  },
-  {
-    title: 'Fence Renewal',
-    image: '/services/fence/739cc85f924bf84f79f5414f52957d1c.webp',
-    alt: 'Exterior fence after weather-resistant paint application',
-  },
-  {
-    title: 'Driveway Protection',
-    image: '/services/driveway/bac56abdd6adb37858835aacae49dcc8.jpg',
-    alt: 'Sealed and refreshed driveway surface',
-  },
-];
-
-const trustPillars = [
-  'Weather-ready prep and durable exterior-grade products',
-  'Clean site management with respectful property protection',
-  'Clear timelines and communication from estimate to completion',
-];
-
 const ExteriorPaintingPage = () => {
   const exteriorServices = useMemo(() => getServicesByCategory('exterior'), []);
 
@@ -113,36 +89,6 @@ const ExteriorPaintingPage = () => {
             >
               Call 647-675-8101
             </a>
-          </div>
-        </div>
-      </section>
-
-      <section className="scp-trust">
-        <div className="container scp-trust-grid">
-          {trustPillars.map((pillar) => (
-            <article key={pillar} className="scp-trust-card">
-              <p>{pillar}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="scp-showcase" aria-label="Exterior painting highlights">
-        <div className="container">
-          <div className="scp-heading">
-            <p className="scp-eyebrow">Project Highlights</p>
-            <h2>Exterior updates that make homes feel fresh and well cared for.</h2>
-          </div>
-
-          <div className="scp-showcase-grid">
-            {exteriorShowcase.map((item) => (
-              <article key={item.title} className="scp-showcase-card">
-                <img src={item.image} alt={item.alt} loading="lazy" />
-                <div className="scp-showcase-copy">
-                  <h3>{item.title}</h3>
-                </div>
-              </article>
-            ))}
           </div>
         </div>
       </section>

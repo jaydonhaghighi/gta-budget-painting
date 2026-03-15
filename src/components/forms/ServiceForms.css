@@ -4550,6 +4550,7 @@
 .service-form-content .front-door-count-btn {
   width: 34px;
   height: 34px;
+  flex: 0 0 34px;
   border: 1px solid rgba(132, 113, 148, 0.3) !important;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.94);
@@ -4805,5 +4806,36 @@
   .service-form-content .front-door-btn-proceed,
   .service-form-content .btn-add-bedroom {
     width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-form-content .count-btn,
+  .service-form-content .interior-door-count-btn,
+  .service-form-content .front-door-count-btn {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    font-size: 1.08rem;
+  }
+
+  .service-form-content .count-input input[type='number'],
+  .service-form-content .interior-door-count-input-field,
+  .service-form-content .front-door-count-input-field {
+    min-height: 44px;
+  }
+
+  .service-form-content .checkbox-label {
+    min-height: 44px;
+    padding: 0.72rem 0.78rem !important;
+    align-items: flex-start;
+    gap: 0.72rem;
+  }
+
+  .service-form-content .checkbox-label input[type='checkbox'],
+  .service-form-content .checkbox-label input[type='radio'] {
+    width: 20px;
+    height: 20px;
+    margin-top: 0.06rem;
   }
 }

@@ -2,7 +2,6 @@
   --scp-hero-image: url('/interior.jpeg');
   --scp-hero-overlay: rgba(60, 47, 70, 0.5);
   --scp-hero-orb: radial-gradient(circle at 25% 25%, rgba(176, 143, 174, 0.3), rgba(176, 143, 174, 0));
-  --scp-showcase-background: linear-gradient(165deg, #f7eef3, #f7f1ea);
 
   background: var(--color-background);
 }
@@ -82,64 +81,6 @@
 
 .scp-hero-actions .btn-secondary {
   background: rgba(255, 255, 255, 0.9);
-}
-
-.scp-trust {
-  padding-top: 1rem;
-}
-
-.scp-trust-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.7rem;
-}
-
-.scp-trust-card {
-  border-radius: 16px;
-  border: 1px solid rgba(132, 113, 148, 0.2);
-  background: rgba(255, 255, 255, 0.84);
-  padding: 0.9rem;
-  box-shadow: var(--shadow-soft);
-}
-
-.scp-trust-card p {
-  font-size: 0.88rem;
-  color: var(--color-text-dark);
-  font-weight: 600;
-}
-
-.scp-showcase {
-  background: var(--scp-showcase-background);
-  overflow: clip;
-}
-
-.scp-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.scp-showcase-card {
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid rgba(132, 113, 148, 0.2);
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: var(--shadow-soft);
-}
-
-.scp-showcase-card img {
-  width: 100%;
-  height: clamp(180px, 24vw, 230px);
-  object-fit: cover;
-  display: block;
-}
-
-.scp-showcase-copy {
-  padding: 0.85rem;
-}
-
-.scp-showcase-copy h3 {
-  font-size: 1.2rem;
 }
 
 .scp-services {
@@ -257,16 +198,12 @@
 }
 
 @media (max-width: 1024px) {
-  .scp-trust-grid,
-  .scp-showcase-grid,
   .scp-service-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 @media (max-width: 720px) {
-  .scp-trust-grid,
-  .scp-showcase-grid,
   .scp-service-grid {
     grid-template-columns: 1fr;
   }

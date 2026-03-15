@@ -4,5 +4,4 @@
   --scp-hero-image: url('/interior.jpeg');
   --scp-hero-overlay: rgba(60, 47, 70, 0.5);
   --scp-hero-orb: radial-gradient(circle at 25% 25%, rgba(176, 143, 174, 0.3), rgba(176, 143, 174, 0));
-  --scp-showcase-background: linear-gradient(165deg, #f7eef3, #f7f1ea);
 }
