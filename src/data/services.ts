@@ -4,6 +4,8 @@ export type ServiceType = 'calculated' | 'flat-rate' | 'custom-quote';
 export interface Service {
   id: string;
   name: string;
+  seoTitle?: string; // Optional route-level SEO title fragment
+  seoH1?: string; // Optional SEO-focused H1 on service detail page
   type: ServiceType;
   icon: string;
   category: 'interior' | 'exterior' | 'specialty';
@@ -82,20 +84,26 @@ export const allServices: Service[] = [
   {
     id: 'stucco-ceiling-removal',
     name: 'Popcorn Ceiling Removal',
+    seoTitle: 'Popcorn Ceiling Removal in Toronto & GTA',
+    seoH1: 'Popcorn Ceiling Removal in Toronto & GTA',
     type: 'calculated',
     icon: '',
     category: 'interior',
     backgroundImage: '/services/stucco-ceiling-removal/ceiling-removal.jpeg',
     description: 'Professional stucco ceiling removal services that transform outdated textured ceilings into smooth, modern surfaces.',
+    seoDescription: 'Professional popcorn ceiling removal in Toronto and the GTA. We remove textured ceilings and deliver clean, smooth, modern finishes ready for painting.',
   },
   {
     id: 'bathroom-vanity-cabinet',
     name: 'Bathroom Vanity Painting',
+    seoTitle: 'Bathroom Vanity Painting in Toronto & GTA',
+    seoH1: 'Bathroom Vanity Painting in Toronto & GTA',
     type: 'calculated',
     icon: '',
     category: 'interior',
     backgroundImage: '/services/bathroom-vanity/bathroom-vanity.jpeg',
     description: 'Professional bathroom vanity cabinet painting services that refresh and modernize your bathroom storage with expert techniques and quality finishes.',
+    seoDescription: 'Refresh your bathroom vanity cabinets in Toronto and the GTA without full replacement. Durable cabinet painting with smooth, moisture-resistant finishes and fast turnaround.',
   },
   {
     id: 'stairway-painting',
@@ -120,12 +128,14 @@ export const allServices: Service[] = [
   {
     id: 'drywall-repair',
     name: 'Drywall Repair',
+    seoTitle: 'Drywall Repair in Toronto & GTA',
+    seoH1: 'Drywall Repair in Toronto & GTA',
     type: 'calculated',
     icon: '',
     category: 'interior',
     backgroundImage: '/services/drywall-repair/66cf3bde7c2b864607ad0968_669e04cf4fd10614a10c59cd_drywall-repair-project-overview.jpg',
     description: 'Professional drywall repair services that fix holes, cracks, and damage to restore your walls to perfect condition before painting.',
-    seoDescription: 'Professional drywall repair services in Toronto and the GTA. Our expert painters specialize in drywall repair that fixes holes, cracks, and damage to restore your walls to perfect condition. We use professional techniques, quality materials, and proper finishing to ensure seamless repairs that are ready for painting. Whether you need small hole repairs, large patch work, or crack repairs, our licensed and insured team delivers exceptional results. Serving residential properties across Toronto, Mississauga, Brampton, and surrounding areas with competitive pricing.'
+    seoDescription: 'Need drywall repair in Toronto or the GTA? We fix holes, cracks, dents, and water-damaged walls, then prepare surfaces for a smooth paint-ready finish. Fast scheduling and free quotes.'
   },
   
   // Flat Rate Services (Interior)
@@ -161,12 +171,14 @@ export const allServices: Service[] = [
   {
     id: 'driveway-sealing',
     name: 'Driveway Sealing',
+    seoTitle: 'Driveway Sealing in Toronto & GTA',
+    seoH1: 'Driveway Sealing in Toronto & GTA',
     type: 'calculated',
     icon: '',
     category: 'exterior',
     backgroundImage: '/services/driveway/bac56abdd6adb37858835aacae49dcc8.jpg',
     description: 'Protect and refresh your asphalt driveway with professional sealing. Choose a driveway size and add optional crack filling, oil-stain primer, second coat, and hand edging.',
-    seoDescription: 'Professional driveway sealing services in Toronto and the GTA. Protect your asphalt driveway from weather, salt, UV damage, and wear with a fresh coat of sealer. Choose from common driveway sizes with optional add-ons like crack filling, oil-stain primer, second coat, and hand edging for a clean finish. Serving homeowners across Toronto, Mississauga, Brampton, Vaughan, and surrounding areas.'
+    seoDescription: 'Protect your asphalt driveway in Toronto and the GTA with professional sealing. Prevent cracking, fading, salt damage, and water penetration with clean-edged sealcoat application.'
   },
   
   // Custom Quote Services

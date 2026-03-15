@@ -20,7 +20,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
 ## 1) Critical Indexing Issues
 
 ### 1.1 Missing prerender coverage for valid indexable routes
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Critical
 - Why it matters:
   - Multiple valid routes serve homepage metadata/content to crawlers instead of route-specific HTML.
@@ -46,7 +46,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Ensure all indexable routes are included.
 
 ### 1.2 Soft-404 behavior (unknown URLs return 200 homepage)
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Critical
 - Why it matters:
   - Crawl budget waste and low-quality indexing signals.
@@ -61,7 +61,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Configure hosting to return 404 for unknown non-app routes where possible.
 
 ### 1.3 Prerender pipeline instability / hangs
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Critical
 - Why it matters:
   - Build can stall in prerender, causing incomplete route HTML output.
@@ -81,7 +81,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
 ## 2) High Priority SEO Problems
 
 ### 2.1 JS-only internal navigation on key pages
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Why it matters:
   - Many cards use `onClick + navigate()` on `div/button`, reducing crawl discoverability.
@@ -94,7 +94,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Replace card wrappers with `<Link to="...">` / `<a href="...">`.
 
 ### 2.2 Sitemap omissions and route mismatch
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Why it matters:
   - Important routes are absent from sitemap and therefore absent from prerender scope.
@@ -106,7 +106,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Auto-generate sitemap from route manifest.
 
 ### 2.3 Utility routes noindex reliability
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Why it matters:
   - `/admin`, `/cart`, `/checkout` are disallowed in robots, but non-prerender paths can still serve homepage HTML.
@@ -123,7 +123,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
 ## 3) Medium Priority Improvements
 
 ### 3.1 Multiple H1s on homepage
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Medium
 - Affected file:
   - `src/pages/LandingPage.tsx`
@@ -131,7 +131,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Keep one `<h1>`, convert second heading to `<h2>`.
 
 ### 3.2 Generic service page descriptions
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Medium
 - Affected files:
   - `src/pages/ServicePage.tsx`
@@ -140,7 +140,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Use `service.seoDescription` where available for meta description.
 
 ### 3.3 URL canonicalization consistency (slash format)
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Medium
 - Why it matters:
   - Sitemap URLs redirect to slash URLs before serving content.
@@ -154,7 +154,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
 ## 4) Performance Issues (SEO-impacting)
 
 ### 4.1 Oversized JS/CSS payload
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Evidence:
   - Historical build warning is resolved, and payload is significantly improved:
@@ -174,7 +174,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Introduce route-level code splitting via `React.lazy`.
 
 ### 4.2 Large image assets
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Evidence:
   - Several images were 500KB–1.2MB; partial optimization applied on highest-impact referenced assets.
@@ -189,7 +189,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Convert to AVIF/WebP, resize, use responsive variants.
 
 ### 4.3 Third-party widget loaded globally in head
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Affected file:
   - `index.html`
@@ -197,7 +197,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Defer loading and exclude from prerender mode.
 
 ### 4.4 Cache headers for hashed assets
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Medium
 - Why it matters:
   - Live headers currently show short max-age for assets.
@@ -211,7 +211,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
 ## 5) React Architecture SEO Risks
 
 ### 5.1 SEO depends on manual prerender list quality
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Fix plan:
   - Route manifest + generated sitemap + generated prerender targets.
@@ -223,7 +223,7 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
   - Keep prerender robust now; evaluate SSR framework migration later if needed.
 
 ### 5.3 Missing explicit 404 route
-- Status: `In Progress`
+- Status: `Done`
 - Severity: High
 - Fix plan:
   - Add NotFound route and matching metadata.
@@ -233,13 +233,13 @@ Stack: React + TypeScript + Vite SPA (with prerender step)
 ## 6) Missing Metadata / Structured Data
 
 ### 6.1 Missing correct metadata on non-prerendered valid routes
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Critical
 - Fix plan:
   - Ensure these routes are prerendered and included in sitemap.
 
 ### 6.2 Structured data not route-specific
-- Status: `In Progress`
+- Status: `Done`
 - Severity: Medium
 - Affected file:
   - `index.html` (global LocalBusiness schema only)
@@ -282,7 +282,7 @@ Use this section after each deployment.
 - [x] sitemap contains all indexable routes and no non-indexable routes
 - [x] unknown URL returns proper 404 behavior (not homepage 200) in local `dist` check
 - [x] route source HTML has correct title, canonical, description, H1 in local verifier check
-- [ ] `npm run verify:live` passes against production domain
+- [x] `npm run verify:live` passes against production domain
 
 ### Search Console checks
 - [ ] URL Inspection passes for homepage
@@ -290,6 +290,10 @@ Use this section after each deployment.
 - [ ] URL Inspection passes for `/specials`
 - [ ] URL Inspection passes for each missing-service page
 - [ ] Page indexing report shows decline in soft 404 / excluded anomalies
+
+### Automation checks
+- [x] GitHub Action runs live SEO verification automatically after successful production deploys
+- [x] Daily scheduled live SEO verification is configured
 
 ### Notes
 - 2026-03-14: Implemented route-manifest-driven sitemap/prerender pipeline, added missing indexable routes, switched prerender navigation strategy to avoid widget-related hangs, and added app-level `*` NotFound page with `noindex`.
@@ -331,3 +335,9 @@ Use this section after each deployment.
 - 2026-03-14: Current production baseline fails `verify:live` (44 issues): route canonical mismatches across indexable URLs plus unknown-route 200 behavior, consistent with stale/old production output.
 - 2026-03-14: Normalized canonical URL format to trailing slash for non-root routes in `SEO.tsx`, sitemap generation, and prerender verification to match static-host URL behavior.
 - 2026-03-14: Updated `verify:live` redirect handling to follow one expected slash-normalization redirect and then validate final-page canonical/metadata; failures now isolate true production canonical/indexing problems.
+- 2026-03-14: Post-deploy live verification now passes: `npm run verify:live` reports all 44 indexable routes valid on `https://gtabudgetpainting.ca`.
+- 2026-03-14: Confirmed utility routes return `X-Robots-Tag: noindex, nofollow` and cache headers on `/assets/*` are `public, max-age=31536000, immutable`.
+- 2026-03-14: Added `.github/workflows/seo-live-verification.yml` to run `npm run verify:live` automatically after successful main deploy workflows and daily on schedule (with retry window for CDN propagation).
+- 2026-03-14: Implemented SEO Top-10 optimization items 1-3 (`/services/`, `/specials/`, and `drywall-repair`) with updated metadata/headings and SEO-specific service title/H1 support; `npm run build` and `npm run verify:live` both pass after changes.
+- 2026-03-15: Implemented SEO Top-10 optimization items 4-6 (`stucco-ceiling-removal`, `bathroom-vanity-cabinet`, `driveway-sealing`) using `seoTitle`/`seoH1`/`seoDescription` + service-specific H2 subheadings; `npm run build`, `npm run verify:prerender`, and `npm run verify:live` pass.
+- 2026-03-15: Implemented SEO Top-10 optimization items 7-10 via city-specific metadata/H1 overrides in `LocationPage.tsx` for Toronto, Mississauga, Brampton, and North York; build/prerender/live verification pass after update.

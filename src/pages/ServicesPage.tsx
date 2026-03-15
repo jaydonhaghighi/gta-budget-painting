@@ -13,15 +13,16 @@ const ServicesPage = () => {
   return (
     <div className="services-page">
       <SEO
-        title="Budget Painting Services Toronto & GTA | Fast Turnaround | GTA Budget Painting"
-        description="Explore budget-friendly interior, exterior, and custom painting services across the Greater Toronto Area. Fast turnaround, great results, and free quotes."
+        title="House Painting Services in Toronto & GTA | Free Quotes"
+        description="Affordable interior, exterior, and custom house painting services across Toronto and the GTA. Fast turnaround, transparent pricing, and free estimates."
         canonical="/services"
       />
       {/* Hero Section */}
       <section className="all-services-hero">
         <div className="container">
-          <h1>Our Painting Services</h1>
+          <h1>Affordable House Painting Services in Toronto & GTA</h1>
           <p className="hero-subtitle">Professional painting for small residential jobs that won't break the bank. Get free instant quotes from our estimator calculators or from our licensed & insured professionals.</p>
+          <h2 className="section-subtitle">Interior, Exterior, and Custom Painting for Small Residential Jobs</h2>
         </div>
       </section>
 

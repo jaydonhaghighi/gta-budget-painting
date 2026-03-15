@@ -1,0 +1,45 @@
+name: SEO Live Verification
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy to Firebase Hosting
+      - Deploy to Firebase Hosting on merge
+    types:
+      - completed
+  workflow_dispatch:
+  schedule:
+    - cron: "0 14 * * *" # Daily at 14:00 UTC
+
+jobs:
+  verify_live:
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verify live SEO with retries
+        run: |
+          set -euo pipefail
+          attempt=1
+          max_attempts=5
+          while [ "$attempt" -le "$max_attempts" ]; do
+            echo "Running live SEO verification (attempt ${attempt}/${max_attempts})..."
+            if npm run verify:live; then
+              echo "Live SEO verification passed."
+              exit 0
+            fi
+            if [ "$attempt" -lt "$max_attempts" ]; then
+              echo "Verification failed; waiting 60s for CDN/deploy propagation..."
+              sleep 60
+            fi
+            attempt=$((attempt + 1))
+          done
+          echo "Live SEO verification failed after ${max_attempts} attempts."
+          exit 1

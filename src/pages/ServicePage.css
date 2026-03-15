@@ -250,6 +250,14 @@
   color: #1a202c;
 }
 
+.service-hero-subheading {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-steel-blue);
+  line-height: 1.35;
+}
+
 .service-description {
   color: #718096;
   margin: 0;

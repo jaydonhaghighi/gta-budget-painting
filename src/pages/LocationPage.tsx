@@ -18,6 +18,33 @@ const LocationPage = () => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
+  const citySeoOverrides: Record<string, { title: string; description: string; h1: string }> = {
+    toronto: {
+      title: 'Toronto Painters for Small Jobs | Affordable House Painting',
+      description:
+        'Looking for affordable painters in Toronto? We handle small residential painting jobs for condos, apartments, and homes with fast turnaround and free quotes.',
+      h1: 'Affordable Painters in Toronto for Small Residential Jobs',
+    },
+    mississauga: {
+      title: 'Mississauga Painters for Small Jobs | Affordable House Painting',
+      description:
+        'Need painters in Mississauga for a small residential project? We provide interior and exterior painting with quick scheduling, fair pricing, and free estimates.',
+      h1: 'Affordable Painters in Mississauga for Small Residential Jobs',
+    },
+    brampton: {
+      title: 'Brampton Painters for Small Jobs | Affordable House Painting',
+      description:
+        'Affordable painters in Brampton for walls, ceilings, trim, and exterior touch-ups. Fast turnaround, professional results, and free quotes for small residential jobs.',
+      h1: 'Affordable Painters in Brampton for Small Residential Jobs',
+    },
+    'north-york': {
+      title: 'North York Painters for Small Jobs | Affordable House Painting',
+      description:
+        'Looking for trusted painters in North York? We complete small home painting projects quickly and affordably with clean workmanship and free estimates.',
+      h1: 'Affordable Painters in North York for Small Residential Jobs',
+    },
+  };
+
   const fastFacts = [
     {
       label: 'Fast turnaround',
@@ -266,7 +293,11 @@ const LocationPage = () => {
       ? location.pathname
       : `${location.pathname}/`;
   const fullPageUrl = `${siteUrl}${canonicalPath}`;
-  const seoDescription = `Looking for painters in ${formattedCity}? We provide affordable, high-quality residential painting for small jobs in ${formattedCity}. Get a free quote today!`;
+  const seoOverride = citySeoOverrides[citySlug];
+  const seoDescription = seoOverride?.description
+    ?? `Looking for painters in ${formattedCity}? We provide affordable, high-quality residential painting for small jobs in ${formattedCity}. Get a free quote today!`;
+  const seoTitle = seoOverride?.title ?? `Best Painters in ${formattedCity} | Affordable & Fast | GTA Budget Painting`;
+  const locationH1 = seoOverride?.h1;
 
   const locationServiceSchema = {
     '@context': 'https://schema.org',
@@ -309,7 +340,7 @@ const LocationPage = () => {
   return (
     <div className="location-page">
       <SEO
-        title={`Best Painters in ${formattedCity} | Affordable & Fast | GTA Budget Painting`}
+        title={seoTitle}
         description={seoDescription}
         canonical={location.pathname}
       />
@@ -326,7 +357,7 @@ const LocationPage = () => {
           <div className="location-hero-copy">
             <p className="location-eyebrow">GTA Budget Painting · Locations</p>
             <h1>
-              Painted to perfection in <span>{formattedCity}</span>
+              {locationH1 ? locationH1 : <>Painted to perfection in <span>{formattedCity}</span></>}
             </h1>
             <p className="location-hero-subtext">
               Professional residential painting services in {formattedCity}. Expert interior and exterior painters specializing in condos, homes, and apartments. Fast turnaround, affordable pricing, and free quotes for painting projects in {formattedCity}.

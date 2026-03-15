@@ -453,6 +453,19 @@ const ServicePage = () => {
       ?? `Professional ${service.name.toLowerCase()} in Toronto. Affordable rates, quick service, and expert results.`)
     : 'Get a quote for residential painting services in the GTA.';
 
+  const seoPageTitle = service
+    ? `${service.seoTitle ?? `${service.name} Services`} | GTA Budget Painting`
+    : 'Painting Services | GTA Budget Painting';
+
+  const serviceHeading = service?.seoH1 ?? service?.name;
+  const serviceHeroSubheadingMap: Record<string, string> = {
+    'drywall-repair': 'Patch, Sand, Prime, and Paint-Ready Wall Repairs',
+    'stucco-ceiling-removal': 'Dust-Controlled Ceiling Removal and Smooth Finishing',
+    'bathroom-vanity-cabinet': 'Cabinet Refinishing That Looks New Without Renovation Cost',
+    'driveway-sealing': 'Extend Asphalt Life With Professional Sealcoating',
+  };
+  const serviceHeroSubheading = service?.id ? serviceHeroSubheadingMap[service.id] : '';
+
   const canonicalPath = location.pathname === '/'
     ? '/'
     : location.pathname.endsWith('/')
@@ -464,8 +477,8 @@ const ServicePage = () => {
     ? {
       '@context': 'https://schema.org',
       '@type': 'Service',
-      name: service.name,
-      serviceType: service.name,
+      name: serviceHeading ?? service.name,
+      serviceType: serviceHeading ?? service.name,
       description: seoDescription,
       url: fullPageUrl,
       areaServed: 'Greater Toronto Area',
@@ -526,7 +539,7 @@ const ServicePage = () => {
   return (
     <div className="service-page">
       <SEO 
-        title={service ? `${service.name} Services | GTA Budget Painting` : 'Painting Services | GTA Budget Painting'}
+        title={seoPageTitle}
         description={seoDescription}
         canonical={location.pathname}
       />
@@ -569,7 +582,8 @@ const ServicePage = () => {
           <div className="container">
             <div className="service-form-header">
               <div>
-                <h1>{service?.name}</h1>
+                <h1>{serviceHeading}</h1>
+                {serviceHeroSubheading && <h2 className="service-hero-subheading">{serviceHeroSubheading}</h2>}
                 <p className="service-description">{service?.description}</p>
               </div>
             </div>

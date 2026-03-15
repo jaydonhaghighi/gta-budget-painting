@@ -39,14 +39,14 @@ const SpecialsPage = () => {
   return (
     <div className="specials-page">
       <SEO
-        title="Spring Specials | GTA Budget Painting"
-        description="Explore GTA Budget Painting Spring Specials and save on bundled painting packages across the GTA."
+        title="Painting Specials in Toronto & GTA | Limited-Time Packages"
+        description="Save on bundled interior painting packages in Toronto and the GTA. See current limited-time offers, pricing, and what's included."
         canonical="/specials"
       />
 
       <section className="specials-hero">
         <div className="container">
-          <h1>Spring Specials</h1>
+          <h1>Painting Specials and Package Deals in Toronto & GTA</h1>
           <p className="specials-hero-subtitle">
             Limited-time bundles designed for fast turnarounds and great value.
             Lock in your package and book your project today.
@@ -58,7 +58,7 @@ const SpecialsPage = () => {
         <div className="container">
           <div className="promotions-content">
             <div className="promotions-heading">
-              <h2>Current Deals</h2>
+              <h2>Current Painting Offers</h2>
               <p className="promotions-subtitle">
                 Freshen up your home this spring with limited-time bundles.
               </p>
