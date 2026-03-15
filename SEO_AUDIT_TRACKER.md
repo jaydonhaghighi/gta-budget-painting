@@ -1,6 +1,6 @@
 # SEO Audit Tracker
 
-Last updated: 2026-03-14  
+Last updated: 2026-03-15  
 Project: `gta-budget-painting`  
 Stack: React + TypeScript + Vite SPA (with prerender step)
 
@@ -283,6 +283,7 @@ Use this section after each deployment.
 - [x] unknown URL returns proper 404 behavior (not homepage 200) in local `dist` check
 - [x] route source HTML has correct title, canonical, description, H1 in local verifier check
 - [x] `npm run verify:live` passes against production domain
+- [x] Top-10 priority pages return updated live title/description/H1/canonical metadata
 
 ### Search Console checks
 - [ ] URL Inspection passes for homepage
@@ -341,3 +342,5 @@ Use this section after each deployment.
 - 2026-03-14: Implemented SEO Top-10 optimization items 1-3 (`/services/`, `/specials/`, and `drywall-repair`) with updated metadata/headings and SEO-specific service title/H1 support; `npm run build` and `npm run verify:live` both pass after changes.
 - 2026-03-15: Implemented SEO Top-10 optimization items 4-6 (`stucco-ceiling-removal`, `bathroom-vanity-cabinet`, `driveway-sealing`) using `seoTitle`/`seoH1`/`seoDescription` + service-specific H2 subheadings; `npm run build`, `npm run verify:prerender`, and `npm run verify:live` pass.
 - 2026-03-15: Implemented SEO Top-10 optimization items 7-10 via city-specific metadata/H1 overrides in `LocationPage.tsx` for Toronto, Mississauga, Brampton, and North York; build/prerender/live verification pass after update.
+- 2026-03-15: Deployed current `main` branch to Firebase Hosting (`gta-budget-painting`) and confirmed successful live release.
+- 2026-03-15: Post-deploy validation passes: `npm run verify:live` reports all 44 indexable routes valid, and spot checks confirm Top-10 target pages ship updated title/description/H1/canonical in live HTML.

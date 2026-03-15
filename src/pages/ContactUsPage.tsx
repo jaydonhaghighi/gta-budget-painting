@@ -123,19 +123,19 @@ const ContactUsPage: React.FC = () => {
               <div className="contact-card-content">
                 <div 
                   className="contact-item clickable-contact-item"
-                  onClick={() => window.open('tel:6473907181', '_self')}
+                  onClick={() => window.open('tel:+16476758101', '_self')}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      window.open('tel:6473907181', '_self');
+                      window.open('tel:+16476758101', '_self');
                     }
                   }}
                 >
                   <div className="contact-item-details">
                     <h4>Phone</h4>
-                    <span className="contact-value">(647) 390-7181</span>
+                    <span className="contact-value">+1 647 675-8101</span>
                     <span className="contact-action">Tap to call</span>
                   </div>
                 </div>

@@ -171,9 +171,9 @@ const Header = () => {
           </nav>
 
           {/* Phone Number */}
-          <a href="tel:6473907181" className="nav-phone">
+          <a href="tel:+16476758101" className="nav-phone">
             <img src="/telephone.png" alt="Phone" className="nav-phone-icon" />
-            Call (647) 390-7181
+            Call +1 647 675-8101
           </a>
 
           <button

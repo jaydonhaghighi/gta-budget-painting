@@ -268,7 +268,7 @@ const CheckoutPage = () => {
       });
       setSubmitError(
         error?.message || 'Failed to submit order. Please try again. ' +
-        'If the problem persists, please call us at (647) 390-7181.'
+        'If the problem persists, please call us at +1 647 675-8101.'
       )
     } finally {
       setIsSubmitting(false)
@@ -300,9 +300,9 @@ const CheckoutPage = () => {
         {/* Prefer to Call Section */}
         <div className="prefer-call-section">
           <p className="prefer-call-text">Want a Free Estimate?</p>
-          <button className="call-button" onClick={() => window.location.href = 'tel:+16473907181'}>
+          <button className="call-button" onClick={() => window.location.href = 'tel:+16476758101'}>
             <img src="/telephone.png" alt="Phone" className="call-icon" />
-            Call us (647) 390-7181
+            Call us +1 647 675-8101
           </button>
         </div>
 
@@ -630,6 +630,5 @@ const CheckoutPage = () => {
 }
 
 export default CheckoutPage
-
 
 

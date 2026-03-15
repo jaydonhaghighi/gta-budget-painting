@@ -486,7 +486,7 @@ const ServicePage = () => {
         '@type': 'LocalBusiness',
         name: 'GTA Budget Painting',
         url: siteUrl,
-        telephone: '+1-647-390-7181',
+        telephone: '+1 647 675-8101',
       },
     }
     : null;

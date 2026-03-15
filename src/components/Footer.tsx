@@ -63,9 +63,9 @@ const Footer = () => {
             <div className="contact-wrapper">
               <h4>Contact Us</h4>
               <div className="contact-items">
-                <a href="tel:6473907181" className="footer-contact-link">
+                <a href="tel:+16476758101" className="footer-contact-link">
                   <img src="/telephone.png" alt="Phone" className="footer-icon" />
-                  (647) 390-7181
+                  +1 647 675-8101
                 </a>
                 <a href="mailto:info@gtabudgetpainting.ca" className="footer-contact-link">
                   <img src="/mail.png" alt="Email" className="footer-icon" />

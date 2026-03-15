@@ -206,7 +206,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center">
-                          <a href="tel:6473907181" style="display: inline-block; padding: 12px 24px; background-color: #a6b2b5; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">📞 Call (647) 390-7181</a>
+                          <a href="tel:+16476758101" style="display: inline-block; padding: 12px 24px; background-color: #a6b2b5; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">📞 Call +1 647 675-8101</a>
                           <a href="mailto:info@gtabudgetpainting.ca" style="display: inline-block; padding: 12px 24px; background-color: #1a1a1a; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 14px; margin: 0 5px;">✉️ Email Us</a>
                         </td>
                       </tr>
@@ -221,7 +221,7 @@ export const generateCustomerEmail = (data: ServiceRequestData): string => {
                     <p style="margin: 0; color: #a6b2b5; font-size: 12px;">Professional Painting Services in the Greater Toronto Area</p>
                     <p style="margin: 15px 0 0; color: #a6b2b5; font-size: 12px;">
                       <a href="mailto:info@gtabudgetpainting.ca" style="color: #a6b2b5; text-decoration: none;">info@gtabudgetpainting.ca</a> | 
-                      <a href="tel:6473907181" style="color: #a6b2b5; text-decoration: none;">(647) 390-7181</a>
+                      <a href="tel:+16476758101" style="color: #a6b2b5; text-decoration: none;">+1 647 675-8101</a>
                     </p>
                   </td>
                 </tr>
@@ -355,7 +355,7 @@ export const generateCartCustomerEmail = (data: any): string => {
                         <td style="width: 40%; vertical-align: top; text-align: right;">
                           <h3 style="margin: 0 0 12px; color: #1a1a1a; font-size: 16px; font-weight: 600;">Contact Us</h3>
                           <p style="margin: 0 0 4px; color: #4a5355; font-size: 14px;">
-                            <a href="tel:6473907181" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">(647) 390-7181</a>
+                            <a href="tel:+16476758101" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">+1 647 675-8101</a>
                           </p>
                           <p style="margin: 0; color: #4a5355; font-size: 14px;">
                             <a href="mailto:info@gtabudgetpainting.ca" style="color: #1a1a1a; text-decoration: none; font-weight: 600;">info@gtabudgetpainting.ca</a>
@@ -985,7 +985,7 @@ export const generateInquiryCustomerEmail = (data: InquiryData): string => {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center">
-                          <a href="tel:6473907181" style="display: inline-block; padding: 12px 32px; background-color: #2C3D4B; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; margin-right: 12px;">Call (647) 390-7181</a>
+                          <a href="tel:+16476758101" style="display: inline-block; padding: 12px 32px; background-color: #2C3D4B; color: #ffffff; text-decoration: none; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px; margin-right: 12px;">Call +1 647 675-8101</a>
                           <a href="mailto:info@gtabudgetpainting.ca" style="display: inline-block; padding: 12px 32px; background-color: #ffffff; color: #2C3D4B; text-decoration: none; border: 1px solid #2C3D4B; border-radius: 4px; font-weight: 500; font-size: 14px; letter-spacing: 0.3px;">Email Us</a>
                         </td>
                       </tr>
@@ -1000,7 +1000,7 @@ export const generateInquiryCustomerEmail = (data: InquiryData): string => {
                     <p style="margin: 0 0 16px; color: #6B7280; font-size: 12px; font-weight: 300;">Professional Painting Services in the Greater Toronto Area</p>
                     <p style="margin: 0; color: #6B7280; font-size: 11px; font-weight: 300;">
                       <a href="mailto:info@gtabudgetpainting.ca" style="color: #6B7280; text-decoration: none;">info@gtabudgetpainting.ca</a> | 
-                      <a href="tel:6473907181" style="color: #6B7280; text-decoration: none;">(647) 390-7181</a>
+                      <a href="tel:+16476758101" style="color: #6B7280; text-decoration: none;">+1 647 675-8101</a>
                     </p>
                   </td>
                 </tr>

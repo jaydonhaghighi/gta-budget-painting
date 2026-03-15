@@ -132,3 +132,6 @@ Goal: improve ranking on pages with highest business/search intent after indexin
   - `npm run build`
   - `npm run verify:prerender`
   - `npm run verify:live`
+
+## Validation status
+- 2026-03-15: All 10 page-level updates are live on production and verified via `npm run verify:live` plus direct metadata spot-checks on each target URL.

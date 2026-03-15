@@ -587,7 +587,7 @@ const LandingPage = () => {
                         >
                           Send Inquiry
                         </a>
-                        <a href="tel:6473907181" className="step-contact-btn step-phone-btn">
+                        <a href="tel:+16476758101" className="step-contact-btn step-phone-btn">
                           Call Us
                         </a>
                       </div>

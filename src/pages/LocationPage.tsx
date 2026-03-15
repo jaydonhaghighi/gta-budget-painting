@@ -314,7 +314,7 @@ const LocationPage = () => {
       '@type': 'LocalBusiness',
       name: 'GTA Budget Painting',
       url: siteUrl,
-      telephone: '+1-647-390-7181',
+      telephone: '+1 647 675-8101',
     },
   };
 
@@ -363,8 +363,8 @@ const LocationPage = () => {
               Professional residential painting services in {formattedCity}. Expert interior and exterior painters specializing in condos, homes, and apartments. Fast turnaround, affordable pricing, and free quotes for painting projects in {formattedCity}.
             </p>
             <div className="location-hero-actions">
-              <a href="tel:6473907181" className="location-btn-primary">
-                Call (647) 390-7181
+              <a href="tel:+16476758101" className="location-btn-primary">
+                Call +1 647 675-8101
               </a>
               <Link to="/contact-us#quote-section" className="location-btn-secondary">
                 Send Inquiry

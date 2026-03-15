@@ -225,7 +225,7 @@ export const trackPhoneClick = (data: {
 }): void => {
   trackEvent('phone_click', {
     location: data.location,
-    phone_number: data.phone_number || '6473907181',
+    phone_number: data.phone_number || '+16476758101',
   });
 };
 
