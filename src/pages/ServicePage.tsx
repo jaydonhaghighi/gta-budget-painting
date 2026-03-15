@@ -315,9 +315,7 @@ const ServicePage = () => {
       <div className="service-page">
         <div className="service-page-header">
           <div className="container">
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-              Loading...
-            </div>
+            <div className="service-loading">Loading...</div>
           </div>
         </div>
       </div>
@@ -833,14 +831,7 @@ const ServicePage = () => {
                 </div>
 
                 {submitError && (
-                  <div className="error-message" style={{ 
-                    color: '#e53e3e', 
-                    marginBottom: '1rem', 
-                    padding: '0.75rem', 
-                    backgroundColor: '#fed7d7', 
-                    borderRadius: '8px',
-                    border: '1px solid #feb2b2'
-                  }}>
+                  <div className="error-message service-submit-error">
                     {submitError}
                   </div>
                 )}
@@ -849,10 +840,6 @@ const ServicePage = () => {
                   type="submit" 
                   className="btn-submit-booking"
                   disabled={isSubmitting}
-                  style={{ 
-                    opacity: isSubmitting ? 0.7 : 1,
-                    cursor: isSubmitting ? 'not-allowed' : 'pointer'
-                  }}
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit Quote Request'}
                 </button>

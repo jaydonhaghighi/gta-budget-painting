@@ -1,123 +1,152 @@
-import './Footer.css'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import './Footer.css';
+import { trackPhoneClick } from '../utils/analytics';
+
+const serviceLinks = [
+  { label: 'Interior Painting', to: '/services/interior-painting' },
+  { label: 'Exterior Painting', to: '/services/exterior-painting' },
+  { label: 'Accent Walls', to: '/services/interior-painting/accent-wall' },
+  { label: 'Bathroom Painting', to: '/services/interior-painting/small-bathroom' },
+  { label: 'Bedroom Painting', to: '/services/interior-painting/bedroom-painting' },
+  { label: 'Front Doors', to: '/services/exterior-painting/front-door' },
+  { label: 'Garage Doors', to: '/services/exterior-painting/garage-door' },
+  { label: 'Fence Painting', to: '/services/exterior-painting/fence-painting' },
+];
+
+const areas = [
+  'Toronto',
+  'North York',
+  'Etobicoke',
+  'Scarborough',
+  'Mississauga',
+  'Brampton',
+  'Vaughan',
+  'Markham',
+  'Richmond Hill',
+  'Oakville',
+  'Burlington',
+  'Milton',
+];
 
 const Footer = () => {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-
-  const toggleDropdown = (section: string) => {
-    setActiveDropdown(activeDropdown === section ? null : section)
-  }
+  const handlePhoneClick = () => {
+    trackPhoneClick({ location: 'footer' });
+  };
 
   return (
     <footer className="footer">
       <div className="container">
-        <div className="footer-content">
-          
-          {/* Column 1: Brand & Hours */}
-          <div className="footer-column brand-column">
-            <h3>GTA Budget Painting</h3>
-            <p className="brand-description">
-              Your trusted professionals for residential painting in the Greater Toronto Area. Quick turnaround, budget-friendly pricing, and exceptional results.
+        <section className="footer-top-cta">
+          <div>
+            <p className="footer-top-eyebrow">Thoughtful Painting, Beautifully Managed</p>
+            <h3>Ready for a clean, calm home refresh?</h3>
+          </div>
+          <div className="footer-top-actions">
+            <a href="tel:+16476758101" className="btn-secondary" onClick={handlePhoneClick}>
+              Call 647-675-8101
+            </a>
+            <Link to="/contact-us#quote-section" className="btn-primary">
+              Request a Quote
+            </Link>
+          </div>
+        </section>
+
+        <div className="footer-grid">
+          <section className="footer-brand-col">
+            <img src="/logo_BW.png" alt="GTA Budget Painting" className="footer-logo" />
+            <p>
+              Premium-feel residential painting with a friendly, organized process. We protect your home, communicate clearly,
+              and leave every space fresh, polished, and move-in ready.
             </p>
-            <p style={{ marginTop: '0.75rem' }}>
-              <Link to="/about-us">About Us</Link>
-            </p>
-            
-            <div className="business-hours">
-              <h4>Business Hours</h4>
-              <p>Monday - Sunday<br />8:00 AM - 8:00 PM</p> 
+            <div className="footer-trust-list">
+              <span>Fully insured team</span>
+              <span>Clean daily prep + cleanup</span>
+              <span>Fast, reliable scheduling</span>
             </div>
-          </div>
+          </section>
 
-          {/* Column 2: Services */}
-          <div className={`footer-column services-column ${activeDropdown === 'services' ? 'active' : ''}`}>
-            <h4 
-              className="mobile-dropdown-header"
-              onClick={() => toggleDropdown('services')}
-            >
-              Our Services
-              <span className="dropdown-arrow"></span>
-            </h4>
-            <h4 className="desktop-header">Our Services</h4>
-            
-            <ul className="footer-links-list">
-              <li><Link to="/services/interior-painting">Interior Painting</Link></li>
-              <li><Link to="/services/exterior-painting">Exterior Painting</Link></li>
-              <li><Link to="/services/custom-painting">Custom Painting</Link></li>
-              <li><Link to="/services/interior-painting/kitchen-walls">Kitchen Painting</Link></li>
-              <li><Link to="/services/interior-painting/bedroom-painting">Bedroom Painting</Link></li>
-              <li><Link to="/services/interior-painting/small-bathroom">Bathroom Painting</Link></li>
-              <li><Link to="/services/interior-painting/accent-wall">Accent Walls</Link></li>
-              <li><Link to="/services/interior-painting/ceiling">Ceiling Painting</Link></li>
-              <li><Link to="/services/interior-painting/interior-door">Interior Doors</Link></li>
-              <li><Link to="/services/interior-painting/trimming-baseboards">Trim & Baseboards</Link></li>
-              <li><Link to="/services/exterior-painting/front-door">Front Doors</Link></li>
-              <li><Link to="/services/exterior-painting/garage-door">Garage Doors</Link></li>
-              <li><Link to="/services/exterior-painting/fence-painting">Fence Painting</Link></li>
+          <section>
+            <h4>Popular Services</h4>
+            <ul className="footer-links">
+              {serviceLinks.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to}>{link.label}</Link>
+                </li>
+              ))}
             </ul>
-          </div>
+          </section>
 
-          {/* Column 3: Contact & Social */}
-          <div className="footer-column contact-column">
-            <div className="contact-wrapper">
-              <h4>Contact Us</h4>
-              <div className="contact-items">
-                <a href="tel:+16476758101" className="footer-contact-link">
-                  <img src="/telephone.png" alt="Phone" className="footer-icon" />
+          <section>
+            <h4>Company</h4>
+            <ul className="footer-links">
+              <li>
+                <Link to="/about-us">About Us</Link>
+              </li>
+              <li>
+                <Link to="/specials">Special Offers</Link>
+              </li>
+              <li>
+                <Link to="/contact-us">Contact</Link>
+              </li>
+              <li>
+                <Link to="/services">All Services</Link>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h4>Contact</h4>
+            <ul className="footer-contact-list">
+              <li>
+                <a href="tel:+16476758101" onClick={handlePhoneClick}>
                   +1 647 675-8101
                 </a>
-                <a href="mailto:info@gtabudgetpainting.ca" className="footer-contact-link">
-                  <img src="/mail.png" alt="Email" className="footer-icon" />
-                  info@gtabudgetpainting.ca
-                </a>
-              </div>
+              </li>
+              <li>
+                <a href="mailto:info@gtabudgetpainting.ca">info@gtabudgetpainting.ca</a>
+              </li>
+              <li>Monday - Sunday</li>
+              <li>8:00 AM - 8:00 PM</li>
+            </ul>
+            <div className="footer-socials">
+              <a
+                href="https://www.instagram.com/gtabudgetpainting/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61578315664485"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+              >
+                Facebook
+              </a>
             </div>
-
-            <div className="social-wrapper">
-              <h4>Follow Us</h4>
-              <div className="social-links">
-                <a 
-                  href="https://www.facebook.com/profile.php?id=61578315664485" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="social-link facebook"
-                  aria-label="Facebook"
-                >
-                  <img src="/facebook.png" alt="Facebook" className="social-icon" />
-                  Facebook
-                </a>
-                <a 
-                  href="https://www.instagram.com/gtabudgetpainting/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="social-link instagram"
-                  aria-label="Instagram"
-                >
-                  <img src="/instagram.png" alt="Instagram" className="social-icon" />
-                  Instagram
-                </a>
-              </div>
-            </div>
-          </div>
-
+          </section>
         </div>
 
-        <div className="footer-bottom">
-          <p className="copyright">
-            &copy; {new Date().getFullYear()} GTA Budget Painting. All rights reserved. 
-            <span className="divider">|</span> 
-            <a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer" className="partner-link">
-              Partner of GTA Home Painting
-            </a>
-          </p>
-          <div className="footer-keywords">
-            Small Job Painters Toronto • Quick Turnaround Painting GTA • Budget Residential Painting • Affordable Small Job Painters • Fast Interior Painting
+        <section className="footer-areas" aria-label="Service areas">
+          <h4>Serving the GTA</h4>
+          <div className="footer-area-chips">
+            {areas.map((area) => (
+              <span key={area}>{area}</span>
+            ))}
           </div>
+        </section>
+
+        <div className="footer-bottom">
+          <p>© {new Date().getFullYear()} GTA Budget Painting. All rights reserved.</p>
+          <a href="https://gtahomepainting.ca" target="_blank" rel="noopener noreferrer" className="partner-link">
+            Partner of GTA Home Painting
+          </a>
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

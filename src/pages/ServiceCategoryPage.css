@@ -1,0 +1,337 @@
+.category-page {
+  --scp-hero-image: url('/interior.jpeg');
+  --scp-hero-overlay: rgba(60, 47, 70, 0.5);
+  --scp-hero-orb: radial-gradient(circle at 25% 25%, rgba(176, 143, 174, 0.3), rgba(176, 143, 174, 0));
+  --scp-showcase-background: linear-gradient(165deg, #f7eef3, #f7f1ea);
+
+  background: var(--color-background);
+}
+
+.category-page section {
+  position: relative;
+  padding: clamp(2.8rem, 7vw, 5.2rem) 0;
+}
+
+.scp-eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 800;
+}
+
+.scp-heading {
+  max-width: 740px;
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: clamp(1.4rem, 3.5vw, 2.3rem);
+}
+
+.scp-heading .scp-eyebrow {
+  color: var(--color-secondary);
+}
+
+.scp-heading p {
+  color: var(--color-text-medium);
+  font-size: 0.93rem;
+}
+
+.scp-hero {
+  position: relative;
+  overflow: clip;
+  padding: clamp(4.3rem, 10vw, 7rem) 0;
+  background:
+    linear-gradient(var(--scp-hero-overlay), var(--scp-hero-overlay)),
+    var(--scp-hero-image) center / cover no-repeat;
+}
+
+.scp-hero .container {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 0.95rem;
+}
+
+.scp-hero-parallax {
+  position: absolute;
+  inset: -25% auto auto -10%;
+  width: min(54vw, 520px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--scp-hero-orb);
+  pointer-events: none;
+}
+
+.scp-hero h1 {
+  color: #fff;
+  max-width: 18ch;
+}
+
+.scp-hero-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 63ch;
+  font-size: 0.98rem;
+}
+
+.scp-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.scp-hero-actions .btn-secondary {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.scp-trust {
+  padding-top: 1rem;
+}
+
+.scp-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.scp-trust-card {
+  border-radius: 16px;
+  border: 1px solid rgba(132, 113, 148, 0.2);
+  background: rgba(255, 255, 255, 0.84);
+  padding: 0.9rem;
+  box-shadow: var(--shadow-soft);
+}
+
+.scp-trust-card p {
+  font-size: 0.88rem;
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+.scp-showcase {
+  background: var(--scp-showcase-background);
+  overflow: clip;
+}
+
+.scp-showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.scp-showcase-card {
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(132, 113, 148, 0.2);
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow-soft);
+}
+
+.scp-showcase-card img {
+  width: 100%;
+  height: clamp(180px, 24vw, 230px);
+  object-fit: cover;
+  display: block;
+}
+
+.scp-showcase-copy {
+  padding: 0.85rem;
+}
+
+.scp-showcase-copy h3 {
+  font-size: 1.2rem;
+}
+
+.scp-services {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0));
+}
+
+.scp-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.scp-service-card {
+  border-radius: 22px;
+  border: 1px solid rgba(132, 113, 148, 0.22);
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 185px 1fr;
+}
+
+.scp-service-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scp-service-card--featured {
+  border-color: rgba(132, 113, 148, 0.32);
+}
+
+.scp-service-content {
+  padding: 0.95rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.scp-service-type {
+  width: fit-content;
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.52rem;
+  border-radius: 999px;
+  border: 1px solid rgba(132, 113, 148, 0.2);
+  background: rgba(244, 237, 248, 0.9);
+  color: var(--color-primary-dark);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.scp-service-content h3 {
+  font-size: 1.28rem;
+}
+
+.scp-service-content p {
+  font-size: 0.88rem;
+}
+
+.scp-service-link {
+  margin-top: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  width: fit-content;
+  font-size: 0.82rem;
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.scp-service-link::after {
+  content: '›';
+  font-size: 1rem;
+}
+
+.scp-service-card--custom {
+  grid-template-rows: 1fr;
+  background: linear-gradient(160deg, #f8f1f2, #eee6ef);
+}
+
+.scp-service-card--custom .scp-service-content {
+  justify-content: center;
+}
+
+.scp-process {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
+}
+
+.scp-step-grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.scp-step-grid li {
+  border-radius: 17px;
+  border: 1px solid rgba(132, 113, 148, 0.2);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.92rem;
+  display: grid;
+  gap: 0.48rem;
+}
+
+.scp-step-grid span {
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, #79678a, #8c789b);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.scp-step-grid p {
+  font-size: 0.88rem;
+  color: var(--color-text-dark);
+  font-weight: 600;
+}
+
+.scp-final-cta {
+  padding-top: 0.5rem;
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.scp-final-cta-inner {
+  border-radius: 24px;
+  border: 1px solid rgba(132, 113, 148, 0.24);
+  background: linear-gradient(160deg, #f8f1f3, #eee5ef);
+  box-shadow: var(--shadow-soft);
+  padding: clamp(1rem, 2.8vw, 1.7rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.scp-final-cta-inner h2 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  margin-bottom: 0.28rem;
+}
+
+.scp-final-cta-inner p {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1024px) {
+  .scp-trust-grid,
+  .scp-showcase-grid,
+  .scp-service-grid,
+  .scp-step-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .scp-trust-grid,
+  .scp-showcase-grid,
+  .scp-service-grid,
+  .scp-step-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scp-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .scp-hero-actions .btn-primary,
+  .scp-hero-actions .btn-secondary {
+    width: 100%;
+  }
+
+  .scp-service-card {
+    grid-template-rows: 195px 1fr;
+  }
+
+  .scp-final-cta-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .scp-final-cta-inner .btn-primary {
+    width: 100%;
+  }
+}

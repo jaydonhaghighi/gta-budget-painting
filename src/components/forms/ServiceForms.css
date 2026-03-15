@@ -4350,3 +4350,460 @@
     font-size: 0.9rem;
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* 2026 Brand Override Layer                                                   */
+/* -------------------------------------------------------------------------- */
+
+.service-form-content .calculated-service-form,
+.service-form-content .custom-quote-form,
+.service-form-content .interior-door-form-container,
+.service-form-content .front-door-form-container {
+  color: var(--color-text-dark);
+}
+
+.service-form-content .calculated-service-form .form-group-container,
+.service-form-content .custom-quote-form,
+.service-form-content .interior-door-card-container,
+.service-form-content .front-door-card-container {
+  border: 1px solid rgba(132, 113, 148, 0.22) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: var(--shadow-soft) !important;
+  padding: clamp(0.95rem, 2.8vw, 1.45rem) !important;
+  margin: 0 !important;
+}
+
+.service-form-content .calculated-service-form .form-group-container {
+  width: 100%;
+  max-width: none;
+}
+
+.service-form-content .form-header {
+  text-align: left !important;
+  padding-bottom: 0.6rem !important;
+  margin-bottom: 0.35rem;
+}
+
+.service-form-content .form-header h3 {
+  margin: 0 0 0.35rem !important;
+  font-family: var(--font-heading);
+  font-size: clamp(1.48rem, 2.7vw, 2rem) !important;
+  font-weight: 600 !important;
+  color: var(--color-primary-dark) !important;
+  line-height: 1.15;
+}
+
+.service-form-content .form-header p,
+.service-form-content .form-help {
+  margin: 0;
+  font-size: 0.9rem !important;
+  line-height: 1.65;
+  color: var(--color-text-medium) !important;
+}
+
+.service-form-content .driveway-section-title {
+  margin: 0.55rem 0 0.35rem;
+  font-size: 1.12rem;
+  color: var(--color-primary-dark);
+}
+
+.service-form-content .form-row {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 0.7rem !important;
+  max-width: none !important;
+  margin: 0 0 0.12rem !important;
+}
+
+.service-form-content .form-row.dimensions-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+
+.service-form-content .form-row.counts-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.service-form-content .form-group {
+  margin-bottom: 0.72rem !important;
+  max-width: none !important;
+}
+
+.service-form-content .form-group label {
+  margin-bottom: 0.32rem !important;
+  font-size: 0.76rem !important;
+  font-weight: 800 !important;
+  color: var(--color-primary-dark) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.service-form-content .form-group small {
+  margin-top: 0.28rem;
+  font-size: 0.77rem;
+  color: var(--color-text-light) !important;
+}
+
+.service-form-content .required {
+  color: #b55d66;
+}
+
+.service-form-content input,
+.service-form-content select,
+.service-form-content textarea {
+  border: 1px solid rgba(132, 113, 148, 0.26) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: var(--color-text-dark) !important;
+  padding: 0.68rem 0.78rem !important;
+  font-size: 0.91rem !important;
+  box-shadow: none !important;
+}
+
+.service-form-content input:focus,
+.service-form-content select:focus,
+.service-form-content textarea:focus {
+  outline: 2px solid rgba(133, 108, 150, 0.65) !important;
+  outline-offset: 1px;
+  border-color: rgba(120, 98, 138, 0.55) !important;
+  transform: none !important;
+}
+
+.service-form-content textarea {
+  min-height: 128px;
+  resize: vertical;
+}
+
+.service-form-content .checkbox-group {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.service-form-content .checkbox-label {
+  margin: 0 !important;
+  border: 1px solid rgba(132, 113, 148, 0.2) !important;
+  border-radius: 12px !important;
+  background: rgba(248, 243, 249, 0.78) !important;
+  color: var(--color-text-dark) !important;
+  font-size: 0.86rem !important;
+  font-weight: 600;
+  line-height: 1.45;
+  padding: 0.62rem 0.72rem !important;
+  align-items: flex-start;
+}
+
+.service-form-content .checkbox-label:hover {
+  background: rgba(248, 243, 249, 0.95) !important;
+}
+
+.service-form-content .checkbox-label input[type='checkbox'],
+.service-form-content .checkbox-label input[type='radio'] {
+  width: 16px;
+  height: 16px;
+  margin-top: 0.1rem;
+  accent-color: var(--color-primary);
+}
+
+.service-form-content .checkbox-label span {
+  flex: 1;
+}
+
+.service-form-content .info-box {
+  border: 1px solid rgba(132, 113, 148, 0.2) !important;
+  border-radius: 14px !important;
+  background: linear-gradient(150deg, #f8f1f3, #eee6ef) !important;
+  color: var(--color-text-medium) !important;
+  box-shadow: none !important;
+  font-size: 0.84rem !important;
+  line-height: 1.6;
+  padding: 0.8rem 0.92rem !important;
+}
+
+.service-form-content .collapsible-header {
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.service-form-content .collapsible-content {
+  margin-top: 0.55rem;
+}
+
+.service-form-content .count-input,
+.service-form-content .interior-door-count-input,
+.service-form-content .front-door-count-input {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  max-width: 210px;
+}
+
+.service-form-content .count-btn,
+.service-form-content .interior-door-count-btn,
+.service-form-content .front-door-count-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(132, 113, 148, 0.3) !important;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--color-primary-dark);
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.service-form-content .count-btn:hover:not(:disabled),
+.service-form-content .interior-door-count-btn:hover:not(:disabled),
+.service-form-content .front-door-count-btn:hover:not(:disabled) {
+  background: rgba(241, 231, 245, 0.92);
+  transform: translateY(-1px);
+}
+
+.service-form-content .count-btn:disabled,
+.service-form-content .interior-door-count-btn:disabled,
+.service-form-content .front-door-count-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.service-form-content .count-input input[type='number'],
+.service-form-content .interior-door-count-input-field,
+.service-form-content .front-door-count-input-field {
+  width: 72px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.service-form-content .total-price-display,
+.service-form-content .interior-door-total-price-display,
+.service-form-content .front-door-total-price-display {
+  margin-top: 0.75rem;
+  border-radius: 16px;
+  border: 1px solid rgba(132, 113, 148, 0.24);
+  background: linear-gradient(145deg, #736184, #877696);
+  color: #fff;
+  padding: 0.88rem;
+  text-align: center;
+}
+
+.service-form-content .total-label,
+.service-form-content .interior-door-total-label,
+.service-form-content .front-door-total-label {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 800;
+  opacity: 0.92;
+}
+
+.service-form-content .total-amount,
+.service-form-content .interior-door-total-amount,
+.service-form-content .front-door-total-amount {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.service-form-content .interior-door-form-section,
+.service-form-content .front-door-form-section {
+  margin-bottom: 0.82rem;
+}
+
+.service-form-content .interior-door-form-section h4,
+.service-form-content .front-door-form-section h4,
+.service-form-content .upload-content h4 {
+  margin: 0 0 0.38rem;
+  font-family: var(--font-heading);
+  font-size: 1.22rem;
+  color: var(--color-primary-dark);
+}
+
+.service-form-content .form-group:has(.upload-area) {
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.service-form-content .form-group:has(.upload-area) label {
+  margin-top: 0 !important;
+}
+
+.service-form-content .upload-area {
+  max-width: none !important;
+  border: 1px dashed rgba(132, 113, 148, 0.36) !important;
+  border-radius: 16px !important;
+  background: rgba(248, 242, 248, 0.78) !important;
+  padding: 1.15rem 0.95rem !important;
+}
+
+.service-form-content .upload-area:hover:not(.disabled) {
+  border-color: rgba(120, 98, 138, 0.65) !important;
+  background: rgba(248, 242, 248, 0.95) !important;
+}
+
+.service-form-content .upload-area.drag-over {
+  transform: none !important;
+  border-style: dashed !important;
+}
+
+.service-form-content .upload-content p,
+.service-form-content .upload-limit {
+  color: var(--color-text-medium) !important;
+  font-size: 0.82rem !important;
+}
+
+.service-form-content .photo-gallery,
+.service-form-content .photo-grid {
+  max-width: none !important;
+}
+
+.service-form-content .photo-grid {
+  gap: 0.62rem !important;
+  grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+}
+
+.service-form-content .photo-item {
+  border-radius: 12px !important;
+  border: 1px solid rgba(132, 113, 148, 0.2);
+  box-shadow: none !important;
+}
+
+.service-form-content .photo-item img {
+  height: 105px !important;
+}
+
+.service-form-content .remove-photo {
+  width: 22px !important;
+  height: 22px !important;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(173, 115, 138, 0.92) !important;
+}
+
+.service-form-content .btn-primary,
+.service-form-content .submit-button,
+.service-form-content .interior-door-btn-proceed,
+.service-form-content .front-door-btn-proceed,
+.service-form-content .btn-add-bedroom {
+  min-height: 44px;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  background: linear-gradient(140deg, var(--color-primary), #726182) !important;
+  color: #fff !important;
+  font-size: 0.86rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 26px rgba(100, 83, 115, 0.24);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.service-form-content .btn-primary:hover:not(:disabled),
+.service-form-content .submit-button:hover:not(:disabled),
+.service-form-content .interior-door-btn-proceed:hover,
+.service-form-content .front-door-btn-proceed:hover,
+.service-form-content .btn-add-bedroom:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px rgba(89, 69, 104, 0.3);
+}
+
+.service-form-content .btn-primary:disabled,
+.service-form-content .submit-button:disabled,
+.service-form-content .interior-door-btn-proceed:disabled,
+.service-form-content .front-door-btn-proceed:disabled,
+.service-form-content .btn-add-bedroom:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.service-form-content .btn-remove-bedroom {
+  border: 1px solid rgba(132, 113, 148, 0.24) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--color-primary-dark) !important;
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 0.34rem 0.66rem;
+}
+
+.service-form-content .bedroom-item {
+  border: 1px solid rgba(132, 113, 148, 0.22);
+  border-radius: 16px;
+  background: rgba(248, 242, 248, 0.5);
+  padding: 0.82rem;
+  margin-bottom: 0.72rem;
+}
+
+.service-form-content .bedroom-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.55rem;
+}
+
+.service-form-content .character-count {
+  margin-top: 0.34rem;
+  text-align: right;
+}
+
+.service-form-content .character-count span {
+  font-size: 0.75rem;
+  color: var(--color-text-light);
+}
+
+.service-form-content .character-count span.warning,
+.service-form-content textarea.warning {
+  color: #b55d66 !important;
+  border-color: rgba(181, 93, 102, 0.45) !important;
+}
+
+@media (max-width: 900px) {
+  .service-form-content .form-row,
+  .service-form-content .form-row.dimensions-row,
+  .service-form-content .form-row.counts-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .service-form-content .count-input,
+  .service-form-content .interior-door-count-input,
+  .service-form-content .front-door-count-input {
+    max-width: 100%;
+  }
+
+  .service-form-content .count-input input[type='number'],
+  .service-form-content .interior-door-count-input-field,
+  .service-form-content .front-door-count-input-field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 680px) {
+  .service-form-content .calculated-service-form .form-group-container,
+  .service-form-content .custom-quote-form,
+  .service-form-content .interior-door-card-container,
+  .service-form-content .front-door-card-container {
+    border-radius: 16px !important;
+    padding: 0.85rem !important;
+  }
+
+  .service-form-content .form-header h3 {
+    font-size: clamp(1.35rem, 5vw, 1.8rem) !important;
+  }
+
+  .service-form-content .btn-primary,
+  .service-form-content .submit-button,
+  .service-form-content .interior-door-btn-proceed,
+  .service-form-content .front-door-btn-proceed,
+  .service-form-content .btn-add-bedroom {
+    width: 100%;
+  }
+}

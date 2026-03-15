@@ -1,16 +1,9 @@
 :root {
-  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
-  font-weight: 500;
-  color: #1a1a1a;
-  background-color: #fff;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -24,48 +17,20 @@ body {
   min-height: 100vh;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+button,
+input,
+textarea,
+select {
+  font: inherit;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-  color: #1a1a1a;
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-}
-
-input, textarea, select {
-  font-family: inherit;
-}
-
-/* Prevent input fields from changing values on scroll */
-input[type="number"] {
+/* Prevent number inputs from changing values on scroll */
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-/* Disable scroll behavior on all input fields */
-input:focus {
-  scroll-behavior: auto;
-}
-
-/* Prevent wheel events from changing number input values */
-input[type="number"]:focus {
-  pointer-events: auto;
-}
-
-/* Additional protection against scroll changes */
-input[type="number"] {
-  scroll-behavior: auto;
 }

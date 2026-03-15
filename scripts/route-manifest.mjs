@@ -5,7 +5,6 @@ export const AUXILIARY_PRERENDER_ROUTES = ['/404'];
 
 const STATIC_SITEMAP_ENTRIES = [
   { path: '/', changefreq: 'weekly', priority: '1.0' },
-  { path: '/gallery', changefreq: 'monthly', priority: '0.8' },
   { path: '/services', changefreq: 'weekly', priority: '0.9' },
   { path: '/contact-us', changefreq: 'monthly', priority: '0.8' },
   { path: '/about-us', changefreq: 'monthly', priority: '0.7' },

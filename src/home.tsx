@@ -18,7 +18,6 @@ const ServicePage = lazy(() => import('./pages/ServicePage.tsx'))
 const CartPage = lazy(() => import('./pages/CartPage.tsx'))
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage.tsx'))
 const ContactUsPage = lazy(() => import('./pages/ContactUsPage.tsx'))
-const GalleryPage = lazy(() => import('./pages/GalleryPage.tsx'))
 const AdminPanel = lazy(() => import('./pages/AdminPanel.tsx'))
 const LocationPage = lazy(() => import('./pages/LocationPage.tsx'))
 const AboutUsPage = lazy(() => import('./pages/AboutUsPage.tsx'))
@@ -46,7 +45,6 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="/contact-us" element={<ContactUsPage />} />
                 <Route path="/about-us" element={<AboutUsPage />} />
-                <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="/specials" element={<SpecialsPage />} />
                 <Route path="/admin" element={<AdminPanel />} />
               {/* Dynamic Location Pages (e.g. /painters-mississauga) */}
