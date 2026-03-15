@@ -23,12 +23,6 @@ const valueCards = [
   },
 ];
 
-const processSteps = [
-  'Share your project details and choose your preferred service path.',
-  'Receive transparent pricing and confirm scope with our team.',
-  'We complete prep, painting, and cleanup with care and consistency.',
-];
-
 const AboutUsPage = () => {
   const [scrollY, setScrollY] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -150,24 +144,6 @@ const AboutUsPage = () => {
               </article>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="ab-process">
-        <div className="container">
-          <div className="ab-heading">
-            <p className="ab-eyebrow">Our Process</p>
-            <h2>Simple, transparent, and organized.</h2>
-          </div>
-
-          <ol className="ab-step-grid">
-            {processSteps.map((step, index) => (
-              <li key={step}>
-                <span>{index + 1}</span>
-                <p>{step}</p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 

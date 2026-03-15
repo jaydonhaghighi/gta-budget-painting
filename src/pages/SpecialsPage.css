@@ -28,7 +28,7 @@
   padding: clamp(4rem, 10vw, 6.8rem) 0;
   background:
     linear-gradient(rgba(53, 43, 64, 0.5), rgba(53, 43, 64, 0.5)),
-    url('/discount1.png') center / cover no-repeat;
+    url('/specials.png') center / cover no-repeat;
 }
 
 .spl-hero .container {
@@ -71,30 +71,6 @@
 
 .spl-hero-actions .btn-secondary {
   background: rgba(255, 255, 255, 0.9);
-}
-
-.spl-highlights {
-  padding-top: 1rem;
-}
-
-.spl-highlights-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.74rem;
-}
-
-.spl-highlights-grid article {
-  border-radius: 16px;
-  border: 1px solid rgba(132, 113, 148, 0.2);
-  background: rgba(255, 255, 255, 0.84);
-  box-shadow: var(--shadow-soft);
-  padding: 0.9rem;
-}
-
-.spl-highlights-grid p {
-  font-size: 0.88rem;
-  color: var(--color-text-dark);
-  font-weight: 600;
 }
 
 .spl-offers {
@@ -225,65 +201,9 @@
   width: 100%;
 }
 
-.spl-process {
-  background: linear-gradient(165deg, #f7eef3, #f7f1ea);
-}
-
-.spl-step-grid {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.7rem;
-}
-
-.spl-step-grid li {
-  border-radius: 18px;
-  border: 1px solid rgba(132, 113, 148, 0.22);
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: var(--shadow-soft);
-  padding: 0.92rem;
-  display: grid;
-  gap: 0.45rem;
-}
-
-.spl-step-grid span {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(140deg, #78668a, #8b779a);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.spl-step-grid p {
-  font-size: 0.88rem;
-  color: var(--color-text-dark);
-  font-weight: 600;
-}
-
-.spl-terms {
-  margin-top: 0.85rem;
-  font-size: 0.8rem;
-  color: var(--color-text-light);
-  font-weight: 700;
-}
-
 @media (max-width: 1100px) {
   .spl-offers-grid {
     grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 900px) {
-  .spl-highlights-grid,
-  .spl-step-grid {
-    grid-template-columns: 1fr;
   }
 }
 

@@ -160,6 +160,8 @@
   overflow: hidden;
   display: grid;
   grid-template-rows: 185px 1fr;
+  color: inherit;
+  text-decoration: none;
 }
 
 .scp-service-card img {
@@ -228,47 +230,6 @@
   justify-content: center;
 }
 
-.scp-process {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0));
-}
-
-.scp-step-grid {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.65rem;
-}
-
-.scp-step-grid li {
-  border-radius: 17px;
-  border: 1px solid rgba(132, 113, 148, 0.2);
-  background: rgba(255, 255, 255, 0.88);
-  padding: 0.92rem;
-  display: grid;
-  gap: 0.48rem;
-}
-
-.scp-step-grid span {
-  width: 29px;
-  height: 29px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(140deg, #79678a, #8c789b);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.scp-step-grid p {
-  font-size: 0.88rem;
-  color: var(--color-text-dark);
-  font-weight: 600;
-}
-
 .scp-final-cta {
   padding-top: 0.5rem;
   padding-bottom: clamp(3rem, 7vw, 5rem);
@@ -298,8 +259,7 @@
 @media (max-width: 1024px) {
   .scp-trust-grid,
   .scp-showcase-grid,
-  .scp-service-grid,
-  .scp-step-grid {
+  .scp-service-grid {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -307,8 +267,7 @@
 @media (max-width: 720px) {
   .scp-trust-grid,
   .scp-showcase-grid,
-  .scp-service-grid,
-  .scp-step-grid {
+  .scp-service-grid {
     grid-template-columns: 1fr;
   }
 

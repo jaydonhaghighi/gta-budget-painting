@@ -67,7 +67,12 @@ const ServicesPage = () => {
 
           <div className="sp-category-grid">
             {categories.map((category) => (
-              <article key={category.title} className="sp-category-card">
+              <Link
+                key={category.title}
+                to={category.to}
+                className="sp-category-card"
+                aria-label={`View ${category.title}`}
+              >
                 <img src={category.image} alt={`${category.title} example project`} loading="lazy" />
                 <div className="sp-card-content">
                   <h3>{category.title}</h3>
@@ -82,11 +87,11 @@ const ServicesPage = () => {
                     </div>
                   </div>
 
-                  <Link to={category.to} className="sp-card-link">
+                  <span className="sp-card-link">
                     View {category.title}
-                  </Link>
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -109,28 +114,8 @@ const ServicesPage = () => {
         </div>
       </section>
 
-      <section className="sp-process">
+      <section className="sp-cta">
         <div className="container">
-          <div className="sp-heading">
-            <p className="sp-eyebrow">How It Works</p>
-            <h2>A simple path to your quote.</h2>
-          </div>
-
-          <ol className="sp-steps">
-            <li>
-              <span>1</span>
-              <p>Choose your service category</p>
-            </li>
-            <li>
-              <span>2</span>
-              <p>Complete details for a clear estimate</p>
-            </li>
-            <li>
-              <span>3</span>
-              <p>Book and schedule with confidence</p>
-            </li>
-          </ol>
-
           <div className="sp-final-cta">
             <Link to="/contact-us#quote-section" className="btn-primary">
               Start Your Quote

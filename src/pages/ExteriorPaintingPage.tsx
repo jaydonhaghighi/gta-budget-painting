@@ -35,12 +35,6 @@ const trustPillars = [
   'Clear timelines and communication from estimate to completion',
 ];
 
-const processSteps = [
-  'Choose your exterior service and enter project details.',
-  'Review your estimate and optional add-ons instantly.',
-  'Submit your request and finalize scheduling with our team.',
-];
-
 const ExteriorPaintingPage = () => {
   const exteriorServices = useMemo(() => getServicesByCategory('exterior'), []);
 
@@ -165,9 +159,11 @@ const ExteriorPaintingPage = () => {
 
           <div className="scp-service-grid">
             {exteriorServices.map((service) => (
-              <article
+              <Link
                 key={service.id}
+                to={`/services/exterior-painting/${service.id}`}
                 className={`scp-service-card ${service.featured ? 'scp-service-card--featured' : ''}`}
+                aria-label={`Open estimator for ${service.name}`}
               >
                 <img
                   src={service.backgroundImage || '/services/front-door/front-door.jpeg'}
@@ -178,11 +174,11 @@ const ExteriorPaintingPage = () => {
                   <span className="scp-service-type">{serviceTypeLabel[service.type]}</span>
                   <h3>{service.name}</h3>
                   <p>{service.description || 'Durable exterior finishing tailored to your home and climate.'}</p>
-                  <Link to={`/services/exterior-painting/${service.id}`} className="scp-service-link">
+                  <span className="scp-service-link">
                     Open estimator
-                  </Link>
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
 
             <article className="scp-service-card scp-service-card--custom">
@@ -198,24 +194,6 @@ const ExteriorPaintingPage = () => {
               </div>
             </article>
           </div>
-        </div>
-      </section>
-
-      <section className="scp-process">
-        <div className="container">
-          <div className="scp-heading">
-            <p className="scp-eyebrow">How It Works</p>
-            <h2>A clear, low-stress way to plan exterior painting.</h2>
-          </div>
-
-          <ol className="scp-step-grid">
-            {processSteps.map((step, index) => (
-              <li key={step}>
-                <span>{index + 1}</span>
-                <p>{step}</p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 

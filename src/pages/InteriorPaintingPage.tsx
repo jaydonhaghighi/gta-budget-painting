@@ -35,12 +35,6 @@ const trustPillars = [
   'Clear scheduling and respectful in-home communication',
 ];
 
-const processSteps = [
-  'Choose your interior service and enter room details.',
-  'Get pricing instantly from our estimator or flat-rate form.',
-  'Submit your request and we confirm scope, timing, and next steps.',
-];
-
 const InteriorPaintingPage = () => {
   const interiorServices = useMemo(() => getServicesByCategory('interior'), []);
 
@@ -136,7 +130,7 @@ const InteriorPaintingPage = () => {
       <section className="scp-showcase" aria-label="Interior painting highlights">
         <div className="container">
           <div className="scp-heading">
-            <p className="scp-eyebrow">Before and After Feel</p>
+            <p className="scp-eyebrow">Project Highlights</p>
             <h2>Interior transformations that feel lighter, cleaner, and more refined.</h2>
           </div>
 
@@ -165,9 +159,11 @@ const InteriorPaintingPage = () => {
 
           <div className="scp-service-grid">
             {interiorServices.map((service) => (
-              <article
+              <Link
                 key={service.id}
+                to={`/services/interior-painting/${service.id}`}
                 className={`scp-service-card ${service.featured ? 'scp-service-card--featured' : ''}`}
+                aria-label={`Open estimator for ${service.name}`}
               >
                 <img
                   src={service.backgroundImage || '/services/kitchen-walls/kitchen-walls.jpeg'}
@@ -178,11 +174,11 @@ const InteriorPaintingPage = () => {
                   <span className="scp-service-type">{serviceTypeLabel[service.type]}</span>
                   <h3>{service.name}</h3>
                   <p>{service.description || 'Professional prep and clean finishing tailored to your home.'}</p>
-                  <Link to={`/services/interior-painting/${service.id}`} className="scp-service-link">
+                  <span className="scp-service-link">
                     Open estimator
-                  </Link>
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
 
             <article className="scp-service-card scp-service-card--custom">
@@ -198,24 +194,6 @@ const InteriorPaintingPage = () => {
               </div>
             </article>
           </div>
-        </div>
-      </section>
-
-      <section className="scp-process">
-        <div className="container">
-          <div className="scp-heading">
-            <p className="scp-eyebrow">How It Works</p>
-            <h2>A straightforward path from idea to booking.</h2>
-          </div>
-
-          <ol className="scp-step-grid">
-            {processSteps.map((step, index) => (
-              <li key={step}>
-                <span>{index + 1}</span>
-                <p>{step}</p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
 

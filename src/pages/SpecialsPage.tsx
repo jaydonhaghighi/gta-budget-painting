@@ -7,18 +7,6 @@ import { buildPromotionEstimate } from '../utils/promotionEstimate';
 import { trackPhoneClick } from '../utils/analytics';
 import './SpecialsPage.css';
 
-const offerHighlights = [
-  'Transparent bundled pricing with clear inclusions',
-  'Fast scheduling windows across Toronto and the GTA',
-  'Clean prep and detail-focused finishing standards',
-];
-
-const howItWorks = [
-  'Choose the package that best fits your home refresh goals.',
-  'Add it to cart and complete your request details.',
-  'Our team confirms scope, schedule, and final execution plan.',
-];
-
 const SpecialsPage = () => {
   const navigate = useNavigate();
   const { addItem } = useCart();
@@ -125,16 +113,6 @@ const SpecialsPage = () => {
         </div>
       </section>
 
-      <section className="spl-highlights">
-        <div className="container spl-highlights-grid">
-          {offerHighlights.map((item) => (
-            <article key={item}>
-              <p>{item}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="spl-offers">
         <div className="container">
           <div className="spl-heading">
@@ -173,26 +151,6 @@ const SpecialsPage = () => {
               </article>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="spl-process">
-        <div className="container">
-          <div className="spl-heading">
-            <p className="spl-eyebrow">How It Works</p>
-            <h2>From offer selection to scheduled service in three steps.</h2>
-          </div>
-
-          <ol className="spl-step-grid">
-            {howItWorks.map((step, index) => (
-              <li key={step}>
-                <span>{index + 1}</span>
-                <p>{step}</p>
-              </li>
-            ))}
-          </ol>
-
-          <p className="spl-terms">Package pricing applies to listed scope. Final details are confirmed before work begins.</p>
         </div>
       </section>
     </div>
